@@ -1,32 +1,27 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-container class="mt-0 pt-0" style="background-color: white">
+    <v-row no-gutters>
+      <v-col cols="12" class="hidden-sm-and-down" md="1" lg="3" xl="2" offset-xl="2" z-index="0">
+        <Navigation/>
+      </v-col>
+      <v-col cols="12" xs="11" sm="11" md="11" lg="9" xl="6" class="mb-10">
+        <router-view style="background: white;" :key="$route.path"></router-view>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import Navigation from './components/Nav'
 
-#nav {
-  padding: 30px;
-}
+export default {
+  name: 'App',
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  components: {
+    Navigation,
+  },
+  data: () => ({
+    //
+  }),
+};
+</script>
