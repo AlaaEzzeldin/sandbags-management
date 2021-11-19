@@ -11,22 +11,22 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/:userRole',
     name: 'NeueBestellung',
     component: NeueBestellung
   },
   {
-    path: '/konto',
+    path: '/account/:userRole',
     name: 'Konto',
     component: Konto
   },
   {
-    path: '/bestellungliste',
+    path: '/requests-list/:userRole',
     name: 'Bestellungliste',
     component: Bestellungliste
   },
   {
-    path: '/bestellübersicht',
+    path: '/overview/:userRole',
     name: 'Bestellübersicht',
     component: Bestellübersicht
   }
