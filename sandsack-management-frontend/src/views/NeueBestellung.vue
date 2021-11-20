@@ -1,14 +1,11 @@
 <template>
-  <h1>  NeueBestellung page</h1>
+  <h1> NeueBestellung page</h1>
 </template>
 
 <script>
 
 export default {
   name: 'NeueBestellung',
-
-  components: {
-
-  },
+  components: {},
 }
 </script>
