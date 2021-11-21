@@ -5,7 +5,7 @@
 <script>
 
 export default {
-  name: 'NeueBestellung',
+  name: 'NeueBestellungPage',
   components: {},
 }
 </script>

@@ -1,11 +1,11 @@
 <template>
-  <h1> Bestellübersicht Page </h1>
+  <h1> Konto Page </h1>
 </template>
 
 <script>
 
 export default {
-  name: 'Bestellübersicht',
+  name: 'KontoPage',
 
   components: {
 

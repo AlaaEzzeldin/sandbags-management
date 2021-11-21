@@ -48,35 +48,48 @@ export default {
     return {
       navItemsUnterabschintt: [
         {
-          title: 'Neue Bestellung',
-          component: 'NeueBestellung',
-          icon: 'mdi-plus',
-        },
-        {
           title: 'Bestellungliste',
-          component: 'Bestellungsliste',
+          component: 'BestellungslistePage',
           icon: 'mdi-format-list-bulleted',
         },
         {
+          title: 'Neue Bestellung',
+          component: 'NeueBestellungPage',
+          icon: 'mdi-plus',
+        },
+        {
           title: 'Konto',
-          component: 'Konto',
+          component: 'KontoPage',
           icon: 'mdi-account',
         },
       ],
       navItemsEinsatzabschnittAndHauptabschnitt: [
+
+        {
+          title: 'Bestellungsliste',
+          component: 'BestellungslistePage',
+          icon: 'mdi-format-list-bulleted',
+        },
         {
           title: 'Bestellübersicht',
-          component: 'Bestellübersicht',
+          component: 'BestellübersichtPage',
           icon: 'mdi-chart-line',
         },
         {
+          title: 'Konto',
+          component: 'KontoPage',
+          icon: 'mdi-account',
+        },
+      ],
+      navItemsMollnhof: [
+        {
           title: 'Bestellungsliste',
-          component: 'Bestellungsliste',
+          component: 'BestellungslistePage',
           icon: 'mdi-format-list-bulleted',
         },
         {
           title: 'Konto',
-          component: 'Konto',
+          component: 'KontoPage',
           icon: 'mdi-account',
         },
       ],
@@ -102,6 +115,8 @@ export default {
             return this.navItemsEinsatzabschnittAndHauptabschnitt;
           else if (this.getLoggedInUserRole() === 3)
             return this.navItemsUnterabschintt;
+          else if (this.getLoggedInUserRole() === 4)
+            return this.navItemsMollnhof;
         },
 
         // hard coding the users roles
