@@ -2,7 +2,7 @@
   <v-card class="elevation-0 rounded-lg" outlined>
     <v-data-table
         :headers="headers"
-        :items="getRequests"
+        :items="getOrders"
         class="elevation-2 rounded-lg"
         :search="search"
         :options="options"
@@ -33,6 +33,7 @@
             small
             :color="getColor(item.status)"
             dark
+            outlined
         >
           {{ item.status }}
         </v-chip>
@@ -72,7 +73,7 @@
                     color="primary"
                     icon
                 >
-                  <v-icon> mdi-eye-outline</v-icon>
+                  <v-icon> mdi-arrow-right</v-icon>
                 </v-btn>
               </template>
               <h4 class="font-weight-light">Inspect</h4>
@@ -88,7 +89,7 @@
 
 
 export default {
-  name: 'RequestsTable',
+  name: 'Bestelltabelle',
   components: {},
   data: () => ({
     search: '',
@@ -107,111 +108,151 @@ export default {
     options: {
       itemsPerPage: 10,
     },
-    requests: [
+    orders: [
       {
-        'id': '#1',
+        'id': '0',
+        'created_at': '10.11.2021 12:01',
+        'from': 'EA 1.1 Altstadt- Ost',
+        'priority': 'hohe',
+        'status': 'anstehend',
+        'quantity':'12',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+      },
+      {
+        'id': '1',
         'created_at': '11.11.2021 12:01',
         'from': 'EA 1.1 Altstadt- Ost',
         'priority': 'hohe',
         'status': 'akzeptiert',
+        'quantity':'5',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#2',
+        'id': '2',
         'created_at': '12.11.2021 12:01',
         'from': 'EA 1.1 Altstadt- West',
         'priority': 'niedrige',
         'status': 'anstehend',
+        'quantity':'54',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#3',
+        'id': '3',
         'created_at': '13.11.2021 12:01',
         'from': 'EA 1.1 Altstadt- Mitte',
         'priority': 'mittel',
         'status': 'geliefert',
+        'quantity':'7',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#4',
+        'id': '4',
         'created_at': '14.11.2021 12:01',
         'from': 'EA 2.1 Nuemarkt- Nord',
         'priority': 'hohe',
         'status': 'Auf dem Weg',
+        'quantity':'3',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+
       },
       {
-        'id': '#5',
+        'id': '5',
         'created_at': '15.11.2021 12:01',
         'from': 'EA 3.2 Universität-West',
         'priority': 'niedrige',
         'status': 'abgelehnt',
+        'quantity':'9',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#6',
+        'id': '6',
         'created_at': '11.11.2021 12:01',
         'from': 'EA 1.1 Altstadt- Ost',
         'priority': 'hohe',
         'status': 'akzeptiert',
+        'quantity':'12',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#7',
+        'id': '7',
         'created_at': '12.11.2021 12:01',
         'from': 'EA 1.1 Altstadt- West',
         'priority': 'niedrige',
         'status': 'anstehend',
+        'quantity':'2',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#8',
+        'id': '8',
         'created_at': '13.11.2021 12:01',
         'from': 'EA 1.1 Altstadt- Mitte',
         'priority': 'mittel',
         'status': 'geliefert',
+        'quantity':'26',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#9',
+        'id': '9',
         'created_at': '14.11.2021 12:01',
         'from': 'EA 2.1 Nuemarkt- Nord',
         'priority': 'hohe',
         'status': 'Auf dem Weg',
+        'quantity':'9',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#10',
+        'id': '10',
         'created_at': '15.11.2021 12:01',
         'from': 'EA 3.2 Universität-West',
         'priority': 'niedrige',
         'status': 'abgelehnt',
+        'quantity':'17',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#11',
+        'id': '11',
         'created_at': '12.11.2021 12:01',
         'from': 'EA 1.1 Altstadt- West',
         'priority': 'niedrige',
         'status': 'anstehend',
+        'quantity':'14',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#12',
+        'id': '12',
         'created_at': '13.11.2021 12:01',
         'from': 'EA 1.1 Altstadt- Mitte',
         'priority': 'mittel',
         'status': 'geliefert',
+        'quantity':'20',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#13',
+        'id': '13',
         'created_at': '14.11.2021 12:01',
         'from': 'EA 2.1 Nuemarkt- Nord',
         'priority': 'hohe',
         'status': 'Auf dem Weg',
+        'quantity':'17',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#14',
+        'id': '14',
         'created_at': '15.11.2021 12:01',
         'from': 'EA 3.2 Universität-West',
         'priority': 'niedrige',
         'status': 'abgelehnt',
+        'quantity':'12',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
-        'id': '#15',
+        'id': '15',
         'created_at': '12.11.2021 12:01',
         'from': 'EA 1.1 Altstadt- West',
         'priority': 'niedrige',
         'status': 'anstehend',
+        'quantity':'12',
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
 
     ],
@@ -219,8 +260,8 @@ export default {
   }),
 
   computed: {
-    getRequests() {
-      return this.requests
+    getOrders() {
+      return this.orders
     }
   },
   methods: {
@@ -228,14 +269,15 @@ export default {
       if (status === 'akzeptiert') return 'blue'
       if (status === 'geliefert') return 'green'
       else if (status === 'abgelehnt') return 'red'
-      else if (status === 'Auf dem Weg') return 'yellow'
-      else if (status === 'anstehend') return 'orange'
+      else if (status === 'Auf dem Weg') return 'orange'
+      else if (status === 'anstehend') return 'grey'
     },
     editItem() {
       //pass
     },
-    inspect() {
-      //pass
+    inspect(Item) {
+      const orderId = Item.id;
+      this.$router.push({name: 'BestelldetailsPage', params: { orderId }})
     },
   },
 }
