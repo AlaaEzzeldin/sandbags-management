@@ -41,7 +41,7 @@
       </v-row>
       <v-row>
         <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Priorität</h3>
+          <h3 style="font-weight: bolder; color: black">Priorität:</h3>
         </v-col>
         <v-col cols="12" sm="3">
           <h3 style="font-weight: bolder; color: black">{{getOrder.priority}}</h3>
@@ -49,7 +49,7 @@
       </v-row>
       <v-row>
         <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Lieferadresse</h3>
+          <h3 style="font-weight: bolder; color: black">Lieferadresse:</h3>
         </v-col>
         <v-col cols="12" sm="3">
           <h3 style="font-weight: bolder; color: black">{{getOrder.deliveryAddress}}</h3>
@@ -57,7 +57,7 @@
       </v-row>
       <v-row>
         <v-col cols="12" sm="12">
-          <h3 style="font-weight: bolder; color: black">Anmerkungen des Anforderers</h3>
+          <h3 style="font-weight: bolder; color: black">Anmerkungen des Anforderers:</h3>
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
