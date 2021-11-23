@@ -1,0 +1,13 @@
+DROP TABLE IF EXISTS "user";
+DROP TABLE IF EXISTS "order";
+DROP TABLE IF EXISTS "order_equipment";
+DROP TABLE IF EXISTS "equipment";
+DROP TABLE IF EXISTS "status";
+DROP TABLE IF EXISTS "action_type";
+DROP TABLE IF EXISTS "log";
+DROP TABLE IF EXISTS "comment";
+DROP TABLE IF EXISTS "hierarchy";
+DROP TABLE IF EXISTS "user_order_permission";
+DROP TABLE IF EXISTS "permission";
+DROP TABLE IF EXISTS "priority";
+DROP TABLE IF EXISTS "driver";
