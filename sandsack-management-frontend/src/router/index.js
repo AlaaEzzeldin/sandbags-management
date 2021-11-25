@@ -40,17 +40,17 @@ const routes = [
         component: BestelldetailsPage
     },
     {
-        path: '/login',
+        path: '/auth/login',
         name: 'LoginPage',
         component: LoginPage
     },
     {
-        path: '/signup',
+        path: '/auth/sign-up',
         name: 'SignupPage',
         component: SignupPage
     },
     {
-        path: '/recoverPassword',
+        path: '/auth/recover-password',
         name: 'RecoverPasswordPage',
         component: RecoverPasswordPage
     },
