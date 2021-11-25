@@ -7,12 +7,15 @@ import KontoPage from '../views/KontoPage.vue'
 import NeueBestellungPage from '../views/NeueBestellungPage.vue'
 import BestellübersichtPage from '../views/BestellübersichtPage'
 import BestelldetailsPage from "../views/BestelldetailsPage";
+import LoginPage from "../views/LoginPage";
+import SignupPage from "../views/SignupPage";
+import RecoverPasswordPage from "../views/RecoverPasswordPage";
 
 Vue.use(VueRouter)
 
 const routes = [
     {
-        path: '/:userRole',
+        path: '/orders-list/:userRole',
         name: 'BestellungslistePage',
         component: BestellungslistePage
     },
@@ -22,7 +25,7 @@ const routes = [
         component: KontoPage
     },
     {
-        path: '/orders-list/:userRole',
+        path: '/new-order/:userRole',
         name: 'NeueBestellungPage',
         component: NeueBestellungPage
     },
@@ -35,7 +38,22 @@ const routes = [
         path: '/:userRole/order-details/:orderId',
         name: 'BestelldetailsPage',
         component: BestelldetailsPage
-    }
+    },
+    {
+        path: '/login',
+        name: 'LoginPage',
+        component: LoginPage
+    },
+    {
+        path: '/signup',
+        name: 'SignupPage',
+        component: SignupPage
+    },
+    {
+        path: '/recoverPassword',
+        name: 'RecoverPasswordPage',
+        component: RecoverPasswordPage
+    },
 ]
 
 const router = new VueRouter({
