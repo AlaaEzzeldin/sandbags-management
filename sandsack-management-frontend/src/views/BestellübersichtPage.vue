@@ -79,38 +79,6 @@
 
 
 <script>
-const gradients = [
-  ['#222'],
-  ['#42b3f4'],
-  ['red', 'orange', 'yellow'],
-  ['purple', 'violet'],
-  ['#00c6ff', '#F0F', '#FF0'],
-  ['#f72047', '#ffd200', '#1feaea'],
-]
-
-<<<<<<< HEAD
-export default {
-  data: () => ({
-    width: 2,
-    radius: 10,
-    padding: 8,
-    lineCap: 'round',
-    gradient: gradients[5],
-    value: [0, 5, 8, 3, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 20, 0,],
-    gradientDirection: 'top',
-    gradients,
-    fill: false,
-    type: 'trend',
-    autoLineWidth: false,
-  }),
-}
-</script>
-
-
-
-
-
-=======
 
 const gradients = [
   ['#222'],
@@ -139,5 +107,3 @@ export default {
 }
 </script>
 
-
->>>>>>> ffe0b7b... report generato, status and graph
