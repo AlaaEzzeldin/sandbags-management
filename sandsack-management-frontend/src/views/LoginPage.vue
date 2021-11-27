@@ -29,6 +29,7 @@
               color="success"
               class="mr-4"
               @click="validate"
+              :to="`/orders-list/`+getUserRole()"
           >
             Einloggen
           </v-btn>
@@ -49,6 +50,7 @@ export default {
 
   data: () => ({
     valid: true,
+    checkbox: false,
     email: '',
     emailRules: [
       v => !!v || 'E-mail is required',
@@ -68,6 +70,16 @@ export default {
     validate() {
       this.$refs.form.validate()
     },
+    getUserRole() {
+      if (this.email === 'haupt@gmail.com')
+        return 1
+      else if (this.email === 'einsatz@gmail.com')
+        return 2
+      else if (this.email === 'unter@gmail.com')
+        return 3
+      else if (this.email === 'mollnhof@gmail.com')
+        return 4
+    }
   }
 
 }
