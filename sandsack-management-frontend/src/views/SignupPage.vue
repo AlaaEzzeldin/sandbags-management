@@ -41,7 +41,7 @@
               v-model="checkbox"
               :label="`Angemeldet bleiben`"
           ></v-checkbox>
-          <v-btn text>
+          <v-btn text link :to="{name: links.logInPage}">
             <u>Zur Login-Seite</u>
           </v-btn>
           <v-btn
@@ -86,7 +86,10 @@ export default {
         'Einsatzabschnittleiter',
         'Hauptabschnittleiter',
         'Mollnhofleiter',
-    ]
+    ],
+    links: {
+      logInPage: "LoginPage",
+    }
   }),
 
   methods: {

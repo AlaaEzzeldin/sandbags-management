@@ -19,7 +19,7 @@
           >
             Passwort wiederherstellen
           </v-btn>
-          <v-btn text>
+          <v-btn text link :to="{name: links.logInPage}">
             <u>Zur Login-Seite</u>
           </v-btn>
         </v-form>
@@ -40,6 +40,9 @@ export default {
       v => !!v || 'E-mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
     ],
+    links: {
+      logInPage: "LoginPage",
+    }
   }),
 
 }

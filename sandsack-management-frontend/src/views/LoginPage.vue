@@ -21,7 +21,7 @@
               v-model="checkbox"
               :label="`Angemeldet bleiben`"
           ></v-checkbox>
-          <v-btn text>
+          <v-btn text link :to="{name: links.recoverPasswordPage}">
             <u>Passwort vergessen?</u>
           </v-btn>
           <v-btn
@@ -32,9 +32,10 @@
           >
             Einloggen
           </v-btn>
-          <v-btn text>
-            Sie haben noch kein Konto? <u>Registrieren</u>
-          </v-btn>
+            Sie haben noch kein Konto?
+            <v-btn text link :to="{name: links.signupPage}">
+              <u>Registrieren</u>
+            </v-btn>
         </v-form>
       </v-col>
     </v-row>
@@ -56,7 +57,11 @@ export default {
     password: '',
     passwordRules: [
       v => !!v || 'Password is required',
-    ]
+    ],
+    links: {
+      recoverPasswordPage: "RecoverPasswordPage",
+      signupPage: "SignupPage",
+    }
   }),
 
   methods: {
