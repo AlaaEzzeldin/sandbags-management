@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="4">
-        <v-form v-model="valid">
+        <v-form ref="form" v-model="valid">
           <h2>Einloggen bei der</h2>
           <h2>Feuerwehr Passau</h2>
           <v-text-field
@@ -47,8 +47,23 @@ export default {
   name: 'LoginPage',
 
   data: () => ({
-
+    valid: true,
+    email: '',
+    emailRules: [
+      v => !!v || 'E-mail is required',
+      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+    ],
+    password: '',
+    passwordRules: [
+      v => !!v || 'Password is required',
+    ]
   }),
+
+  methods: {
+    validate() {
+      this.$refs.form.validate()
+    },
+  }
 
 }
 </script>
