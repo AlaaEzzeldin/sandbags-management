@@ -10,6 +10,7 @@ import BestelldetailsPage from "../views/BestelldetailsPage";
 import LoginPage from "../views/LoginPage";
 import SignupPage from "../views/SignupPage";
 import RecoverPasswordPage from "../views/RecoverPasswordPage";
+import RecoverPasswordConfirmPage from "../views/RecoverPasswordConfirmPage";
 
 Vue.use(VueRouter)
 
@@ -53,6 +54,11 @@ const routes = [
         path: '/auth/recover-password',
         name: 'RecoverPasswordPage',
         component: RecoverPasswordPage
+    },
+    {
+        path: '/auth/recover-password-confirm',
+        name: 'RecoverPasswordConfirmPage',
+        component: RecoverPasswordConfirmPage
     },
 ]
 
