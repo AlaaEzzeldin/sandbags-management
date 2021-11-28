@@ -4,7 +4,7 @@
       <v-btn icon @click="goBack">
         <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>
       </v-btn>
-      <h1 style="font-weight: bolder; ">Bestellung # {{ getOrder.id }}</h1>
+      <h1 style="font-weight: bolder; ">Bestellung bearbeiten # {{ getOrder.id }} </h1>
       <v-chip
           class="ml-5"
           :color="getColor(getOrder.status)" outlined
@@ -15,80 +15,88 @@
 
     <v-card-text class="pt-16 ">
 
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Von:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.from}}</h3>
+          <v-text-field
+              v-model="getOrder.from"
+              outlined
+          ></v-text-field>
         </v-col>
       </v-row>
-      <v-row>
+<!--      <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Typ:</h3>
         </v-col>
         <v-col cols="12" sm="3">
           <h3 style="font-weight: bolder; color: black">sandsäcke</h3>
         </v-col>
-      </v-row>
-      <v-row>
+      </v-row>-->
+      <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Anzahl:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.quantity}}</h3>
+          <v-text-field
+              v-model="getOrder.quantity"
+              outlined
+          ></v-text-field>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Priorität:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.priority}}</h3>
+          <v-text-field
+              v-model="getOrder.priority"
+              outlined
+          ></v-text-field>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Lieferadresse:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.deliveryAddress}}</h3>
+          <v-text-field
+              v-model="getOrder.deliveryAddress"
+              outlined
+          ></v-text-field>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row no-gutters v-if="getOrder.notesBySubsection">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Anmerkungen des Anforderers:</h3>
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
-              readonly
+              v-model="getOrder.notesBySubsection"
               outlined
               value="This is a note written by the unterabschnitt"
           ></v-textarea>
         </v-col>
       </v-row>
-      <v-row v-if="getOrder.status!=='anstehend'">
+      <v-row no-gutters v-if="getOrder.notesByEinsatzORderHaupt">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt/einsatzabschnitt</h3>
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
+              v-if="getOrder.notesByEinsatzORderHaupt"
               readonly
               outlined
-              value="This is a note written by the hauptabschnitt/einsatzabschnitt"
+              v-model="getOrder.notesByEinsatzORderHaupt"
           ></v-textarea>
         </v-col>
       </v-row>
-<!--      <v-row>
-        <v-col cols="12" sm="12">
-          <h3 style="font-weight: bolder; color: black">Besteellverlauf</h3>
-        </v-col>
-      </v-row>-->
 
     </v-card-text>
 
     <!------------------------------------------------- Unterabschnitt ------------------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole() === 3">
+    <v-card-actions>
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -98,9 +106,8 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='anstehend'"
           >
-            Bestellung bearbeiten
+            speichern
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
@@ -110,83 +117,20 @@
               color="red"
               dark
               block
-              :disabled="getOrder.status!=='anstehend'"
           >
-            Bestellung stornieren
+            Abbrechen
           </v-btn>
         </v-col>
       </v-row>
 
     </v-card-actions>
 
-    <!---------------------------------- Einsatzabschnitt & Hauptabschnitt -------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole() === 1 || this.getLoggedInUserRole() === 2">
-      <v-row>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status!=='anstehend'"
-          >
-            Bestellung annehmen
-          </v-btn>
-        </v-col>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="red"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status!=='anstehend'"
-          >
-            Bestellung bearbeiten
-          </v-btn>
-        </v-col>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="red"
-              dark
-              block
-              :disabled="getOrder.status!=='anstehend'"
-            >
-            Bestellung ablehnen
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card-actions>
-
-    <!------------------------------------------------- Mollhof ------------------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole() === 4">
-      <v-row>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status!=='akzeptiert'"
-          >
-            Bestellung abgesendet
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card-actions>
   </v-card>
 </template>
 
 <script>
 export default {
-  name: 'BestelldetailsCard',
+  name: 'EditRequestCard',
   data: () => ({
     orders: [
       {
@@ -196,7 +140,8 @@ export default {
         'priority': 'hohe',
         'status': 'anstehend',
         'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
+        'notesBySubsection':'please process ASAP1'
       },
       {
         'id': '1',
@@ -205,7 +150,9 @@ export default {
         'priority': 'hohe',
         'status': 'akzeptiert',
         'quantity':'5',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
+        'notesBySubsection':'please process ASAP1'
+
       },
       {
         'id': '2',
@@ -214,7 +161,10 @@ export default {
         'priority': 'niedrige',
         'status': 'anstehend',
         'quantity':'54',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
+        'notesBySubsection':'please process ASAP1',
+        'notesByEinsatzORderHaupt':'please process ASAP1'
+
       },
       {
         'id': '3',
@@ -223,7 +173,8 @@ export default {
         'priority': 'mittel',
         'status': 'geliefert',
         'quantity':'7',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
+        'notesByEinsatzORderHaupt':'please process ASAP1'
       },
       {
         'id': '4',
@@ -232,7 +183,8 @@ export default {
         'priority': 'hohe',
         'status': 'Auf dem Weg',
         'quantity':'3',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
+        'notesByEinsatzORderHaupt':'please process ASAP1'
 
       },
       {
@@ -337,7 +289,6 @@ export default {
 
     ],
   }),
-
   computed: {
     getOrder() {
       return this.orders[this.$route.params.orderId]
