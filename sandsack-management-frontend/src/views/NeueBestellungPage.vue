@@ -123,16 +123,13 @@
 
       <v-row align="left">
         <v-col cols="12">
-          <v-select
-              v-model="abschnitt"
-              :items="abschnittnameList"
+          <v-text-field
+              :value="getLoggedInBranchName"
+              readonly
               prepend-icon="mdi-account"
-              :rules="[v => !!v || 'Bitte geben Sie den Namen des Abschnitts ein']"
-              label="Abschnittname"
-              required
               filled
               outlined
-          ></v-select>
+          ></v-text-field>
         </v-col>
       </v-row>
 
@@ -231,6 +228,7 @@ export default {
 
 
   data: () => ({
+    loggedIn:'',
     priority: '',
     abschnitt: '',
     types: [
@@ -249,6 +247,30 @@ export default {
     ],
 
   }),
+  methods:{
+    // hard coding the users roles
+    getLoggedInUserRole() {
+      if (this.$route.params.userRole === '1') // Hauptabschintt
+        return 1
+      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
+        return 2
+      else if (this.$route.params.userRole === '3') //Unterabschnitt
+        return 3
+      else if (this.$route.params.userRole === '4') // Mollhof
+        return 4
+    }
+  },
+  computed:{
+    getLoggedInBranchName() {
+      if (this.getLoggedInUserRole() === 1)
+        return "Hauptabschintt-Mitte";
+      else if (this.getLoggedInUserRole() === 2)
+        return "EA 1-Altstadt";
+      else if (this.getLoggedInUserRole() === 3)
+        return "EA 1.1 Altstadt- Ost";
+      else return "Mollnhof";
+    },
+  }
 
 }
 </script>
