@@ -95,8 +95,8 @@
 
     </v-card-text>
 
-    <!------------------------------------------------- Unterabschnitt ------------------------------------------->
-    <v-card-actions>
+    <!------------------------------------------------- Actions ------------------------------------------->
+    <v-card-actions v-if="getLoggedInUserRole==1   ||getLoggedInUserRole==2 ||getLoggedInUserRole==3 ">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn

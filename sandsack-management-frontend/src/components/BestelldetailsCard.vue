@@ -94,13 +94,26 @@
           <v-btn
               style="text-transform: capitalize; font-weight: bolder;"
               rounded
-              color="red"
+              color="orange"
               dark
               block
               outlined
               :disabled="getOrder.status!=='anstehend'"
           >
             Bestellung bearbeiten
+          </v-btn>
+        </v-col>
+
+        <v-col cols="12" sm="6" offset="3" v-if="getOrder.status==='Auf dem Weg'">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              rounded
+              color="green"
+              dark
+              block
+              outlined
+          >
+            Lieferung bestätigen
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
