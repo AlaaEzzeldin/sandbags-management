@@ -73,7 +73,7 @@
                     color="primary"
                     icon
                 >
-                  <v-icon> mdi-arrow-right</v-icon>
+                  <v-icon> mdi-information-outline</v-icon>
                 </v-btn>
               </template>
               <h4 class="font-weight-light">Inspect</h4>
@@ -272,9 +272,9 @@ export default {
       else if (status === 'Auf dem Weg') return 'orange'
       else if (status === 'anstehend') return 'grey'
     },
-    editItem() {
-      //pass
-    },
+    editItem(Item) {
+      const orderId = Item.id;
+      this.$router.push({name: 'BestellBearbeitenPage', params: { orderId }})    },
     inspect(Item) {
       const orderId = Item.id;
       this.$router.push({name: 'BestelldetailsPage', params: { orderId }})

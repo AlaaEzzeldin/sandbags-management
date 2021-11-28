@@ -12,6 +12,7 @@ import SignupPage from "../views/SignupPage";
 import RecoverPasswordPage from "../views/RecoverPasswordPage";
 import RecoverPasswordConfirmPage from "../views/RecoverPasswordConfirmPage";
 import HomePage from "../views/HomePage";
+import BestellBearbeitenPage from "../views/BestellBearbeitenPage";
 
 Vue.use(VueRouter)
 
@@ -65,6 +66,11 @@ const routes = [
                 path: '/:userRole/order-details/:orderId',
                 name: 'BestelldetailsPage',
                 component: BestelldetailsPage
+            },
+            {
+                path: '/:userRole/order-edit/:orderId',
+                name: 'BestellBearbeitenPage',
+                component: BestellBearbeitenPage
             },
         ]
     },
