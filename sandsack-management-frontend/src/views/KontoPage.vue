@@ -1,3 +1,4 @@
+<!-- TODO: Add link to login page on Ausloggen button after authentication feature has been merged -->
 <template>
   <div>
     <v-row no-gutters>
@@ -13,20 +14,13 @@
             color="primary"
             dark
             block
+            :to="{name: ''}"
         >
           Ausloggen
         </v-btn>
       </v-col>
       <v-col sm="2" class="pt-15">
-        <v-btn
-            style="text-transform: capitalize; font-weight: bolder;"
-            rounded
-            color="primary"
-            dark
-            block
-        >
-          Bearbeiten
-        </v-btn>
+        <KontoEditDialog/>
       </v-col>
     </v-row>
     <v-row no-gutters>
@@ -77,12 +71,12 @@
 
 <script>
 
+import KontoEditDialog from "../components/KontoEditDialog";
+
 export default {
   name: 'KontoPage',
 
-  components: {
-
-  },
+  components: {KontoEditDialog},
 
   methods:
       {
