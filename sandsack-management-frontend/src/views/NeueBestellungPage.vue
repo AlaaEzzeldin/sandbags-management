@@ -194,7 +194,7 @@
           <v-textarea
               outlined
               filled
-              prepend-icon="mdi-alert"
+              prepend-icon="mdi-message-bulleted"
               name="input-7-4"
               label="Irgendwelche zusätzlichen Anmerkungen?"
 
