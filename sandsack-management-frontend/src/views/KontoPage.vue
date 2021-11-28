@@ -32,16 +32,16 @@
     <v-row no-gutters>
       <v-card color="#F1F2F6" outlined min-width="600" class="pa-5 mt-5">
         <v-row>
-          <v-col cols="1">
+          <v-col cols="2">
             <v-avatar
               color="white"
               size="60">
               <v-icon color="black" large>mdi-home</v-icon>
             </v-avatar>
           </v-col>
-          <v-col cols="11">
-            <h2>{{getLoggedInBranchName()}}</h2>
-            <h3>{{getLoggedInUserRoleName()}}</h3>
+          <v-col cols="10">
+            <h2>{{getLoggedInBranchDetails().name}}</h2>
+            <h3>{{getLoggedInBranchDetails().roleName}}</h3>
           </v-col>
         </v-row>
         <v-row class="pt-2">
@@ -50,7 +50,7 @@
               <v-icon color="black">mdi-map-marker</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>Leonhard Paminger Straße 20, 94032</v-list-item-title>
+              <v-list-item-title>{{getLoggedInBranchDetails().address}}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item>
@@ -58,7 +58,7 @@
               <v-icon color="black">mdi-phone</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>+49 123 45 67 8 9012</v-list-item-title>
+              <v-list-item-title>{{getLoggedInBranchDetails().phone}}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item>
@@ -66,7 +66,7 @@
               <v-icon color="black">mdi-email</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>abschnitt11@feuerwehrpassau.de</v-list-item-title>
+              <v-list-item-title>{{getLoggedInBranchDetails().email}}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-row>
@@ -87,26 +87,39 @@ export default {
   methods:
       {
         // hard coding for the branch name
-        getLoggedInBranchName() {
+        getLoggedInBranchDetails() {
           if (this.getLoggedInUserRole() === 1)
-            return "Hauptabschnitt-Mitte";
+            return {
+              name: "Hauptabschnitt-Mitte",
+              roleName: "Hauptabschnitt",
+              address: "Leonhard-Paminger-Str. 20",
+              email: "info@ffpassau.de",
+              phone: "+49 123 45 67 8 9012"
+            };
           else if (this.getLoggedInUserRole() === 2)
-            return "EA 1-Altstadt";
+            return {
+              name: "EA 1-Altstadt",
+              roleName: "Einsatzabschnitt",
+              address: "Leonhard-Paminger-Str. 21",
+              email: "ea-altstadt@ffpassau.de",
+              phone: "+49 123 45 67 8 9013"
+            };
           else if (this.getLoggedInUserRole() === 3)
-            return "EA 1.1 Altstadt- Ost";
+            return {
+              name: "EA 1.1 Altstadt- Ost",
+              roleName: "Unterabschnitt",
+              address: "Leonhard-Paminger-Str. 22",
+              email: "ea11-altstadt@ffpassau.de",
+              phone: "+49 123 45 67 8 9014"
+            };
           else if (this.getLoggedInUserRole() === 4)
-            return "Mollnhof";
-        },
-
-        getLoggedInUserRoleName() {
-          if (this.getLoggedInUserRole() === 1)
-            return "Hauptabschnitt";
-          else if (this.getLoggedInUserRole() === 2)
-            return "Einsatzabschnitt";
-          else if (this.getLoggedInUserRole() === 3)
-            return "Unterabschnitt";
-          else if (this.getLoggedInUserRole() === 4)
-            return "Mollnhof";
+            return {
+              name: "Mollnhof",
+              roleName: "Mollnhof",
+              address: "Leonhard-Paminger-Str. 23",
+              email: "mollnhof@ffpassau.de",
+              phone: "+49 123 45 67 8 9015"
+            };
         },
 
         // hard coding the users roles
