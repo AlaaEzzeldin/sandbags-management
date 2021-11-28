@@ -1,43 +1,46 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="4">
-        <v-form ref="form" v-model="valid">
+  <v-container fluid fill-height>
+    <v-row align="center" justify="center" >
+      <v-col cols="4" >
+        <v-card elevation="0" class="justify-center align-center align-content-center"  max-width="600px" >
           <h2>Einloggen bei der</h2>
           <h2>Feuerwehr Passau</h2>
-          <v-text-field
-              v-model="email"
-              :rules="emailRules"
-              label="E-mail"
-              required
-          ></v-text-field>
-          <v-text-field
-              v-model="password"
-              :rules="passwordRules"
-              label="Password"
-              required
-          ></v-text-field>
-          <v-checkbox
-              v-model="checkbox"
-              :label="`Angemeldet bleiben`"
-          ></v-checkbox>
-          <v-btn text link :to="{name: links.recoverPasswordPage}">
-            <u>Passwort vergessen?</u>
-          </v-btn>
-          <v-btn
-              :disabled="!valid"
-              color="success"
-              class="mr-4"
-              @click="validate"
-              :to="`/orders-list/`+getUserRole()"
-          >
-            Einloggen
-          </v-btn>
+
+          <v-form ref="form" v-model="valid" style="margin-top: 20px">
+            <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                label="E-mail"
+                required
+            ></v-text-field>
+            <v-text-field
+                v-model="password"
+                :rules="passwordRules"
+                label="Password"
+                required
+            ></v-text-field>
+            <v-checkbox
+                v-model="checkbox"
+                :label="`Angemeldet bleiben`"
+            ></v-checkbox>
+            <v-btn text link :to="{name: links.recoverPasswordPage}">
+              <u>Passwort vergessen?</u>
+            </v-btn>
+            <v-btn
+                :disabled="!valid"
+                color="success"
+                class="mr-4"
+                @click="validate"
+                :to="`/orders-list/`+getUserRole()"
+            >
+              Einloggen
+            </v-btn>
             Sie haben noch kein Konto?
             <v-btn text link :to="{name: links.signupPage}">
               <u>Registrieren</u>
             </v-btn>
-        </v-form>
+          </v-form>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
