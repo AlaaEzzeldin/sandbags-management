@@ -7,7 +7,7 @@
       <v-btn
           style="text-transform: capitalize; font-weight: bolder;"
           rounded
-          color="primary"
+          color="orange"
           v-bind="attrs"
           v-on="on"
           dark
@@ -42,24 +42,32 @@
               :rules="emailRules"
               label="E-mail"
               required
+              filled
+              outlined
           ></v-text-field>
           <v-text-field
               v-model="phone"
               :rules="phoneRules"
               label="Phone"
               required
+              filled
+              outlined
           ></v-text-field>
           <v-text-field
               v-model="password"
               :rules="passwordRules"
               label="Altes Passwort"
               required
+              filled
+              outlined
           ></v-text-field>
           <v-text-field
               v-model="password"
               :rules="passwordRules"
               label="Neues Passwort"
               required
+              filled
+              outlined
           ></v-text-field>
         </v-form>
       </v-row>

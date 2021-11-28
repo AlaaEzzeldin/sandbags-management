@@ -5,21 +5,19 @@
       <v-col sm="3" class="pt-13 justify-center align-center">
         <h1 style="font-weight: bolder;">Konto</h1>
       </v-col>
-      <v-spacer></v-spacer>
       <v-col sm="2" class="pt-15">
         <v-btn
             style="text-transform: capitalize; font-weight: bolder;"
             rounded
             outlined
-            color="primary"
+            color="red"
             dark
             block
-            :to="{name: ''}"
         >
           Ausloggen
         </v-btn>
       </v-col>
-      <v-col sm="2" class="pt-15">
+      <v-col sm="2" class=" pl-3 pt-15">
         <KontoEditDialog/>
       </v-col>
     </v-row>
