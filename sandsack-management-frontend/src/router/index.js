@@ -11,37 +11,13 @@ import LoginPage from "../views/LoginPage";
 import SignupPage from "../views/SignupPage";
 import RecoverPasswordPage from "../views/RecoverPasswordPage";
 import RecoverPasswordConfirmPage from "../views/RecoverPasswordConfirmPage";
+import HomePage from "../views/HomePage";
 
 Vue.use(VueRouter)
 
 const routes = [
     {
-        path: '/orders-list/:userRole',
-        name: 'BestellungslistePage',
-        component: BestellungslistePage
-    },
-    {
-        path: '/account/:userRole',
-        name: 'KontoPage',
-        component: KontoPage
-    },
-    {
-        path: '/new-order/:userRole',
-        name: 'NeueBestellungPage',
-        component: NeueBestellungPage
-    },
-    {
-        path: '/overview/:userRole',
-        name: 'BestellübersichtPage',
-        component: BestellübersichtPage
-    },
-    {
-        path: '/:userRole/order-details/:orderId',
-        name: 'BestelldetailsPage',
-        component: BestelldetailsPage
-    },
-    {
-        path: '/auth/login',
+        path: '/',
         name: 'LoginPage',
         component: LoginPage
     },
@@ -60,6 +36,40 @@ const routes = [
         name: 'RecoverPasswordConfirmPage',
         component: RecoverPasswordConfirmPage
     },
+    {
+        path: '/homapage',
+        name: 'HomePage',
+        component: HomePage,
+        children: [
+            {
+                path: '/orders-list/:userRole',
+                name: 'BestellungslistePage',
+                component: BestellungslistePage
+            },
+            {
+                path: '/account/:userRole',
+                name: 'KontoPage',
+                component: KontoPage
+            },
+            {
+                path: '/new-order/:userRole',
+                name: 'NeueBestellungPage',
+                component: NeueBestellungPage
+            },
+            {
+                path: '/overview/:userRole',
+                name: 'BestellübersichtPage',
+                component: BestellübersichtPage
+            },
+            {
+                path: '/:userRole/order-details/:orderId',
+                name: 'BestelldetailsPage',
+                component: BestelldetailsPage
+            },
+        ]
+    },
+
+
 ]
 
 const router = new VueRouter({
