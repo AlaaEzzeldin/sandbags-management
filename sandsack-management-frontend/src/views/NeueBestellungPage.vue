@@ -99,7 +99,7 @@
         text
         type="success"
     >
-      We need them as soon as possible <strong>MAX 50</strong>
+      We need them as soon as possible please<strong>MAX 50</strong>
     </v-alert>
 
 
