@@ -211,6 +211,7 @@
               rounded
               color="red"
               dark
+              @click="goToListOfOrders"
           >
             Bestellen
           </v-btn>
@@ -259,6 +260,10 @@ export default {
         return 3
       else if (this.$route.params.userRole === '4') // Mollhof
         return 4
+    },
+
+    goToListOfOrders(){
+        this.$router.push({name: 'BestellungslistePage'})
     }
   },
   computed:{
