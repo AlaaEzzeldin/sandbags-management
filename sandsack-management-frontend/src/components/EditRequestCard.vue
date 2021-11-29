@@ -4,7 +4,7 @@
       <v-btn icon @click="goBack">
         <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>
       </v-btn>
-      <h1 style="font-weight: bolder; ">Bestellung # {{ getOrder.id }}</h1>
+      <h1 style="font-weight: bolder; ">Bestellung bearbeiten # {{ getOrder.id }} </h1>
       <v-chip
           class="ml-5"
           :color="getColor(getOrder.status)" outlined
@@ -15,59 +15,73 @@
 
     <v-card-text class="pt-16 ">
 
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Von:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.from}}</h3>
+          <v-text-field
+              disabled
+              v-model="getOrder.from"
+              outlined
+          ></v-text-field>
         </v-col>
       </v-row>
-      <v-row>
+<!--      <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Typ:</h3>
         </v-col>
         <v-col cols="12" sm="3">
           <h3 style="font-weight: bolder; color: black">sandsäcke</h3>
         </v-col>
-      </v-row>
-      <v-row>
+      </v-row>-->
+      <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Anzahl:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.quantity}}</h3>
+          <v-text-field
+              v-model="getOrder.quantity"
+              outlined
+          ></v-text-field>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Priorität:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.priority}}</h3>
+          <v-text-field
+              v-model="getOrder.priority"
+              outlined
+          ></v-text-field>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Lieferadresse:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.deliveryAddress}}</h3>
+          <v-text-field
+              v-model="getOrder.deliveryAddress"
+              outlined
+              disabled
+          ></v-text-field>
         </v-col>
       </v-row>
-      <v-row v-if="getOrder.notesBySubsection">
+      <v-row no-gutters v-if="getOrder.notesBySubsection">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Anmerkungen des Anforderers:</h3>
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
-              readonly
-              :value="getOrder.notesBySubsection"
+              v-model="getOrder.notesBySubsection"
               outlined
+              :disabled="getLoggedInUserRole()!==3"
           ></v-textarea>
         </v-col>
       </v-row>
-      <v-row v-if="getOrder.notesByEinsatzORderHaupt">
+      <v-row no-gutters v-if="getOrder.notesByEinsatzORderHaupt">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt/einsatzabschnitt</h3>
         </v-col>
@@ -75,46 +89,28 @@
           <v-textarea
               readonly
               outlined
-              :value="getOrder.notesByEinsatzORderHaupt"
+              v-model="getOrder.notesByEinsatzORderHaupt"
+              :disabled="getLoggedInUserRole()!==1 || getLoggedInUserRole()!==2"
+
           ></v-textarea>
         </v-col>
       </v-row>
-<!--      <v-row>
-        <v-col cols="12" sm="12">
-          <h3 style="font-weight: bolder; color: black">Besteellverlauf</h3>
-        </v-col>
-      </v-row>-->
 
     </v-card-text>
 
-    <!------------------------------------------------- Unterabschnitt ------------------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole() === 3">
+    <!------------------------------------------------- Actions ------------------------------------------->
+    <v-card-actions v-if="getLoggedInUserRole()===1   || getLoggedInUserRole()===2 ||getLoggedInUserRole()===3 ">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
               style="text-transform: capitalize; font-weight: bolder;"
               rounded
-              color="orange"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status!=='anstehend'"
-              @click="editItem"
-          >
-            Bestellung bearbeiten
-          </v-btn>
-        </v-col>
-
-        <v-col cols="12" sm="6" offset="3" v-if="getOrder.status==='Auf dem Weg'">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
+              color="red"
               dark
               block
               outlined
           >
-            Lieferung bestätigen
+            speichern
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
@@ -124,84 +120,20 @@
               color="red"
               dark
               block
-              :disabled="getOrder.status!=='anstehend'"
           >
-            Bestellung stornieren
+            Abbrechen
           </v-btn>
         </v-col>
       </v-row>
 
     </v-card-actions>
 
-    <!---------------------------------- Einsatzabschnitt & Hauptabschnitt -------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole() === 1 || this.getLoggedInUserRole() === 2">
-      <v-row>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status!=='anstehend'"
-          >
-            Bestellung direkt annehmen
-          </v-btn>
-        </v-col>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="red"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status!=='anstehend'"
-              @click="editItem"
-          >
-            Bestellung bearbeiten und dann akzeptieren
-          </v-btn>
-        </v-col>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="red"
-              dark
-              block
-              :disabled="getOrder.status!=='anstehend'"
-            >
-            Bestellung ablehnen
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card-actions>
-
-    <!------------------------------------------------- Mollhof ------------------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole() === 4">
-      <v-row>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status!=='akzeptiert'"
-          >
-            Bestellung abgesendet
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card-actions>
   </v-card>
 </template>
 
 <script>
 export default {
-  name: 'BestelldetailsCard',
+  name: 'EditRequestCard',
   data: () => ({
     orders: [
       {
@@ -360,12 +292,12 @@ export default {
 
     ],
   }),
-
   computed: {
     getOrder() {
       return this.orders[this.$route.params.orderId]
     }
   },
+
   methods: {
     getColor(status) {
       if (status === 'akzeptiert') return 'blue'
@@ -376,10 +308,6 @@ export default {
     },
     goBack() {
       this.$router.go(-1)
-    },
-    editItem() {
-      const orderId = this.getOrder.id;
-      this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
     },
 
     // hard coding the users roles
