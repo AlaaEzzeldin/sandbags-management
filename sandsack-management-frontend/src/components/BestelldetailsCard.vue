@@ -99,6 +99,7 @@
               block
               outlined
               :disabled="getOrder.status!=='anstehend'"
+              @click="editItem"
           >
             Bestellung bearbeiten
           </v-btn>

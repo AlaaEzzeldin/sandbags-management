@@ -24,7 +24,6 @@
                       block
                       dark
                       color="red"
-                      @click="validate"
                   >
                     Passwort wiederherstellen
                   </v-btn>

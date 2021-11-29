@@ -51,7 +51,7 @@
                     style="text-transform: capitalize; font-weight: bolder;"
                     @click="editItem(item)"
                     small
-                    :disabled="item.status!=='anstehend'"
+                    :disabled="item.status!=='anstehend' || getLoggedInUserRole()===4"
                     class="elevation-0"
                     color="primary"
                     rounded
@@ -265,6 +265,18 @@ export default {
     }
   },
   methods: {
+
+    // hard coding the users roles
+    getLoggedInUserRole() {
+      if (this.$route.params.userRole === '1') // Hauptabschintt
+        return 1
+      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
+        return 2
+      else if (this.$route.params.userRole === '3') //Unterabschnitt
+        return 3
+      else if (this.$route.params.userRole === '4') // Mollhof
+        return 4
+    },
     getColor(status) {
       if (status === 'akzeptiert') return 'blue'
       if (status === 'geliefert') return 'green'
