@@ -115,7 +115,7 @@ export default {
         'from': 'EA 1.1 Altstadt- Ost',
         'priority': 'hohe',
         'status': 'anstehend',
-        'quantity':'12',
+        'quantity': '12',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -124,7 +124,7 @@ export default {
         'from': 'EA 1.1 Altstadt- Ost',
         'priority': 'hohe',
         'status': 'akzeptiert',
-        'quantity':'5',
+        'quantity': '5',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -133,7 +133,7 @@ export default {
         'from': 'EA 1.1 Altstadt- West',
         'priority': 'niedrige',
         'status': 'anstehend',
-        'quantity':'54',
+        'quantity': '54',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -142,7 +142,7 @@ export default {
         'from': 'EA 1.1 Altstadt- Mitte',
         'priority': 'mittel',
         'status': 'geliefert',
-        'quantity':'7',
+        'quantity': '7',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -151,7 +151,7 @@ export default {
         'from': 'EA 2.1 Nuemarkt- Nord',
         'priority': 'hohe',
         'status': 'Auf dem Weg',
-        'quantity':'3',
+        'quantity': '3',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
 
       },
@@ -161,7 +161,7 @@ export default {
         'from': 'EA 3.2 Universität-West',
         'priority': 'niedrige',
         'status': 'abgelehnt',
-        'quantity':'9',
+        'quantity': '9',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -170,7 +170,7 @@ export default {
         'from': 'EA 1.1 Altstadt- Ost',
         'priority': 'hohe',
         'status': 'akzeptiert',
-        'quantity':'12',
+        'quantity': '12',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -179,7 +179,7 @@ export default {
         'from': 'EA 1.1 Altstadt- West',
         'priority': 'niedrige',
         'status': 'anstehend',
-        'quantity':'2',
+        'quantity': '2',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -188,7 +188,7 @@ export default {
         'from': 'EA 1.1 Altstadt- Mitte',
         'priority': 'mittel',
         'status': 'geliefert',
-        'quantity':'26',
+        'quantity': '26',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -197,7 +197,7 @@ export default {
         'from': 'EA 2.1 Nuemarkt- Nord',
         'priority': 'hohe',
         'status': 'Auf dem Weg',
-        'quantity':'9',
+        'quantity': '9',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -206,7 +206,7 @@ export default {
         'from': 'EA 3.2 Universität-West',
         'priority': 'niedrige',
         'status': 'abgelehnt',
-        'quantity':'17',
+        'quantity': '17',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -215,7 +215,7 @@ export default {
         'from': 'EA 1.1 Altstadt- West',
         'priority': 'niedrige',
         'status': 'anstehend',
-        'quantity':'14',
+        'quantity': '14',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -224,7 +224,7 @@ export default {
         'from': 'EA 1.1 Altstadt- Mitte',
         'priority': 'mittel',
         'status': 'geliefert',
-        'quantity':'20',
+        'quantity': '20',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -233,7 +233,7 @@ export default {
         'from': 'EA 2.1 Nuemarkt- Nord',
         'priority': 'hohe',
         'status': 'Auf dem Weg',
-        'quantity':'17',
+        'quantity': '17',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -242,7 +242,7 @@ export default {
         'from': 'EA 3.2 Universität-West',
         'priority': 'niedrige',
         'status': 'abgelehnt',
-        'quantity':'12',
+        'quantity': '12',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
       {
@@ -251,7 +251,7 @@ export default {
         'from': 'EA 1.1 Altstadt- West',
         'priority': 'niedrige',
         'status': 'anstehend',
-        'quantity':'12',
+        'quantity': '12',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau'
       },
 
@@ -274,10 +274,11 @@ export default {
     },
     editItem(Item) {
       const orderId = Item.id;
-      this.$router.push({name: 'BestellBearbeitenPage', params: { orderId }})    },
+      this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
+    },
     inspect(Item) {
       const orderId = Item.id;
-      this.$router.push({name: 'BestelldetailsPage', params: { orderId }})
+      this.$router.push({name: 'BestelldetailsPage', params: {orderId}})
     },
   },
 }

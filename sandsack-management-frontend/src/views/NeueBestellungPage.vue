@@ -129,6 +129,7 @@
               prepend-icon="mdi-account"
               filled
               outlined
+              disabled
           ></v-text-field>
         </v-col>
       </v-row>

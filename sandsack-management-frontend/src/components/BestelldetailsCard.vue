@@ -145,7 +145,7 @@
               outlined
               :disabled="getOrder.status!=='anstehend'"
           >
-            Bestellung annehmen
+            Bestellung direkt annehmen
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
@@ -157,8 +157,9 @@
               block
               outlined
               :disabled="getOrder.status!=='anstehend'"
+              @click="editItem"
           >
-            Bestellung bearbeiten
+            Bestellung bearbeiten und dann akzeptieren
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
@@ -374,6 +375,10 @@ export default {
     },
     goBack() {
       this.$router.go(-1)
+    },
+    editItem() {
+      const orderId = this.getOrder.id;
+      this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
     },
 
     // hard coding the users roles
