@@ -55,19 +55,19 @@
           <h3 style="font-weight: bolder; color: black">{{getOrder.deliveryAddress}}</h3>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="getOrder.notesBySubsection">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Anmerkungen des Anforderers:</h3>
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
               readonly
+              :value="getOrder.notesBySubsection"
               outlined
-              value="This is a note written by the unterabschnitt"
           ></v-textarea>
         </v-col>
       </v-row>
-      <v-row v-if="getOrder.status!=='anstehend'">
+      <v-row v-if="getOrder.notesByEinsatzORderHaupt">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt/einsatzabschnitt</h3>
         </v-col>
@@ -75,7 +75,7 @@
           <v-textarea
               readonly
               outlined
-              value="This is a note written by the hauptabschnitt/einsatzabschnitt"
+              :value="getOrder.notesByEinsatzORderHaupt"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -209,7 +209,8 @@ export default {
         'priority': 'hohe',
         'status': 'anstehend',
         'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
+        'notesBySubsection':'please process ASAP'
       },
       {
         'id': '1',
@@ -218,7 +219,9 @@ export default {
         'priority': 'hohe',
         'status': 'akzeptiert',
         'quantity':'5',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
+        'notesBySubsection':'please process ASAP'
+
       },
       {
         'id': '2',
@@ -227,7 +230,9 @@ export default {
         'priority': 'niedrige',
         'status': 'anstehend',
         'quantity':'54',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
+        'notesBySubsection':'please process ASAP',
+
       },
       {
         'id': '3',
@@ -236,7 +241,8 @@ export default {
         'priority': 'mittel',
         'status': 'geliefert',
         'quantity':'7',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
+        'notesByEinsatzORderHaupt':'please process ASAP'
       },
       {
         'id': '4',
@@ -245,7 +251,8 @@ export default {
         'priority': 'hohe',
         'status': 'Auf dem Weg',
         'quantity':'3',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
+        'notesByEinsatzORderHaupt':'please process ASAP'
 
       },
       {
@@ -255,7 +262,8 @@ export default {
         'priority': 'niedrige',
         'status': 'abgelehnt',
         'quantity':'9',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
+        'notesByEinsatzORderHaupt':'There is no need for it, we don not have enough bags'
       },
       {
         'id': '6',

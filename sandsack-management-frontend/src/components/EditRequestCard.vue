@@ -21,6 +21,7 @@
         </v-col>
         <v-col cols="12" sm="3">
           <v-text-field
+              disabled
               v-model="getOrder.from"
               outlined
           ></v-text-field>
@@ -64,6 +65,7 @@
           <v-text-field
               v-model="getOrder.deliveryAddress"
               outlined
+              disabled
           ></v-text-field>
         </v-col>
       </v-row>
@@ -75,7 +77,7 @@
           <v-textarea
               v-model="getOrder.notesBySubsection"
               outlined
-              value="This is a note written by the unterabschnitt"
+              :disabled="getLoggedInUserRole()!==3"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -85,10 +87,11 @@
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
-              v-if="getOrder.notesByEinsatzORderHaupt"
               readonly
               outlined
               v-model="getOrder.notesByEinsatzORderHaupt"
+              :disabled="getLoggedInUserRole()!==1 || getLoggedInUserRole()!==2"
+
           ></v-textarea>
         </v-col>
       </v-row>
@@ -96,7 +99,7 @@
     </v-card-text>
 
     <!------------------------------------------------- Actions ------------------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole==1   ||getLoggedInUserRole==2 ||getLoggedInUserRole==3 ">
+    <v-card-actions v-if="getLoggedInUserRole()===1   || getLoggedInUserRole()===2 ||getLoggedInUserRole()===3 ">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -141,7 +144,7 @@ export default {
         'status': 'anstehend',
         'quantity':'12',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesBySubsection':'please process ASAP1'
+        'notesBySubsection':'please process ASAP'
       },
       {
         'id': '1',
@@ -151,7 +154,7 @@ export default {
         'status': 'akzeptiert',
         'quantity':'5',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesBySubsection':'please process ASAP1'
+        'notesBySubsection':'please process ASAP'
 
       },
       {
@@ -162,8 +165,7 @@ export default {
         'status': 'anstehend',
         'quantity':'54',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesBySubsection':'please process ASAP1',
-        'notesByEinsatzORderHaupt':'please process ASAP1'
+        'notesBySubsection':'please process ASAP',
 
       },
       {
@@ -174,7 +176,7 @@ export default {
         'status': 'geliefert',
         'quantity':'7',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByEinsatzORderHaupt':'please process ASAP1'
+        'notesByEinsatzORderHaupt':'please process ASAP'
       },
       {
         'id': '4',
@@ -184,7 +186,7 @@ export default {
         'status': 'Auf dem Weg',
         'quantity':'3',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByEinsatzORderHaupt':'please process ASAP1'
+        'notesByEinsatzORderHaupt':'please process ASAP'
 
       },
       {
@@ -194,7 +196,8 @@ export default {
         'priority': 'niedrige',
         'status': 'abgelehnt',
         'quantity':'9',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
+        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
+        'notesByEinsatzORderHaupt':'There is no need for it, we don not have enough bags'
       },
       {
         'id': '6',
@@ -294,6 +297,7 @@ export default {
       return this.orders[this.$route.params.orderId]
     }
   },
+
   methods: {
     getColor(status) {
       if (status === 'akzeptiert') return 'blue'
