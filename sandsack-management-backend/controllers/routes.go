@@ -24,6 +24,7 @@ func (a *App) RunAllRoutes(){
 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 
 	r.POST("/login", a.Login)
+	r.POST("/refresh", a.RefreshAccessToken)
 	r.POST("/hello", a.Hello)
 
 	//authorized := r.Use(AuthorizeJWT())

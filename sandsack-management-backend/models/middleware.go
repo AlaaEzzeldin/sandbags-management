@@ -10,3 +10,7 @@ type CustomClaims struct {
 	Type string `json:"type"`
 	jwt.StandardClaims `json:"standard_claims"`
 }
+
+type RefreshAccessTokenRequest struct {
+	RefreshToken string `json:"refresh_token"`
+}

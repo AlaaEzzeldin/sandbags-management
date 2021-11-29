@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"github.com/jinzhu/gorm"
 	"log"
 	"team2/sandsack-management-backend/models"
@@ -12,6 +13,21 @@ func GetUserByEmail(db *gorm.DB, email string) (user *models.User, err error) {
 				where email = ?;`
 
 	if err = db.Raw(query, email).Scan(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return
+}
+
+func GetUserByToken(db *gorm.DB, token string) (user *models.User, err error) {
+	if len(token) == 0 {
+		return user, errors.New("token is empty")
+	}
+	query := `select id, name, phone, password, email, token, is_activated, create_date 
+				from public.user
+				where token = ?;`
+
+	if err = db.Raw(query, token).Scan(&user).Error; err != nil {
 		return nil, err
 	}
 
