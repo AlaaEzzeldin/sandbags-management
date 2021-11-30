@@ -23,8 +23,9 @@ func (a *App) Login(c *gin.Context){
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil{
 		log.Println("Registration error: ", err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "incorrect request",
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			ErrCode: http.StatusBadRequest,
+			ErrMessage: "incorrect request",
 		})
 		return
 	}
