@@ -10,7 +10,6 @@ type App struct {
 	DB *gorm.DB
 }
 
-
 var (
 	Server = os.Getenv("DATABASE_HOST")
 	Port = os.Getenv("DATABASE_PORT")
@@ -18,8 +17,6 @@ var (
 	User = os.Getenv("DATABASE_USER")
 	Password = os.Getenv("DATABASE_PASSWORD")
 )
-
-
 
 func (a *App) Init() {
 	// postgres connection
@@ -32,7 +29,6 @@ func (a *App) Init() {
 	)
 	var err error
 	a.DB, err = gorm.Open("postgres", connString)
-
 	if err != nil {
 		//log.Fatal("Connection to database failed: ", err.Error())
 	}
