@@ -24,11 +24,6 @@ func (a *App) RunAllRoutes(){
 	log.SetOutput(f)
 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 
-<<<<<<< HEAD
-	r.POST("/login", a.Login)
-	r.POST("/refresh", a.RefreshAccessToken)
-=======
->>>>>>> 6686fef8083eef268c658d9ce0ffeef3a69de5a1
 	r.POST("/hello", a.Hello)
 
 	r.POST("/users/login", a.Login)
