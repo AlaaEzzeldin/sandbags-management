@@ -3,8 +3,8 @@ package controllers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/swaggo/files"       // swagger embed files
-	"github.com/swaggo/gin-swagger" // gin-swagger middleware
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 	"io"
 	"log"
 	"net/http"
@@ -28,15 +28,10 @@ func (a *App) RunAllRoutes(){
 	log.SetOutput(f)
 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 
-	r.POST("/hello", a.Hello)
+	r.GET("/api-doc/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.POST("/users/login", a.Login)
 	r.POST("/users/refresh", a.RefreshAccessToken)
-	r.POST("/users", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
 	r.POST("/users", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",
