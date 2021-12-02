@@ -10,18 +10,18 @@ import (
 
 func AuthorizeJWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		const bearer = "Bearer"
+		const bearer = "Bearer "
 		header := c.GetHeader("Authorization")
 		tokenStr := header[len(bearer):]
 		token, err := service.VerifyToken(tokenStr)
 		if err != nil {
+			log.Println("VerifyToken error", err.Error())
 			c.JSON(http.StatusUnauthorized, models.ErrorResponse{
 				ErrCode: http.StatusUnauthorized,
-				ErrMessage: "something went wrong",
+				ErrMessage: "no access",
 			})
 			return
 		}
-
 
 		if token.Valid {
 			if claims, ok := token.Claims.(models.CustomClaims); ok && token.Valid && claims.Type == "access" {

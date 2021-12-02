@@ -2,20 +2,30 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
-	"os"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"log"
 )
 
 type App struct {
 	DB *gorm.DB
 }
 
+//var (
+//	Server = os.Getenv("DATABASE_HOST")
+//	Port = os.Getenv("DATABASE_PORT")
+//	Database = os.Getenv("DATABASE_NAME")
+//	User = os.Getenv("DATABASE_USER")
+//	Password = os.Getenv("DATABASE_PASSWORD")
+//)
+
 var (
-	Server = os.Getenv("DATABASE_HOST")
-	Port = os.Getenv("DATABASE_PORT")
-	Database = os.Getenv("DATABASE_NAME")
-	User = os.Getenv("DATABASE_USER")
-	Password = os.Getenv("DATABASE_PASSWORD")
+	Server = "localhost"
+	Port = "5432"
+	Database = "feuerwehr"
+	User = "postgres"
+	Password = "postgres"
 )
 
 func (a *App) Init() {
@@ -28,15 +38,20 @@ func (a *App) Init() {
 		Password,
 	)
 	var err error
-	a.DB, err = gorm.Open("postgres", connString)
+
+	a.DB, err = gorm.Open(postgres.Open(connString), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
+	//a.DB, err = gorm.Open("postgres", connString)
 	if err != nil {
-		//log.Fatal("Connection to database failed: ", err.Error())
+		//log.Println("Connection to database failed:", err.Error())
+		log.Fatal("Connection to database failed: ", err.Error())
 	}
 
 
 	// logging from database
-	a.DB.LogMode(true)
-	a.DB.SingularTable(true)
+	//a.DB..LogMode(true)
+	//a.DB.SingularTable(true)
 
 }
 

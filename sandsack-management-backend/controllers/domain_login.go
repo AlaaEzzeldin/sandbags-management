@@ -13,9 +13,7 @@ import (
 // Login
 // @Description Registers new user in system. Sends verification token to email of the user
 // @Tags Authentication
-// @Accept json
-// @Success 200 {object} map[string]string
-// @Router /login [post]
+// @Router /users/login [post]
 func (a *App) Login(c *gin.Context){
 	var input models.Login
 
