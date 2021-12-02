@@ -10,13 +10,13 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
-// Registration
-// @Description Registrates new user in system. Sends verification token to email of the user
+// Login
+// @Description Logs in user into system
 // @Tags Authentification
 // @Accept json
 // @Param input body models.NewPerson true "Registration input"
 // @Success 200 {object} map[string]string
-// @Router /registration [post]
+// @Router /users/login [post]
 func (a *App) Login(c *gin.Context){
 	var input models.Login
 

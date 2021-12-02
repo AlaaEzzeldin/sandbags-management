@@ -27,33 +27,32 @@ func (a *App) RunAllRoutes(){
 	r.POST("/hello", a.Hello)
 
 	r.POST("/users/login", a.Login)
-	r.POST("/users/refresh", a.RefreshAccessToken)
-	r.POST("/users", func(context *gin.Context) {
+
+	auth := r.Group("/users")
+	auth.Use(AuthorizeJWT())
+	auth.POST("/refresh", a.RefreshAccessToken)
+	auth.POST("/", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",
 		})
 	})
-	r.POST("/users", func(context *gin.Context) {
+	auth.POST("/me", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",
 		})
 	})
-	r.POST("/users/me", func(context *gin.Context) {
+	auth.POST("/logout", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",
 		})
 	})
-	r.POST("/users/logout", func(context *gin.Context) {
+
+	r.POST("users/forgot_password", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",
 		})
 	})
-	r.POST("/users/forgot_password", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
-	r.POST("/users/change_password", func(context *gin.Context) {
+	auth.POST("/change_password", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",
 		})

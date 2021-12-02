@@ -8,15 +8,16 @@ type Login struct {
 }
 
 type User struct {
-	Id              int       `json:"id,omitempty"`
-	Name            string    `json:"name,omitempty"`
-	Phone           string    `json:"phone,omitempty"`
-	Password        string    `json:"password,omitempty"`
-	Email           string    `json:"email,omitempty"`
-	Token           string    `json:"token,omitempty"`
-	IsActivated     bool      `json:"is_activated,omitempty"`
-	IsSuperUser     bool
-	IsEmailVerified bool      `json:"is_email_verified,omitempty"`
-	CreateDate      time.Time `json:"create_date"`
-	UpdateDate      time.Time `json:"update_date"`
+	Id              int       `json:"id,omitempty" gorm:"column:id"`
+	Name            string    `json:"name,omitempty" gorm:"column:name"`
+	Phone           string    `json:"phone,omitempty" gorm:"column:phone"`
+	Password        string    `json:"password,omitempty" gorm:"column:password"`
+	Email           string    `json:"email,omitempty" gorm:"column:email"`
+	Token           string    `json:"token,omitempty" gorm:"column:token"`
+	IsActivated     bool      `json:"is_activated,omitempty" gorm:"column:is_activated"`
+	IsSuperUser     bool      `gorm:"column:is_super_user"`
+	IsEmailVerified bool      `json:"is_email_verified,omitempty" gorm:"column:is_email_verified"`
+	CreateDate      time.Time `json:"create_date" gorm:"column:create_date"`
+	UpdateDate      time.Time `json:"update_date" gorm:"column:update_date"`
 }
+
