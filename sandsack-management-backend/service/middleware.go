@@ -72,6 +72,28 @@ func VerifyToken(encodedToken string) (*jwt.Token, error) {
 	return token, err
 }
 
+func GetEmail(encodedToken string) (email string, err error) {
+	token, err := jwt.ParseWithClaims(encodedToken, &models.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, isvalid := token.Method.(*jwt.SigningMethodHMAC); !isvalid {
+			return nil, errors.New("Unexpected signing method",)
+		}
+		return jwtPrivateKey, nil
+	})
+	if err != nil {
+		return "", err
+	}
+	claims, ok  := token.Claims.(*models.CustomClaims)
+	if !ok {
+		return "", errors.New("something went wrong")
+	}
+
+	return claims.Email, nil
+
+}
+
+func verifyFunc(token *jwt.Token) (interface{}, error) {
+	return []byte(os.Getenv("SECRET_CODE")), nil
+}
 
 // todo
 func RefreshAccessToken(refreshToken string) (accessToken string, err error) {

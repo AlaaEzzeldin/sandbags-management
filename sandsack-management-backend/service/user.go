@@ -9,7 +9,7 @@ import (
 )
 
 func GetUserByEmail(db *gorm.DB, email string) (user *models.User, err error) {
-	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, create_date 
+	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, is_super_user, create_date 
 				from public.user
 				where email = ?;`
 
@@ -20,7 +20,7 @@ func GetUserByEmail(db *gorm.DB, email string) (user *models.User, err error) {
 	return
 }
 
-func GetUserByToken(db *gorm.DB, token string) (user *models.User, err error) {
+func GetUserByToken(db *gorm.DB, token string) (user models.User, err error) {
 	if len(token) == 0 {
 		return user, errors.New("token is empty")
 	}
@@ -29,7 +29,7 @@ func GetUserByToken(db *gorm.DB, token string) (user *models.User, err error) {
 				where token = ?;`
 
 	if err = db.Raw(query, token).Scan(&user).Error; err != nil {
-		return nil, err
+		return user, err
 	}
 
 	return
@@ -60,7 +60,7 @@ type Id struct {
 	Id int `gorm:"column:id"`
 }
 
-func CreateUser(db *gorm.DB, user *models.RegistrationInput) error {
+func CreateUser(db *gorm.DB, user *models.CreateUser) error {
 	var model Id
 	hashedPassword, err := functions.HashPassword(user.Password)
 	if err != nil {
@@ -83,4 +83,13 @@ func AddHierarchy(db *gorm.DB, parentId int, childId int) error {
 		return err
 	}
 	return nil
+}
+
+
+func GetUserList(db *gorm.DB) (userList *[]models.User, err error) {
+	query := `select id, name, email from public.user where is_super_user=false;`
+	if err := db.Raw(query).Scan(&userList).Error; err != nil {
+		return nil, err
+	}
+	return userList, nil
 }

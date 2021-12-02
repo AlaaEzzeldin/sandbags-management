@@ -9,8 +9,8 @@ import (
 )
 
 
-func (a *App) Registration(c *gin.Context) {
-	var input models.RegistrationInput
+func (a *App) CreateUser(c *gin.Context) {
+	var input models.CreateUser
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil{
@@ -22,11 +22,21 @@ func (a *App) Registration(c *gin.Context) {
 		return
 	}
 
-	const bearer = "Bearer"
+	const bearer = "Bearer "
 	header := c.GetHeader("Authorization")
 	tokenStr := header[len(bearer):]
 
-	meUser, err := service.GetUserByToken(a.DB, tokenStr)
+	email, err := service.GetEmail(tokenStr)
+	if err != nil {
+		log.Println("GetEmail error: ", err.Error())
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			ErrCode: http.StatusBadRequest,
+			ErrMessage: err.Error(),
+		})
+		return
+	}
+
+	meUser, err := service.GetUserByEmail(a.DB, email)
 	if err != nil {
 		log.Println("GetUserByToken error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
@@ -35,9 +45,10 @@ func (a *App) Registration(c *gin.Context) {
 		})
 		return
 	}
+	log.Println("USER", meUser)
 
 	if !meUser.IsSuperUser {
-		log.Println("Trying to create user error: ", err.Error())
+		log.Println("Trying to create user error")
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
 			ErrCode: http.StatusUnauthorized,
 			ErrMessage: "you don't have this right",

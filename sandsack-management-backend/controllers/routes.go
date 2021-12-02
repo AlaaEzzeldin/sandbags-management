@@ -31,11 +31,8 @@ func (a *App) RunAllRoutes(){
 	auth := r.Group("/users")
 	auth.Use(AuthorizeJWT())
 	auth.POST("/refresh", a.RefreshAccessToken)
-	auth.POST("/", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
+	auth.POST("/", a.GetUserList)
+	auth.POST("/create_user", a.CreateUser)
 	auth.POST("/me", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",

@@ -15,9 +15,9 @@ type User struct {
 	Email           string    `json:"email,omitempty" gorm:"column:email"`
 	Token           string    `json:"token,omitempty" gorm:"column:token"`
 	IsActivated     bool      `json:"is_activated,omitempty" gorm:"column:is_activated"`
-	IsSuperUser     bool      `gorm:"column:is_super_user"`
+	IsSuperUser     bool      `json:"is_super_user,omitempty" gorm:"column:is_super_user"`
 	IsEmailVerified bool      `json:"is_email_verified,omitempty" gorm:"column:is_email_verified"`
-	CreateDate      time.Time `json:"create_date" gorm:"column:create_date"`
-	UpdateDate      time.Time `json:"update_date" gorm:"column:update_date"`
+	CreateDate      time.Time `json:"create_date,omitempty" gorm:"column:create_date"`
+	UpdateDate      time.Time `json:"update_date,omitempty" gorm:"column:update_date"`
 }
 
