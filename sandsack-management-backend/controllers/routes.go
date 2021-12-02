@@ -3,10 +3,13 @@ package controllers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/files"       // swagger embed files
+	"github.com/swaggo/gin-swagger" // gin-swagger middleware
 	"io"
 	"log"
 	"net/http"
 	"os"
+	_ "team2/sandsack-management-backend/docs"
 )
 
 const defaultPort = ":8000"
@@ -16,6 +19,7 @@ func (a *App) RunAllRoutes(){
 
 	r := gin.Default()
 	f, err := os.Create("gin.log")
+
 
 	if err != nil {
 		fmt.Println("file create error", err.Error())
