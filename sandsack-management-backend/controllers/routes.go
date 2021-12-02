@@ -3,10 +3,13 @@ package controllers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	_ "team2/sandsack-management-backend/docs"
 )
 
 const defaultPort = ":8000"
@@ -17,6 +20,7 @@ func (a *App) RunAllRoutes(){
 	r := gin.Default()
 	f, err := os.Create("gin.log")
 
+
 	if err != nil {
 		fmt.Println("file create error", err.Error())
 	}
@@ -24,15 +28,10 @@ func (a *App) RunAllRoutes(){
 	log.SetOutput(f)
 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 
-	r.POST("/hello", a.Hello)
+	r.GET("/api-doc/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.POST("/users/login", a.Login)
 	r.POST("/users/refresh", a.RefreshAccessToken)
-	r.POST("/users", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
 	r.POST("/users", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",
