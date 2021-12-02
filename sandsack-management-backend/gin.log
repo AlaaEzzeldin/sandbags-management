@@ -1,4 +1,4 @@
-[GIN-debug] POST   /hello                    --> team2/sandsack-management-backend/controllers.(*App).Hello-fm (3 handlers)
+[GIN-debug] GET    /api-doc/swagger/*any     --> github.com/swaggo/gin-swagger.CustomWrapHandler.func1 (3 handlers)
 [GIN-debug] POST   /users/login              --> team2/sandsack-management-backend/controllers.(*App).Login-fm (3 handlers)
 [GIN-debug] POST   /users/refresh            --> team2/sandsack-management-backend/controllers.(*App).RefreshAccessToken-fm (4 handlers)
 [GIN-debug] POST   /users/                   --> team2/sandsack-management-backend/controllers.(*App).GetUserList-fm (4 handlers)
@@ -13,7 +13,8 @@
 [GIN-debug] POST   /order                    --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func8 (3 handlers)
 [GIN-debug] POST   /order/upgrade            --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func9 (3 handlers)
 [GIN-debug] POST   /order/cancel             --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func10 (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-2021/12/02 18:38:49 USER &{1 Admin 1234 $2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa admin@admin.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJ0eXBlIjoicmVmcmVzaCIsInN0YW5kYXJkX2NsYWltcyI6eyJleHAiOjE2NDg4MzA5OTR9fQ.nTZTE9e5AEcvIMR9Du7duBpK9Mqssu-SLQbom2jijq8 true true true 2021-12-02 17:14:32.904363 +0100 CET 0001-01-01 00:00:00 +0000 UTC}
-2021/12/02 18:39:18 interrupt
-2021/12/02 18:39:18 Exit command received. Exiting ....
+2021/12/02 18:56:46 interrupt
+2021/12/02 18:56:46 Exit command received. Exiting ....
