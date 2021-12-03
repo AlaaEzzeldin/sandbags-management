@@ -1,7 +1,9 @@
 import axios from 'axios'
 export default {
-    index( ){
-        return axios.get( 'http://localhost:3001/orders')
+    index( params ){
+        return axios.get( 'http://localhost:3001/orders', {
+            params: params
+        })
     },
 
     show( id ){
@@ -14,5 +16,9 @@ export default {
 
     create( data ){
         return axios.post( 'http://localhost:3001/orders/', data );
+    },
+
+    delete( id ){
+        return axios.delete( 'http://localhost:3001/orders/' + id )
     }
 }
