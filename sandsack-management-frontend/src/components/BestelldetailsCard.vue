@@ -275,17 +275,48 @@
     <v-card-actions v-if="getLoggedInUserRole() === 4">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status!=='akzeptiert'"
+          <v-dialog
+              v-model="bestellungAbgesendetDialog"
+              width="500"
           >
-            Bestellung abgesendet
-          </v-btn>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                  style="text-transform: capitalize; font-weight: bolder;"
+                  rounded
+                  color="green"
+                  dark
+                  block
+                  outlined
+                  v-bind="attrs"
+                  v-on="on"
+                  :disabled="getOrder.status!=='akzeptiert'"
+              >
+                Bestellung abgesendet
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-card-text>
+                Bestellung senden?
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                    color="primary"
+                    text
+                    @click="bestellungAbgesendetDialog = false"
+                >
+                  Nein
+                </v-btn>
+                <v-btn
+                    color="primary"
+                    text
+                    @click="bestellungAbgesendetDialog = false"
+                >
+                  Ja
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-col>
       </v-row>
     </v-card-actions>
@@ -299,6 +330,7 @@ export default {
     bestellungAnnehmenDialog: false,
     lieferungBestätigenDialog: false,
     bestellungStornierenDialog: false,
+    bestellungAbgesendetDialog: false,
     orders: [
       {
         'id': '0',
