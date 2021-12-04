@@ -149,16 +149,47 @@
           </v-dialog>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="red"
-              dark
-              block
-              :disabled="getOrder.status!=='anstehend'"
+          <v-dialog
+              v-model="bestellungStornierenDialog"
+              width="500"
           >
-            Bestellung stornieren
-          </v-btn>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                  style="text-transform: capitalize; font-weight: bolder;"
+                  rounded
+                  color="red"
+                  dark
+                  block
+                  v-bind="attrs"
+                  v-on="on"
+                  :disabled="getOrder.status!=='anstehend'"
+              >
+                Bestellung stornieren
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-card-text>
+                Bestellung stornieren?
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                    color="primary"
+                    text
+                    @click="bestellungStornierenDialog = false"
+                >
+                  Nein
+                </v-btn>
+                <v-btn
+                    color="primary"
+                    text
+                    @click="bestellungStornierenDialog = false"
+                >
+                  Ja
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-col>
       </v-row>
 
@@ -267,6 +298,7 @@ export default {
   data: () => ({
     bestellungAnnehmenDialog: false,
     lieferungBestätigenDialog: false,
+    bestellungStornierenDialog: false,
     orders: [
       {
         'id': '0',
