@@ -18,6 +18,7 @@ var jwtPrivateKey = []byte(os.Getenv("JWT_SECRET"))
 
 
 
+
 func GenerateTokens(db *gorm.DB, email string) (map[string]string, error) {
 	user, err := GetUserByEmail(db, email)
 	if err != nil {
@@ -89,6 +90,24 @@ func GetEmail(encodedToken string) (email string, err error) {
 
 	return claims.Email, nil
 
+}
+
+func GetClaims(encodedToken string) (*models.CustomClaims, error){
+	token, err := jwt.ParseWithClaims(encodedToken, &models.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, isvalid := token.Method.(*jwt.SigningMethodHMAC); !isvalid {
+			return nil, errors.New("Unexpected signing method",)
+		}
+		return jwtPrivateKey, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	claims, ok  := token.Claims.(*models.CustomClaims)
+	if !ok {
+		return nil, errors.New("something went wrong")
+	}
+
+	return claims, nil
 }
 
 func verifyFunc(token *jwt.Token) (interface{}, error) {

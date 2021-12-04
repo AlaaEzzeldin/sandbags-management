@@ -33,3 +33,17 @@ func AuthorizeJWT() gin.HandlerFunc {
 		}
 	}
 }
+
+
+func GetClaims(c *gin.Context) (*models.CustomClaims, error){
+	const bearer = "Bearer "
+	header := c.GetHeader("Authorization")
+	tokenStr := header[len(bearer):]
+
+	claims, err := service.GetClaims(tokenStr)
+	if err != nil {
+		return nil, err
+	}
+
+	return claims, nil
+}

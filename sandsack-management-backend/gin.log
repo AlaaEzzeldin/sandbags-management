@@ -16,5 +16,3 @@
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-2021/12/02 18:56:46 interrupt
-2021/12/02 18:56:46 Exit command received. Exiting ....
