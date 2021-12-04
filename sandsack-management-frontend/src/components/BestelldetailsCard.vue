@@ -106,16 +106,47 @@
         </v-col>
 
         <v-col cols="12" sm="6" offset="3" v-if="getOrder.status==='Auf dem Weg'">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
-              dark
-              block
-              outlined
+          <v-dialog
+              v-model="lieferungBestätigenDialog"
+              width="500"
           >
-            Lieferung bestätigen
-          </v-btn>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                  style="text-transform: capitalize; font-weight: bolder;"
+                  rounded
+                  color="green"
+                  dark
+                  block
+                  outlined
+                  v-bind="attrs"
+                  v-on="on"
+              >
+                Lieferung bestätigen
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-card-text>
+                Lieferung bestätigen?
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                    color="primary"
+                    text
+                    @click="lieferungBestätigenDialog = false"
+                >
+                  Nein
+                </v-btn>
+                <v-btn
+                    color="primary"
+                    text
+                    @click="lieferungBestätigenDialog = false"
+                >
+                  Ja
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -235,6 +266,7 @@ export default {
   name: 'BestelldetailsCard',
   data: () => ({
     bestellungAnnehmenDialog: false,
+    lieferungBestätigenDialog: false,
     orders: [
       {
         'id': '0',
