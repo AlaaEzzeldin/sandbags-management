@@ -106,90 +106,20 @@
         </v-col>
 
         <v-col cols="12" sm="6" offset="3" v-if="getOrder.status==='Auf dem Weg'">
-          <v-dialog
-              v-model="lieferungBestätigenDialog"
-              width="500"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                  style="text-transform: capitalize; font-weight: bolder;"
-                  rounded
-                  color="green"
-                  dark
-                  block
-                  outlined
-                  v-bind="attrs"
-                  v-on="on"
-              >
-                Lieferung bestätigen
-              </v-btn>
-            </template>
-
-            <v-card>
-              <v-card-text>
-                Lieferung bestätigen?
-              </v-card-text>
-              <v-card-actions>
-                <v-btn
-                    color="primary"
-                    text
-                    @click="lieferungBestätigenDialog = false"
-                >
-                  Nein
-                </v-btn>
-                <v-btn
-                    color="primary"
-                    text
-                    @click="lieferungBestätigenDialog = false"
-                >
-                  Ja
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <ConfirmationDialog
+              buttonText="Lieferung bestätigen"
+              buttonColor="green"
+              buttonOutlined="true"
+              cardText="Lieferung bestätigen?"
+          />
         </v-col>
         <v-col cols="12" sm="6" offset="3">
-          <v-dialog
-              v-model="bestellungStornierenDialog"
-              width="500"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                  style="text-transform: capitalize; font-weight: bolder;"
-                  rounded
-                  color="red"
-                  dark
-                  block
-                  v-bind="attrs"
-                  v-on="on"
-                  :disabled="getOrder.status!=='anstehend'"
-              >
-                Bestellung stornieren
-              </v-btn>
-            </template>
-
-            <v-card>
-              <v-card-text>
-                Bestellung stornieren?
-              </v-card-text>
-              <v-card-actions>
-                <v-btn
-                    color="primary"
-                    text
-                    @click="bestellungStornierenDialog = false"
-                >
-                  Nein
-                </v-btn>
-                <v-btn
-                    color="primary"
-                    text
-                    @click="bestellungStornierenDialog = false"
-                >
-                  Ja
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <ConfirmationDialog
+              buttonText="Bestellung stornieren"
+              buttonColor="red"
+              v-bind:buttonDisabled="getOrder.status!=='anstehend'"
+              cardText="Bestellung stornieren?"
+          />
         </v-col>
       </v-row>
 
@@ -199,48 +129,13 @@
     <v-card-actions v-if="getLoggedInUserRole() === 1 || this.getLoggedInUserRole() === 2">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
-          <v-dialog
-              v-model="bestellungAnnehmenDialog"
-              width="500"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                  style="text-transform: capitalize; font-weight: bolder;"
-                  rounded
-                  color="green"
-                  dark
-                  block
-                  outlined
-                  v-bind="attrs"
-                  v-on="on"
-                  :disabled="getOrder.status!=='anstehend'"
-              >
-                Bestellung direkt annehmen
-              </v-btn>
-            </template>
-
-            <v-card>
-              <v-card-text>
-                Bestellung annehmen?
-              </v-card-text>
-              <v-card-actions>
-                <v-btn
-                    color="primary"
-                    text
-                    @click="bestellungAnnehmenDialog = false"
-                >
-                  Nein
-                </v-btn>
-                <v-btn
-                    color="primary"
-                    text
-                    @click="bestellungAnnehmenDialog = false"
-                >
-                  Ja
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <ConfirmationDialog
+              buttonText="Bestellung direkt annehmen"
+              buttonColor="green"
+              buttonOutlined="true"
+              v-bind:disabled="getOrder.status!=='anstehend'"
+              cardText="Bestellung annehmen?"
+          />
         </v-col>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -275,48 +170,13 @@
     <v-card-actions v-if="getLoggedInUserRole() === 4">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
-          <v-dialog
-              v-model="bestellungAbgesendetDialog"
-              width="500"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                  style="text-transform: capitalize; font-weight: bolder;"
-                  rounded
-                  color="green"
-                  dark
-                  block
-                  outlined
-                  v-bind="attrs"
-                  v-on="on"
-                  :disabled="getOrder.status!=='akzeptiert'"
-              >
-                Bestellung abgesendet
-              </v-btn>
-            </template>
-
-            <v-card>
-              <v-card-text>
-                Bestellung senden?
-              </v-card-text>
-              <v-card-actions>
-                <v-btn
-                    color="primary"
-                    text
-                    @click="bestellungAbgesendetDialog = false"
-                >
-                  Nein
-                </v-btn>
-                <v-btn
-                    color="primary"
-                    text
-                    @click="bestellungAbgesendetDialog = false"
-                >
-                  Ja
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <ConfirmationDialog
+              buttonText="Bestellung abgesendet"
+              buttonColor="green"
+              buttonOutlined="true"
+              v-bind:disabled="getOrder.status!=='akzeptiert'"
+              cardText="Bestellung senden?"
+          />
         </v-col>
       </v-row>
     </v-card-actions>
@@ -324,8 +184,10 @@
 </template>
 
 <script>
+import ConfirmationDialog from "./ConfirmationDialog";
 export default {
   name: 'BestelldetailsCard',
+  components: {ConfirmationDialog},
   data: () => ({
     bestellungAnnehmenDialog: false,
     lieferungBestätigenDialog: false,
