@@ -24,20 +24,27 @@
         {{cardText}}
       </v-card-title>
       <v-card-actions>
+        <v-spacer/>
         <v-btn
             rounded
             outlined
+            color="red"
+            style="min-width: 120px;"
             @click="dialog = false"
         >
           Nein
         </v-btn>
+        <v-spacer/>
         <v-btn
             rounded
             outlined
+            color="green"
+            style="min-width: 120px;"
             @click="dialog = false"
         >
           Ja
         </v-btn>
+        <v-spacer/>
       </v-card-actions>
     </v-card>
   </v-dialog>
