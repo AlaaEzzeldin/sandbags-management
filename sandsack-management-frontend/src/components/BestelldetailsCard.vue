@@ -55,14 +55,14 @@
           <h3 style="font-weight: bolder; color: black">{{getOrder.deliveryAddress}}</h3>
         </v-col>
       </v-row>
-      <v-row v-if="getOrder.notesBySubsection">
+      <v-row v-if="getOrder.notesByUnterabschnitt">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Anmerkungen des Anforderers:</h3>
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
               readonly
-              :value="getOrder.notesBySubsection"
+              :value="getOrder.notesByUnterabschnitt"
               outlined
           ></v-textarea>
         </v-col>
@@ -79,11 +79,11 @@
           ></v-textarea>
         </v-col>
       </v-row>
-<!--      <v-row>
-        <v-col cols="12" sm="12">
-          <h3 style="font-weight: bolder; color: black">Besteellverlauf</h3>
-        </v-col>
-      </v-row>-->
+      <!--      <v-row>
+              <v-col cols="12" sm="12">
+                <h3 style="font-weight: bolder; color: black">Besteellverlauf</h3>
+              </v-col>
+            </v-row>-->
 
     </v-card-text>
 
@@ -171,7 +171,7 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
-            >
+          >
             Bestellung ablehnen
           </v-btn>
         </v-col>
@@ -212,7 +212,7 @@ export default {
         'status': 'anstehend',
         'quantity':'12',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesBySubsection':'please process ASAP'
+        'notesByUnterabschnitt':'please process ASAP'
       },
       {
         'id': '1',
@@ -222,7 +222,7 @@ export default {
         'status': 'akzeptiert',
         'quantity':'5',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesBySubsection':'please process ASAP'
+        'notesByUnterabschnitt':'please process ASAP'
 
       },
       {
@@ -233,7 +233,7 @@ export default {
         'status': 'anstehend',
         'quantity':'54',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesBySubsection':'please process ASAP',
+        'notesByUnterabschnitt':'please process ASAP',
 
       },
       {
