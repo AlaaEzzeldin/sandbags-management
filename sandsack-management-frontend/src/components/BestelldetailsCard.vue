@@ -137,17 +137,48 @@
     <v-card-actions v-if="getLoggedInUserRole() === 1 || this.getLoggedInUserRole() === 2">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status!=='anstehend'"
+          <v-dialog
+              v-model="bestellungAnnehmenDialog"
+              width="500"
           >
-            Bestellung direkt annehmen
-          </v-btn>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                  style="text-transform: capitalize; font-weight: bolder;"
+                  rounded
+                  color="green"
+                  dark
+                  block
+                  outlined
+                  v-bind="attrs"
+                  v-on="on"
+                  :disabled="getOrder.status!=='anstehend'"
+              >
+                Bestellung direkt annehmen
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-card-text>
+                Bestellung annehmen?
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                    color="primary"
+                    text
+                    @click="bestellungAnnehmenDialog = false"
+                >
+                  Nein
+                </v-btn>
+                <v-btn
+                    color="primary"
+                    text
+                    @click="bestellungAnnehmenDialog = false"
+                >
+                  Ja
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -203,6 +234,7 @@
 export default {
   name: 'BestelldetailsCard',
   data: () => ({
+    bestellungAnnehmenDialog: false,
     orders: [
       {
         'id': '0',
