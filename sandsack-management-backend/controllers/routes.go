@@ -32,11 +32,18 @@ func (a *App) RunAllRoutes(){
 
 	r.POST("/users/login", a.Login)
 
+	admin := r.Group("/admin")
+	admin.Use(a.AuthorizeAdmin())
+	admin.POST("/user", a.CreateUser)
+	admin.POST("/user/send_verify", a.SendVerifyEmail)
+
 	auth := r.Group("/users")
 	auth.Use(AuthorizeJWT())
+
 	auth.POST("/refresh", a.RefreshAccessToken)
 	auth.GET("/", a.GetUserList)
-	auth.POST("/", a.CreateUser)
+
+	auth.PUT("/password", a.ChangePassword)
 	auth.POST("/me", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",

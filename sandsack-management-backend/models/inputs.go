@@ -12,3 +12,7 @@ type ChangePasswordInput struct {
 	OldPassword string `json:"old_password"`
 	NewPassword string `json:"new_password"`
 }
+
+type SendVerifyEmail struct {
+	Email string `json:"email,required"`
+}

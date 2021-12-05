@@ -11,3 +11,5 @@ DROP TABLE IF EXISTS "user_order_permission";
 DROP TABLE IF EXISTS "permission";
 DROP TABLE IF EXISTS "priority";
 DROP TABLE IF EXISTS "driver";
+DROP TABLE IF EXISTS "branch";
+DROP TABLE IF EXISTS "otp";

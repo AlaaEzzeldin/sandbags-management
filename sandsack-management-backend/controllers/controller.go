@@ -34,6 +34,41 @@ func AuthorizeJWT() gin.HandlerFunc {
 	}
 }
 
+func (a *App) AuthorizeAdmin() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		const bearer = "Bearer "
+		header := c.GetHeader("Authorization")
+		tokenStr := header[len(bearer):]
+		token, err := service.VerifyToken(tokenStr)
+		if err != nil {
+			log.Println("VerifyToken error", err.Error())
+			c.JSON(http.StatusUnauthorized, models.ErrorResponse{
+				ErrCode: http.StatusUnauthorized,
+				ErrMessage: "no access",
+			})
+			return
+		}
+
+		if token.Valid {
+			if claims, ok := token.Claims.(models.CustomClaims); ok && token.Valid && claims.Type == "access" {
+				user, err := service.GetUserByEmail(a.DB, claims.Email)
+				if err != nil {
+					c.AbortWithStatus(http.StatusInternalServerError)
+				}
+				if !user.IsSuperUser{
+					c.AbortWithStatus(http.StatusUnauthorized)
+				}
+				c.Next()
+			}
+		} else {
+			log.Println("Token is not valid")
+			c.AbortWithStatus(http.StatusUnauthorized)
+		}
+
+
+
+	}
+}
 
 func GetClaims(c *gin.Context) (*models.CustomClaims, error){
 	const bearer = "Bearer "

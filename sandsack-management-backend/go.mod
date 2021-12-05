@@ -16,6 +16,7 @@ require (
 	github.com/swaggo/gin-swagger v1.3.3
 	github.com/swaggo/swag v1.7.6
 	github.com/ugorji/go v1.2.6 // indirect
+	github.com/xhit/go-simple-mail/v2 v2.10.0 // indirect
 	golang.org/x/crypto v0.0.0-20211117183948-ae814b36b871
 	golang.org/x/sys v0.0.0-20211124211545-fe61309f8881 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
