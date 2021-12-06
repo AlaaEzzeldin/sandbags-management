@@ -32,7 +32,17 @@ const actions = {
             .catch(function (error) {
                 console.log(error);
             });
-    }
+    },
+    createOrder({ commit }, payload) {
+        ordersAPI.create(payload)
+            .then(function (response) {
+                commit('ADD_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+
 }
 
 const mutations = {
@@ -41,6 +51,9 @@ const mutations = {
     },
     SET_ORDER(state, order) {
         state.order = order;
+    },
+    ADD_ORDER(state, order) {
+        state.orders.push(order);
     },
 }
 

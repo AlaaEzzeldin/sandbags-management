@@ -1,130 +1,14 @@
 <template>
-  <!--  <div>
-      <v-row no-gutters>
-        <v-col sm="10" class="pt-lg-16 justify-center align-center">
-          <h1 style="font-weight:bolder;">Neue Bestellung</h1>
-
-          <input v-model="message" placeholder="was bestellen sie?">
-          <v-container fluid >
-            <v-row align="left">
-              <v-col
-                  class="align-center"
-                  cols="25"
-                  sm="6"
-              >
-                <v-select
-                    :items="items"
-                    filled
-                    :menu-props="{ top: true, offsetY: true }"
-                    prepend-icon="mdi-home"
-                    label="Sandsack"
-                ></v-select>
-              </v-col>
-
-              <v-col
-                  class="align-center"
-                  cols="25"
-                  sm="6"
-              >
-                <v-select
-                    :items="items"
-                    filled
-                    :menu-props="{ top: true, offsetY: true }"
-                    prepend-icon="mdi-star"
-                    label="50"
-                ></v-select>
-                <v-row
-                    align="right"
-                    justify="space-around"
-                >
-                </v-row>
-              </v-col>
-            </v-row>
-          </v-container>
-
-
-          <input v-model="message" placeholder="wohim Liefern wir?">
-
-          <v-select
-              :items="items"
-              filled
-              prepend-icon="mdi-map-marker"
-              :menu-props="{ top: true, offsetY: true }"
-              label="Kircenplatz 1, 94032 Passau"
-          ></v-select>
-
-          <v-card
-              class="pa-lg-1"
-              flat
-              height="200px"
-              width="500"
-              img="https://cdn.vuetifyjs.com/images/toolbar/map.jpg"
-          >
-            <v-toolbar
-                dense
-                floating
-            >
-              <v-text-field
-                  hide-details
-                  prepend-icon="mdi-magnify"
-                  single-line
-              ></v-text-field>
-
-              <v-btn icon>
-                <v-icon>mdi-crosshairs-gps</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>mdi-dots-horizontal</v-icon>
-              </v-btn>
-            </v-toolbar>
-          </v-card>
-          <v-col cols="12">
-            <neuebestellung class="mt-10"></neuebestellung>
-          </v-col>
-          <input v-model="message" placeholder="Andere Infomation">
-
-          <v-select
-              :items="items"
-              filled
-              prepend-icon="mdi-tools"
-              :menu-props="{ top: true, offsetY: true }"
-              label="Prioritize"
-          ></v-select>
-        </v-col>
-      </v-row>
-
-      <v-alert
-          dense
-          text
-          type="success"
-      >
-        We need them as soon as possible please<strong>MAX 50</strong>
-      </v-alert>
-
-
-      <div class="text-right">
-        <v-btn
-            block
-            color="red"
-            dark
-        >
-          Bestellen
-        </v-btn>
-      </div>
-
-    </div>-->
   <v-card elevation="0" class="pt-10">
     <v-card-title class="pt-10">
       <h1 style="font-weight: bolder; ">Neue Bestellung</h1>
     </v-card-title>
 
     <v-card-text class="pt-16 ">
-
-      <v-row align="left">
+      <v-row >
         <v-col cols="12">
           <v-text-field
-              :value="getLoggedInBranchName"
+              :value="getBranchName"
               readonly
               prepend-icon="mdi-account"
               filled
@@ -134,9 +18,10 @@
         </v-col>
       </v-row>
 
-      <v-row align="left">
+      <v-row>
         <v-col sm="6">
           <v-select
+              v-model="newOrder.type"
               :items="types"
               filled
               outlined
@@ -148,6 +33,7 @@
         </v-col>
         <v-col sm="6">
           <v-text-field
+              v-model="newOrder.quantity"
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
@@ -158,9 +44,10 @@
         </v-col>
       </v-row>
 
-      <v-row align="left">
+      <v-row >
         <v-col cols="12">
           <v-text-field
+              v-model="newOrder.deliveryAddress"
               filled
               outlined
               prepend-icon="mdi-map-marker"
@@ -171,10 +58,10 @@
         </v-col>
       </v-row>
 
-      <v-row align="left">
+      <v-row>
         <v-col cols="12">
           <v-select
-              v-model="priority"
+              v-model="newOrder.priority"
               :items="priorities"
               :rules="[v => !!v || 'Die Priorität ist erforderlich']"
               label="Priorität"
@@ -187,9 +74,10 @@
         </v-col>
       </v-row>
 
-      <v-row align="left">
+      <v-row >
         <v-col cols="12">
           <v-textarea
+              v-model="newOrder.notesByUnterabschnitt"
               outlined
               filled
               prepend-icon="mdi-message-bulleted"
@@ -211,7 +99,7 @@
               rounded
               color="red"
               dark
-              @click="goToListOfOrders"
+              @click="createOrder"
           >
             Bestellen
           </v-btn>
@@ -230,26 +118,40 @@ export default {
 
 
   data: () => ({
-    loggedIn:'',
+    loggedIn: '',
     priority: '',
     abschnitt: '',
     types: [
       'Sandsäcke',
-    ],
-    abschnittnameList: [
-      'Hauptabschintt-Mitte',
-      'EA 1-Altstadt',
-      'EA 1.1 Altstadt- Ost',
-      'Mollnhof',
     ],
     priorities: [
       'Niedrig',
       'Mittle',
       'Hohe',
     ],
+    newOrder: {
+      id:"",
+      sectionName: "",
+      type: "",
+      quantity: "",
+      priority: "",
+      deliveryAddress: "",
+      notesByUnterabschnitt: ""
+    }
 
   }),
-  methods:{
+  computed: {
+    getBranchName() {
+      if (this.getLoggedInUserRole() === 1)
+        this.newOrder.sectionName = "Hauptabschintt-Mitte";
+      else if (this.getLoggedInUserRole() === 2)
+        this.newOrder.sectionName = "EA 1-Altstadt";
+      else if (this.getLoggedInUserRole() === 3)
+        return "EA 1.1 Altstadt- Ost";
+      else this.newOrder.sectionName = "Mollnhof";
+    },
+  },
+  methods: {
     // hard coding the users roles
     getLoggedInUserRole() {
       if (this.$route.params.userRole === '1') // Hauptabschintt
@@ -258,25 +160,19 @@ export default {
         return 2
       else if (this.$route.params.userRole === '3') //Unterabschnitt
         return 3
-      else if (this.$route.params.userRole === '4') // Mollhof
+      else if (this.$route.params.userRole === ' 4') // Mollhof
         return 4
     },
 
-    goToListOfOrders(){
-        this.$router.push({name: 'BestellungslistePage'})
+
+    createOrder() {
+      this.newOrder.sectionName= this.getBranchName
+      console.log("new order", this.newOrder)
+      this.$store.dispatch("createOrder", this.newOrder)
+      this.$router.push({name: 'BestellungslistePage'})
     }
   },
-  computed:{
-    getLoggedInBranchName() {
-      if (this.getLoggedInUserRole() === 1)
-        return "Hauptabschintt-Mitte";
-      else if (this.getLoggedInUserRole() === 2)
-        return "EA 1-Altstadt";
-      else if (this.getLoggedInUserRole() === 3)
-        return "EA 1.1 Altstadt- Ost";
-      else return "Mollnhof";
-    },
-  }
+
 
 }
 </script>

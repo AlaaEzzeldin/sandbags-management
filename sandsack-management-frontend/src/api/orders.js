@@ -13,9 +13,11 @@ export default {
     },
 
     create( data ){
+        console.log("stotre", data)
         return axios.post( 'http://localhost:3001/orders/', data );
     },
 
+    // currently not used
     delete( id ){
         return axios.delete( 'http://localhost:3001/orders/' + id )
     }
