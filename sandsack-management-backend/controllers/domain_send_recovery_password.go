@@ -9,18 +9,19 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
-func (a *App) SendVerifyEmail(c *gin.Context) {
-	var input models.SendVerifyEmail
+func (a *App) SendRecoveryPassword(c *gin.Context) {
+	var input models.SendRecoveryPasswordInput
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil{
-		log.Println("SendVerifyEmail error: ", err.Error())
+		log.Println("SendRecoveryPassword error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode: http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
 	}
+
 
 	user, err := service.GetUserByEmail(a.DB, input.Email)
 	if err != nil {
@@ -32,7 +33,7 @@ func (a *App) SendVerifyEmail(c *gin.Context) {
 		return
 	}
 
-	otp, err := service.GenerateAndSaveOTP(a.DB, user.Id, "verification")
+	otp, err := service.GenerateAndSaveOTP(a.DB, user.Id, "recovery")
 	if err != nil {
 		log.Println("GenerateAndSaveOTP error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
@@ -42,7 +43,7 @@ func (a *App) SendVerifyEmail(c *gin.Context) {
 		return
 	}
 
-	if err := functions.SendEmail(a.DB, user.Email, otp, "verification"); err != nil {
+	if err := functions.SendEmail(a.DB, user.Email, otp, "recovery"); err != nil {
 		log.Println("SendEmail error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode: http.StatusInternalServerError,

@@ -22,3 +22,12 @@ type VerifyEmailInput struct {
 	Email string `json:"email"`
 	Password string `json:"password"`
 }
+
+type SendRecoveryPasswordInput struct {
+	Email string `json:"email"`
+}
+
+type RecoveryPasswordInput struct {
+	OTP      string `json:"otp"`
+	Password string `json:"password"`
+}

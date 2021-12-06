@@ -9,8 +9,8 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
-func (a *App) VerifyEmail(c *gin.Context) {
-	var input models.VerifyEmailInput
+func (a *App) RecoveryPassword(c *gin.Context) {
+	var input models.RecoveryPasswordInput
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil{
@@ -22,17 +22,7 @@ func (a *App) VerifyEmail(c *gin.Context) {
 		return
 	}
 
-	if ok := service.CheckUserExists(a.DB, input.Email); !ok {
-		log.Println("CheckUserExists error")
-		c.JSON(http.StatusNotFound, models.ErrorResponse{
-			ErrCode: http.StatusNotFound,
-			ErrMessage: "user is not found",
-		})
-		return
-	}
-
-
-	otp, err := service.GetOTP(a.DB, input.Otp, "verification")
+	_, err := service.GetOTP(a.DB, input.OTP, "verification")
 	if err != nil {
 		log.Println("GetOTP error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
@@ -42,14 +32,6 @@ func (a *App) VerifyEmail(c *gin.Context) {
 		return
 	}
 
-	if otp != input.Otp {
-		log.Println("Wrong otp")
-		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
-			ErrMessage: "wrong otp",
-		})
-		return
-	}
 	if len(input.Password) < 6 {
 		log.Println("Wrong otp")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
@@ -59,18 +41,28 @@ func (a *App) VerifyEmail(c *gin.Context) {
 		return
 	}
 
-	hashedPassword, err := functions.HashPassword(input.Password)
-
-	if err := service.UpdatePassword(a.DB, input.Email, hashedPassword); err != nil {
-		log.Println("UpdatePassword error:", err.Error())
-		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+	user , err := service.GetUserByOTP(a.DB, input.OTP, "recovery")
+	if err != nil {
+		log.Println("GetUserByOTP error:", err.Error())
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			ErrCode: http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
 	}
 
-	if err := service.UpdateUserActivity(a.DB, input.Email, true); err != nil {
+	hashedPassword, err := functions.HashPassword(input.Password)
+
+	if err := service.UpdatePassword(a.DB, user.Email, hashedPassword); err != nil {
+		log.Println("UpdatePassword error:", err.Error())
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			ErrCode: http.StatusInternalServerError,
+			ErrMessage: "something went wrong",
+		})
+		return
+	}
+
+	if err := service.UpdateUserActivity(a.DB, user.Email, true); err != nil {
 		log.Println("UpdateUserActivity error:", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode: http.StatusBadRequest,

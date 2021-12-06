@@ -24,6 +24,11 @@ func SendEmail(db *gorm.DB, email string, otp, reason string) error {
 		Reason: "Verification of email",
 	}
 
+	if reason == "recovery" {
+		templates.Subject = "This is code to recovery the password"
+		templates.Reason = "Password recovery"
+	}
+
 	// create html file
 	tmpl, err := template.New("tmpl").Parse(emailTemplate)
 	if err != nil {
