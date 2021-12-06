@@ -22,15 +22,15 @@ func (a *App) VerifyEmail(c *gin.Context) {
 		return
 	}
 
-	if ok := service.CheckUserExists(a.DB, input.Email); !ok {
-		log.Println("CheckUserExists error")
-		c.JSON(http.StatusNotFound, models.ErrorResponse{
-			ErrCode: http.StatusNotFound,
-			ErrMessage: "user is not found",
+	user, err := service.GetUserByOTP(a.DB, input.Otp, "verification")
+	if err != nil {
+		log.Println("GetUserByOTP error: ", err.Error())
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			ErrCode: http.StatusInternalServerError,
+			ErrMessage: "something went wrong",
 		})
 		return
 	}
-
 
 	otp, err := service.GetOTP(a.DB, input.Otp, "verification")
 	if err != nil {
@@ -61,7 +61,7 @@ func (a *App) VerifyEmail(c *gin.Context) {
 
 	hashedPassword, err := functions.HashPassword(input.Password)
 
-	if err := service.UpdatePassword(a.DB, input.Email, hashedPassword); err != nil {
+	if err := service.UpdatePassword(a.DB, user.Email, hashedPassword); err != nil {
 		log.Println("UpdatePassword error:", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode: http.StatusBadRequest,
@@ -70,8 +70,26 @@ func (a *App) VerifyEmail(c *gin.Context) {
 		return
 	}
 
-	if err := service.UpdateUserActivity(a.DB, input.Email, true); err != nil {
+	if err := service.UpdateUserActivity(a.DB, user.Email, true); err != nil {
 		log.Println("UpdateUserActivity error:", err.Error())
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			ErrCode: http.StatusBadRequest,
+			ErrMessage: "something went wrong",
+		})
+		return
+	}
+
+	if err := service.VerifyUserEmail(a.DB, user.Email, true); err != nil {
+		log.Println("VerifyUserEmail error:", err.Error())
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			ErrCode: http.StatusBadRequest,
+			ErrMessage: "something went wrong",
+		})
+		return
+	}
+
+	if err := service.DeleteOTP(a.DB, user.Id, "verification"); err != nil {
+		log.Println("DeleteOTP error:", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode: http.StatusBadRequest,
 			ErrMessage: "something went wrong",

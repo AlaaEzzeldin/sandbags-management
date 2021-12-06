@@ -42,21 +42,26 @@ func (a *App) AuthorizeAdmin() gin.HandlerFunc {
 		token, err := service.VerifyToken(tokenStr)
 		if err != nil {
 			log.Println("VerifyToken error", err.Error())
-			c.JSON(http.StatusUnauthorized, models.ErrorResponse{
+			c.AbortWithStatusJSON(http.StatusUnauthorized, models.ErrorResponse{
 				ErrCode: http.StatusUnauthorized,
 				ErrMessage: "no access",
 			})
-			return
 		}
 
 		if token.Valid {
 			if claims, ok := token.Claims.(models.CustomClaims); ok && token.Valid && claims.Type == "access" {
 				user, err := service.GetUserByEmail(a.DB, claims.Email)
 				if err != nil {
-					c.AbortWithStatus(http.StatusInternalServerError)
+					c.AbortWithStatusJSON(http.StatusInternalServerError, models.ErrorResponse{
+						ErrCode: http.StatusInternalServerError,
+						ErrMessage: "something went wrong",
+					})
 				}
 				if !user.IsSuperUser{
-					c.AbortWithStatus(http.StatusUnauthorized)
+					c.AbortWithStatusJSON(http.StatusUnauthorized, models.ErrorResponse{
+						ErrCode: http.StatusUnauthorized,
+						ErrMessage: "no access",
+					})
 				}
 				c.Next()
 			}
@@ -64,8 +69,6 @@ func (a *App) AuthorizeAdmin() gin.HandlerFunc {
 			log.Println("Token is not valid")
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
-
-
 
 	}
 }

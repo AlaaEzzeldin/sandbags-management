@@ -49,21 +49,22 @@ func existOTPByUser(db *gorm.DB, userId int) bool {
 
 func SaveOTP(db *gorm.DB, userId int, otp, reason string) error {
 	if exist := existOTPByUser(db, userId); exist {
-		query := `update otp set code = ? where user_id = ?;`
-		if err := db.Exec(query, otp, userId).Error; err != nil {
+		query := `update otp set code = ? where user_id = ? and type = ?;`
+		if err := db.Exec(query, otp, userId, reason).Error; err != nil {
+			return err
+		}
+	} else {
+		query := `insert into otp(code, user_id, type) values(?, ?, ?);`
+		if err := db.Exec(query, otp, userId, reason).Error; err != nil {
 			return err
 		}
 	}
 
-	query := `insert into otp(code, user_id, type) values(?, ?);`
-	if err := db.Exec(query, otp, userId, reason).Error; err != nil {
-		return err
-	}
 	return nil
 }
 
 func existOtpByCode(db *gorm.DB, otp string, reason string) bool {
-	query := `select count(*) from otp where code = ? and reason = ?;`
+	query := `select count(*) from otp where code = ? and type = ?;`
 	var count int
 	if err := db.Raw(query, otp, reason).Scan(&count).Error; err != nil {
 		return false
@@ -84,4 +85,13 @@ func GetOTP(db *gorm.DB, otp string, reason string) (string, error){
 		return "", err
 	}
 	return code, nil
+}
+
+
+func DeleteOTP(db *gorm.DB, userId int, reason string) error {
+	query := `delete from otp where user_id = ? and type = ?;`
+	if err := db.Exec(query, userId, reason).Error; err != nil {
+		return err
+	}
+	return nil
 }

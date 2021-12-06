@@ -31,16 +31,20 @@ func (a *App) RunAllRoutes(){
 	r.GET("/api-doc/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.POST("/users/login", a.Login)
+	r.POST("/users/activation", a.VerifyEmail)
+	r.POST("/users/forgot_password", a.SendRecoveryPassword)
+	r.POST("/users/recovery_password", a.RecoveryPassword)
+	r.POST("users/refresh", a.RefreshAccessToken)
 
 	admin := r.Group("/admin")
 	admin.Use(a.AuthorizeAdmin())
 	admin.POST("/user", a.CreateUser)
-	admin.POST("/user/send_verify", a.SendVerifyEmail)
+	admin.POST("/user/email_verification", a.SendVerifyEmail)
 
 	auth := r.Group("/users")
 	auth.Use(AuthorizeJWT())
 
-	auth.POST("/refresh", a.RefreshAccessToken)
+
 	auth.GET("/", a.GetUserList)
 
 	auth.PUT("/password", a.ChangePassword)
@@ -55,27 +59,7 @@ func (a *App) RunAllRoutes(){
 		})
 	})
 
-	r.POST("users/forgot_password", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
 	auth.POST("/change_password", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
-	r.POST("/users/verify", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
-	r.POST("/users/activation", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
-	r.POST("/users/email_verification", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",
 		})

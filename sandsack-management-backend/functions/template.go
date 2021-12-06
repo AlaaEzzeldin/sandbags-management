@@ -111,8 +111,7 @@ var emailTemplate = `
                   <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
                     <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"> Feuerwehr Passau </p>
                     <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"> {{ .Reason }} </p>
-                    <p style="font-family: sans-serif; font-size: 24px; font-weight: bold; margin: 0; Margin-bottom: 15px;"> {{ .Token }} </p>
-                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"> {{.Activation}} </p>
+                    <p style="font-family: sans-serif; font-size: 24px; font-weight: bold; margin: 0; Margin-bottom: 15px;"> {{ .OTP }} </p>
                   </td>
                 </tr>
               </table>

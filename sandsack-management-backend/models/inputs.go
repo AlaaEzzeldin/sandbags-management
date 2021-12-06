@@ -19,7 +19,6 @@ type SendVerifyEmail struct {
 
 type VerifyEmailInput struct {
 	Otp string `json:"otp"`
-	Email string `json:"email"`
 	Password string `json:"password"`
 }
 

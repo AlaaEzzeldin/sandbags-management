@@ -22,7 +22,7 @@ func (a *App) RecoveryPassword(c *gin.Context) {
 		return
 	}
 
-	_, err := service.GetOTP(a.DB, input.OTP, "verification")
+	_, err := service.GetOTP(a.DB, input.OTP, "recovery")
 	if err != nil {
 		log.Println("GetOTP error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
@@ -62,14 +62,16 @@ func (a *App) RecoveryPassword(c *gin.Context) {
 		return
 	}
 
-	if err := service.UpdateUserActivity(a.DB, user.Email, true); err != nil {
-		log.Println("UpdateUserActivity error:", err.Error())
+	if err := service.DeleteOTP(a.DB, user.Id, "recovery"); err != nil {
+		log.Println("DeleteOTP error:", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode: http.StatusBadRequest,
 			ErrMessage: "something went wrong",
 		})
 		return
 	}
+
+
 
 	c.JSON(http.StatusOK, nil)
 	return

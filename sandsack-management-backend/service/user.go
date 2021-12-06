@@ -105,8 +105,16 @@ func UpdatePassword(db *gorm.DB, email, password string) error {
 }
 
 func UpdateUserActivity(db *gorm.DB, email string, isActivated bool) error {
-	query := `update user set is_activated = ? where email = ?;`
+	query := `update public.user set is_activated = ? where email = ?;`
 	if err := db.Exec(query, isActivated, email).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func VerifyUserEmail(db *gorm.DB, email string, isVerified bool) error {
+	query := `update public.user set is_email_verified = ? where email = ?;`
+	if err := db.Exec(query, isVerified, email).Error; err != nil {
 		return err
 	}
 	return nil
@@ -125,3 +133,4 @@ func GetUserByOTP(db *gorm.DB, otp, reason string)  (user *models.User, err erro
 
 	return
 }
+
