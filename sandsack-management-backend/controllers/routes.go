@@ -46,7 +46,6 @@ func (a *App) RunAllRoutes(){
 
 
 	auth.GET("/", a.GetUserList)
-
 	auth.PUT("/password", a.ChangePassword)
 	auth.POST("/me", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{

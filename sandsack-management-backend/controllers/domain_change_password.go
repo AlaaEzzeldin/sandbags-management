@@ -43,7 +43,7 @@ func (a *App) ChangePassword(c *gin.Context) {
 	}
 
 	if ok := functions.CheckPasswordHash(input.OldPassword, user.Password); !ok {
-		log.Println("CheckPasswordHash error: ", err.Error())
+		log.Println("CheckPasswordHash error")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode: http.StatusBadRequest,
 			ErrMessage: "wrong password",
@@ -60,7 +60,17 @@ func (a *App) ChangePassword(c *gin.Context) {
 		return
 	}
 
-	if err := service.UpdatePassword(a.DB, claims.Email, input.NewPassword); err != nil {
+	hashedPassword, err := functions.HashPassword(input.NewPassword)
+	if err != nil {
+		log.Println("HashPassword error: ", err.Error())
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			ErrCode: http.StatusInternalServerError,
+			ErrMessage: "something went wrong",
+		})
+		return
+	}
+
+	if err := service.UpdatePassword(a.DB, claims.Email, hashedPassword); err != nil {
 		log.Println("UpdatePassword error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode: http.StatusInternalServerError,
