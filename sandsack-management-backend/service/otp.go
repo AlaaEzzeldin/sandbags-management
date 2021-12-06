@@ -60,3 +60,12 @@ func SaveOTP(db *gorm.DB, userId int, otp string) error {
 	}
 	return nil
 }
+
+func GetOTP(db *gorm.DB, email string) (string, error){
+	query := `select code from otp where user_id = (select id from user where email = ?)`
+	var code string
+	if err := db.Raw(query, email).Scan(&code).Error; err != nil {
+		return "", err
+	}
+	return code, nil
+}

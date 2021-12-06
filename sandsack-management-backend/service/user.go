@@ -9,6 +9,9 @@ import (
 )
 
 func GetUserByEmail(db *gorm.DB, email string) (user *models.User, err error) {
+	if exist := CheckUserExists(db, email); !exist {
+		return nil, errors.New("user not found")
+	}
 	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, is_super_user, create_date 
 				from public.user
 				where email = ?;`
@@ -96,6 +99,14 @@ func GetUserList(db *gorm.DB) (userList *[]models.User, err error) {
 func UpdatePassword(db *gorm.DB, email, password string) error {
 	query := `update public.user set password = ? where email = ?;`
 	if err := db.Exec(query, password, email).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func UpdateUserActivity(db *gorm.DB, email string, isActivated bool) error {
+	query := `update user set is_activated = ? where email = ?;`
+	if err := db.Exec(query, isActivated, email).Error; err != nil {
 		return err
 	}
 	return nil

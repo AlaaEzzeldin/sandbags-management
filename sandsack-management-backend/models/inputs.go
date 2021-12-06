@@ -16,3 +16,9 @@ type ChangePasswordInput struct {
 type SendVerifyEmail struct {
 	Email string `json:"email,required"`
 }
+
+type VerifyEmailInput struct {
+	Otp string `json:"otp"`
+	Email string `json:"email"`
+	Password string `json:"password"`
+}
