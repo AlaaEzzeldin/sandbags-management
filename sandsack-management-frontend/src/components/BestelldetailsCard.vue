@@ -20,7 +20,7 @@
           <h3 style="font-weight: bolder; color: black">Von:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.from}}</h3>
+          <h3 style="font-weight: bolder; color: black">{{ getOrder.from }}</h3>
         </v-col>
       </v-row>
       <v-row>
@@ -36,7 +36,7 @@
           <h3 style="font-weight: bolder; color: black">Anzahl:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.quantity}}</h3>
+          <h3 style="font-weight: bolder; color: black">{{ getOrder.quantity }}</h3>
         </v-col>
       </v-row>
       <v-row>
@@ -44,7 +44,7 @@
           <h3 style="font-weight: bolder; color: black">Priorität:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.priority}}</h3>
+          <h3 style="font-weight: bolder; color: black">{{ getOrder.priority }}</h3>
         </v-col>
       </v-row>
       <v-row>
@@ -52,7 +52,7 @@
           <h3 style="font-weight: bolder; color: black">Lieferadresse:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.deliveryAddress}}</h3>
+          <h3 style="font-weight: bolder; color: black">{{ getOrder.deliveryAddress }}</h3>
         </v-col>
       </v-row>
       <v-row v-if="getOrder.notesByUnterabschnitt">
@@ -202,168 +202,14 @@
 <script>
 export default {
   name: 'BestelldetailsCard',
-  data: () => ({
-    orders: [
-      {
-        'id': '0',
-        'created_at': '10.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Ost',
-        'priority': 'hohe',
-        'status': 'anstehend',
-        'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByUnterabschnitt':'please process ASAP'
-      },
-      {
-        'id': '1',
-        'created_at': '11.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Ost',
-        'priority': 'hohe',
-        'status': 'akzeptiert',
-        'quantity':'5',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByUnterabschnitt':'please process ASAP'
+  data: () => ({}),
 
-      },
-      {
-        'id': '2',
-        'created_at': '12.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- West',
-        'priority': 'niedrige',
-        'status': 'anstehend',
-        'quantity':'54',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByUnterabschnitt':'please process ASAP',
-
-      },
-      {
-        'id': '3',
-        'created_at': '13.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Mitte',
-        'priority': 'mittel',
-        'status': 'geliefert',
-        'quantity':'7',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByEinsatzORderHaupt':'please process ASAP'
-      },
-      {
-        'id': '4',
-        'created_at': '14.11.2021 12:01',
-        'from': 'EA 2.1 Nuemarkt- Nord',
-        'priority': 'hohe',
-        'status': 'Auf dem Weg',
-        'quantity':'3',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByEinsatzORderHaupt':'please process ASAP'
-
-      },
-      {
-        'id': '5',
-        'created_at': '15.11.2021 12:01',
-        'from': 'EA 3.2 Universität-West',
-        'priority': 'niedrige',
-        'status': 'abgelehnt',
-        'quantity':'9',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByEinsatzORderHaupt':'There is no need for it, we don not have enough bags'
-      },
-      {
-        'id': '6',
-        'created_at': '11.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Ost',
-        'priority': 'hohe',
-        'status': 'akzeptiert',
-        'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '7',
-        'created_at': '12.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- West',
-        'priority': 'niedrige',
-        'status': 'anstehend',
-        'quantity':'2',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '8',
-        'created_at': '13.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Mitte',
-        'priority': 'mittel',
-        'status': 'geliefert',
-        'quantity':'26',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '9',
-        'created_at': '14.11.2021 12:01',
-        'from': 'EA 2.1 Nuemarkt- Nord',
-        'priority': 'hohe',
-        'status': 'Auf dem Weg',
-        'quantity':'9',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '10',
-        'created_at': '15.11.2021 12:01',
-        'from': 'EA 3.2 Universität-West',
-        'priority': 'niedrige',
-        'status': 'abgelehnt',
-        'quantity':'17',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '11',
-        'created_at': '12.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- West',
-        'priority': 'niedrige',
-        'status': 'anstehend',
-        'quantity':'14',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '12',
-        'created_at': '13.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Mitte',
-        'priority': 'mittel',
-        'status': 'geliefert',
-        'quantity':'20',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '13',
-        'created_at': '14.11.2021 12:01',
-        'from': 'EA 2.1 Nuemarkt- Nord',
-        'priority': 'hohe',
-        'status': 'Auf dem Weg',
-        'quantity':'17',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '14',
-        'created_at': '15.11.2021 12:01',
-        'from': 'EA 3.2 Universität-West',
-        'priority': 'niedrige',
-        'status': 'abgelehnt',
-        'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '15',
-        'created_at': '12.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- West',
-        'priority': 'niedrige',
-        'status': 'anstehend',
-        'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-
-    ],
-  }),
-
+  created() {
+    this.$store.dispatch("loadOrder", this.$route.params.orderId)
+  },
   computed: {
     getOrder() {
-      return this.orders[this.$route.params.orderId]
+      return this.$store.getters.getOrder
     }
   },
   methods: {

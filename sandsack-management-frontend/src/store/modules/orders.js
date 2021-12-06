@@ -8,7 +8,10 @@ const state = {
 const getters = {
     getOrders(state) {
         return state.orders;
-    }
+    },
+    getOrder(state) {
+        return state.order;
+    },
 }
 
 const actions = {
@@ -20,12 +23,24 @@ const actions = {
             .catch(function (error) {
                 console.log(error);
             });
+    },
+    loadOrder({ commit }, id) {
+        ordersAPI.show(id)
+            .then(function (response) {
+                commit('SET_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 }
 
 const mutations = {
     SET_ORDERS(state, orders) {
         state.orders = orders;
+    },
+    SET_ORDER(state, order) {
+        state.order = order;
     },
 }
 
