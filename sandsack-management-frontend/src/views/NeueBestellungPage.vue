@@ -130,7 +130,8 @@ export default {
     ],
     newOrder: {
       id:"",
-      sectionName: "",
+      status: "anstehend", //this will be deleted when integerating with the backened
+      from: "",
       type: "",
       quantity: "",
       priority: "",
@@ -165,7 +166,7 @@ export default {
 
 
     createOrder() {
-      this.newOrder.sectionName= this.getBranchName
+      this.newOrder.from= this.getBranchName
       console.log("new order", this.newOrder)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})

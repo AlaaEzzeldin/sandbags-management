@@ -67,19 +67,30 @@
           ></v-textarea>
         </v-col>
       </v-row>
-      <v-row v-if="getOrder.notesByEinsatzORderHaupt">
+      <v-row v-if="getOrder.notesByEinsatstazabschnitt">
         <v-col cols="12" sm="12">
-          <h3 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt/einsatzabschnitt</h3>
+          <h3 style="font-weight: bolder; color: black">Notizen aus dem Einsatzabschnitt</h3>
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
               readonly
               outlined
-              :value="getOrder.notesByEinsatzORderHaupt"
+              :value="getOrder.notesByEinsatstazabschnitt"
           ></v-textarea>
         </v-col>
       </v-row>
-
+      <v-row v-if="getOrder.notesByHauptabschnitt">
+        <v-col cols="12" sm="12">
+          <h3 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt</h3>
+        </v-col>
+        <v-col cols="12" sm="12">
+          <v-textarea
+              readonly
+              outlined
+              :value="getOrder.notesByHauptabschnitt"
+          ></v-textarea>
+        </v-col>
+      </v-row>
     </v-card-text>
 
     <!------------------------------------------------- Unterabschnitt ------------------------------------------->
@@ -288,7 +299,6 @@ export default {
       }
       let id= this.getOrder.id
       this.$store.dispatch("updateOrder",  {id, data} )
-      this.gotToOrderDetails()
     },
     // hard coding the users roles
     getLoggedInUserRole() {
