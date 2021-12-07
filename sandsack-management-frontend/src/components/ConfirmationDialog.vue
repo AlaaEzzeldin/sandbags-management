@@ -14,7 +14,7 @@
             outlined
             color="red"
             style="min-width: 120px;"
-            @click="this.$emit('close')"
+            @click="closeDialog"
         >
           Nein
         </v-btn>
@@ -24,7 +24,7 @@
             outlined
             color="green"
             style="min-width: 120px;"
-            @click="this.$emit('close')"
+            @click="closeDialog"
         >
           Ja
         </v-btn>
@@ -41,6 +41,12 @@ export default {
       "dialog",
       "cardText"
   ],
+  methods:{
+    closeDialog(){
+      this.$emit('close')
+  }
+
+}
 }
 </script>
 

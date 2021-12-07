@@ -113,15 +113,10 @@
               dark
               block
               outlined
-              @click="lieferungBestaetigenDialog = true"
+              @click="changeStatus('Lieferung bestätigen?')"
           >
             Lieferung bestätigen
           </v-btn>
-          <ConfirmationDialog
-              cardText="Lieferung bestätigen?"
-              :dialog="lieferungBestaetigenDialog"
-              @close="lieferungBestaetigenDialog = false"
-          />
         </v-col>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -131,15 +126,10 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
-              @click="bestellungStornierenDialog = true"
+              @click="changeStatus('Bestellung stornieren?')"
           >
             Bestellung stornieren
           </v-btn>
-          <ConfirmationDialog
-              cardText="Bestellung stornieren?"
-              :dialog="bestellungStornierenDialog"
-              @close="bestellungStornierenDialog = false"
-          />
         </v-col>
       </v-row>
 
@@ -157,15 +147,10 @@
               block
               outlined
               :disabled="getOrder.status!=='anstehend'"
-              @click="bestellungAnnehmenDialog = true"
+              @click="changeStatus('Bestellung annehmen?')"
           >
             Bestellung direkt annehmen
           </v-btn>
-          <ConfirmationDialog
-              cardText="Bestellung annehmen?"
-              :dialog="bestellungAnnehmenDialog"
-              @close="bestellungAnnehmenDialog = false"
-          />
         </v-col>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -208,18 +193,18 @@
               block
               outlined
               v-bind:disabled="getOrder.status!=='akzeptiert'"
-              @click="bestellungAbgesendetDialog = true"
+              @click="changeStatus('Bestellung senden?')"
           >
             Bestellung abgesendet
           </v-btn>
-          <ConfirmationDialog
-              cardText="Bestellung senden?"
-              :dialog="bestellungAbgesendetDialog"
-              @close="bestellungAbgesendetDialog = false"
-          />
         </v-col>
       </v-row>
     </v-card-actions>
+    <ConfirmationDialog
+        :cardText="cardText"
+        :dialog="bestellungAbgesendetDialog"
+        @close="bestellungAbgesendetDialog = false"
+    />
   </v-card>
 </template>
 
@@ -229,6 +214,7 @@ export default {
   name: 'BestelldetailsCard',
   components: {ConfirmationDialog},
   data: () => ({
+    cardText:'',
     bestellungAnnehmenDialog: false,
     lieferungBestaetigenDialog: false,
     bestellungStornierenDialog: false,
@@ -412,7 +398,10 @@ export default {
       const orderId = this.getOrder.id;
       this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
     },
-
+    changeStatus(cardText){
+      this.bestellungAbgesendetDialog = true
+      this.cardText= cardText
+    },
     // hard coding the users roles
     getLoggedInUserRole() {
       if (this.$route.params.userRole === '1') // Hauptabschintt
