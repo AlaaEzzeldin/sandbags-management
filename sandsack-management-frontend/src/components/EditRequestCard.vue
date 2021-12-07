@@ -93,9 +93,8 @@
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
-              readonly
               outlined
-              :value="getOrder.notesByEinsatzabschnitt"
+              v-model="getOrder.notesByEinsatzabschnitt"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -105,9 +104,8 @@
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
-              readonly
               outlined
-              :value="getOrder.notesByHauptabschnitt"
+              v-model="getOrder.notesByHauptabschnitt"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -188,7 +186,9 @@ export default {
         "quantity": this.getOrder.quantity,
         "deliveryAddress" : this.getOrder.deliveryAddress,
         "priority": this.getOrder.priority,
-        "notesByUnterabschnitt": this.getOrder.notesByUnterabschnitt
+        "notesByUnterabschnitt": this.getOrder.notesByUnterabschnitt,
+        "notesByEinsatzabschnitt": this.getOrder.notesByEinsatzabschnitt,
+        "notesByHauptabschnitt": this.getOrder.notesByHauptabschnitt
       }
       let id= this.getOrder.id
       this.$store.dispatch("updateOrder",  {id, data},  )
