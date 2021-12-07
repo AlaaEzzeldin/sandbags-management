@@ -27,14 +27,14 @@
           ></v-text-field>
         </v-col>
       </v-row>
-<!--      <v-row no-gutters>
-        <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Typ:</h3>
-        </v-col>
-        <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">sandsäcke</h3>
-        </v-col>
-      </v-row>-->
+      <!--      <v-row no-gutters>
+              <v-col cols="12" sm="2">
+                <h3 style="font-weight: bolder; color: black">Typ:</h3>
+              </v-col>
+              <v-col cols="12" sm="3">
+                <h3 style="font-weight: bolder; color: black">sandsäcke</h3>
+              </v-col>
+            </v-row>-->
       <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Anzahl:</h3>
@@ -69,13 +69,13 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-row no-gutters v-if="getOrder.notesBySubsection">
+      <v-row no-gutters v-if="getOrder.notesByUnterabschnitt">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Anmerkungen des Anforderers:</h3>
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
-              v-model="getOrder.notesBySubsection"
+              v-model="getOrder.notesByUnterabschnitt"
               outlined
               :disabled="getLoggedInUserRole()!==3"
           ></v-textarea>
@@ -144,7 +144,7 @@ export default {
         'status': 'anstehend',
         'quantity':'12',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesBySubsection':'please process ASAP'
+        'notesByUnterabschnitt':'please process ASAP'
       },
       {
         'id': '1',
@@ -154,7 +154,7 @@ export default {
         'status': 'akzeptiert',
         'quantity':'5',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesBySubsection':'please process ASAP'
+        'notesByUnterabschnitt':'please process ASAP'
 
       },
       {
@@ -165,7 +165,7 @@ export default {
         'status': 'anstehend',
         'quantity':'54',
         'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesBySubsection':'please process ASAP',
+        'notesByUnterabschnitt':'please process ASAP',
 
       },
       {
