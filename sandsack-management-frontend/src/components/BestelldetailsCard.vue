@@ -189,15 +189,9 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
-              @click="bestellungAblehnenDialog = true"
           >
             Bestellung ablehnen
           </v-btn>
-          <ConfirmationDialog
-              cardText="Bestellung ablehnen?"
-              :dialog="bestellungAblehnenDialog"
-              @close="bestellungAblehnenDialog = false"
-          />
         </v-col>
       </v-row>
     </v-card-actions>
