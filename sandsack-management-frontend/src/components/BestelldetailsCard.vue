@@ -79,11 +79,6 @@
           ></v-textarea>
         </v-col>
       </v-row>
-      <!--      <v-row>
-              <v-col cols="12" sm="12">
-                <h3 style="font-weight: bolder; color: black">Besteellverlauf</h3>
-              </v-col>
-            </v-row>-->
 
     </v-card-text>
 
@@ -99,7 +94,7 @@
               block
               outlined
               :disabled="getOrder.status!=='anstehend'"
-              @click="editItem"
+              @click="editOrder"
           >
             Bestellung bearbeiten
           </v-btn>
@@ -113,6 +108,7 @@
               dark
               block
               outlined
+              @click="changeOrderStatus('geliefert')"
           >
             Lieferung bestätigen
           </v-btn>
@@ -125,6 +121,8 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
+              @click="changeOrderStatus('storniert')"
+
           >
             Bestellung stornieren
           </v-btn>
@@ -145,6 +143,7 @@
               block
               outlined
               :disabled="getOrder.status!=='anstehend'"
+              @click="changeOrderStatus('akzeptiert')"
           >
             Bestellung direkt annehmen
           </v-btn>
@@ -158,9 +157,9 @@
               block
               outlined
               :disabled="getOrder.status!=='anstehend'"
-              @click="editItem"
+              @click="editOrder"
           >
-            Bestellung bearbeiten und dann akzeptieren
+            Bestellung bearbeiten
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
@@ -171,6 +170,7 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
+              @click="changeOrderStatus('abgelehnt')"
           >
             Bestellung ablehnen
           </v-btn>
@@ -190,6 +190,7 @@
               block
               outlined
               :disabled="getOrder.status!=='akzeptiert'"
+              @click="changeOrderStatus('Auf dem Weg')"
           >
             Bestellung abgesendet
           </v-btn>
@@ -217,17 +218,30 @@ export default {
       if (status === 'akzeptiert') return 'blue'
       if (status === 'geliefert') return 'green'
       else if (status === 'abgelehnt') return 'red'
+      else if (status === 'storniert') return 'red'
       else if (status === 'Auf dem Weg') return 'orange'
       else if (status === 'anstehend') return 'grey'
+
     },
     goBack() {
       this.$router.go(-1)
     },
-    editItem() {
+    gotToOrderDetails(){
+      const orderId = this.getOrder.id;
+      this.$router.push({name: 'BestelldetailsPage', params: {orderId}})
+    },
+    editOrder() {
       const orderId = this.getOrder.id;
       this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
     },
-
+    changeOrderStatus(status){
+      let data={
+        "status": status
+      }
+      let id= this.getOrder.id
+      this.$store.dispatch("updateOrder",  {id, data} )
+      this.gotToOrderDetails()
+    },
     // hard coding the users roles
     getLoggedInUserRole() {
       if (this.$route.params.userRole === '1') // Hauptabschintt

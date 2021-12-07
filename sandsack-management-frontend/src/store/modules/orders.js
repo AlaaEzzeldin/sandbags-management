@@ -2,7 +2,7 @@ import ordersAPI from '../../api/orders';
 
 const state = {
     orders: [],
-    order:''
+    order: ''
 }
 
 const getters = {
@@ -15,7 +15,7 @@ const getters = {
 }
 
 const actions = {
-    loadOrders({ commit }) {
+    loadOrders({commit}) {
         ordersAPI.index()
             .then(function (response) {
                 commit('SET_ORDERS', response.data);
@@ -24,7 +24,7 @@ const actions = {
                 console.log(error);
             });
     },
-    loadOrder({ commit }, id) {
+    loadOrder({commit}, id) {
         ordersAPI.show(id)
             .then(function (response) {
                 commit('SET_ORDER', response.data);
@@ -33,7 +33,7 @@ const actions = {
                 console.log(error);
             });
     },
-    createOrder({ commit }, payload) {
+    createOrder({commit}, payload) {
         ordersAPI.create(payload)
             .then(function (response) {
                 commit('ADD_ORDER', response.data);
@@ -42,8 +42,8 @@ const actions = {
                 console.log(error);
             });
     },
-    updateOrder({ commit }, payload) {
-        ordersAPI.update( payload.id,  payload.data)
+    updateOrder({commit}, payload) {
+        ordersAPI.update(payload.id, payload.data)
             .then(function (response) {
                 commit('UPDATE_ORDER', response.data);
             })
@@ -69,6 +69,7 @@ const mutations = {
             return (updatedOrder.id === order.id)
         })
         state.orders.splice(index, 1, updatedOrder)
+        state.order = updatedOrder
     },
 }
 
