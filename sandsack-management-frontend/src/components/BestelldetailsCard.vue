@@ -67,7 +67,7 @@
           ></v-textarea>
         </v-col>
       </v-row>
-      <v-row v-if="getOrder.notesByEinsatstazabschnitt">
+      <v-row v-if="getOrder.notesByEinsatzabschnitt">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Notizen aus dem Einsatzabschnitt</h3>
         </v-col>
@@ -75,7 +75,7 @@
           <v-textarea
               readonly
               outlined
-              :value="getOrder.notesByEinsatstazabschnitt"
+              :value="getOrder.notesByEinsatzabschnitt"
           ></v-textarea>
         </v-col>
       </v-row>

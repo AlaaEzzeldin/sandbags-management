@@ -130,7 +130,7 @@ export default {
     ],
     newOrder: {
       id:"",
-      status: "anstehend", //this will be deleted when integerating with the backened
+      status: "anstehend", //this will be deleted when integrating with the backened
       from: "",
       type: "",
       quantity: "",
@@ -160,7 +160,7 @@ export default {
         return 2
       else if (this.$route.params.userRole === '3') //Unterabschnitt
         return 3
-      else if (this.$route.params.userRole === ' 4') // Mollhof
+      else if (this.$route.params.userRole === '4') // Mollhof
         return 4
     },
 

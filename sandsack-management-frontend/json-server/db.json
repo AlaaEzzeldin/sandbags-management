@@ -6,11 +6,11 @@
       "from": "EA 1.1 Altstadt- Ost",
       "type": "sandback",
       "priority": "Niedrig",
-      "status": "storniert",
+      "status": "anstehend",
       "quantity": "19",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByUnterabschnitt": "please process ASAP3",
-      "notesByEinsatstazabschnitt": "Maybe it is important",
+      "notesByEinsatzabschnitt": "Maybe it is important",
       "notesByHauptabschnitt": "declined there is no enough sandbags",
       "logs": [
         "the request has been created by the unterabschnitt bla bla",
@@ -56,7 +56,7 @@
       "status": "geliefert",
       "quantity": "7",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
-      "notesByEinsatstazabschnitt": "please process ASAP"
+      "notesByEinsatzabschnitt": "please process ASAP"
     },
     {
       "id": 4,
@@ -67,7 +67,7 @@
       "status": "geliefert",
       "quantity": "3",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
-      "notesByEinsatstazabschnitt": "please process ASAP"
+      "notesByEinsatzabschnitt": "please process ASAP"
     },
     {
       "id": 5,
@@ -78,7 +78,7 @@
       "status": "abgelehnt",
       "quantity": "9",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
-      "notesByEinsatstazabschnitt": "There is no need for it, we don not have enough bags"
+      "notesByEinsatzabschnitt": "There is no need for it, we don not have enough bags"
     },
     {
       "id": 6,
