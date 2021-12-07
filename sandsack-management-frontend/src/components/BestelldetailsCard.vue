@@ -106,19 +106,39 @@
         </v-col>
 
         <v-col cols="12" sm="6" offset="3" v-if="getOrder.status==='Auf dem Weg'">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              color="green"
+              rounded
+              dark
+              block
+              outlined
+              @click="lieferungBestaetigenDialog = true"
+          >
+            Lieferung bestätigen
+          </v-btn>
           <ConfirmationDialog
-              buttonText="Lieferung bestätigen"
-              buttonColor="green"
-              buttonOutlined="true"
               cardText="Lieferung bestätigen?"
+              :dialog="lieferungBestaetigenDialog"
+              @close="lieferungBestaetigenDialog = false"
           />
         </v-col>
         <v-col cols="12" sm="6" offset="3">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              color="red"
+              rounded
+              dark
+              block
+              :disabled="getOrder.status!=='anstehend'"
+              @click="bestellungStornierenDialog = true"
+          >
+            Bestellung stornieren
+          </v-btn>
           <ConfirmationDialog
-              buttonText="Bestellung stornieren"
-              buttonColor="red"
-              v-bind:buttonDisabled="getOrder.status!=='anstehend'"
               cardText="Bestellung stornieren?"
+              :dialog="bestellungStornierenDialog"
+              @close="bestellungStornierenDialog = false"
           />
         </v-col>
       </v-row>
@@ -129,12 +149,22 @@
     <v-card-actions v-if="getLoggedInUserRole() === 1 || this.getLoggedInUserRole() === 2">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              color="green"
+              rounded
+              dark
+              block
+              outlined
+              :disabled="getOrder.status!=='anstehend'"
+              @click="bestellungAnnehmenDialog = true"
+          >
+            Bestellung direkt annehmen
+          </v-btn>
           <ConfirmationDialog
-              buttonText="Bestellung direkt annehmen"
-              buttonColor="green"
-              buttonOutlined="true"
-              v-bind:disabled="getOrder.status!=='anstehend'"
               cardText="Bestellung annehmen?"
+              :dialog="bestellungAnnehmenDialog"
+              @close="bestellungAnnehmenDialog = false"
           />
         </v-col>
         <v-col cols="12" sm="6" offset="3">
@@ -159,9 +189,15 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
+              @click="bestellungAblehnenDialog = true"
           >
             Bestellung ablehnen
           </v-btn>
+          <ConfirmationDialog
+              cardText="Bestellung ablehnen?"
+              :dialog="bestellungAblehnenDialog"
+              @close="bestellungAblehnenDialog = false"
+          />
         </v-col>
       </v-row>
     </v-card-actions>
@@ -170,12 +206,22 @@
     <v-card-actions v-if="getLoggedInUserRole() === 4">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
-          <ConfirmationDialog
-              buttonText="Bestellung abgesendet"
-              buttonColor="green"
-              buttonOutlined="true"
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              color="green"
+              rounded
+              dark
+              block
+              outlined
               v-bind:disabled="getOrder.status!=='akzeptiert'"
+              @click="bestellungAbgesendetDialog = true"
+          >
+            Bestellung abgesendet
+          </v-btn>
+          <ConfirmationDialog
               cardText="Bestellung senden?"
+              :dialog="bestellungAbgesendetDialog"
+              @close="bestellungAbgesendetDialog = false"
           />
         </v-col>
       </v-row>
@@ -190,9 +236,10 @@ export default {
   components: {ConfirmationDialog},
   data: () => ({
     bestellungAnnehmenDialog: false,
-    lieferungBestätigenDialog: false,
+    lieferungBestaetigenDialog: false,
     bestellungStornierenDialog: false,
     bestellungAbgesendetDialog: false,
+    bestellungAblehnenDialog: false,
     orders: [
       {
         'id': '0',
