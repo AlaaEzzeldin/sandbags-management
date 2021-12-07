@@ -75,7 +75,7 @@
       "from": "EA 3.2 Universität-West",
       "type": "sandback",
       "priority": "Mittle",
-      "status": "akzeptiert",
+      "status": "abgelehnt",
       "quantity": "9",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByEinsatstazabschnitt": "There is no need for it, we don not have enough bags"
@@ -86,7 +86,7 @@
       "from": "EA 1.1 Altstadt- Ost",
       "type": "sandback",
       "priority": "hohe",
-      "status": "anstehend",
+      "status": "weitergeleitet",
       "quantity": "12",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -105,8 +105,8 @@
       "created_at": "13.11.2021 12:01",
       "from": "EA 1.1 Altstadt- Mitte",
       "type": "sandback",
-      "priority": "mittel",
-      "status": "anstehend",
+      "priority": "Hohe",
+      "status": "abgelehnt",
       "quantity": "26",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -116,7 +116,7 @@
       "from": "EA 2.1 Nuemarkt- Nord",
       "type": "sandback",
       "priority": "hohe",
-      "status": "anstehend",
+      "status": "abgelehnt",
       "quantity": "9",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },

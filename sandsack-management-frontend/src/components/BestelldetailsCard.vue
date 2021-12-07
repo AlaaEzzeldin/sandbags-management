@@ -131,8 +131,8 @@
 
     </v-card-actions>
 
-    <!---------------------------------- Einsatzabschnitt & Hauptabschnitt -------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole() === 1 || this.getLoggedInUserRole() === 2">
+    <!---------------------------------- Einsatzabschnitt  -------------------------------->
+    <v-card-actions v-if="this.getLoggedInUserRole() === 2">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -143,9 +143,9 @@
               block
               outlined
               :disabled="getOrder.status!=='anstehend'"
-              @click="changeOrderStatus('akzeptiert')"
+              @click="changeOrderStatus('weitergeleitet')"
           >
-            Bestellung direkt annehmen
+            Bestellung weiterleiten an Hauptabschnitt
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
@@ -170,6 +170,53 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
+              @click="changeOrderStatus('abgelehnt')"
+          >
+            Bestellung ablehnen
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-card-actions>
+
+    <!----------------------------------  Hauptabschnitt -------------------------------->
+    <v-card-actions v-if="getLoggedInUserRole() === 1">
+      <v-row>
+        <v-col cols="12" sm="6" offset="3">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              rounded
+              color="green"
+              dark
+              block
+              outlined
+              :disabled="getOrder.status!=='weitergeleitet'"
+              @click="changeOrderStatus('akzeptiert')"
+          >
+            Bestellung annehmen
+          </v-btn>
+        </v-col>
+        <v-col cols="12" sm="6" offset="3">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              rounded
+              color="red"
+              dark
+              block
+              outlined
+              :disabled="getOrder.status!=='weitergeleitet'"
+              @click="editOrder"
+          >
+            Bestellung bearbeiten
+          </v-btn>
+        </v-col>
+        <v-col cols="12" sm="6" offset="3">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              rounded
+              color="red"
+              dark
+              block
+              :disabled="getOrder.status!=='weitergeleitet'"
               @click="changeOrderStatus('abgelehnt')"
           >
             Bestellung ablehnen
@@ -221,8 +268,9 @@ export default {
       else if (status === 'storniert') return 'red'
       else if (status === 'Auf dem Weg') return 'orange'
       else if (status === 'anstehend') return 'grey'
-
+      else if (status === 'weitergeleitet') return 'black'
     },
+
     goBack() {
       this.$router.go(-1)
     },

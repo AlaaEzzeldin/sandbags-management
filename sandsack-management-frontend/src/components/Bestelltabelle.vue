@@ -43,7 +43,7 @@
       <template v-slot:item.actions="{ item }">
         <v-row>
           <v-col cols="12">
-            <v-tooltip top>
+            <v-tooltip top v-if="getLoggedInUserRole()=== 1 || getLoggedInUserRole()=== 2 ||getLoggedInUserRole()=== 3 ">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     v-bind="attrs"
@@ -51,7 +51,8 @@
                     style="text-transform: capitalize; font-weight: bolder;"
                     @click="editItem(item)"
                     small
-                    :disabled="item.status!=='anstehend' || getLoggedInUserRole()===4"
+                    :disabled="(item.status!=='anstehend' &&    ( getLoggedInUserRole()=== 2 ||getLoggedInUserRole()=== 3) )
+                    || (item.status!=='weitergeleitet' && getLoggedInUserRole()=== 1) "
                     class="elevation-0"
                     color="primary"
                     rounded
@@ -137,6 +138,7 @@ export default {
       else if (status === 'storniert') return 'red'
       else if (status === 'Auf dem Weg') return 'orange'
       else if (status === 'anstehend') return 'grey'
+      else if (status === 'weitergeleitet') return 'black'
     },
     editItem(Item) {
       const orderId = Item.id;

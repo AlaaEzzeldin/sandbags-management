@@ -155,7 +155,8 @@ export default {
   computed: {
     getOrder() {
       return this.$store.getters.getOrder
-    }
+    },
+
   },
   methods: {
     getColor(status) {
@@ -165,6 +166,7 @@ export default {
       else if (status === 'storniert') return 'red'
       else if (status === 'Auf dem Weg') return 'orange'
       else if (status === 'anstehend') return 'grey'
+      else if (status === 'weitergeleitet') return 'black'
     },
     goBack() {
       this.$router.go(-1)
