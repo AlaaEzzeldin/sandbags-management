@@ -1,6 +1,6 @@
 <template>
   <v-container fluid fill-height>
-    <v-row align="center" justify="center">
+    <v-row  justify="center">
       <v-col cols="5">
         <v-card elevation="0" class="justify-center align-center mt-16 pt-16 ">
           <v-card-title style="color: black;font-weight: bolder;  font-size: x-large" >Anmelden bei der</v-card-title>
