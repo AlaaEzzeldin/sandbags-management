@@ -24,7 +24,7 @@
             outlined
             color="green"
             style="min-width: 120px;"
-            @click="closeDialog"
+            @click="submitNewStatus"
         >
           Ja
         </v-btn>
@@ -39,12 +39,23 @@ export default {
   name: "ConfirmationDialog",
   props: [
       "dialog",
-      "cardText"
+      "cardText",
+      'newStatus',
+      'orderID'
   ],
   methods:{
     closeDialog(){
       this.$emit('close')
-  }
+  },
+
+    submitNewStatus(){
+      let data={
+        "status": this.newStatus
+      }
+      let id= this.orderID
+      this.$store.dispatch("updateOrder",  {id, data} )
+      this.closeDialog()
+    }
 
 }
 }

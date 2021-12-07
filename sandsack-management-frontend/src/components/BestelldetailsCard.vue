@@ -119,7 +119,7 @@
               dark
               block
               outlined
-              @click="changeStatus('Lieferung bestätigen?');changeOrderStatus('geliefert')"
+              @click="changeStatus('Lieferung bestätigen?','geliefert')"
           >
             Lieferung bestätigen
           </v-btn>
@@ -132,7 +132,7 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
-              @click="changeStatus('Bestellung stornieren?');changeOrderStatus('storniert')"
+              @click="changeStatus('Bestellung stornieren?','storniert')"
           >
             Bestellung stornieren
           </v-btn>
@@ -153,7 +153,7 @@
               block
               outlined
               :disabled="getOrder.status!=='anstehend'"
-              @click="changeStatus(' Bestellung weiterleiten an Hauptabschnitt');changeOrderStatus('weitergeleitet')"
+              @click="changeStatus('Bestellung weiterleiten an Hauptabschnitt?','weitergeleitet')"
           >
             Bestellung weiterleiten an Hauptabschnitt
           </v-btn>
@@ -180,7 +180,7 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
-              @click="changeOrderStatus('abgelehnt')"
+              @click="changeStatus('abgelehnt?','abgelehnt')"
           >
             Bestellung ablehnen
           </v-btn>
@@ -200,7 +200,7 @@
               block
               outlined
               :disabled="getOrder.status!=='weitergeleitet'"
-              @click="changeOrderStatus('akzeptiert')"
+              @click="changeStatus('akzeptiert?','akzeptiert')"
           >
             Bestellung annehmen
           </v-btn>
@@ -227,7 +227,7 @@
               dark
               block
               :disabled="getOrder.status!=='weitergeleitet'"
-              @click="changeOrderStatus('abgelehnt')"
+              @click="changeStatus('abgelehnt?','abgelehnt')"
           >
             Bestellung ablehnen
           </v-btn>
@@ -247,7 +247,7 @@
               block
               outlined
               v-bind:disabled="getOrder.status!=='akzeptiert'"
-              @click="changeStatus('Bestellung senden?');changeOrderStatus('Auf dem Weg')"
+              @click="changeStatus('Bestellung senden?','Auf dem Weg')"
           >
             Bestellung abgesendet
           </v-btn>
@@ -256,8 +256,10 @@
     </v-card-actions>
     <ConfirmationDialog
         :cardText="cardText"
+        :newStatus="newStatus"
+        :orderID="getOrder.id"
         :dialog="confirmationDialog"
-        @close="bestellungAbgesendetDialog = false"
+        @close="confirmationDialog = false"
     />
   </v-card>
 </template>
@@ -270,6 +272,7 @@ export default {
 
   data: () => ({
     cardText:'',
+    newStatus:'',
     confirmationDialog: false,
   }),
 
@@ -295,24 +298,15 @@ export default {
     goBack() {
       this.$router.go(-1)
     },
-    gotToOrderDetails(){
-      const orderId = this.getOrder.id;
-      this.$router.push({name: 'BestelldetailsPage', params: {orderId}})
-    },
     editOrder() {
       const orderId = this.getOrder.id;
       this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
     },
-    changeOrderStatus(status){
-      let data={
-        "status": status
-      }
-      let id= this.getOrder.id
-      this.$store.dispatch("updateOrder",  {id, data} )
-    },
-    changeStatus(cardText){
-      this.bestellungAbgesendetDialog = true
+
+    changeStatus(cardText, newStatus){
       this.cardText= cardText
+      this.newStatus=newStatus
+      this.confirmationDialog = true
     },
     // hard coding the users roles
     getLoggedInUserRole() {
