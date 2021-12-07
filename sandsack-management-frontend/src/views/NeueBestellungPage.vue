@@ -143,12 +143,12 @@ export default {
   computed: {
     getBranchName() {
       if (this.getLoggedInUserRole() === 1)
-        this.newOrder.sectionName = "Hauptabschintt-Mitte";
+        return  "Hauptabschintt-Mitte";
       else if (this.getLoggedInUserRole() === 2)
-        this.newOrder.sectionName = "EA 1-Altstadt";
+        return "EA 1-Altstadt";
       else if (this.getLoggedInUserRole() === 3)
         return "EA 1.1 Altstadt- Ost";
-      else this.newOrder.sectionName = "Mollnhof";
+      else return  "Mollnhof";
     },
   },
   methods: {
