@@ -14,7 +14,6 @@
     </v-card-title>
 
     <v-card-text class="pt-16 ">
-
       <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Von:</h3>
@@ -22,19 +21,23 @@
         <v-col cols="12" sm="3">
           <v-text-field
               disabled
-              v-model="getOrder.from"
+              :value="getOrder.from"
               outlined
           ></v-text-field>
         </v-col>
       </v-row>
-      <!--      <v-row no-gutters>
+            <v-row no-gutters>
               <v-col cols="12" sm="2">
                 <h3 style="font-weight: bolder; color: black">Typ:</h3>
               </v-col>
               <v-col cols="12" sm="3">
-                <h3 style="font-weight: bolder; color: black">sandsäcke</h3>
+                <v-text-field
+                    disabled
+                    :value="getOrder.type"
+                    outlined
+                ></v-text-field>
               </v-col>
-            </v-row>-->
+            </v-row>
       <v-row no-gutters>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Anzahl:</h3>
@@ -51,10 +54,12 @@
           <h3 style="font-weight: bolder; color: black">Priorität:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <v-text-field
+          <v-select
               v-model="getOrder.priority"
+              :items="priorities"
+              :label="getOrder.priority"
               outlined
-          ></v-text-field>
+          ></v-select>
         </v-col>
       </v-row>
       <v-row no-gutters>
@@ -65,7 +70,6 @@
           <v-text-field
               v-model="getOrder.deliveryAddress"
               outlined
-              disabled
           ></v-text-field>
         </v-col>
       </v-row>
@@ -75,6 +79,7 @@
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
+              class="mt-3"
               v-model="getOrder.notesByUnterabschnitt"
               outlined
               :disabled="getLoggedInUserRole()!==3"
@@ -91,7 +96,6 @@
               outlined
               v-model="getOrder.notesByEinsatzORderHaupt"
               :disabled="getLoggedInUserRole()!==1 || getLoggedInUserRole()!==2"
-
           ></v-textarea>
         </v-col>
       </v-row>
@@ -109,6 +113,8 @@
               dark
               block
               outlined
+              @click="submitUpdatedOrder"
+
           >
             speichern
           </v-btn>
@@ -120,6 +126,7 @@
               color="red"
               dark
               block
+              @click="gotToOrderDetails"
           >
             Abbrechen
           </v-btn>
@@ -135,6 +142,11 @@
 export default {
   name: 'EditRequestCard',
   data: () => ({
+    priorities: [
+      'Niedrig',
+      'Mittle',
+      'Hohe',
+    ],
 
   }),
   created() {
@@ -156,7 +168,21 @@ export default {
     goBack() {
       this.$router.go(-1)
     },
-
+    submitUpdatedOrder(){
+      let data={
+        "quantity": this.getOrder.quantity,
+        "deliveryAddress" : this.getOrder.deliveryAddress,
+        "priority": this.getOrder.priority,
+        "notesByUnterabschnitt": this.getOrder.notesByUnterabschnitt
+      }
+      let id= this.getOrder.id
+      this.$store.dispatch("updateOrder",  {id, data},  )
+      this.gotToOrderDetails()
+    },
+    gotToOrderDetails(){
+      const orderId = this.getOrder.id;
+      this.$router.push({name: 'BestelldetailsPage', params: {orderId}})
+    },
     // hard coding the users roles
     getLoggedInUserRole() {
       if (this.$route.params.userRole === '1') // Hauptabschintt

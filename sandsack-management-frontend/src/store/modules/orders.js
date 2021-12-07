@@ -42,6 +42,15 @@ const actions = {
                 console.log(error);
             });
     },
+    updateOrder({ commit }, payload) {
+        ordersAPI.update( payload.id,  payload.data)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
 
 }
 
@@ -54,6 +63,12 @@ const mutations = {
     },
     ADD_ORDER(state, order) {
         state.orders.push(order);
+    },
+    UPDATE_ORDER(state, updatedOrder) {
+        const index = state.orders.findIndex(order => {
+            return (updatedOrder.id === order.id)
+        })
+        state.orders.splice(index, 1, updatedOrder)
     },
 }
 

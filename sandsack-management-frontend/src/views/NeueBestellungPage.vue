@@ -69,7 +69,6 @@
               required
               filled
               outlined
-
           ></v-select>
         </v-col>
       </v-row>

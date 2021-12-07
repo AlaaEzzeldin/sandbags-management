@@ -13,7 +13,6 @@ export default {
     },
 
     create( data ){
-        console.log("stotre", data)
         return axios.post( 'http://localhost:3001/orders/', data );
     },
 
