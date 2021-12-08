@@ -36,48 +36,20 @@
       </v-col>
     </v-row>
 
-    <v-row no-gutters>
-      <v-toolbar>
-        <v-tabs
-            dark
-            background-color="grey"
-            outlined
-            grow
-        >
-          <v-tab>
-            <v-badge
-                color="red"
-                outlined
-                content="35">
-              Bestellungen
-            </v-badge>
-          </v-tab>
-
-          <v-tab>
-            <v-badge
-                color="red"
-                content="94%"
-                outlined
-            >
-              bestellungen Bestatigt
-            </v-badge>
-          </v-tab>
-
-          <v-tab>
-            <v-badge
-                color="red"
-                content="5"
-                outlined
-            >
-              bestellungen/Uhr
-            </v-badge>
-          </v-tab>
-        </v-tabs>
-      </v-toolbar>
-      <v-col cols="12">
-        <Bestellübersicht class="mt-10"></Bestellübersicht>
+    <v-row no-gutters style="text-align: center">
+      <v-col>
+        <h1>35</h1>
+        <h3>Bestellungen</h3>
       </v-col>
-
+      <v-col>
+        <h1>94%</h1>
+        <h3>Bestellungen bestatigt</h3>
+      </v-col>
+      <v-col>
+        <h1>5</h1>
+        <h3>Bestellungen/Uhr</h3>
+      </v-col>
+    </v-row>
       <v-container fluid>
         <v-row align="center">
           <v-col cols="6">
@@ -102,8 +74,6 @@
         </v-row>
         <GChart type="LineChart" :data="chartData" :options="chartOptions" />
       </v-container>
-
-    </v-row>
     <v-spacer></v-spacer>
     <v-card-actions>
       <v-row>
