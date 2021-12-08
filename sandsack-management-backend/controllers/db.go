@@ -25,7 +25,7 @@ var (
 	Port = "5432"
 	Database = "feuerwehr"
 	User = "postgres"
-	Password = "qweasdzxc"
+	Password = "postgres"
 )
 
 func (a *App) Init() {
