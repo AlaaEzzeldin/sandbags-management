@@ -36,17 +36,17 @@
       </v-col>
     </v-row>
 
-    <v-row no-gutters style="text-align: center">
+    <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px">
       <v-col>
-        <h1>35</h1>
+        <h1 style="color: red">35</h1>
         <h3>Bestellungen</h3>
       </v-col>
       <v-col>
-        <h1>94%</h1>
+        <h1 style="color: red">94%</h1>
         <h3>Bestellungen bestatigt</h3>
       </v-col>
       <v-col>
-        <h1>5</h1>
+        <h1 style="color: red">5</h1>
         <h3>Bestellungen/Uhr</h3>
       </v-col>
     </v-row>
