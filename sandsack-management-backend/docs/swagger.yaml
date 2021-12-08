@@ -1,0 +1,32 @@
+basePath: /
+host: localhost:8080
+info:
+  contact:
+    email: mirzok01@ads.uni-passau.de
+    name: Team Backend
+  description: This is the documentation for ASPD REST API.
+  termsOfService: http://swagger.io/terms/
+  title: ASPD API Documentation
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Registers new user in system. Sends verification token to email
+        of the user
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      tags:
+      - Authentication
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

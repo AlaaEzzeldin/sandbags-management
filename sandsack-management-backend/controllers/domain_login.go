@@ -10,21 +10,19 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
-// Registration
-// @Description Registrates new user in system. Sends verification token to email of the user
-// @Tags Authentification
-// @Accept json
-// @Param input body models.NewPerson true "Registration input"
-// @Success 200 {object} map[string]string
-// @Router /registration [post]
+// Login
+// @Description Registers new user in system. Sends verification token to email of the user
+// @Tags Authentication
+// @Router /users/login [post]
 func (a *App) Login(c *gin.Context){
 	var input models.Login
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil{
 		log.Println("Registration error: ", err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "incorrect request",
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			ErrCode: http.StatusBadRequest,
+			ErrMessage: "incorrect request",
 		})
 		return
 	}

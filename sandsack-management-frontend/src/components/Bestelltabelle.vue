@@ -43,7 +43,7 @@
       <template v-slot:item.actions="{ item }">
         <v-row>
           <v-col cols="12">
-            <v-tooltip top>
+            <v-tooltip top v-if="getLoggedInUserRole()=== 1 || getLoggedInUserRole()=== 2 ||getLoggedInUserRole()=== 3 ">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     v-bind="attrs"
@@ -51,7 +51,8 @@
                     style="text-transform: capitalize; font-weight: bolder;"
                     @click="editItem(item)"
                     small
-                    :disabled="item.status!=='anstehend'"
+                    :disabled="(item.status!=='anstehend' &&    ( getLoggedInUserRole()=== 2 ||getLoggedInUserRole()=== 3) )
+                    || (item.status!=='weitergeleitet' && getLoggedInUserRole()=== 1) "
                     class="elevation-0"
                     color="primary"
                     rounded
@@ -73,7 +74,7 @@
                     color="primary"
                     icon
                 >
-                  <v-icon> mdi-arrow-right</v-icon>
+                  <v-icon> mdi-information-outline</v-icon>
                 </v-btn>
               </template>
               <h4 class="font-weight-light">Inspect</h4>
@@ -108,176 +109,44 @@ export default {
     options: {
       itemsPerPage: 10,
     },
-    orders: [
-      {
-        'id': '0',
-        'created_at': '10.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Ost',
-        'priority': 'hohe',
-        'status': 'anstehend',
-        'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '1',
-        'created_at': '11.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Ost',
-        'priority': 'hohe',
-        'status': 'akzeptiert',
-        'quantity':'5',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '2',
-        'created_at': '12.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- West',
-        'priority': 'niedrige',
-        'status': 'anstehend',
-        'quantity':'54',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '3',
-        'created_at': '13.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Mitte',
-        'priority': 'mittel',
-        'status': 'geliefert',
-        'quantity':'7',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '4',
-        'created_at': '14.11.2021 12:01',
-        'from': 'EA 2.1 Nuemarkt- Nord',
-        'priority': 'hohe',
-        'status': 'Auf dem Weg',
-        'quantity':'3',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-
-      },
-      {
-        'id': '5',
-        'created_at': '15.11.2021 12:01',
-        'from': 'EA 3.2 Universität-West',
-        'priority': 'niedrige',
-        'status': 'abgelehnt',
-        'quantity':'9',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '6',
-        'created_at': '11.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Ost',
-        'priority': 'hohe',
-        'status': 'akzeptiert',
-        'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '7',
-        'created_at': '12.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- West',
-        'priority': 'niedrige',
-        'status': 'anstehend',
-        'quantity':'2',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '8',
-        'created_at': '13.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Mitte',
-        'priority': 'mittel',
-        'status': 'geliefert',
-        'quantity':'26',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '9',
-        'created_at': '14.11.2021 12:01',
-        'from': 'EA 2.1 Nuemarkt- Nord',
-        'priority': 'hohe',
-        'status': 'Auf dem Weg',
-        'quantity':'9',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '10',
-        'created_at': '15.11.2021 12:01',
-        'from': 'EA 3.2 Universität-West',
-        'priority': 'niedrige',
-        'status': 'abgelehnt',
-        'quantity':'17',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '11',
-        'created_at': '12.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- West',
-        'priority': 'niedrige',
-        'status': 'anstehend',
-        'quantity':'14',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '12',
-        'created_at': '13.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Mitte',
-        'priority': 'mittel',
-        'status': 'geliefert',
-        'quantity':'20',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '13',
-        'created_at': '14.11.2021 12:01',
-        'from': 'EA 2.1 Nuemarkt- Nord',
-        'priority': 'hohe',
-        'status': 'Auf dem Weg',
-        'quantity':'17',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '14',
-        'created_at': '15.11.2021 12:01',
-        'from': 'EA 3.2 Universität-West',
-        'priority': 'niedrige',
-        'status': 'abgelehnt',
-        'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '15',
-        'created_at': '12.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- West',
-        'priority': 'niedrige',
-        'status': 'anstehend',
-        'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-
-    ],
-
   }),
-
+  created() {
+    this.$store.dispatch("loadOrders")
+  },
   computed: {
     getOrders() {
-      return this.orders
+      return this.$store.getters.getOrders
     }
   },
   methods: {
+
+    // hard coding the users roles
+    getLoggedInUserRole() {
+      if (this.$route.params.userRole === '1') // Hauptabschintt
+        return 1
+      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
+        return 2
+      else if (this.$route.params.userRole === '3') //Unterabschnitt
+        return 3
+      else if (this.$route.params.userRole === '4') // Mollhof
+        return 4
+    },
     getColor(status) {
       if (status === 'akzeptiert') return 'blue'
       if (status === 'geliefert') return 'green'
       else if (status === 'abgelehnt') return 'red'
+      else if (status === 'storniert') return 'red'
       else if (status === 'Auf dem Weg') return 'orange'
       else if (status === 'anstehend') return 'grey'
+      else if (status === 'weitergeleitet') return 'black'
     },
-    editItem() {
-      //pass
+    editItem(Item) {
+      const orderId = Item.id;
+      this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
     },
     inspect(Item) {
       const orderId = Item.id;
-      this.$router.push({name: 'BestelldetailsPage', params: { orderId }})
+      this.$router.push({name: 'BestelldetailsPage', params: {orderId}})
     },
   },
 }

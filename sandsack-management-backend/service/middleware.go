@@ -1,15 +1,15 @@
 package service
 
 import (
-	"fmt"
+	"errors"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"os"
 	"team2/sandsack-management-backend/models"
 	"time"
 )
 
-const ACCESS_TOKEN_TTL = time.Minute * 20
+const ACCESS_TOKEN_TTL = time.Minute * 60
 const REFRESH_TOKEN_TTL = time.Hour * 24 * 120
 const VERIFY_TOKEN_TTL = time.Hour * 24
 const RESET_PASSWORD_TOKEN_TTL = time.Hour * 24
@@ -63,12 +63,36 @@ func GenerateTokens(db *gorm.DB, email string) (map[string]string, error) {
 }
 
 func VerifyToken(encodedToken string) (*jwt.Token, error) {
-	return jwt.ParseWithClaims(encodedToken, &models.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(encodedToken, &models.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, isvalid := token.Method.(*jwt.SigningMethodHMAC); !isvalid {
-			return nil, fmt.Errorf("Invalid token", token.Header["alg"])
+			return nil, errors.New("Unexpected signing method",)
 		}
 		return jwtPrivateKey, nil
 	})
+	return token, err
+}
+
+func GetEmail(encodedToken string) (email string, err error) {
+	token, err := jwt.ParseWithClaims(encodedToken, &models.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, isvalid := token.Method.(*jwt.SigningMethodHMAC); !isvalid {
+			return nil, errors.New("Unexpected signing method",)
+		}
+		return jwtPrivateKey, nil
+	})
+	if err != nil {
+		return "", err
+	}
+	claims, ok  := token.Claims.(*models.CustomClaims)
+	if !ok {
+		return "", errors.New("something went wrong")
+	}
+
+	return claims.Email, nil
+
+}
+
+func verifyFunc(token *jwt.Token) (interface{}, error) {
+	return []byte(os.Getenv("SECRET_CODE")), nil
 }
 
 // todo

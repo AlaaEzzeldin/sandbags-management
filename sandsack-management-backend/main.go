@@ -37,5 +37,4 @@ func main() {
 	log.Println("Server started. Press Ctrl-C to stop server")
 
 	app.RunAllRoutes()
-
 }

@@ -3,4 +3,7 @@
   <component name="WebPackConfiguration">
     <option name="mode" value="DISABLED" />
   </component>
+  <component name="WebPackConfiguration">
+    <option name="mode" value="DISABLED" />
+  </component>
 </project>

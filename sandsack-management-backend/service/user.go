@@ -1,18 +1,35 @@
 package service
 
 import (
-	"github.com/jinzhu/gorm"
+	"errors"
+	"gorm.io/gorm"
 	"log"
+	"team2/sandsack-management-backend/functions"
 	"team2/sandsack-management-backend/models"
 )
 
 func GetUserByEmail(db *gorm.DB, email string) (user *models.User, err error) {
-	query := `select id, name, phone, password, email, token, is_activated, create_date 
+	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, is_super_user, create_date 
 				from public.user
 				where email = ?;`
 
 	if err = db.Raw(query, email).Scan(&user).Error; err != nil {
 		return nil, err
+	}
+
+	return
+}
+
+func GetUserByToken(db *gorm.DB, token string) (user models.User, err error) {
+	if len(token) == 0 {
+		return user, errors.New("token is empty")
+	}
+	query := `select id, name, phone, password, email, token, is_activated, create_date 
+				from public.user
+				where token = ?;`
+
+	if err = db.Raw(query, token).Scan(&user).Error; err != nil {
+		return user, err
 	}
 
 	return
@@ -39,3 +56,40 @@ func UpdateUserToken(db *gorm.DB, email string, refreshToken string) error {
 	return nil
 }
 
+type Id struct {
+	Id int `gorm:"column:id"`
+}
+
+func CreateUser(db *gorm.DB, user *models.CreateUser) error {
+	var model Id
+	hashedPassword, err := functions.HashPassword(user.Password)
+	if err != nil {
+		return err
+	}
+	query := `insert into public.user(name, email, phone, password) values(?,?,?,?) returning id;`
+	if err := db.Raw(query, user.Name, user.Email, user.Phone, hashedPassword).Scan(&model).Error; err != nil {
+		return err
+	}
+
+	if err := AddHierarchy(db, user.ParentId, model.Id); err != nil {
+		return err
+	}
+	return nil
+}
+
+func AddHierarchy(db *gorm.DB, parentId int, childId int) error {
+	query := `insert into hierarchy(user1_id, user2_id) values(?,?);`
+	if err := db.Exec(query, parentId, childId).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+
+func GetUserList(db *gorm.DB) (userList *[]models.User, err error) {
+	query := `select id, name, email from public.user where is_super_user=false;`
+	if err := db.Raw(query).Scan(&userList).Error; err != nil {
+		return nil, err
+	}
+	return userList, nil
+}
