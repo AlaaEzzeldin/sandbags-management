@@ -1,38 +1,32 @@
-definitions:
-  models.Logout:
-    properties:
-      token:
-        type: string
-    type: object
+basePath: /
+host: localhost:8080
 info:
-  contact: {}
+  contact:
+    email: mirzok01@ads.uni-passau.de
+    name: Team Backend
+  description: This is the documentation for ASPD REST API.
+  termsOfService: http://swagger.io/terms/
+  title: ASPD API Documentation
+  version: "1.0"
 paths:
-  /users/login:
-    post:
-      description: Registers new user in system. Sends verification token to email
-        of the user
-      tags:
-      - Authentication
-  /users/logout:
+  /login:
     post:
       consumes:
       - application/json
-      description: Logout an authenticated user
-      parameters:
-      - description: Logout
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/models.Logout'
+      description: Registers new user in system. Sends verification token to email
+        of the user
       responses:
-        "204":
-          description: Logged out successfully
-        "400":
-          description: Bad request (e.g. refresh in body is not given)
-        "401":
-          description: Access token is missing
-      summary: Logout an authenticated user
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
       tags:
       - Authentication
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

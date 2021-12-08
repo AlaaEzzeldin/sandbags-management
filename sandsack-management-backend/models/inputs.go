@@ -8,10 +8,6 @@ type CreateUser struct {
 	ParentId int `json:"parent_id"`
 }
 
-type Logout struct {
-	Token 	string `json:"token,required"`
-}
-
 type ChangePasswordInput struct {
 	OldPassword string `json:"old_password"`
 	NewPassword string `json:"new_password"`

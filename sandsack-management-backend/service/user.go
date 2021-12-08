@@ -96,15 +96,6 @@ func GetUserList(db *gorm.DB) (userList *[]models.User, err error) {
 	return userList, nil
 }
 
-
-func RevokeToken(db *gorm.DB, token string) error {
-	query := `update public.user set token = null where token = ?'`
-	if err := db.Exec(query, token).Error; err != nil {
-		return err
-	}
-	return nil
-}
-
 func UpdatePassword(db *gorm.DB, email, password string) error {
 	query := `update public.user set password = ? where email = ?;`
 	if err := db.Exec(query, password, email).Error; err != nil {
@@ -142,3 +133,4 @@ func GetUserByOTP(db *gorm.DB, otp, reason string)  (user *models.User, err erro
 
 	return
 }
+
