@@ -17,44 +17,63 @@ var doc = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "name": "Team Backend",
-            "email": "mirzok01@ads.uni-passau.de"
-        },
+        "contact": {},
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/login": {
+        "/users/login": {
             "post": {
                 "description": "Registers new user in system. Sends verification token to email of the user",
+                "tags": [
+                    "Authentication"
+                ]
+            }
+        },
+        "/users/logout": {
+            "post": {
+                "description": "Logout an authenticated user",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Authentication"
                 ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
+                "summary": "Logout an authenticated user",
+                "parameters": [
+                    {
+                        "description": "Logout",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/models.Logout"
                         }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Logged out successfully"
+                    },
+                    "400": {
+                        "description": "Bad request (e.g. refresh in body is not given)"
+                    },
+                    "401": {
+                        "description": "Access token is missing"
                     }
                 }
             }
         }
     },
-    "securityDefinitions": {
-        "ApiKeyAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
+    "definitions": {
+        "models.Logout": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
         }
     }
 }`
@@ -70,12 +89,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "1.0",
-	Host:        "localhost:8080",
-	BasePath:    "/",
+	Version:     "",
+	Host:        "",
+	BasePath:    "",
 	Schemes:     []string{},
-	Title:       "ASPD API Documentation",
-	Description: "This is the documentation for ASPD REST API.",
+	Title:       "",
+	Description: "",
 }
 
 type s struct{}

@@ -42,11 +42,7 @@ func (a *App) RunAllRoutes(){
 			"message": "in development",
 		})
 	})
-	auth.POST("/logout", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
+	auth.POST("/logout", a.Logout)
 
 	r.POST("users/forgot_password", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{

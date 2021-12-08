@@ -1,17 +1,44 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"strings"
+	"log"
+	"net/http"
+	"team2/sandsack-management-backend/models"
+	"team2/sandsack-management-backend/service"
 )
 
-// todo
+// Logout
+// @Description Logout an authenticated user
+// @Summary Logout an authenticated user
+// @Accept json
+// @Param input body models.Logout true "Logout"
+// @Success 204 "Logged out successfully"
+// @Failure 401 "Access token is missing"
+// @Failure 400 "Bad request (e.g. refresh in body is not given)"
+// @Tags Authentication
+// @Router /users/logout [post]
 func (a *App) Logout(c *gin.Context) {
-	header := c.Request.Header["Authorization"]
-	token := strings.Split(header[0], " ")[1]
+	var refresh models.Logout
 
-	fmt.Println(token)
+	if err := c.ShouldBindJSON(&refresh); err != nil {
+		log.Println("Logout error: ", err.Error())
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			ErrCode: http.StatusBadRequest,
+			ErrMessage: "The provided refresh token is not valid or not provided",
+		})
+		return
+	}
 
+	if err := service.RevokeToken(a.DB, refresh.Token); err != nil {
+		log.Println("Logout error: ", err.Error())
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			ErrCode: http.StatusInternalServerError,
+			ErrMessage: "Something went wrong",
+		})
+		return
+	}
 
+	c.JSON(http.StatusNoContent, "Logged out successfully")
+	return
 }

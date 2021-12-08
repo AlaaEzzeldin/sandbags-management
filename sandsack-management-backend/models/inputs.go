@@ -7,3 +7,7 @@ type CreateUser struct {
 	Password string `json:"password"`
 	ParentId int `json:"parent_id"`
 }
+
+type Logout struct {
+	Token 	string `json:"token,required"`
+}
