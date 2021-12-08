@@ -1,149 +1,168 @@
-CREATE TABLE public."user" (
+CREATE TABLE "user" (
                         "id" serial PRIMARY KEY,
-                        "name" varchar not null,
+                        "name" varchar,
                         "phone" varchar,
-                        "password" varchar not null,
-                        "email" varchar not null,
+                        "password" varchar,
+                        "email" varchar,
                         "token" varchar,
-                        "is_activated" boolean default false,
-                        "is_super_user" boolean default false,
-                        "is_email_verified" boolean default false,
-                        "create_date" timestamptz not null default now(),
-                        "update_date" timestamptz
+                        "is_activated" boolean,
+                        "is_super_user" boolean,
+                        "is_email_verified" boolean,
+                        "branch_id" integer,
+                        "create_date" timestamp,
+                        "update_date" timestamp
 );
 
-CREATE TABLE public."order" (
+CREATE TABLE "order" (
                          "id" serial PRIMARY KEY,
-                         "user_id" integer not null,
-                         "name" varchar not null,
-                         "address_to" varchar not null,
+                         "user_id" integer,
+                         "name" varchar,
+                         "address_to" varchar,
                          "address_from" varchar,
-                         "status_id" integer not null,
-                         "priority_id" integer not null,
+                         "status_id" integer,
+                         "priority_id" integer,
                          "assigned_to" integer,
-                         "create_date" timestamptz not null default now(),
-                         "update_date" timestamptz
+                         "create_date" timestamp,
+                         "update_date" timestamp
 );
 
-CREATE TABLE public."order_equipment" (
+CREATE TABLE "order_equipment" (
                                    "id" serial PRIMARY KEY,
-                                   "order_id" integer not null,
-                                   "equipment_id" integer not null,
-                                   "quantity" integer not null default 0,
-                                   "create_date" timestamptz not null default now(),
-                                   "update_date" timestamptz
+                                   "order_id" integer,
+                                   "equipment_id" integer,
+                                   "quantity" integer,
+                                   "create_date" timestamp,
+                                   "update_date" timestamp
 );
 
-CREATE TABLE public."equipment" (
+CREATE TABLE "equipment" (
                              "id" serial PRIMARY KEY,
-                             "name" varchar not null,
-                             "quantity" integer not null default 0,
-                             "create_date" timestamptz not null default now(),
-                             "update_date" timestamptz
+                             "name" varchar,
+                             "quantity" integer,
+                             "create_date" timestamp,
+                             "update_date" timestamp
 );
 
-CREATE TABLE public."status" (
+CREATE TABLE "status" (
                           "id" serial PRIMARY KEY,
-                          "name" varchar not null,
-                          "create_date" timestamptz not null default now(),
-                          "update_date" timestamptz
+                          "name" varchar,
+                          "create_date" timestamp,
+                          "update_date" timestamp
 );
 
-CREATE TABLE public."action_type" (
+CREATE TABLE "action_type" (
                                "id" serial PRIMARY KEY,
-                               "name" varchar not null,
-                               "create_date" timestamptz not null default now(),
-                               "update_date" timestamptz
+                               "name" varchar
 );
 
-CREATE TABLE public."log" (
+CREATE TABLE "log" (
                        "id" serial PRIMARY KEY,
-                       "order_id" integer not null,
+                       "order_id" integer,
                        "description" varchar,
-                       "action_type_id" integer not null,
+                       "action_type_id" integer,
                        "ip_address" varchar,
                        "updated_by" integer,
-                       "create_date" timestamptz not null default now(),
-                       "update_date" timestamptz
+                       "create_date" timestamp,
+                       "update_date" timestamp
 );
 
-CREATE TABLE public."comment" (
+CREATE TABLE "comment" (
                            "id" serial PRIMARY KEY,
-                           "user_id" integer not null,
-                           "order_id" integer not null,
-                           "comment_text" varchar not null,
-                           "create_date" timestamptz not null default now(),
-                           "update_date" timestamptz
+                           "user_id" integer,
+                           "order_id" integer,
+                           "comment_text" varchar,
+                           "create_date" timestamp,
+                           "update_date" timestamp
 );
 
-CREATE TABLE public."hierarchy" (
+CREATE TABLE "hierarchy" (
                              "id" serial PRIMARY KEY,
-                             "user1_id" integer not null,
-                             "user2_id" integer not null,
-                             "create_date" timestamptz not null default now(),
-                             "update_date" timestamptz
+                             "user1_id" integer,
+                             "user2_id" integer,
+                             "create_date" timestamp,
+                             "update_date" timestamp
 );
 
-CREATE TABLE public."user_order_permission" (
+CREATE TABLE "user_order_permission" (
                                          "id" serial PRIMARY KEY,
-                                         "user_id" integer not null,
-                                         "order_id" integer not null,
-                                         "permission_id" integer not null,
-                                         "create_date" timestamptz not null default now(),
-                                         "update_date" timestamptz
+                                         "user_id" integer,
+                                         "order_id" integer,
+                                         "permission_id" integer,
+                                         "create_date" timestamp,
+                                         "update_date" timestamp
 );
 
-CREATE TABLE public."permission" (
+CREATE TABLE "permission" (
                               "id" serial PRIMARY KEY,
-                              "name" varchar not null,
-                              "create_date" timestamptz not null default now(),
-                              "update_date" timestamptz
+                              "name" varchar,
+                              "create_date" timestamp,
+                              "update_date" timestamp
 );
 
-CREATE TABLE public."priority" (
+CREATE TABLE "priority" (
                             "id" serial PRIMARY KEY,
-                            "level" integer not null,
-                            "name" varchar not null,
-                            "create_date" timestamptz not null default now(),
-                            "update_date" timestamptz
+                            "level" integer,
+                            "name" varchar,
+                            "create_date" timestamp,
+                            "update_date" timestamp
 );
 
-CREATE TABLE public."driver" (
+CREATE TABLE "driver" (
                           "id" serial PRIMARY KEY,
-                          "name" varchar not null,
-                          "description" varchar not null,
-                          "create_date" timestamptz not null default now(),
-                          "update_date" timestamptz
+                          "name" varchar,
+                          "description" varchar,
+                          "create_date" timestamp,
+                          "update_date" timestamp
 );
 
-ALTER TABLE public."order" ADD FOREIGN KEY ("user_id") REFERENCES public."user" ("id");
+CREATE TABLE "branch" (
+                          "id" serial PRIMARY KEY,
+                          "name" varchar,
+                          "create_date" timestamp,
+                          "update_date" timestamp
+);
 
-ALTER TABLE public."order" ADD FOREIGN KEY ("status_id") REFERENCES public."status" ("id");
+CREATE TABLE "otp" (
+                       "id" serial PRIMARY KEY,
+                       "code" varchar,
+                       "user_id" integer,
+                       "type" varchar,
+                       "create_date" timestamp,
+                       "update_date" timestamp
+);
 
-ALTER TABLE public."order_equipment" ADD FOREIGN KEY ("order_id") REFERENCES public."order" ("id");
+ALTER TABLE "order" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
 
-ALTER TABLE public."order_equipment" ADD FOREIGN KEY ("equipment_id") REFERENCES public."equipment" ("id");
+ALTER TABLE "order" ADD FOREIGN KEY ("status_id") REFERENCES "status" ("id");
 
-ALTER TABLE public."log" ADD FOREIGN KEY ("order_id") REFERENCES public."order" ("id");
+ALTER TABLE "order_equipment" ADD FOREIGN KEY ("order_id") REFERENCES "order" ("id");
 
-ALTER TABLE public."log" ADD FOREIGN KEY ("updated_by") REFERENCES public."user" ("id");
+ALTER TABLE "order_equipment" ADD FOREIGN KEY ("equipment_id") REFERENCES "equipment" ("id");
 
-ALTER TABLE public."hierarchy" ADD FOREIGN KEY ("user1_id") REFERENCES public."user" ("id");
+ALTER TABLE "log" ADD FOREIGN KEY ("order_id") REFERENCES "order" ("id");
 
-ALTER TABLE public."hierarchy" ADD FOREIGN KEY ("user2_id") REFERENCES public."user" ("id");
+ALTER TABLE "log" ADD FOREIGN KEY ("updated_by") REFERENCES "user" ("id");
 
-ALTER TABLE public."log" ADD FOREIGN KEY ("action_type_id") REFERENCES public."action_type" ("id");
+ALTER TABLE "hierarchy" ADD FOREIGN KEY ("user1_id") REFERENCES "user" ("id");
 
-ALTER TABLE public."comment" ADD FOREIGN KEY ("order_id") REFERENCES public."order" ("id");
+ALTER TABLE "hierarchy" ADD FOREIGN KEY ("user2_id") REFERENCES "user" ("id");
 
-ALTER TABLE public."comment" ADD FOREIGN KEY ("user_id") REFERENCES public."user" ("id");
+ALTER TABLE "log" ADD FOREIGN KEY ("action_type_id") REFERENCES "action_type" ("id");
 
-ALTER TABLE public."user_order_permission" ADD FOREIGN KEY ("user_id") REFERENCES public."user" ("id");
+ALTER TABLE "comment" ADD FOREIGN KEY ("order_id") REFERENCES "order" ("id");
 
-ALTER TABLE public."user_order_permission" ADD FOREIGN KEY ("order_id") REFERENCES public."order" ("id");
+ALTER TABLE "comment" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
 
-ALTER TABLE public."user_order_permission" ADD FOREIGN KEY ("permission_id") REFERENCES public."permission" ("id");
+ALTER TABLE "user_order_permission" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
 
-ALTER TABLE public."order" ADD FOREIGN KEY ("priority_id") REFERENCES public."priority" ("id");
+ALTER TABLE "user_order_permission" ADD FOREIGN KEY ("order_id") REFERENCES "order" ("id");
 
-ALTER TABLE public."order" ADD FOREIGN KEY ("assigned_to") REFERENCES public."driver" ("id");
+ALTER TABLE "user_order_permission" ADD FOREIGN KEY ("permission_id") REFERENCES "permission" ("id");
+
+ALTER TABLE "order" ADD FOREIGN KEY ("priority_id") REFERENCES "priority" ("id");
+
+ALTER TABLE "order" ADD FOREIGN KEY ("assigned_to") REFERENCES "driver" ("id");
+
+ALTER TABLE "user" ADD FOREIGN KEY ("branch_id") REFERENCES "branch" ("id");
+
+ALTER TABLE "otp" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
