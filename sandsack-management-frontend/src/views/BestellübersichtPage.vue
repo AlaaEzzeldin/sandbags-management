@@ -18,7 +18,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                v-model="date"
+                v-model="dateRangeText"
                 label="Tage"
                 filled
                 prepend-icon="mdi-calendar"
@@ -28,7 +28,8 @@
             ></v-text-field>
           </template>
           <v-date-picker
-              v-model="date"
+              v-model="dates"
+              range
               @input="menu = false"
           ></v-date-picker>
         </v-menu>
@@ -136,7 +137,9 @@ export default {
   data() {
     return {
 
-      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      dates:
+          [(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)],
       modal: false,
       menu: false,
 
@@ -173,6 +176,11 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    dateRangeText () {
+      return this.dates.join(' - ')
+    },
   },
 };
 </script>
