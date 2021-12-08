@@ -71,25 +71,22 @@
             ></v-select>
           </v-col>
         </v-row>
-        <GChart type="LineChart" :data="chartData" :options="chartOptions" />
+        <GChart type="ColumnChart" :data="chartData" :options="chartOptions" />
+        <v-row>
+          <v-col cols="12" sm="3" offset="9">
+            <v-btn
+                align="right"
+                style="text-transform: capitalize; font-weight: bolder;"
+                block
+                rounded
+                color="red"
+                dark
+            >
+              Pdf Export
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-container>
-    <v-spacer></v-spacer>
-    <v-card-actions>
-      <v-row>
-        <v-col cols="12" sm="3" offset="9">
-          <v-btn
-              align="right"
-              style="text-transform: capitalize; font-weight: bolder;"
-              block
-              rounded
-              color="red"
-              dark
-          >
-            Pdf Export
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card-actions>
   </div>
 </template>
 
@@ -118,28 +115,27 @@ export default {
         ["EA 1.1 Altstadt - Ost", 5],
         ["EA 1.2 Altstadt - Mitte", 12],
         ["EA 1.3 Altstadt - West", 9],
-        ["EA 2.1 Neumarkt - Nord", 20],
+        ["EA 2.1 Neumarkt - Nord", 25],
       ],
 
       selectOptions: [
         { state: 'Beim Abschnitt',},
         { state: 'Beim Tag',},
       ],
-
-
       chartOptions: {
         hAxis: {
           title: "Abschnitt",
         },
         vAxis: {
           title: "Bestellungen",
+          ticks: [0,5,10,15,20,25,30]
         },
         chart: {
           title: "order status",
         },
-        colors: ['red'],
+        colors: ['#D7201F'],
         lineWidth: 4,
-        smoothLine: true
+        smoothLine: true,
       },
     };
   },
