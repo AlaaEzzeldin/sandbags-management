@@ -50,18 +50,17 @@
         <h3>Bestellungen/Uhr</h3>
       </v-col>
     </v-row>
-      <v-container fluid>
-        <v-row align="center">
+      <v-container fluid style="margin-top: 20px">
+        <v-row>
           <v-col cols="6">
-            <v-subheader>
+            <h2>
               Bestellungen
-            </v-subheader>
+            </h2>
           </v-col>
-
           <v-col cols="6">
             <v-select
                 v-model="select"
-                :items="amount"
+                :items="selectOptions"
                 item-text="state"
                 label="Beim Abschnitt"
                 filled
@@ -115,35 +114,32 @@ export default {
 
       // Array will be automatically processed with visualization.arrayToDataTable function
       chartData: [
-        ["period", "Status"],
-        ["5-10", 5],
-        ["10-20", 12],
-        ["20-25", 9],
-        ["25-30", 6],
-        ["30-50", 6],
+        ["Abschnitt", "Bestellungen"],
+        ["EA 1.1 Altstadt - Ost", 5],
+        ["EA 1.2 Altstadt - Mitte", 12],
+        ["EA 1.3 Altstadt - West", 9],
+        ["EA 2.1 Neumarkt - Nord", 20],
       ],
 
-      amount: [
-        { state: 'Sample1',},
-        { state: 'Sample2',},
-        { state: 'sample3',},
-        { state: 'sample4',},
-        { state: 'sample5',},
+      selectOptions: [
+        { state: 'Beim Abschnitt',},
+        { state: 'Beim Tag',},
       ],
 
 
       chartOptions: {
         hAxis: {
-          title: "Request",
-          titleTextStyle: { color: "#FF0000" },
+          title: "Abschnitt",
         },
         vAxis: {
-          title: "Time",
-          titleTextStyle: { color: "#FF0000" }
+          title: "Bestellungen",
         },
         chart: {
           title: "order status",
         },
+        colors: ['red'],
+        lineWidth: 4,
+        smoothLine: true
       },
     };
   },
