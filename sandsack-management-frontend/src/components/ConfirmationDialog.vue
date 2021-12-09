@@ -7,6 +7,15 @@
       <v-card-title>
         {{cardText}}
       </v-card-title>
+      <v-container>
+        <v-text-field
+            label="Notizen"
+            v-if="hasTextField"
+            :error="textFieldError"
+            :error-messages="textFieldErrorMessages"
+            :value="textFieldValue"
+        ></v-text-field>
+      </v-container>
       <v-card-actions>
         <v-spacer/>
         <v-btn
@@ -37,11 +46,17 @@
 <script>
 export default {
   name: "ConfirmationDialog",
+  data: () => ({
+    textFieldError: false,
+    textFieldErrorMessages: [],
+    textFieldValue: '',
+  }),
   props: [
       "dialog",
       "cardText",
       'newStatus',
-      'orderID'
+      'orderID',
+      'hasTextField'
   ],
   methods:{
     closeDialog(){
@@ -49,13 +64,21 @@ export default {
   },
 
     submitNewStatus(){
-      let data={
-        "status": this.newStatus
+      if (this.newStatus === 'abgelehnt' && !this.textFieldValue) {
+        this.textFieldError = true;
+        this.textFieldErrorMessages = ['Notizen sind verpflichtend!'];
       }
-      let id= this.orderID
-      this.$store.dispatch("updateOrder",  {id, data} )
-      this.closeDialog()
-    }
+      else {
+        this.textFieldError = false;
+        this.textFieldErrorMessages = [];
+        let data={
+          "status": this.newStatus
+        }
+        let id= this.orderID
+        this.$store.dispatch("updateOrder",  {id, data} )
+        this.closeDialog()
+      }
+    },
 
 }
 }
