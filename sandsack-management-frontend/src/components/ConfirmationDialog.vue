@@ -10,6 +10,7 @@
       <v-container>
         <v-text-field
             label="Notizen"
+            outlined
             v-if="hasTextField"
             :error="textFieldError"
             :error-messages="textFieldErrorMessages"
