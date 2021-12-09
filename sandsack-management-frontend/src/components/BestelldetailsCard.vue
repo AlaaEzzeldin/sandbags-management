@@ -180,7 +180,7 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
-              @click="changeStatus('abgelehnt?','abgelehnt')"
+              @click="changeStatus('Bestellung ablehnen?','abgelehnt')"
           >
             Bestellung ablehnen
           </v-btn>
@@ -227,7 +227,7 @@
               dark
               block
               :disabled="getOrder.status!=='weitergeleitet'"
-              @click="changeStatus('abgelehnt?','abgelehnt')"
+              @click="changeStatus('Bestellung ablehnen?','abgelehnt')"
           >
             Bestellung ablehnen
           </v-btn>
