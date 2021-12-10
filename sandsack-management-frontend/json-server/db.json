@@ -6,11 +6,11 @@
       "from": "EA 1.1 Altstadt- Ost",
       "type": "sandsack",
       "priority": "Hohe",
-      "status": "anstehend",
+      "status": "abgelehnt",
       "quantity": "319",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByUnterabschnitt": "please process ASAP3",
-      "notesByEinsatzabschnitt": "Maybe it is important",
+      "notesByEinsatzabschnitt": "test this notes 2",
       "notesByHauptabschnitt": "declined there is no enough sandbags",
       "logs": [
         "the request has been created by the unterabschnitt bla bla",
@@ -136,9 +136,10 @@
       "from": "EA 1.1 Altstadt- West",
       "type": "sandsack",
       "priority": "niedrige",
-      "status": "anstehend",
+      "status": "abgelehnt",
       "quantity": "14",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau"
+      "deliveryAddress": "Nikolastraße 4 494032 Passau",
+      "notesByHauptabschnitt": "notes by haupt"
     },
     {
       "id": 12,

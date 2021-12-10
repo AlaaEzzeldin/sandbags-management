@@ -1,21 +1,21 @@
 <template>
   <v-dialog
       v-model="dialog"
-      width="500"
+      width="800"
   >
     <v-card>
       <v-card-title>
-        {{cardText}}
+        {{ cardText }}
       </v-card-title>
       <v-container>
-        <v-text-field
+        <v-textarea
             label="Notizen"
             outlined
             v-if="hasTextField"
             :error="textFieldError"
             :error-messages="textFieldErrorMessages"
-            :value="textFieldValue"
-        ></v-text-field>
+            v-model="textFieldValue"
+        ></v-textarea>
       </v-container>
       <v-card-actions>
         <v-spacer/>
@@ -30,6 +30,7 @@
         </v-btn>
         <v-spacer/>
         <v-btn
+
             rounded
             outlined
             color="green"
@@ -53,35 +54,54 @@ export default {
     textFieldValue: '',
   }),
   props: [
-      "dialog",
-      "cardText",
-      'newStatus',
-      'orderID',
-      'hasTextField'
+    "dialog",
+    "cardText",
+    'newStatus',
+    'orderID',
+    'hasTextField'
   ],
-  methods:{
-    closeDialog(){
+  methods: {
+    closeDialog() {
       this.$emit('close')
-  },
+    },
 
-    submitNewStatus(){
-      if (this.newStatus === 'abgelehnt' && !this.textFieldValue) {
-        this.textFieldError = true;
-        this.textFieldErrorMessages = ['Notizen sind verpflichtend!'];
-      }
-      else {
-        this.textFieldError = false;
-        this.textFieldErrorMessages = [];
-        let data={
+    submitNewStatus() {
+      if (this.newStatus === 'abgelehnt') {
+        if(!this.textFieldValue){
+          this.textFieldError = true;
+          this.textFieldErrorMessages = ['Notizen sind verpflichtend!']
+        }
+        else this.submitUpdatedOrder()
+      } else {
+        let data = {
           "status": this.newStatus
         }
-        let id= this.orderID
-        this.$store.dispatch("updateOrder",  {id, data} )
+        let id = this.orderID
+        this.$store.dispatch("updateOrder", {id, data})
         this.closeDialog()
       }
     },
+    submitUpdatedOrder() {
+      let TextBy = this.getLoggedInUserRole()
+      let data = {
+        "status": this.newStatus,
+        [TextBy] : this.textFieldValue
+      }
+      let id = this.orderID
+      this.$store.dispatch("updateOrder", {id, data})
+      this.closeDialog()
+    },
+    // hard coding the users roles
+    getLoggedInUserRole() {
+      if (this.$route.params.userRole === '1') // Hauptabschintt
+        return 'notesByHauptabschnitt'
+      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
+        return 'notesByEinsatzabschnitt'
+      else if (this.$route.params.userRole === '5') //Einsatzleiter
+        return 'notesByEinsatzleiter'
+    }
 
-}
+  }
 }
 </script>
 
