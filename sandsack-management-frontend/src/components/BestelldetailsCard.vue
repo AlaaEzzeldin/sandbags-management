@@ -180,7 +180,7 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
-              @click="changeStatus('abgelehnt?','abgelehnt')"
+              @click="changeStatus('Bestellung ablehnen?','abgelehnt')"
           >
             Bestellung ablehnen
           </v-btn>
@@ -227,7 +227,7 @@
               dark
               block
               :disabled="getOrder.status!=='weitergeleitet'"
-              @click="changeStatus('abgelehnt?','abgelehnt')"
+              @click="changeStatus('Bestellung ablehnen?','abgelehnt')"
           >
             Bestellung ablehnen
           </v-btn>
@@ -259,6 +259,7 @@
         :newStatus="newStatus"
         :orderID="getOrder.id"
         :dialog="confirmationDialog"
+        :has-text-field="newStatus === 'abgelehnt'"
         @close="confirmationDialog = false"
     />
   </v-card>
@@ -304,9 +305,9 @@ export default {
     },
 
     changeStatus(cardText, newStatus){
-      this.cardText= cardText
-      this.newStatus=newStatus
-      this.confirmationDialog = true
+      this.cardText = cardText;
+      this.newStatus = newStatus;
+      this.confirmationDialog = true;
     },
     // hard coding the users roles
     getLoggedInUserRole() {

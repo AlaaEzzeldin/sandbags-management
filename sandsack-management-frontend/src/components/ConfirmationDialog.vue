@@ -1,12 +1,22 @@
 <template>
   <v-dialog
       v-model="dialog"
-      width="500"
+      width="800"
   >
     <v-card>
       <v-card-title>
-        {{cardText}}
+        {{ cardText }}
       </v-card-title>
+      <v-container>
+        <v-textarea
+            label="Notizen"
+            outlined
+            v-if="hasTextField"
+            :error="textFieldError"
+            :error-messages="textFieldErrorMessages"
+            v-model="textFieldValue"
+        ></v-textarea>
+      </v-container>
       <v-card-actions>
         <v-spacer/>
         <v-btn
@@ -20,6 +30,7 @@
         </v-btn>
         <v-spacer/>
         <v-btn
+
             rounded
             outlined
             color="green"
@@ -37,27 +48,60 @@
 <script>
 export default {
   name: "ConfirmationDialog",
+  data: () => ({
+    textFieldError: false,
+    textFieldErrorMessages: [],
+    textFieldValue: '',
+  }),
   props: [
-      "dialog",
-      "cardText",
-      'newStatus',
-      'orderID'
+    "dialog",
+    "cardText",
+    'newStatus',
+    'orderID',
+    'hasTextField'
   ],
-  methods:{
-    closeDialog(){
+  methods: {
+    closeDialog() {
       this.$emit('close')
-  },
+    },
 
-    submitNewStatus(){
-      let data={
-        "status": this.newStatus
+    submitNewStatus() {
+      if (this.newStatus === 'abgelehnt') {
+        if(!this.textFieldValue){
+          this.textFieldError = true;
+          this.textFieldErrorMessages = ['Notizen sind verpflichtend!']
+        }
+        else this.submitUpdatedOrder()
+      } else {
+        let data = {
+          "status": this.newStatus
+        }
+        let id = this.orderID
+        this.$store.dispatch("updateOrder", {id, data})
+        this.closeDialog()
       }
-      let id= this.orderID
-      this.$store.dispatch("updateOrder",  {id, data} )
+    },
+    submitUpdatedOrder() {
+      let TextBy = this.getLoggedInUserRole()
+      let data = {
+        "status": this.newStatus,
+        [TextBy] : this.textFieldValue
+      }
+      let id = this.orderID
+      this.$store.dispatch("updateOrder", {id, data})
       this.closeDialog()
+    },
+    // hard coding the users roles
+    getLoggedInUserRole() {
+      if (this.$route.params.userRole === '1') // Hauptabschintt
+        return 'notesByHauptabschnitt'
+      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
+        return 'notesByEinsatzabschnitt'
+      else if (this.$route.params.userRole === '5') //Einsatzleiter
+        return 'notesByEinsatzleiter'
     }
 
-}
+  }
 }
 </script>
 
