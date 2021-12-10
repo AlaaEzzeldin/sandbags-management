@@ -108,7 +108,7 @@ export default {
             (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)],
       modal: false,
       menu: false,
-
+      select: false,
       // Array will be automatically processed with visualization.arrayToDataTable function
       chartData: [
         ["Abschnitt", "Bestellungen"],
