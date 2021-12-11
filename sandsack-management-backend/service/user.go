@@ -12,9 +12,10 @@ func GetUserByEmail(db *gorm.DB, email string) (user *models.User, err error) {
 	if exist := CheckUserExists(db, email); !exist {
 		return nil, errors.New("user not found")
 	}
-	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, is_super_user, create_date 
-				from public.user
-				where email = ?;`
+	query := `select u.id, u.name, u.phone, u.password, u.email, u.token, u.is_activated, u.is_email_verified, u.is_super_user, u.create_date, b.name as branch_name, b.id as branch_id
+				from public.user u, branch b
+				where u.email = ?
+				and u.branch_id = b.id;`
 	if err = db.Raw(query, email).Scan(&user).Error; err != nil {
 		return nil, err
 	}
@@ -134,3 +135,14 @@ func GetUserByOTP(db *gorm.DB, otp, reason string)  (user *models.User, err erro
 	return
 }
 
+func GetParent(db *gorm.DB, userId int) (user *models.User, err error) {
+	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, is_super_user, create_date 
+				from public.user
+			where id = (select user1_id from hierarchy where user2_id = ?);`
+
+	if err = db.Raw(query, userId).Scan(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return
+}

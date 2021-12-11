@@ -11,12 +11,14 @@ type User struct {
 	Id              int       `json:"id,omitempty" gorm:"column:id"`
 	Name            string    `json:"name,omitempty" gorm:"column:name"`
 	Phone           string    `json:"phone,omitempty" gorm:"column:phone"`
-	Password        string    `json:"password,omitempty" gorm:"column:password"`
+	Password        string    `gorm:"column:password"`
 	Email           string    `json:"email,omitempty" gorm:"column:email"`
 	Token           string    `json:"token,omitempty" gorm:"column:token"`
 	IsActivated     bool      `json:"is_activated,omitempty" gorm:"column:is_activated"`
 	IsSuperUser     bool      `json:"is_super_user,omitempty" gorm:"column:is_super_user"`
 	IsEmailVerified bool      `json:"is_email_verified,omitempty" gorm:"column:is_email_verified"`
+	BranchName      string    `json:"branch_name" gorm:"column:branch_name"`
+	BranchId        int       `gorm:"column:branch_id"`
 	CreateDate      time.Time `json:"create_date,omitempty" gorm:"column:create_date"`
 	UpdateDate      time.Time `json:"update_date,omitempty" gorm:"column:update_date"`
 }

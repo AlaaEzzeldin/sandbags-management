@@ -30,3 +30,10 @@ type RecoveryPasswordInput struct {
 	OTP      string `json:"otp"`
 	Password string `json:"password"`
 }
+
+type CreateOrderInput struct {
+	AddressTo  string           `json:"address_to,required"`
+	Priority   int              `json:"priority,required"`
+	Equipments []OrderEquipment `json:"equipments,required"`
+	Comments   []Comment        `json:"comments,omitempty"`
+}

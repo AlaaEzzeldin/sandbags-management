@@ -8,6 +8,7 @@ type CustomClaims struct {
 	Id int `json:"id"`
 	Email string `json:"email"`
 	Type string `json:"type"`
+	Role string `json:"role"`
 	jwt.StandardClaims `json:"standard_claims"`
 }
 

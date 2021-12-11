@@ -28,6 +28,7 @@ func (a *App) RunAllRoutes(){
 	log.SetOutput(f)
 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 
+	// unauthorized endpoints
 	r.GET("/api-doc/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.POST("/users/login", a.Login)
@@ -43,7 +44,6 @@ func (a *App) RunAllRoutes(){
 
 	auth := r.Group("/users")
 	auth.Use(AuthorizeJWT())
-
 
 	auth.GET("/", a.GetUserList)
 	auth.PUT("/password", a.ChangePassword)
@@ -70,17 +70,22 @@ func (a *App) RunAllRoutes(){
 		})
 	})
 
-	r.POST("/order/upgrade", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
-	r.POST("/order/cancel", func(context *gin.Context) {
+	r.PATCH("/order/upgrade", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",
 		})
 	})
 
+	r.POST("/order/cancel", func(context *gin.Context) {
+		context.JSON(http.StatusNoContent, gin.H{
+			"message": "in development",
+		})
+	})
+	r.POST("/order/accept", func(context *gin.Context) {
+		context.JSON(http.StatusNoContent, gin.H{
+			"message": "in development",
+		})
+	})
 	//authorized := r.Use(AuthorizeJWT())
 	//authorized.POST("/registration", a.Registration)
 

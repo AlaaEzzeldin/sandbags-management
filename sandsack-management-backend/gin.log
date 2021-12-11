@@ -17,6 +17,14 @@
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-2021/12/06 16:54:11 CheckPasswordHash error
-2021/12/06 16:54:14 interrupt
-2021/12/06 16:54:14 Exit command received. Exiting ....
+[GIN-debug] redirecting request 301: /users/ --> /users/
+2021/12/07 15:51:50 VerifyToken error token is expired by 116h50m28s
+[GIN-debug] redirecting request 301: /users/ --> /users/
+2021/12/07 15:53:18 USER &{1 Admin 1234 $2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa admin@admin.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJ0eXBlIjoicmVmcmVzaCIsInJvbGUiOiJhZG1pbiIsInN0YW5kYXJkX2NsYWltcyI6eyJleHAiOjE2NDkyNTY2MDN9fQ.ATJuU31mp8OqFv2YVKurHyfBJipfrgLuXvhJFJzfwzM true true true 2021-12-07 15:46:05.852223 +0100 CET 0001-01-01 00:00:00 +0000 UTC}
+2021/12/07 15:53:19 CreateUser error:  ERROR: duplicate key value violates unique constraint "user_pkey" (SQLSTATE 23505)
+[GIN-debug] redirecting request 301: /users/ --> /users/
+2021/12/07 15:54:22 USER &{1 Admin 1234 $2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa admin@admin.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJ0eXBlIjoicmVmcmVzaCIsInJvbGUiOiJhZG1pbiIsInN0YW5kYXJkX2NsYWltcyI6eyJleHAiOjE2NDkyNTY2MDN9fQ.ATJuU31mp8OqFv2YVKurHyfBJipfrgLuXvhJFJzfwzM true true true 2021-12-07 15:46:05.852223 +0100 CET 0001-01-01 00:00:00 +0000 UTC}
+2021/12/07 15:54:23 CreateUser error:  ERROR: duplicate key value violates unique constraint "user_pkey" (SQLSTATE 23505)
+2021/12/07 15:55:26 USER &{1 Admin 1234 $2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa admin@admin.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJ0eXBlIjoicmVmcmVzaCIsInJvbGUiOiJhZG1pbiIsInN0YW5kYXJkX2NsYWltcyI6eyJleHAiOjE2NDkyNTY2MDN9fQ.ATJuU31mp8OqFv2YVKurHyfBJipfrgLuXvhJFJzfwzM true true true 2021-12-07 15:46:05.852223 +0100 CET 0001-01-01 00:00:00 +0000 UTC}
+[GIN-debug] redirecting request 301: /users/ --> /users/
+[GIN-debug] redirecting request 301: /users/ --> /users/
