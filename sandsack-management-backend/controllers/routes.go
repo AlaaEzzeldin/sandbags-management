@@ -53,10 +53,9 @@ func (a *App) RunAllRoutes(){
 		})
 	})
 	auth.POST("/logout", a.Logout)
-
 	auth.POST("/change_password", a.ChangePassword)
-
 	auth.POST("/order", a.CreateOrder)
+	auth.GET("/order", a.ListOrder)
 
 	r.PATCH("/order/upgrade", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
