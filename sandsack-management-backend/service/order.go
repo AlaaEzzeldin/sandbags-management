@@ -261,9 +261,15 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 		}
 	}
 
-	if user.BranchId == 4 {
+	if user.BranchId == 2 { // Einsatzleiter
 		if order.StatusId == 4 { //weitergeleitet bei Hauptabschnitt
 			statusId = 6 // akzeptiert
+		}
+	}
+
+	if user.BranchId == 1 { // Mollnhof
+		if order.StatusId == 6{
+			statusId = 6
 		}
 	}
 
@@ -286,7 +292,64 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 		}
 	}
 
+	if user.BranchId > 1 {
+		parent, err := GetParent(db, user.Id)
+		if err != nil {
+			return err
+		}
+		permissions := []int{1,3,4,5,6} //view, edit, decline, accept, comment
+		if parent.BranchId == 1 {
+			permissions = append(permissions, 2) // can confirm delivery
+			permissions = append(permissions, 7) // can assign to
+		}
+		err = InsertUserOrderPermissions(db, parent.Id, orderId, permissions)
+		if err != nil {
+			return err
+		}
+
+	}
+
+	logs := []models.Log{
+		{
+			OrderId: orderId,
+			ActionTypeId: models.DictActionTypeName["ACCEPTED"],
+			UpdatedBy: userId,
+			Description: user.Name + " accepted order " + order.Name,
+		},
+	}
+
+	err = InsertLogs(db, logs)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
+func DeclineOrder(db *gorm.DB, userId, orderId int) error {
+	query := `update public.order set status_id = 2 where order_id = ?;`
+	err := db.Exec(query, orderId).Error
+	if err != nil {
+		return err
+	}
 
+	user, _ := GetUserByID(db, userId)
+	order, _ := GetOrder(db, userId, orderId)
+
+	logs := []models.Log{
+		{
+			OrderId: orderId,
+			ActionTypeId: models.DictActionTypeName["DECLINED"],
+			UpdatedBy: userId,
+			Description: user.Name + " declined order " + order.Name,
+		},
+	}
+
+	err = InsertLogs(db, logs)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}

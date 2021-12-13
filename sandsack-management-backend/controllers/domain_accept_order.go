@@ -67,8 +67,6 @@ func (a *App) AcceptOrder(c *gin.Context) {
 		return
 	}
 
-
-	log.Println(permissions)
-	return
+	c.JSON(http.StatusOK, nil)
 
 }
