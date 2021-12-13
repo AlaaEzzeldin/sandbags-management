@@ -19,7 +19,10 @@
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-2021/12/13 15:48:42 GetOrderList err invalid field found for struct team2/sandsack-management-backend/models.Order's field Equipments: define a valid foreign key for relations or implement the Valuer/Scanner interface
-2021/12/13 15:48:43 GetOrderList err invalid field found for struct team2/sandsack-management-backend/models.Order's field Equipments: define a valid foreign key for relations or implement the Valuer/Scanner interface
-2021/12/13 15:50:44 interrupt
-2021/12/13 15:50:44 Exit command received. Exiting ....
+2021/12/13 16:43:28 GetOrderList err invalid field found for struct team2/sandsack-management-backend/models.Order's field Equipments: define a valid foreign key for relations or implement the Valuer/Scanner interface
+2021/12/13 18:30:07 VerifyToken error token is expired by 48m9s
+2021/12/13 18:30:31 User branch 5
+2021/12/13 18:30:31 [] 0
+2021/12/13 18:30:37 GetOrderList err invalid field found for struct team2/sandsack-management-backend/models.Order's field Equipments: define a valid foreign key for relations or implement the Valuer/Scanner interface
+2021/12/13 20:24:31 interrupt
+2021/12/13 20:24:31 Exit command received. Exiting ....

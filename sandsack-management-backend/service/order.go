@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"gorm.io/gorm"
 	"log"
 	"team2/sandsack-management-backend/models"
@@ -163,7 +164,7 @@ func GetOrderList(a *gorm.DB, userId int) (orderList *[]models.Order, err error)
 				from public.order o, public.status s 
 				where o.status_id = s.id
 				and o.id in (select order_id from user_order_permission where user_id = ? 
-									and permission_id=(select id from permission where name = 'CAN VIEW'));`
+							 and permission_id = (select id from permission where name = 'CAN VIEW'));`
 
 	if err := a.Raw(query, userId).Scan(&orderList).Error; err != nil {
 		log.Println("GetOrderList err", err.Error())
@@ -177,6 +178,7 @@ func GetOrderList(a *gorm.DB, userId int) (orderList *[]models.Order, err error)
 		if err != nil {
 			return nil, err
 		}
+		log.Println("Comments", row.Comments)
 		query = `select oe.id, e.name, oe.quantity from public.order_equipment oe, public.equipment e where oe.order_id = ? and e.id=oe.equipment_id;`
 		err = a.Raw(query, row.Id).Scan(&row.Equipments).Error
 		if err != nil {
@@ -198,3 +200,93 @@ func GetOrderList(a *gorm.DB, userId int) (orderList *[]models.Order, err error)
 
 	return orderList, nil
 }
+
+func ExistUserOrderPermission(db *gorm.DB, userId, orderId int) bool {
+	query := `select count(1) from public.user_order_permission where user_id = ? and order_id = ?;`
+	var count int
+	if err := db.Raw(query, userId, orderId).Scan(&count).Error; err != nil {
+		log.Println("ExistUserOrderPermission error", err.Error())
+		return false
+	}
+	if count == 0 {
+		return false
+	}
+	return true
+}
+
+
+func GetUserOrderPermissions(a *gorm.DB, userId, orderId int) ([]int, error) {
+	if exist := ExistUserOrderPermission(a, userId, orderId); !exist {
+		return nil, errors.New("user does not have permissions")
+	}
+	var permissions []models.Permission
+	query := `select permission_id from public.user_order_permission where user_id = ? and order_id = ?;`
+	err := a.Raw(query, userId, orderId).Scan(&permissions).Error
+
+	var perms []int
+	for _, row := range permissions {
+		perms = append(perms, row.Id)
+	}
+	return perms, err
+}
+
+func AcceptOrder(db *gorm.DB, userId, orderId int) error {
+	user, err := GetUserByID(db, userId)
+	if err != nil {
+		return err
+	}
+
+	children, err := GetChildren(db, userId)
+
+	order, err := GetOrder(db, userId, orderId)
+
+	var statusId int
+	if user.BranchId == 5 { // Unterabschnitt
+		return errors.New("User from Unterabschnitt cannot accept orders")
+	}
+
+	if user.BranchId == 4 { // Einsatzabschnitt
+		if statusId == 1 {
+			//can do
+		} else {
+			return errors.New("cannot weitergeleit")
+		}
+	}
+
+	if user.BranchId == 3 { // Hauptabschnitt
+		if order.StatusId == 3 {
+			statusId = 4
+		} else {
+			return errors.New("cannot weiterhgeleit")
+		}
+	}
+
+	if user.BranchId == 4 {
+		if order.StatusId == 4 { //weitergeleitet bei Hauptabschnitt
+			statusId = 6 // akzeptiert
+		}
+	}
+
+	query := `update public.order set status_id = ? where id = ?;`
+	err = db.Exec(query, statusId, orderId).Error
+	if err != nil {
+		return nil
+	}
+
+	// permissionId = 1 -- CAN VIEW
+	for _, child := range *children {
+		query = `delete from user_order_permission 
+			where user_id = ? and order_id = ? and 
+			permission_id in 
+				(select id from permission 
+				where name = 'CAN EDIT' or name = 'CAN DECLINE' or name = 'CAN ACCEPT'));`
+		err = db.Exec(query, child.Id, order.Id).Error
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+

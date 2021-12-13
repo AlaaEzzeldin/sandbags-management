@@ -51,3 +51,4 @@ type Order struct {
 	Equipments  []OrderEquipment `json:"equipments,omitempty"`
 	Permissions []Permission     `json:"permissions,omitempty"`
 }
+
