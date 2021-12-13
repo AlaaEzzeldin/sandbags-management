@@ -9,6 +9,17 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// RecoveryPassword
+// @Description RecoveryPassword - when user got OTP per email, he needs to input new password and otp to set password
+// @Summary RecoveryPassword - when user got OTP per email, he needs to input new password and otp to set password
+// @Accept json
+// @Param input body models.RecoveryPasswordInput true "RecoveryPassword"
+// @Success 200
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Authentication
+// @Router /users/recovery_password [post]
 func (a *App) RecoveryPassword(c *gin.Context) {
 	var input models.RecoveryPasswordInput
 

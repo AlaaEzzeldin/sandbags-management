@@ -8,6 +8,17 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// CreateOrder
+// @Description CreateOrder - Unterabschnitt creates the order
+// @Summary CreateOrder - Unterabschnitt creates the order
+// @Accept json
+// @Param input body models.CreateOrderInput true "CreateOrder"
+// @Success 200 {object} models.Order
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Order
+// @Router /users/order [post]
 func (a *App) CreateOrder(c *gin.Context) {
 	var input models.CreateOrderInput
 	// check whether the structure of request is correct
@@ -31,8 +42,17 @@ func (a *App) CreateOrder(c *gin.Context) {
 	}
 
 	user, err := service.GetUserByEmail(a.DB, claims.Email)
-	if user.BranchName != "Unterabschnitt" {
-		log.Println("GetClaims error: ", err.Error())
+	if err != nil {
+		log.Println("GetUserByEmail error: ", err.Error())
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			ErrCode: http.StatusInternalServerError,
+			ErrMessage: "something went wrong",
+		})
+		return
+	}
+	log.Println("User branch", user.BranchId)
+	if user.BranchId != 5 {
+		log.Println("It's not Unterabschnitt")
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
 			ErrCode: http.StatusUnauthorized,
 			ErrMessage: "you are not allowed to create order",
@@ -50,6 +70,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 		Comments: input.Comments,
 		Equipments: input.Equipments,
 	}
+
 
 	if err := service.CreateOrder(a.DB, user.Name, order); err != nil {
 		log.Println("CreateOrder error: ", err.Error())

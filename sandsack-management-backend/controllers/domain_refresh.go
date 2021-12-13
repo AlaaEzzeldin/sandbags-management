@@ -9,6 +9,18 @@ import (
 	"time"
 )
 
+
+// RefreshAccessToken
+// @Description RefreshAccessToken - refreshes access token
+// @Summary RefreshAccessToken - refreshes access token
+// @Accept json
+// @Param input body models.RefreshAccessTokenRequest true "RefreshAccessToken"
+// @Success 200 {object} models.Tokens
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Authentication
+// @Router /users/refresh [post]
 func (a *App) RefreshAccessToken(c *gin.Context) {
 	var input models.RefreshAccessTokenRequest
 	// check whether the structure of request is correct
@@ -60,9 +72,9 @@ func (a *App) RefreshAccessToken(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"access_token": tokens["access_token"],
-		"refresh_token": input.RefreshToken,
+	c.JSON(http.StatusOK, models.Tokens{
+		AccessToken: tokens["access_token"],
+		RefreshToken: input.RefreshToken,
 	})
 
 }

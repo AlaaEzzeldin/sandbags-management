@@ -9,6 +9,17 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// VerifyEmail
+// @Description VerifyEmail - when user got email with otp to verify email, it has to input this otp to verify email and set new password
+// @Summary VerifyEmail - when user got email with otp to verify email, it has to input this otp to verify email and set new password
+// @Accept json
+// @Param input body models.VerifyEmailInput true "VerifyEmail"
+// @Success 200 {array} models.User
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Authentication
+// @Router /users/activation [post]
 func (a *App) VerifyEmail(c *gin.Context) {
 	var input models.VerifyEmailInput
 

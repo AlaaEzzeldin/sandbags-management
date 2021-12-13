@@ -11,7 +11,14 @@ import (
 )
 
 // Login
-// @Description Registers new user in system. Sends verification token to email of the user
+// @Description Login - user inputs auth credentials and gets tokens
+// @Summary Login - user inputs auth credentials and gets tokens
+// @Accept json
+// @Param input body models.Login true "Login"
+// @Success 200 {object} models.Tokens
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
 // @Tags Authentication
 // @Router /users/login [post]
 func (a *App) Login(c *gin.Context){
@@ -30,19 +37,12 @@ func (a *App) Login(c *gin.Context){
 	email := strings.ToLower(input.Email)
 
 	exists := service.CheckUserExists(a.DB, email)
+	log.Println("Exists?", exists)
 	if !exists {
+		log.Println("CheckUserExists error: user does not exist")
 		c.JSON(http.StatusNotFound, models.ErrorResponse{
 			ErrCode: http.StatusNotFound,
 			ErrMessage: "user not found",
-		})
-		return
-	}
-
-	tokens, err := service.GenerateTokens(a.DB, email)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
 		})
 		return
 	}
@@ -59,6 +59,7 @@ func (a *App) Login(c *gin.Context){
 	// check password is correct
 	ok := functions.CheckPasswordHash(input.Password, user.Password)
 	if !ok {
+		log.Println("CheclPasswordHash error", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode: http.StatusBadRequest,
 			ErrMessage: "wrong password",
@@ -84,6 +85,15 @@ func (a *App) Login(c *gin.Context){
 		return
 	}
 
+	tokens, err := service.GenerateTokens(a.DB, email)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			ErrCode: http.StatusInternalServerError,
+			ErrMessage: "something went wrong",
+		})
+		return
+	}
+
 	var refreshToken string
 	// if we do not have token in database, then put it in
 	if len(user.Token) == 0 {
@@ -103,7 +113,10 @@ func (a *App) Login(c *gin.Context){
 	tokens["refresh_token"] = refreshToken
 
 	// return access and refresh tokens
-	c.JSON(http.StatusOK, tokens)
+	c.JSON(http.StatusOK, models.Tokens{
+		RefreshToken: tokens["refresh_token"],
+		AccessToken: tokens["access_token"],
+	})
 	return
 }
 

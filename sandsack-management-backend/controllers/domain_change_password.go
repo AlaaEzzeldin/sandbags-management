@@ -9,6 +9,16 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// ChangePassword
+// @Description ChangePassword of the user
+// @Summary ChangePassword of the user
+// @Accept json
+// @Param input body models.ChangePasswordInput true "ChangePassword"
+// @Success 200 "Password was changed successfully"
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Tags Authentication
+// @Router /users/password [put]
 func (a *App) ChangePassword(c *gin.Context) {
 	var input models.ChangePasswordInput
 
@@ -79,7 +89,7 @@ func (a *App) ChangePassword(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusOK, "Password was changed successfully")
 	return
 
 }

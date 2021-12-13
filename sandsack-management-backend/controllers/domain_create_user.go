@@ -8,7 +8,17 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
-
+// CreateUser
+// @Description CreateUser - Einsatzleiter can create a new user
+// @Summary CreateUser - Einsatzleiter can create a new user
+// @Accept json
+// @Param input body models.CreateUser true "CreateUser"
+// @Success 200 {object} models.ErrorResponse
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Admin
+// @Router /admin/user [post]
 func (a *App) CreateUser(c *gin.Context) {
 	var input models.CreateUser
 
@@ -54,6 +64,17 @@ func (a *App) CreateUser(c *gin.Context) {
 			ErrMessage: "you don't have this right",
 		})
 		return
+	}
+
+
+
+	parent, err := service.GetUserByID(a.DB, input.ParentId)
+	if parent.Name == "Mollnhof" {
+		log.Println("Mollnhof cannot have any branches except Einsatzleiter")
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			ErrCode: http.StatusBadRequest,
+			ErrMessage: "Mollnhof cannot have any branched except Einsatzleiter",
+		})
 	}
 
 	if err := service.CreateUser(a.DB, &input); err != nil {

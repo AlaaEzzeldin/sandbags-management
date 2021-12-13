@@ -30,12 +30,12 @@ func (a *App) RunAllRoutes(){
 
 	// unauthorized endpoints
 	r.GET("/api-doc/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
+//todo: check inserting hierarchy
 	r.POST("/users/login", a.Login)
 	r.POST("/users/activation", a.VerifyEmail)
 	r.POST("/users/forgot_password", a.SendRecoveryPassword)
 	r.POST("/users/recovery_password", a.RecoveryPassword)
-	r.POST("users/refresh", a.RefreshAccessToken)
+	r.POST("/users/refresh", a.RefreshAccessToken)
 
 	admin := r.Group("/admin")
 	admin.Use(a.AuthorizeAdmin())
@@ -52,23 +52,11 @@ func (a *App) RunAllRoutes(){
 			"message": "in development",
 		})
 	})
-	auth.POST("/logout", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
+	auth.POST("/logout", a.Logout)
 
-	auth.POST("/change_password", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
+	auth.POST("/change_password", a.ChangePassword)
 
-	r.POST("/order", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
+	auth.POST("/order", a.CreateOrder)
 
 	r.PATCH("/order/upgrade", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{

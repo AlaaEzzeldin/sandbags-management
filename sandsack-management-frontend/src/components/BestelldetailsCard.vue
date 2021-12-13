@@ -20,7 +20,7 @@
           <h3 style="font-weight: bolder; color: black">Von:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.from}}</h3>
+          <h3 style="font-weight: bolder; color: black">{{ getOrder.from }}</h3>
         </v-col>
       </v-row>
       <v-row>
@@ -36,7 +36,7 @@
           <h3 style="font-weight: bolder; color: black">Anzahl:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.quantity}}</h3>
+          <h3 style="font-weight: bolder; color: black">{{ getOrder.quantity }}</h3>
         </v-col>
       </v-row>
       <v-row>
@@ -44,7 +44,7 @@
           <h3 style="font-weight: bolder; color: black">Priorität:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.priority}}</h3>
+          <h3 style="font-weight: bolder; color: black">{{ getOrder.priority }}</h3>
         </v-col>
       </v-row>
       <v-row>
@@ -52,7 +52,7 @@
           <h3 style="font-weight: bolder; color: black">Lieferadresse:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{getOrder.deliveryAddress}}</h3>
+          <h3 style="font-weight: bolder; color: black">{{ getOrder.deliveryAddress }}</h3>
         </v-col>
       </v-row>
       <v-row v-if="getOrder.notesByUnterabschnitt">
@@ -67,24 +67,30 @@
           ></v-textarea>
         </v-col>
       </v-row>
-      <v-row v-if="getOrder.notesByEinsatzORderHaupt">
+      <v-row v-if="getOrder.notesByEinsatzabschnitt">
         <v-col cols="12" sm="12">
-          <h3 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt/einsatzabschnitt</h3>
+          <h3 style="font-weight: bolder; color: black">Notizen aus dem Einsatzabschnitt</h3>
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
               readonly
               outlined
-              :value="getOrder.notesByEinsatzORderHaupt"
+              :value="getOrder.notesByEinsatzabschnitt"
           ></v-textarea>
         </v-col>
       </v-row>
-      <!--      <v-row>
-              <v-col cols="12" sm="12">
-                <h3 style="font-weight: bolder; color: black">Besteellverlauf</h3>
-              </v-col>
-            </v-row>-->
-
+      <v-row v-if="getOrder.notesByHauptabschnitt">
+        <v-col cols="12" sm="12">
+          <h3 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt</h3>
+        </v-col>
+        <v-col cols="12" sm="12">
+          <v-textarea
+              readonly
+              outlined
+              :value="getOrder.notesByHauptabschnitt"
+          ></v-textarea>
+        </v-col>
+      </v-row>
     </v-card-text>
 
     <!------------------------------------------------- Unterabschnitt ------------------------------------------->
@@ -99,7 +105,7 @@
               block
               outlined
               :disabled="getOrder.status!=='anstehend'"
-              @click="editItem"
+              @click="editOrder"
           >
             Bestellung bearbeiten
           </v-btn>
@@ -113,6 +119,7 @@
               dark
               block
               outlined
+              @click="changeStatus('Lieferung bestätigen?','geliefert')"
           >
             Lieferung bestätigen
           </v-btn>
@@ -125,6 +132,7 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
+              @click="changeStatus('Bestellung stornieren?','storniert')"
           >
             Bestellung stornieren
           </v-btn>
@@ -133,8 +141,8 @@
 
     </v-card-actions>
 
-    <!---------------------------------- Einsatzabschnitt & Hauptabschnitt -------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole() === 1 || this.getLoggedInUserRole() === 2">
+    <!---------------------------------- Einsatzabschnitt  -------------------------------->
+    <v-card-actions v-if="this.getLoggedInUserRole() === 2">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -145,8 +153,9 @@
               block
               outlined
               :disabled="getOrder.status!=='anstehend'"
+              @click="changeStatus('Bestellung weiterleiten an Hauptabschnitt?','weitergeleitet')"
           >
-            Bestellung direkt annehmen
+            Bestellung weiterleiten an Hauptabschnitt
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
@@ -158,9 +167,9 @@
               block
               outlined
               :disabled="getOrder.status!=='anstehend'"
-              @click="editItem"
+              @click="editOrder"
           >
-            Bestellung bearbeiten und dann akzeptieren
+            Bestellung bearbeiten
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
@@ -171,6 +180,54 @@
               dark
               block
               :disabled="getOrder.status!=='anstehend'"
+              @click="changeStatus('Bestellung ablehnen?','abgelehnt')"
+          >
+            Bestellung ablehnen
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-card-actions>
+
+    <!----------------------------------  Hauptabschnitt -------------------------------->
+    <v-card-actions v-if="getLoggedInUserRole() === 1">
+      <v-row>
+        <v-col cols="12" sm="6" offset="3">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              rounded
+              color="green"
+              dark
+              block
+              outlined
+              :disabled="getOrder.status!=='weitergeleitet'"
+              @click="changeStatus('akzeptiert?','akzeptiert')"
+          >
+            Bestellung annehmen
+          </v-btn>
+        </v-col>
+        <v-col cols="12" sm="6" offset="3">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              rounded
+              color="red"
+              dark
+              block
+              outlined
+              :disabled="getOrder.status!=='weitergeleitet'"
+              @click="editOrder"
+          >
+            Bestellung bearbeiten
+          </v-btn>
+        </v-col>
+        <v-col cols="12" sm="6" offset="3">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              rounded
+              color="red"
+              dark
+              block
+              :disabled="getOrder.status!=='weitergeleitet'"
+              @click="changeStatus('Bestellung ablehnen?','abgelehnt')"
           >
             Bestellung ablehnen
           </v-btn>
@@ -189,181 +246,43 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='akzeptiert'"
+              v-bind:disabled="getOrder.status!=='akzeptiert'"
+              @click="changeStatus('Bestellung senden?','Auf dem Weg')"
           >
             Bestellung abgesendet
           </v-btn>
         </v-col>
       </v-row>
     </v-card-actions>
+    <ConfirmationDialog
+        :cardText="cardText"
+        :newStatus="newStatus"
+        :orderID="getOrder.id"
+        :dialog="confirmationDialog"
+        :has-text-field="newStatus === 'abgelehnt'"
+        @close="confirmationDialog = false"
+    />
   </v-card>
 </template>
 
 <script>
+import ConfirmationDialog from "./ConfirmationDialog";
 export default {
   name: 'BestelldetailsCard',
+  components: {ConfirmationDialog},
+
   data: () => ({
-    orders: [
-      {
-        'id': '0',
-        'created_at': '10.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Ost',
-        'priority': 'hohe',
-        'status': 'anstehend',
-        'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByUnterabschnitt':'please process ASAP'
-      },
-      {
-        'id': '1',
-        'created_at': '11.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Ost',
-        'priority': 'hohe',
-        'status': 'akzeptiert',
-        'quantity':'5',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByUnterabschnitt':'please process ASAP'
-
-      },
-      {
-        'id': '2',
-        'created_at': '12.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- West',
-        'priority': 'niedrige',
-        'status': 'anstehend',
-        'quantity':'54',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByUnterabschnitt':'please process ASAP',
-
-      },
-      {
-        'id': '3',
-        'created_at': '13.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Mitte',
-        'priority': 'mittel',
-        'status': 'geliefert',
-        'quantity':'7',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByEinsatzORderHaupt':'please process ASAP'
-      },
-      {
-        'id': '4',
-        'created_at': '14.11.2021 12:01',
-        'from': 'EA 2.1 Nuemarkt- Nord',
-        'priority': 'hohe',
-        'status': 'Auf dem Weg',
-        'quantity':'3',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByEinsatzORderHaupt':'please process ASAP'
-
-      },
-      {
-        'id': '5',
-        'created_at': '15.11.2021 12:01',
-        'from': 'EA 3.2 Universität-West',
-        'priority': 'niedrige',
-        'status': 'abgelehnt',
-        'quantity':'9',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau',
-        'notesByEinsatzORderHaupt':'There is no need for it, we don not have enough bags'
-      },
-      {
-        'id': '6',
-        'created_at': '11.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Ost',
-        'priority': 'hohe',
-        'status': 'akzeptiert',
-        'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '7',
-        'created_at': '12.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- West',
-        'priority': 'niedrige',
-        'status': 'anstehend',
-        'quantity':'2',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '8',
-        'created_at': '13.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Mitte',
-        'priority': 'mittel',
-        'status': 'geliefert',
-        'quantity':'26',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '9',
-        'created_at': '14.11.2021 12:01',
-        'from': 'EA 2.1 Nuemarkt- Nord',
-        'priority': 'hohe',
-        'status': 'Auf dem Weg',
-        'quantity':'9',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '10',
-        'created_at': '15.11.2021 12:01',
-        'from': 'EA 3.2 Universität-West',
-        'priority': 'niedrige',
-        'status': 'abgelehnt',
-        'quantity':'17',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '11',
-        'created_at': '12.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- West',
-        'priority': 'niedrige',
-        'status': 'anstehend',
-        'quantity':'14',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '12',
-        'created_at': '13.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- Mitte',
-        'priority': 'mittel',
-        'status': 'geliefert',
-        'quantity':'20',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '13',
-        'created_at': '14.11.2021 12:01',
-        'from': 'EA 2.1 Nuemarkt- Nord',
-        'priority': 'hohe',
-        'status': 'Auf dem Weg',
-        'quantity':'17',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '14',
-        'created_at': '15.11.2021 12:01',
-        'from': 'EA 3.2 Universität-West',
-        'priority': 'niedrige',
-        'status': 'abgelehnt',
-        'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-      {
-        'id': '15',
-        'created_at': '12.11.2021 12:01',
-        'from': 'EA 1.1 Altstadt- West',
-        'priority': 'niedrige',
-        'status': 'anstehend',
-        'quantity':'12',
-        'deliveryAddress': 'Nikolastraße 4 494032 Passau'
-      },
-
-    ],
+    cardText:'',
+    newStatus:'',
+    confirmationDialog: false,
   }),
 
+  created() {
+    this.$store.dispatch("loadOrder", this.$route.params.orderId)
+  },
   computed: {
     getOrder() {
-      return this.orders[this.$route.params.orderId]
+      return this.$store.getters.getOrder
     }
   },
   methods: {
@@ -371,17 +290,25 @@ export default {
       if (status === 'akzeptiert') return 'blue'
       if (status === 'geliefert') return 'green'
       else if (status === 'abgelehnt') return 'red'
+      else if (status === 'storniert') return 'red'
       else if (status === 'Auf dem Weg') return 'orange'
       else if (status === 'anstehend') return 'grey'
+      else if (status === 'weitergeleitet') return 'black'
     },
+
     goBack() {
       this.$router.go(-1)
     },
-    editItem() {
+    editOrder() {
       const orderId = this.getOrder.id;
       this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
     },
 
+    changeStatus(cardText, newStatus){
+      this.cardText = cardText;
+      this.newStatus = newStatus;
+      this.confirmationDialog = true;
+    },
     // hard coding the users roles
     getLoggedInUserRole() {
       if (this.$route.params.userRole === '1') // Hauptabschintt

@@ -1,32 +1,548 @@
-basePath: /
-host: localhost:8080
+definitions:
+  models.ChangePasswordInput:
+    properties:
+      new_password:
+        type: string
+      old_password:
+        type: string
+    type: object
+  models.Comment:
+    properties:
+      comment_text:
+        type: string
+      create_date:
+        type: string
+      id:
+        type: integer
+      order_id:
+        type: integer
+      update_date:
+        type: string
+    type: object
+  models.CreateOrderInput:
+    properties:
+      address_to:
+        type: string
+      comments:
+        items:
+          $ref: '#/definitions/models.Comment'
+        type: array
+      equipments:
+        items:
+          $ref: '#/definitions/models.OrderEquipment'
+        type: array
+      priority:
+        type: integer
+    type: object
+  models.CreateUser:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      parent_id:
+        type: integer
+      password:
+        type: string
+      phone:
+        type: string
+    type: object
+  models.ErrorResponse:
+    properties:
+      err_code:
+        type: integer
+      err_message:
+        type: string
+    type: object
+  models.Log:
+    properties:
+      action_type_id:
+        type: integer
+      action_type_name:
+        type: string
+      create_date:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      order_id:
+        type: integer
+      update_date:
+        type: string
+      updated_by:
+        type: integer
+      updated_by_name:
+        type: string
+    type: object
+  models.Login:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  models.Logout:
+    properties:
+      token:
+        type: string
+    type: object
+  models.Order:
+    properties:
+      address_from:
+        type: string
+      address_to:
+        type: string
+      assigned_to:
+        type: integer
+      comments:
+        items:
+          $ref: '#/definitions/models.Comment'
+        type: array
+      create_date:
+        type: string
+      equipments:
+        items:
+          $ref: '#/definitions/models.OrderEquipment'
+        type: array
+      id:
+        type: integer
+      logs:
+        items:
+          $ref: '#/definitions/models.Log'
+        type: array
+      name:
+        type: string
+      permissions:
+        items:
+          $ref: '#/definitions/models.Permission'
+        type: array
+      priority_id:
+        type: integer
+      status_id:
+        type: integer
+      status_name:
+        type: string
+      update_date:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.OrderEquipment:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  models.Permission:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.RecoveryPasswordInput:
+    properties:
+      otp:
+        type: string
+      password:
+        type: string
+    type: object
+  models.RefreshAccessTokenRequest:
+    properties:
+      refresh_token:
+        type: string
+    type: object
+  models.SendRecoveryPasswordInput:
+    properties:
+      email:
+        type: string
+    type: object
+  models.SendVerifyEmail:
+    properties:
+      email:
+        type: string
+    type: object
+  models.Tokens:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  models.User:
+    properties:
+      branch_name:
+        type: string
+      branchId:
+        type: integer
+      create_date:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      is_activated:
+        type: boolean
+      is_email_verified:
+        type: boolean
+      is_super_user:
+        type: boolean
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      token:
+        type: string
+      update_date:
+        type: string
+    type: object
+  models.VerifyEmailInput:
+    properties:
+      otp:
+        type: string
+      password:
+        type: string
+    type: object
 info:
-  contact:
-    email: mirzok01@ads.uni-passau.de
-    name: Team Backend
-  description: This is the documentation for ASPD REST API.
-  termsOfService: http://swagger.io/terms/
-  title: ASPD API Documentation
-  version: "1.0"
+  contact: {}
 paths:
-  /login:
+  /admin/email_verification:
     post:
       consumes:
       - application/json
-      description: Registers new user in system. Sends verification token to email
-        of the user
+      description: SendVerifyEmail - admin sends email to user for him to verify
+      parameters:
+      - description: SendVerifyEmail
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.SendVerifyEmail'
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: SendVerifyEmail - admin sends email to user for him to verify
+      tags:
+      - Admin
+  /admin/user:
+    post:
+      consumes:
+      - application/json
+      description: CreateUser - Einsatzleiter can create a new user
+      parameters:
+      - description: CreateUser
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUser'
       responses:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/models.ErrorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: CreateUser - Einsatzleiter can create a new user
+      tags:
+      - Admin
+  /users/:
+    get:
+      consumes:
+      - application/json
+      description: GetUserList - get list of all users
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: GetUserList - get list of all users
       tags:
       - Authentication
-securityDefinitions:
-  ApiKeyAuth:
-    in: header
-    name: Authorization
-    type: apiKey
+  /users/activation:
+    post:
+      consumes:
+      - application/json
+      description: VerifyEmail - when user got email with otp to verify email, it
+        has to input this otp to verify email and set new password
+      parameters:
+      - description: VerifyEmail
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.VerifyEmailInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: VerifyEmail - when user got email with otp to verify email, it has
+        to input this otp to verify email and set new password
+      tags:
+      - Authentication
+  /users/forgot_password:
+    post:
+      consumes:
+      - application/json
+      description: SendRecoveryPassword - user requests to reset password, when he
+        forgets his password in order to login
+      parameters:
+      - description: SendRecoveryPassword
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.SendRecoveryPasswordInput'
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: SendRecoveryPassword - user requests to reset password, when he forgets
+        his password in order to login
+      tags:
+      - Authentication
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Login - user inputs auth credentials and gets tokens
+      parameters:
+      - description: Login
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Login'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Tokens'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Login - user inputs auth credentials and gets tokens
+      tags:
+      - Authentication
+  /users/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logout an authenticated user
+      parameters:
+      - description: Logout
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Logout'
+      responses:
+        "204":
+          description: Logged out successfully
+        "400":
+          description: Bad request (e.g. refresh in body is not given)
+        "401":
+          description: Access token is missing
+      summary: Logout an authenticated user
+      tags:
+      - Authentication
+  /users/order:
+    post:
+      consumes:
+      - application/json
+      description: CreateOrder - Unterabschnitt creates the order
+      parameters:
+      - description: CreateOrder
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateOrderInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: CreateOrder - Unterabschnitt creates the order
+      tags:
+      - Order
+  /users/password:
+    put:
+      consumes:
+      - application/json
+      description: ChangePassword of the user
+      parameters:
+      - description: ChangePassword
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.ChangePasswordInput'
+      responses:
+        "200":
+          description: Password was changed successfully
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: ChangePassword of the user
+      tags:
+      - Authentication
+  /users/recovery_password:
+    post:
+      consumes:
+      - application/json
+      description: RecoveryPassword - when user got OTP per email, he needs to input
+        new password and otp to set password
+      parameters:
+      - description: RecoveryPassword
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.RecoveryPasswordInput'
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: RecoveryPassword - when user got OTP per email, he needs to input new
+        password and otp to set password
+      tags:
+      - Authentication
+  /users/refresh:
+    post:
+      consumes:
+      - application/json
+      description: RefreshAccessToken - refreshes access token
+      parameters:
+      - description: RefreshAccessToken
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.RefreshAccessTokenRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Tokens'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: RefreshAccessToken - refreshes access token
+      tags:
+      - Authentication
 swagger: "2.0"

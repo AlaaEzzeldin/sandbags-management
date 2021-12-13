@@ -9,6 +9,17 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// SendVerifyEmail
+// @Description SendVerifyEmail - admin sends email to user for him to verify
+// @Summary SendVerifyEmail - admin sends email to user for him to verify
+// @Accept json
+// @Param input body models.SendVerifyEmail true "SendVerifyEmail"
+// @Success 200
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Admin
+// @Router /admin/email_verification [post]
 func (a *App) SendVerifyEmail(c *gin.Context) {
 	var input models.SendVerifyEmail
 
