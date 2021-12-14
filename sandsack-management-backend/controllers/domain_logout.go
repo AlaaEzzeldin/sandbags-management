@@ -12,6 +12,7 @@ import (
 // @Description Logout an authenticated user
 // @Summary Logout an authenticated user
 // @Accept json
+// @Param Authorization header string true "Bearer "
 // @Param input body models.Logout true "Logout"
 // @Success 204 "Logged out successfully"
 // @Failure 401 "Access token is missing"

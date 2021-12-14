@@ -9,6 +9,17 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// SendVerifyEmail
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer "
+// @Param input body models.SendVerifyEmail true "send verify email model"
+// @Success 200 "OTP"
+// @Failure 401 "Token is not valid"
+// @Failure 400 "Bad request"
+// @Failure 500 "Something went wrong"
+// @Tags Admin
+// @Router /user/email_verification [post]
 func (a *App) SendVerifyEmail(c *gin.Context) {
 	var input models.SendVerifyEmail
 

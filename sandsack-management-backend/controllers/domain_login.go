@@ -11,7 +11,15 @@ import (
 )
 
 // Login
-// @Description Registers new user in system. Sends verification token to email of the user
+// @Description This endpoint enables to login into the system and returns new token pair
+// @Summary Login into the system
+// @Accept json
+// @Produce json
+// @Param input body models.Login true "User login model"
+// @Success 200 "Login successful"
+// @Failure 401 "User deactivated"
+// @Failure 400 "Bad request (e.g. parameter in body is not given or incorrect)"
+// @Failure 404 "User not found in the system"
 // @Tags Authentication
 // @Router /users/login [post]
 func (a *App) Login(c *gin.Context){

@@ -9,6 +9,17 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// VerifyEmail
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer "
+// @Param input body models.VerifyEmailInput true "User login model"
+// @Success 200 "OK"
+// @Failure 401 "Token is not valid"
+// @Failure 400 "Bad request"
+// @Failure 500 "Something went wrong"
+// @Tags Authentication
+// @Router /users/activation [post]
 func (a *App) VerifyEmail(c *gin.Context) {
 	var input models.VerifyEmailInput
 
