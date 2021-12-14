@@ -34,3 +34,8 @@ type RecoveryPasswordInput struct {
 	OTP      string `json:"otp"`
 	Password string `json:"password"`
 }
+
+type PatchProfileInput struct {
+	Name string `json:"name"`
+	Phone string `json:"phone"`
+}
