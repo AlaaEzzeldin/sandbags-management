@@ -325,6 +325,53 @@ var doc = `{
                 }
             }
         },
+        "/users/me": {
+            "patch": {
+                "description": "This endpoint enables to change some user profile information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Change profile information",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "User profile change model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PatchProfileInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success message"
+                    },
+                    "400": {
+                        "description": "Bad request (e.g. validation error) OR wrong password given"
+                    },
+                    "401": {
+                        "description": "Token is not valid"
+                    },
+                    "500": {
+                        "description": "Something unexpected went wrong"
+                    }
+                }
+            }
+        },
         "/users/recovery_password": {
             "post": {
                 "description": "This endpoint enables to set new password after resetting",
@@ -467,6 +514,17 @@ var doc = `{
             "type": "object",
             "properties": {
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PatchProfileInput": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
                     "type": "string"
                 }
             }
