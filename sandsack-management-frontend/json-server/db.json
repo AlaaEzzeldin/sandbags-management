@@ -211,7 +211,9 @@
       "email": "info@ffpassau.de223",
       "phone": "+49 123 45 67 8 901232",
       "password": "eedd",
-      "id": 0
+      "id": 0,
+      "name": "Abschnittname",
+      "roleName": "Abschnittrole"
     }
   ]
 }
