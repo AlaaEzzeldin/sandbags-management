@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"team2/sandsack-management-backend/docs"
 	_ "team2/sandsack-management-backend/docs"
 )
 
@@ -28,33 +29,34 @@ func (a *App) RunAllRoutes(){
 	log.SetOutput(f)
 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 
+	// Swagger
+	docs.SwaggerInfo.Title = "ASPD API Documentation"
+	docs.SwaggerInfo.Description = "This page provides overview of all API endpoints and necessary details"
+	docs.SwaggerInfo.BasePath = "/api"
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
 	r.GET("/api-doc/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	r.POST("/users/login", a.Login)
-	r.POST("/users/activation", a.VerifyEmail)
-	r.POST("/users/forgot_password", a.SendRecoveryPassword)
-	r.POST("/users/recovery_password", a.RecoveryPassword)
-	r.POST("users/refresh", a.RefreshAccessToken)
-
+	// Admin endpoints
 	admin := r.Group("/admin")
 	admin.Use(a.AuthorizeAdmin())
 	admin.POST("/user", a.CreateUser)
 	admin.POST("/user/email_verification", a.SendVerifyEmail)
 
+	// Authentication and user profile endpoints
 	auth := r.Group("/users")
 	auth.Use(AuthorizeJWT())
-
-
 	auth.GET("/", a.GetUserList)
-	auth.PUT("/password", a.ChangePassword)
-	auth.POST("/me", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
+	auth.POST("/login", a.Login)
+	auth.POST("/activation", a.VerifyEmail)
+	auth.POST("/forgot_password", a.SendRecoveryPassword)
+	auth.POST("/recovery_password", a.RecoveryPassword)
+	auth.POST("/refresh", a.RefreshAccessToken)
 	auth.POST("/logout", a.Logout)
+	auth.PATCH("/change_password", a.ChangePassword)
 
-	auth.POST("/change_password", func(context *gin.Context) {
+	auth.PATCH("/me", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",
 		})
@@ -76,9 +78,6 @@ func (a *App) RunAllRoutes(){
 			"message": "in development",
 		})
 	})
-
-	//authorized := r.Use(AuthorizeJWT())
-	//authorized.POST("/registration", a.Registration)
 
 	_ = r.Run(port)
 }

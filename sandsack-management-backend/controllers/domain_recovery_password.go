@@ -9,6 +9,19 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// RecoveryPassword
+// @Description This endpoint enables to set new password after resetting
+// @Summary Set new password after reset
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer "
+// @Param input body models.RecoveryPasswordInput true "User recovery password model"
+// @Success 200 "Success message"
+// @Failure 401 "Token is not valid"
+// @Failure 400 "Bad request (e.g. parameter in body is not given or incorrect)"
+// @Failure 500 "Something went wrong"
+// @Tags Authentication
+// @Router /users/recovery_password [post]
 func (a *App) RecoveryPassword(c *gin.Context) {
 	var input models.RecoveryPasswordInput
 
@@ -71,8 +84,6 @@ func (a *App) RecoveryPassword(c *gin.Context) {
 		return
 	}
 
-
-
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusOK, "The new password has been set")
 	return
 }

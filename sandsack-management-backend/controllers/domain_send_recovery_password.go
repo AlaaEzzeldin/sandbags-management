@@ -9,6 +9,19 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// SendRecoveryPassword
+// @Description This endpoint enables to reset the forgotten password
+// @Summary Reset forgotten password of user
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer "
+// @Param input body models.SendRecoveryPasswordInput true "User forgot password model"
+// @Success 200 "OTP object"
+// @Failure 401 "Token is not valid or missing"
+// @Failure 400 "Bad request (e.g. parameter in body is not given or incorrect)"
+// @Failure 500 "Something went wrong"
+// @Tags Authentication
+// @Router /users/forgot_password [post]
 func (a *App) SendRecoveryPassword(c *gin.Context) {
 	var input models.SendRecoveryPasswordInput
 

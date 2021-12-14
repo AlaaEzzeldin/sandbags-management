@@ -8,7 +8,17 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
-
+// CreateUser Registration
+// @Description This endpoint is implemented to register new user by Einsatzleiter and get a new token pair
+// @Summary Create a new user (branch) in the system
+// @Accept json
+// @Produce json
+// @Param input body models.CreateUser true "User registration model"
+// @Success 201 "User has been created"
+// @Failure 401 "Permission to create the user is not given"
+// @Failure 400 "Bad request (e.g. parameter in body is not given or incorrect)"
+// @Tags Admin
+// @Router /user/ [post]
 func (a *App) CreateUser(c *gin.Context) {
 	var input models.CreateUser
 
@@ -65,6 +75,6 @@ func (a *App) CreateUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, models.ErrorResponse{})
+	c.JSON(http.StatusCreated, models.ErrorResponse{})
 	return
 }

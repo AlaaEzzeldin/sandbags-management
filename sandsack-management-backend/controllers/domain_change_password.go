@@ -9,6 +9,19 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// ChangePassword
+// @Description This endpoint enables to set new password for the user
+// @Summary Change password of an authenticated user
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer "
+// @Param input body models.ChangePasswordInput true "User change password model"
+// @Success 200 "Success message"
+// @Failure 401 "Token is not valid"
+// @Failure 400 "Bad request (e.g. validation error) OR wrong password given"
+// @Failure 500 "Something unexpected went wrong"
+// @Tags Authentication
+// @Router /users/change_password [patch]
 func (a *App) ChangePassword(c *gin.Context) {
 	var input models.ChangePasswordInput
 
@@ -79,7 +92,7 @@ func (a *App) ChangePassword(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusOK, "The password has been changed successfully" )
 	return
 
 }

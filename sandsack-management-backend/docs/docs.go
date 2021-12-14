@@ -23,12 +23,265 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/users/login": {
+        "/user/": {
             "post": {
-                "description": "Registers new user in system. Sends verification token to email of the user",
+                "description": "This endpoint is implemented to register new user by Einsatzleiter and get a new token pair",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Create a new user (branch) in the system",
+                "parameters": [
+                    {
+                        "description": "User registration model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User has been created"
+                    },
+                    "400": {
+                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
+                    },
+                    "401": {
+                        "description": "Permission to create the user is not given"
+                    }
+                }
+            }
+        },
+        "/user/email_verification": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "send verify email model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SendVerifyEmail"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OTP"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Token is not valid"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        },
+        "/users/activation": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
                 "tags": [
                     "Authentication"
-                ]
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "User login model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.VerifyEmailInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Token is not valid"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        },
+        "/users/change_password": {
+            "patch": {
+                "description": "This endpoint enables to set new password for the user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Change password of an authenticated user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "User change password model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ChangePasswordInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success message"
+                    },
+                    "400": {
+                        "description": "Bad request (e.g. validation error) OR wrong password given"
+                    },
+                    "401": {
+                        "description": "Token is not valid"
+                    },
+                    "500": {
+                        "description": "Something unexpected went wrong"
+                    }
+                }
+            }
+        },
+        "/users/forgot_password": {
+            "post": {
+                "description": "This endpoint enables to reset the forgotten password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Reset forgotten password of user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "User forgot password model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SendRecoveryPasswordInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OTP object"
+                    },
+                    "400": {
+                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
+                    },
+                    "401": {
+                        "description": "Token is not valid or missing"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        },
+        "/users/login": {
+            "post": {
+                "description": "This endpoint enables to login into the system and returns new token pair",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login into the system",
+                "parameters": [
+                    {
+                        "description": "User login model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login successful"
+                    },
+                    "400": {
+                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
+                    },
+                    "401": {
+                        "description": "User deactivated"
+                    },
+                    "404": {
+                        "description": "User not found in the system"
+                    }
+                }
             }
         },
         "/users/logout": {
@@ -42,6 +295,13 @@ var doc = `{
                 ],
                 "summary": "Logout an authenticated user",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Logout",
                         "name": "input",
@@ -64,13 +324,195 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/users/recovery_password": {
+            "post": {
+                "description": "This endpoint enables to set new password after resetting",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Set new password after reset",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "User recovery password model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RecoveryPasswordInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success message"
+                    },
+                    "400": {
+                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
+                    },
+                    "401": {
+                        "description": "Token is not valid"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        },
+        "/users/refresh": {
+            "post": {
+                "description": "This endpoint enables to refresh timed-out access token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Refresh access JWT token",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "User login model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RefreshAccessTokenRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New access token"
+                    },
+                    "400": {
+                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
+                    },
+                    "401": {
+                        "description": "Token is not valid"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "models.ChangePasswordInput": {
+            "type": "object",
+            "properties": {
+                "new_password": {
+                    "type": "string"
+                },
+                "old_password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "integer"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Login": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Logout": {
             "type": "object",
             "properties": {
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.RecoveryPasswordInput": {
+            "type": "object",
+            "properties": {
+                "otp": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.RefreshAccessTokenRequest": {
+            "type": "object",
+            "properties": {
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SendRecoveryPasswordInput": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SendVerifyEmail": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.VerifyEmailInput": {
+            "type": "object",
+            "properties": {
+                "otp": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 }
             }
