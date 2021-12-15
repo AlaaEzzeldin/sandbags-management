@@ -10,15 +10,18 @@ import (
 )
 
 // ChangePassword
-// @Description ChangePassword of the user
-// @Summary ChangePassword of the user
+// @Description This endpoint enables to set new password for the user
+// @Summary Change password of an authenticated user
 // @Accept json
-// @Param input body models.ChangePasswordInput true "ChangePassword"
-// @Success 200 "Password was changed successfully"
-// @Failure 500 {object} models.ErrorResponse
-// @Failure 400 {object} models.ErrorResponse
+// @Produce json
+// @Param Authorization header string true "Bearer "
+// @Param input body models.ChangePasswordInput true "User change password model"
+// @Success 200 "Success message"
+// @Failure 401 "Token is not valid"
+// @Failure 400 "Bad request (e.g. validation error) OR wrong password given"
+// @Failure 500 "Something unexpected went wrong"
 // @Tags Authentication
-// @Router /users/password [put]
+// @Router /users/change_password [patch]
 func (a *App) ChangePassword(c *gin.Context) {
 	var input models.ChangePasswordInput
 
@@ -89,7 +92,7 @@ func (a *App) ChangePassword(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, "Password was changed successfully")
+	c.JSON(http.StatusOK, "The password has been changed successfully" )
 	return
 
 }

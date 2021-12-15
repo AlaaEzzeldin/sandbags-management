@@ -318,6 +318,13 @@ var doc = `{
                 "summary": "Logout an authenticated user",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Logout",
                         "name": "input",
                         "in": "body",
