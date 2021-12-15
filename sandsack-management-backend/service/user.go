@@ -155,6 +155,14 @@ func GetUserByOTP(db *gorm.DB, otp, reason string)  (user *models.User, err erro
 	return
 }
 
+func PatchProfile(db *gorm.DB, name string, phone string) error {
+	query := `update public.user set name = ?, phone = ? where name = ?, phone = ?`
+	if err := db.Exec(query, name, phone).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 
 func GetUserByID(db *gorm.DB, userId int) (user *models.User, err error) {
 	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, is_super_user, create_date, branch_id 
