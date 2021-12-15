@@ -38,7 +38,6 @@ CREATE TABLE "order_equipment" (
 CREATE TABLE "equipment" (
                              "id" serial PRIMARY KEY,
                              "name" varchar,
-                             "quantity" integer,
                              "create_date" timestamp,
                              "update_date" timestamp
 );

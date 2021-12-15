@@ -23,64 +23,19 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/user/": {
+        "/admin/email_verification": {
             "post": {
-                "description": "This endpoint is implemented to register new user by Einsatzleiter and get a new token pair",
+                "description": "SendVerifyEmail - admin sends email to user for him to verify",
                 "consumes": [
-                    "application/json"
-                ],
-                "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Admin"
                 ],
-                "summary": "Create a new user (branch) in the system",
+                "summary": "SendVerifyEmail - admin sends email to user for him to verify",
                 "parameters": [
                     {
-                        "description": "User registration model",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.CreateUser"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "User has been created"
-                    },
-                    "400": {
-                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
-                    },
-                    "401": {
-                        "description": "Permission to create the user is not given"
-                    }
-                }
-            }
-        },
-        "/user/email_verification": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Bearer ",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "send verify email model",
+                        "description": "SendVerifyEmail",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -91,41 +46,132 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OTP"
+                        "description": ""
                     },
                     "400": {
-                        "description": "Bad request"
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "401": {
-                        "description": "Token is not valid"
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "500": {
-                        "description": "Something went wrong"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/user": {
+            "post": {
+                "description": "CreateUser - Einsatzleiter can create a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "CreateUser - Einsatzleiter can create a new user",
+                "parameters": [
+                    {
+                        "description": "CreateUser",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/": {
+            "get": {
+                "description": "GetUserList - get list of all users",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "GetUserList - get list of all users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.User"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     }
                 }
             }
         },
         "/users/activation": {
             "post": {
+                "description": "VerifyEmail - when user got email with otp to verify email, it has to input this otp to verify email and set new password",
                 "consumes": [
-                    "application/json"
-                ],
-                "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Authentication"
                 ],
+                "summary": "VerifyEmail - when user got email with otp to verify email, it has to input this otp to verify email and set new password",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Bearer ",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "User login model",
+                        "description": "VerifyEmail",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -136,90 +182,48 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "401": {
-                        "description": "Token is not valid"
-                    },
-                    "500": {
-                        "description": "Something went wrong"
-                    }
-                }
-            }
-        },
-        "/users/change_password": {
-            "patch": {
-                "description": "This endpoint enables to set new password for the user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Change password of an authenticated user",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Bearer ",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "User change password model",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
+                        "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.ChangePasswordInput"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.User"
+                            }
                         }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success message"
                     },
                     "400": {
-                        "description": "Bad request (e.g. validation error) OR wrong password given"
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "401": {
-                        "description": "Token is not valid"
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "500": {
-                        "description": "Something unexpected went wrong"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     }
                 }
             }
         },
         "/users/forgot_password": {
             "post": {
-                "description": "This endpoint enables to reset the forgotten password",
+                "description": "SendRecoveryPassword - user requests to reset password, when he forgets his password in order to login",
                 "consumes": [
-                    "application/json"
-                ],
-                "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Reset forgotten password of user",
+                "summary": "SendRecoveryPassword - user requests to reset password, when he forgets his password in order to login",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Bearer ",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "User forgot password model",
+                        "description": "SendRecoveryPassword",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -230,36 +234,42 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OTP object"
+                        "description": ""
                     },
                     "400": {
-                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "401": {
-                        "description": "Token is not valid or missing"
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "500": {
-                        "description": "Something went wrong"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     }
                 }
             }
         },
         "/users/login": {
             "post": {
-                "description": "This endpoint enables to login into the system and returns new token pair",
+                "description": "Login - user inputs auth credentials and gets tokens",
                 "consumes": [
-                    "application/json"
-                ],
-                "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Login into the system",
+                "summary": "Login - user inputs auth credentials and gets tokens",
                 "parameters": [
                     {
-                        "description": "User login model",
+                        "description": "Login",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -270,16 +280,28 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Login successful"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Tokens"
+                        }
                     },
                     "400": {
-                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "401": {
-                        "description": "User deactivated"
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
-                    "404": {
-                        "description": "User not found in the system"
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     }
                 }
             }
@@ -325,76 +347,108 @@ var doc = `{
                 }
             }
         },
-        "/users/me": {
-            "patch": {
-                "description": "This endpoint enables to change some user profile information",
+        "/users/order": {
+            "post": {
+                "description": "CreateOrder - Unterabschnitt creates the order",
                 "consumes": [
                     "application/json"
                 ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
-                    "Authentication"
+                    "Order"
                 ],
-                "summary": "Change profile information",
+                "summary": "CreateOrder - Unterabschnitt creates the order",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Bearer ",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "User profile change model",
+                        "description": "CreateOrder",
                         "name": "input",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.PatchProfileInput"
+                            "$ref": "#/definitions/models.CreateOrderInput"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Success message"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Order"
+                        }
                     },
                     "400": {
-                        "description": "Bad request (e.g. validation error) OR wrong password given"
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "401": {
-                        "description": "Token is not valid"
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "500": {
-                        "description": "Something unexpected went wrong"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/password": {
+            "put": {
+                "description": "ChangePassword of the user",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "ChangePassword of the user",
+                "parameters": [
+                    {
+                        "description": "ChangePassword",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ChangePasswordInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password was changed successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     }
                 }
             }
         },
         "/users/recovery_password": {
             "post": {
-                "description": "This endpoint enables to set new password after resetting",
+                "description": "RecoveryPassword - when user got OTP per email, he needs to input new password and otp to set password",
                 "consumes": [
-                    "application/json"
-                ],
-                "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Set new password after reset",
+                "summary": "RecoveryPassword - when user got OTP per email, he needs to input new password and otp to set password",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Bearer ",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "User recovery password model",
+                        "description": "RecoveryPassword",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -405,43 +459,42 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Success message"
+                        "description": ""
                     },
                     "400": {
-                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "401": {
-                        "description": "Token is not valid"
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "500": {
-                        "description": "Something went wrong"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     }
                 }
             }
         },
         "/users/refresh": {
             "post": {
-                "description": "This endpoint enables to refresh timed-out access token",
+                "description": "RefreshAccessToken - refreshes access token",
                 "consumes": [
-                    "application/json"
-                ],
-                "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Refresh access JWT token",
+                "summary": "RefreshAccessToken - refreshes access token",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Bearer ",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "User login model",
+                        "description": "RefreshAccessToken",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -452,16 +505,28 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "New access token"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Tokens"
+                        }
                     },
                     "400": {
-                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "401": {
-                        "description": "Token is not valid"
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     },
                     "500": {
-                        "description": "Something went wrong"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
                     }
                 }
             }
@@ -476,6 +541,49 @@ var doc = `{
                 },
                 "old_password": {
                     "type": "string"
+                }
+            }
+        },
+        "models.Comment": {
+            "type": "object",
+            "properties": {
+                "comment_text": {
+                    "type": "string"
+                },
+                "create_date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "order_id": {
+                    "type": "integer"
+                },
+                "update_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateOrderInput": {
+            "type": "object",
+            "properties": {
+                "address_to": {
+                    "type": "string"
+                },
+                "comments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Comment"
+                    }
+                },
+                "equipments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.OrderEquipment"
+                    }
+                },
+                "priority": {
+                    "type": "integer"
                 }
             }
         },
@@ -499,6 +607,49 @@ var doc = `{
                 }
             }
         },
+        "models.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "err_code": {
+                    "type": "integer"
+                },
+                "err_message": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Log": {
+            "type": "object",
+            "properties": {
+                "action_type_id": {
+                    "type": "integer"
+                },
+                "action_type_name": {
+                    "type": "string"
+                },
+                "create_date": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "order_id": {
+                    "type": "integer"
+                },
+                "update_date": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                },
+                "updated_by_name": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Login": {
             "type": "object",
             "properties": {
@@ -518,13 +669,89 @@ var doc = `{
                 }
             }
         },
-        "models.PatchProfileInput": {
+        "models.Order": {
             "type": "object",
             "properties": {
+                "address_from": {
+                    "type": "string"
+                },
+                "address_to": {
+                    "type": "string"
+                },
+                "assigned_to": {
+                    "type": "integer"
+                },
+                "comments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Comment"
+                    }
+                },
+                "create_date": {
+                    "type": "string"
+                },
+                "equipments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.OrderEquipment"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "logs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Log"
+                    }
+                },
                 "name": {
                     "type": "string"
                 },
-                "phone": {
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Permission"
+                    }
+                },
+                "priority_id": {
+                    "type": "integer"
+                },
+                "status_id": {
+                    "type": "integer"
+                },
+                "status_name": {
+                    "type": "string"
+                },
+                "update_date": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.OrderEquipment": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Permission": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
                     "type": "string"
                 }
             }
@@ -560,6 +787,61 @@ var doc = `{
             "type": "object",
             "properties": {
                 "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Tokens": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.User": {
+            "type": "object",
+            "properties": {
+                "branchId": {
+                    "type": "integer"
+                },
+                "branch_name": {
+                    "type": "string"
+                },
+                "create_date": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_activated": {
+                    "type": "boolean"
+                },
+                "is_email_verified": {
+                    "type": "boolean"
+                },
+                "is_super_user": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "update_date": {
                     "type": "string"
                 }
             }
@@ -629,5 +911,5 @@ func (s *s) ReadDoc() string {
 }
 
 func init() {
-	swag.Register("swagger", &s{})
+	swag.Register(swag.Name, &s{})
 }

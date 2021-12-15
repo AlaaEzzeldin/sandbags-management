@@ -10,14 +10,14 @@ import (
 )
 
 // VerifyEmail
+// @Description VerifyEmail - when user got email with otp to verify email, it has to input this otp to verify email and set new password
+// @Summary VerifyEmail - when user got email with otp to verify email, it has to input this otp to verify email and set new password
 // @Accept json
-// @Produce json
-// @Param Authorization header string true "Bearer "
-// @Param input body models.VerifyEmailInput true "User login model"
-// @Success 200 "OK"
-// @Failure 401 "Token is not valid"
-// @Failure 400 "Bad request"
-// @Failure 500 "Something went wrong"
+// @Param input body models.VerifyEmailInput true "VerifyEmail"
+// @Success 200 {array} models.User
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
 // @Tags Authentication
 // @Router /users/activation [post]
 func (a *App) VerifyEmail(c *gin.Context) {

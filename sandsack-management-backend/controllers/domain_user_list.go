@@ -8,6 +8,16 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// GetUserList
+// @Description GetUserList - get list of all users
+// @Summary GetUserList - get list of all users
+// @Accept json
+// @Success 200 {array} models.User
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Authentication
+// @Router /users/ [get]
 func (a *App) GetUserList(c *gin.Context) {
 	userList, err := service.GetUserList(a.DB)
 	if err != nil {

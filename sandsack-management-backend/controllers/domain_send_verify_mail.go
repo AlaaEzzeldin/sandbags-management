@@ -10,16 +10,16 @@ import (
 )
 
 // SendVerifyEmail
+// @Description SendVerifyEmail - admin sends email to user for him to verify
+// @Summary SendVerifyEmail - admin sends email to user for him to verify
 // @Accept json
-// @Produce json
-// @Param Authorization header string true "Bearer "
-// @Param input body models.SendVerifyEmail true "send verify email model"
-// @Success 200 "OTP"
-// @Failure 401 "Token is not valid"
-// @Failure 400 "Bad request"
-// @Failure 500 "Something went wrong"
+// @Param input body models.SendVerifyEmail true "SendVerifyEmail"
+// @Success 200
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
 // @Tags Admin
-// @Router /user/email_verification [post]
+// @Router /admin/email_verification [post]
 func (a *App) SendVerifyEmail(c *gin.Context) {
 	var input models.SendVerifyEmail
 

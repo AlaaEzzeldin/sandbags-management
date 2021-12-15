@@ -12,9 +12,10 @@ func GetUserByEmail(db *gorm.DB, email string) (user *models.User, err error) {
 	if exist := CheckUserExists(db, email); !exist {
 		return nil, errors.New("user not found")
 	}
-	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, is_super_user, create_date 
-				from public.user
-				where email = ?;`
+	query := `select u.id, u.name, u.phone, u.password, u.email, u.token, u.is_activated, u.is_email_verified, u.is_super_user, u.create_date, b.name as branch_name, b.id as branch_id
+				from public.user u, branch b
+				where u.email = ?
+				and u.branch_id = b.id limit 1;`
 	if err = db.Raw(query, email).Scan(&user).Error; err != nil {
 		return nil, err
 	}
@@ -73,15 +74,26 @@ func CreateUser(db *gorm.DB, user *models.CreateUser) error {
 		return err
 	}
 
-	if err := AddHierarchy(db, user.ParentId, model.Id); err != nil {
+	parent, err := GetUserByID(db, user.ParentId)
+	if err != nil {
+		return err
+	}
+
+	if err := AddHierarchy(db, user.ParentId, model.Id, parent.BranchId); err != nil {
 		return err
 	}
 	return nil
 }
 
-func AddHierarchy(db *gorm.DB, parentId int, childId int) error {
+func AddHierarchy(db *gorm.DB, parentId int, childId int, branchId int) error {
 	query := `insert into hierarchy(user1_id, user2_id) values(?,?);`
 	if err := db.Exec(query, parentId, childId).Error; err != nil {
+		return err
+	}
+
+	branchId += 1
+	query = `update public.user set branch_id = ? where id = ?;`
+	if err := db.Exec(query, branchId, childId).Error; err != nil {
 		return err
 	}
 	return nil
@@ -89,7 +101,7 @@ func AddHierarchy(db *gorm.DB, parentId int, childId int) error {
 
 
 func GetUserList(db *gorm.DB) (userList *[]models.User, err error) {
-	query := `select id, name, email from public.user where is_super_user=false;`
+	query := `select u.id, u.name, u.email, u.branch_id, b.name as branch_name from public.user u, branch b where b.id = u.branch_id;`
 	if err := db.Raw(query).Scan(&userList).Error; err != nil {
 		return nil, err
 	}
@@ -133,7 +145,7 @@ func GetUserByOTP(db *gorm.DB, otp, reason string)  (user *models.User, err erro
 	if exist := existOtpByCode(db, otp, reason); !exist {
 		return nil, errors.New("user not found")
 	}
-	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, is_super_user, create_date 
+	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, is_super_user, create_date, branch_id 
 				from public.user
 				where id = (select user_id from otp where code = ? and type = ?);`
 	if err = db.Raw(query, otp, reason).Scan(&user).Error; err != nil {
@@ -143,10 +155,38 @@ func GetUserByOTP(db *gorm.DB, otp, reason string)  (user *models.User, err erro
 	return
 }
 
-func PatchProfile(db *gorm.DB, name string, phone string) error {
-	query := `update public.user set name = ?, phone = ? where name = ?, phone = ?`
-	if err := db.Exec(query, name, phone).Error; err != nil {
-		return err
+
+func GetUserByID(db *gorm.DB, userId int) (user *models.User, err error) {
+	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, is_super_user, create_date, branch_id 
+				from public.user where id = ?`
+	if err = db.Raw(query, userId).Scan(&user).Error; err != nil {
+		return nil, err
 	}
-	return nil
+
+	return
+}
+
+func GetParent(db *gorm.DB, userId int) (user *models.User, err error) {
+	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, is_super_user, create_date, branch_id 
+				from public.user
+			where id = (select user1_id from hierarchy where user2_id = ?);`
+
+	if err = db.Raw(query, userId).Scan(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return
+}
+
+
+func GetChildren(db *gorm.DB, parentId int) (users *[]models.User, err error) {
+	query := `select u.id, u.name, u.email, u.branch_id, b.name as branch_name 
+				from public.user u, branch b, hierarchy h 
+				where b.id = u.branch_id
+				and u.id = ?
+				and u.id = h.user2_id;`
+	if err := db.Raw(query, parentId).Scan(&users).Error; err != nil {
+		return nil, err
+	}
+	return users, nil
 }

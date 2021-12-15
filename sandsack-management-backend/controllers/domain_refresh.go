@@ -9,17 +9,16 @@ import (
 	"time"
 )
 
-// RefreshAccessToken Refresh
-// @Description This endpoint enables to refresh timed-out access token
-// @Summary Refresh access JWT token
+
+// RefreshAccessToken
+// @Description RefreshAccessToken - refreshes access token
+// @Summary RefreshAccessToken - refreshes access token
 // @Accept json
-// @Produce json
-// @Param Authorization header string true "Bearer "
-// @Param input body models.RefreshAccessTokenRequest true "User login model"
-// @Success 200 "New access token"
-// @Failure 401 "Token is not valid"
-// @Failure 400 "Bad request (e.g. parameter in body is not given or incorrect)"
-// @Failure 500 "Something went wrong"
+// @Param input body models.RefreshAccessTokenRequest true "RefreshAccessToken"
+// @Success 200 {object} models.Tokens
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
 // @Tags Authentication
 // @Router /users/refresh [post]
 func (a *App) RefreshAccessToken(c *gin.Context) {
@@ -73,9 +72,9 @@ func (a *App) RefreshAccessToken(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"access_token": tokens["access_token"],
-		"refresh_token": input.RefreshToken,
+	c.JSON(http.StatusOK, models.Tokens{
+		AccessToken: tokens["access_token"],
+		RefreshToken: input.RefreshToken,
 	})
 
 }

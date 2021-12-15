@@ -10,16 +10,14 @@ import (
 )
 
 // RecoveryPassword
-// @Description This endpoint enables to set new password after resetting
-// @Summary Set new password after reset
+// @Description RecoveryPassword - when user got OTP per email, he needs to input new password and otp to set password
+// @Summary RecoveryPassword - when user got OTP per email, he needs to input new password and otp to set password
 // @Accept json
-// @Produce json
-// @Param Authorization header string true "Bearer "
-// @Param input body models.RecoveryPasswordInput true "User recovery password model"
-// @Success 200 "Success message"
-// @Failure 401 "Token is not valid"
-// @Failure 400 "Bad request (e.g. parameter in body is not given or incorrect)"
-// @Failure 500 "Something went wrong"
+// @Param input body models.RecoveryPasswordInput true "RecoveryPassword"
+// @Success 200
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
 // @Tags Authentication
 // @Router /users/recovery_password [post]
 func (a *App) RecoveryPassword(c *gin.Context) {
