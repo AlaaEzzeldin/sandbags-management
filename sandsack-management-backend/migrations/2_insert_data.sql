@@ -26,7 +26,7 @@ values
      'mollnhof@user.com', '', true, false, true, 1);
 
 insert into "hierarchy" (user1_id, user2_id)
-values(1, 2);
+values(2, 1);
 
 
 insert into permission(id, name) values
