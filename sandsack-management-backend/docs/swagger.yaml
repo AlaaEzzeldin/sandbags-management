@@ -137,6 +137,13 @@ definitions:
       quantity:
         type: integer
     type: object
+  models.PatchProfileInput:
+    properties:
+      name:
+        type: string
+      phone:
+        type: string
+    type: object
   models.Permission:
     properties:
       id:
@@ -242,36 +249,29 @@ paths:
       summary: SendVerifyEmail - admin sends email to user for him to verify
       tags:
       - Admin
-  /admin/user:
+  /user/:
     post:
       consumes:
       - application/json
-      description: CreateUser - Einsatzleiter can create a new user
+      description: This endpoint is implemented to register new user by Einsatzleiter
+        and get a new token pair
       parameters:
-      - description: CreateUser
+      - description: User registration model
         in: body
         name: input
         required: true
         schema:
           $ref: '#/definitions/models.CreateUser'
+      produces:
+      - application/json
       responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
+        "201":
+          description: User has been created
         "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
+          description: Bad request (e.g. parameter in body is not given or incorrect)
         "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: CreateUser - Einsatzleiter can create a new user
+          description: Permission to create the user is not given
+      summary: Create a new user (branch) in the system
       tags:
       - Admin
   /users/:
@@ -335,6 +335,37 @@ paths:
             $ref: '#/definitions/models.ErrorResponse'
       summary: VerifyEmail - when user got email with otp to verify email, it has
         to input this otp to verify email and set new password
+      tags:
+      - Authentication
+  /users/change_password:
+    patch:
+      consumes:
+      - application/json
+      description: This endpoint enables to set new password for the user
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User change password model
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.ChangePasswordInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success message
+        "400":
+          description: Bad request (e.g. validation error) OR wrong password given
+        "401":
+          description: Token is not valid
+        "500":
+          description: Something unexpected went wrong
+      summary: Change password of an authenticated user
       tags:
       - Authentication
   /users/forgot_password:
@@ -428,6 +459,37 @@ paths:
       summary: Logout an authenticated user
       tags:
       - Authentication
+  /users/me:
+    patch:
+      consumes:
+      - application/json
+      description: This endpoint enables to change some user profile information
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User profile change model
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.PatchProfileInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success message
+        "400":
+          description: Bad request (e.g. validation error) OR wrong password given
+        "401":
+          description: Token is not valid
+        "500":
+          description: Something unexpected went wrong
+      summary: Change profile information
+      tags:
+      - Authentication
   /users/order:
     post:
       consumes:
@@ -460,32 +522,6 @@ paths:
       summary: CreateOrder - Unterabschnitt creates the order
       tags:
       - Order
-  /users/password:
-    put:
-      consumes:
-      - application/json
-      description: ChangePassword of the user
-      parameters:
-      - description: ChangePassword
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/models.ChangePasswordInput'
-      responses:
-        "200":
-          description: Password was changed successfully
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: ChangePassword of the user
-      tags:
-      - Authentication
   /users/recovery_password:
     post:
       consumes:
