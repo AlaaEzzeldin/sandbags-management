@@ -4,24 +4,24 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"strconv"
 	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/service"
 )
 
 func (a *App) DeclineOrder(c *gin.Context) {
-	var input models.AcceptOrderInput
-	// check whether the structure of request is correct
-	if err := c.ShouldBindJSON(&input); err != nil{
-		log.Println("DeclineOrder error: ", err.Error())
+	orderId, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode: http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "incorrect input",
 		})
 		return
 	}
+
 	claims, _ := GetClaims(c)
 
-	permissions, err := service.GetUserOrderPermissions(a.DB, claims.Id, input.OrderId)
+	permissions, err := service.GetUserOrderPermissions(a.DB, claims.Id, orderId)
 
 	flag := 0
 	for _, i := range permissions {
@@ -41,7 +41,7 @@ func (a *App) DeclineOrder(c *gin.Context) {
 		return
 	}
 
-	err = service.DeclineOrder(a.DB, claims.Id, input.OrderId)
+	err = service.DeclineOrder(a.DB, claims.Id, orderId)
 	if err != nil {
 		log.Println("DeclineOrder error", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{

@@ -30,7 +30,8 @@ func (a *App) RunAllRoutes(){
 
 	// unauthorized endpoints
 	r.GET("/api-doc/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-//todo: check inserting hierarchy
+
+	//todo: check inserting hierarchy
 	r.POST("/users/login", a.Login)
 	r.POST("/users/activation", a.VerifyEmail)
 	r.POST("/users/forgot_password", a.SendRecoveryPassword)
@@ -54,27 +55,21 @@ func (a *App) RunAllRoutes(){
 	})
 	auth.POST("/logout", a.Logout)
 	auth.POST("/change_password", a.ChangePassword)
+
+	//order
 	auth.POST("/order", a.CreateOrder)
 	auth.GET("/order", a.ListOrder)
+	auth.POST("/order/cancel", a.DeclineOrder)
+	auth.POST("/order/accept", a.AcceptOrder)
 
-	r.PATCH("/order/upgrade", func(context *gin.Context) {
+	auth.PATCH("/order/upgrade", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",
 		})
 	})
 
-	r.POST("/order/cancel", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
-	r.POST("/order/accept", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
-	//authorized := r.Use(AuthorizeJWT())
-	//authorized.POST("/registration", a.Registration)
+
+
 
 	_ = r.Run(port)
 }

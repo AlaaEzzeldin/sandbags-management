@@ -4,21 +4,21 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"strconv"
 	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/service"
 )
 
 func (a *App) AcceptOrder(c *gin.Context) {
-	var input models.AcceptOrderInput
-	// check whether the structure of request is correct
-	if err := c.ShouldBindJSON(&input); err != nil{
-		log.Println("AcceptOrder error: ", err.Error())
+	orderId, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode: http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "incorrect input",
 		})
 		return
 	}
+
 	claims, err := GetClaims(c)
 	if err != nil {
 		log.Println("AcceptOrder error: ", err.Error())
@@ -29,7 +29,7 @@ func (a *App) AcceptOrder(c *gin.Context) {
 		return
 	}
 
-	permissions, err := service.GetUserOrderPermissions(a.DB, claims.Id, input.OrderId)
+	permissions, err := service.GetUserOrderPermissions(a.DB, claims.Id, orderId)
 	if err != nil {
 		log.Println("AcceptOrder error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
@@ -57,7 +57,7 @@ func (a *App) AcceptOrder(c *gin.Context) {
 		return
 	}
 
-	err = service.AcceptOrder(a.DB, claims.Id, input.OrderId)
+	err = service.AcceptOrder(a.DB, claims.Id, orderId)
 	if err != nil {
 		log.Println("AcceptOrder error", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{

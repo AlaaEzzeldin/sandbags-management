@@ -3,13 +3,13 @@ package models
 import "time"
 
 type OrderEquipment struct {
-	Id       int `json:"id,omitempty" gorm:"column:id"`
+	EquipmentId       int `json:"id,omitempty" gorm:"column:equipment_id"`
 	Name string `json:"name,omitempty" gorm:"column:name"`
 	Quantity int `json:"quantity,omitempty" gorm:"column:quantity"`
 }
 
 type Comment struct {
-	Id          int       `json:"id,omitempty" gorm:"column:id"`
+	CommentId          int       `json:"id,omitempty" gorm:"column:comment_id"`
 	CommentText string    `json:"comment_text,omitempty" gorm:"column:comment_text"`
 	OrderId     int       `json:"order_id,omitempty" gorm:"column:order_id"`
 	CreateDate  time.Time `json:"create_date,omitempty" gorm:"column:create_date"`
@@ -18,7 +18,7 @@ type Comment struct {
 
 
 type Log struct {
-	Id             int       `json:"id,omitempty" gorm:"column:id"`
+	LogId             int       `json:"id,omitempty" gorm:"column:log_id"`
 	OrderId        int       `json:"order_id,omitempty" gorm:"column:order_id"`
 	Description    string    `json:"description,omitempty" gorm:"column:description"`
 	ActionTypeId   int       `json:"action_type_id,omitempty" gorm:"column:action_type_id"`
@@ -30,7 +30,7 @@ type Log struct {
 }
 
 type Permission struct {
-	Id   int    `json:"id,omitempty" gorm:"column:id"`
+	PermissionId   int    `json:"id,omitempty" gorm:"column:permission_id"`
 	Name string `json:"name,omitempty" gorm:"column:name"`
 }
 
@@ -52,3 +52,16 @@ type Order struct {
 	Permissions []Permission     `json:"permissions,omitempty"`
 }
 
+type SimpleOrder struct {
+	Id          int              `json:"id,omitempty" gorm:"column:id"`
+	UserId      int              `json:"user_id,omitempty" gorm:"column:user_id"`
+	Name        string           `json:"name,omitempty" gorm:"column:name"`
+	AddressTo   string           `json:"address_to,omitempty" gorm:"column:address_to"`
+	AddressFrom string           `json:"address_from,omitempty" gorm:"column:address_from"`
+	StatusId    int              `json:"status_id,omitempty" gorm:"column:status_id"`
+	StatusName  string           `json:"status_name,omitempty" gorm:"column:status_name"`
+	PriorityId  int              `json:"priority_id,omitempty" gorm:"column:priority_id"`
+	AssignedTo  int              `json:"assigned_to,omitempty" gorm:"column:assigned_to"`
+	CreateDate  time.Time        `json:"create_date,omitempty" gorm:"column:create_date"`
+	UpdateDate  time.Time        `json:"update_date,omitempty" gorm:"column:update_date"`
+}

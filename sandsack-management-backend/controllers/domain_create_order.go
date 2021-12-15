@@ -81,6 +81,11 @@ func (a *App) CreateOrder(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, order)
+	updatedOrder, err := service.GetOrder(a.DB, user.Id, order.Id)
+	if err != nil {
+		log.Println("GetOrder error", err.Error())
+	}
+
+	c.JSON(http.StatusOK, updatedOrder)
 
 }

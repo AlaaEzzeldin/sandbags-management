@@ -4,6 +4,7 @@ import (
 	"errors"
 	"gorm.io/gorm"
 	"log"
+	"strconv"
 	"team2/sandsack-management-backend/models"
 )
 
@@ -67,13 +68,16 @@ func InsertOrder(a *gorm.DB, order *models.Order) (int, error) {
 		//a.Rollback()
 		return 0, err
 	}
+	query = `update public.order set name = ? where id = ?;`
+	err = a.Exec(query, order.Name + " #" + strconv.Itoa(id.Id), id.Id).Error
+
 	return id.Id, nil
 }
 
 func InsertOrderEquipment(a *gorm.DB, orderId int, equipments []models.OrderEquipment) error {
 	for _, row := range equipments {
 		query := `insert into public.order_equipment(equipment_id, quantity, order_id) values(?,?,?);`
-		err := a.Exec(query, row.Id, row.Quantity, orderId).Error
+		err := a.Exec(query, row.EquipmentId, row.Quantity, orderId).Error
 		if err != nil {
 			return err
 		}
@@ -120,7 +124,7 @@ func DeleteUserOrderPermission(a *gorm.DB, userId int, orderId int, permissionId
 	return err
 }
 
-func GetOrder(a *gorm.DB, userId, orderId int) (order *models.Order, err error) {
+func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 	query := `select 	o.id,
 						  o.name,
 						  o.user_id,
@@ -138,19 +142,54 @@ func GetOrder(a *gorm.DB, userId, orderId int) (order *models.Order, err error) 
 				and o.user_id = u.id
 				and o.id=?;
 	`
+	var simpleOrder models.SimpleOrder
 
-	err = a.Raw(query, userId, orderId).Scan(&order).Error
+	err := a.Raw(query, userId, orderId).Scan(&simpleOrder).Error
 	if err != nil {
-		return nil, err
+		return models.Order{}, err
 	}
 
+	var (
+		comments []models.Comment
+		equipments []models.OrderEquipment
+		logs []models.Log
+		permissions []models.Permission
+	)
+	query = `select comment_text from public.comment where order_id = ?;`
+	err = a.Raw(query, simpleOrder.Id).Scan(&comments).Error
+
+	query = `select oe.id as equipment_id, e.name, oe.quantity 
+				from public.order_equipment oe, public.equipment e 
+				where oe.order_id = ? and e.id = oe.equipment_id;`
+	err = a.Raw(query, simpleOrder.Id).Scan(&equipments).Error
+
+	query = `select description from public.log where order_id = ?;`
+	err = a.Raw(query, simpleOrder.Id).Scan(&logs).Error
+
+	query = `select p.name from public.permission p, public.user_order_permission uop 
+				where uop.user_id = ? and uop.order_id = ?
+				and uop.permission_id = p.id;`
+	err = a.Raw(query, userId, simpleOrder.Id).Scan(&permissions).Error
+
+	order := models.Order{
+		Id: simpleOrder.Id,
+		UserId: simpleOrder.UserId,
+		StatusId: simpleOrder.StatusId,
+		Name: simpleOrder.Name,
+		AddressFrom: simpleOrder.AddressFrom,
+		AddressTo: simpleOrder.AddressTo,
+		StatusName: simpleOrder.StatusName,
+		PriorityId: simpleOrder.PriorityId,
+		Comments: comments,
+		Logs: logs,
+		Equipments: equipments,
+		Permissions: permissions,
+	}
 	return order, nil
-
-
 }
 
 
-func GetOrderList(a *gorm.DB, userId int) (orderList *[]models.Order, err error) {
+func GetOrderList(a *gorm.DB, userId int) (orderList []models.Order, err error) {
 	query := `select 	o.id, 
 						o.name, 
 						o.user_id, 
@@ -164,38 +203,57 @@ func GetOrderList(a *gorm.DB, userId int) (orderList *[]models.Order, err error)
 				from public.order o, public.status s 
 				where o.status_id = s.id
 				and o.id in (select order_id from user_order_permission where user_id = ? 
-							 and permission_id = (select id from permission where name = 'CAN VIEW'));`
+							 and permission_id = (select id from permission where name = 'CAN VIEW'))
+				order by o.create_date DESC;`
 
-	if err := a.Raw(query, userId).Scan(&orderList).Error; err != nil {
+	var simpleOrderList []models.SimpleOrder
+
+	if err := a.Raw(query, userId).Scan(&simpleOrderList).Error; err != nil {
 		log.Println("GetOrderList err", err.Error())
+		log.Println("Here", err.Error() )
 		return nil, err
 	}
 
-	for _, row := range *orderList {
-		log.Println("Row", row)
+	for _, row := range simpleOrderList {
+		var (
+			comments []models.Comment
+			equipments []models.OrderEquipment
+			logs []models.Log
+			permissions []models.Permission
+		)
 		query := `select comment_text from public.comment where order_id = ?;`
-		err = a.Raw(query, row.Id).Scan(&row.Comments).Error
-		if err != nil {
-			return nil, err
-		}
-		log.Println("Comments", row.Comments)
-		query = `select oe.id, e.name, oe.quantity from public.order_equipment oe, public.equipment e where oe.order_id = ? and e.id=oe.equipment_id;`
-		err = a.Raw(query, row.Id).Scan(&row.Equipments).Error
-		if err != nil {
-			return nil, err
-		}
+		err = a.Raw(query, row.Id).Scan(&comments).Error
+
+		log.Println("Comments", comments)
+		query = `select oe.id as equipment_id, e.name, oe.quantity 
+				from public.order_equipment oe, public.equipment e 
+				where oe.order_id = ? and e.id = oe.equipment_id;`
+		err = a.Raw(query, row.Id).Scan(&equipments).Error
+
 		query = `select description from public.log where order_id = ?;`
-		err = a.Raw(query, row.Id).Scan(&row.Logs).Error
-		if err != nil {
-			return nil, err
-		}
+		err = a.Raw(query, row.Id).Scan(&logs).Error
+
 		query = `select p.name from public.permission p, public.user_order_permission uop 
-				where uop.user_id = ?
+				where uop.user_id = ? and uop.order_id = ?
 				and uop.permission_id = p.id;`
-		err = a.Raw(query, row.Id).Scan(&row.Permissions).Error
-		if err != nil {
-			return nil, err
+		err = a.Raw(query, userId, row.Id).Scan(&permissions).Error
+
+		order := models.Order{
+			Id: row.Id,
+			UserId: row.UserId,
+			StatusId: row.StatusId,
+			Name: row.Name,
+			AddressFrom: row.AddressFrom,
+			AddressTo: row.AddressTo,
+			StatusName: row.StatusName,
+			PriorityId: row.PriorityId,
+			Comments: comments,
+			Logs: logs,
+			Equipments: equipments,
+			Permissions: permissions,
 		}
+
+		orderList = append(orderList, order)
 	}
 
 	return orderList, nil
@@ -225,8 +283,9 @@ func GetUserOrderPermissions(a *gorm.DB, userId, orderId int) ([]int, error) {
 
 	var perms []int
 	for _, row := range permissions {
-		perms = append(perms, row.Id)
+		perms = append(perms, row.PermissionId)
 	}
+
 	return perms, err
 }
 
@@ -240,36 +299,35 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 
 	order, err := GetOrder(db, userId, orderId)
 
+	log.Println("USER branchID:", user.BranchId)
+	log.Println("ORder", order.StatusId)
+
 	var statusId int
 	if user.BranchId == 5 { // Unterabschnitt
 		return errors.New("User from Unterabschnitt cannot accept orders")
-	}
-
-	if user.BranchId == 4 { // Einsatzabschnitt
-		if statusId == 1 {
-			//can do
+	}else if user.BranchId == 4 { // Einsatzabschnitt
+		if order.StatusId == 1 {
+			statusId = 3
 		} else {
-			return errors.New("cannot weitergeleit")
+			return errors.New("einsatzabschnitt cannot weitergeleit")
 		}
-	}
-
-	if user.BranchId == 3 { // Hauptabschnitt
+	}else if user.BranchId == 3 { // Hauptabschnitt
 		if order.StatusId == 3 {
 			statusId = 4
 		} else {
-			return errors.New("cannot weiterhgeleit")
+			return errors.New("hauptabschnitt cannot weiterhgeleit")
 		}
-	}
-
-	if user.BranchId == 2 { // Einsatzleiter
+	}else if  user.BranchId == 2 { // Einsatzleiter
 		if order.StatusId == 4 { //weitergeleitet bei Hauptabschnitt
 			statusId = 6 // akzeptiert
+		}else{
+			return errors.New("einsatzleiter cannot weitergeleiten")
 		}
-	}
-
-	if user.BranchId == 1 { // Mollnhof
+	}else if user.BranchId == 1 { // Mollnhof
 		if order.StatusId == 6{
 			statusId = 6
+		}else{
+			return errors.New("mollnhof cannot weitergeleiten")
 		}
 	}
 
@@ -285,7 +343,7 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 			where user_id = ? and order_id = ? and 
 			permission_id in 
 				(select id from permission 
-				where name = 'CAN EDIT' or name = 'CAN DECLINE' or name = 'CAN ACCEPT'));`
+				where name = 'CAN EDIT' or name = 'CAN DECLINE' or name = 'CAN ACCEPT');`
 		err = db.Exec(query, child.Id, order.Id).Error
 		if err != nil {
 			return err
@@ -302,6 +360,7 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 			permissions = append(permissions, 2) // can confirm delivery
 			permissions = append(permissions, 7) // can assign to
 		}
+		log.Println("Permissions", permissions)
 		err = InsertUserOrderPermissions(db, parent.Id, orderId, permissions)
 		if err != nil {
 			return err
@@ -327,7 +386,7 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 }
 
 func DeclineOrder(db *gorm.DB, userId, orderId int) error {
-	query := `update public.order set status_id = 2 where order_id = ?;`
+	query := `update public.order set status_id = 2 where id = ?;`
 	err := db.Exec(query, orderId).Error
 	if err != nil {
 		return err

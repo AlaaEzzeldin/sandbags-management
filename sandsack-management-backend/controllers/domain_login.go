@@ -59,7 +59,7 @@ func (a *App) Login(c *gin.Context){
 	// check password is correct
 	ok := functions.CheckPasswordHash(input.Password, user.Password)
 	if !ok {
-		log.Println("CheclPasswordHash error", err.Error())
+		log.Println("CheckPasswordHash error")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode: http.StatusBadRequest,
 			ErrMessage: "wrong password",

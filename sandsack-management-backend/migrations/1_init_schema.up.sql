@@ -180,10 +180,12 @@ insert into status(id, name) values
                                  (2, 'STORNIERT'),
                                  (3, 'WEITERGELEITET BEI EINSATZABSCHNITT'),
                                  (4, 'WEITERGELEITET BEI HAUPTABSCHNITT'),
-                                 (5, 'ABGELEHNT'),
-                                 (6, 'AKZEPTIERT'),
-                                 (7, 'AUF DEM WEG'),
-                                 (8, 'GELIEFERT');
+                                 (5, 'ABGELEHNT BEI EINSATZABSCHNITT'),
+                                 (6, 'ABGELEHNT BEI HAUPTABSCHNITT'),
+                                 (7, 'ABGELEHNT BEI EINSATZLEITER'),
+                                 (8, 'AKZEPTIERT'),
+                                 (9, 'AUF DEM WEG'),
+                                 (10, 'GELIEFERT');
 
 insert into "user"
 (id, name, phone, password, email, token, is_activated, is_super_user, is_email_verified, branch_id)
@@ -221,3 +223,9 @@ insert into priority(id, level, name) values
 
 insert into equipment(id, name, quantity) values
         (1, 'Sandsack', 100000);
+
+
+create sequence order_number_id_seq
+    as integer;
+
+alter sequence order_number_id_seq owner to postgres;

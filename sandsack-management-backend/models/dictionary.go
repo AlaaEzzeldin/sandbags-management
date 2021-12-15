@@ -22,9 +22,19 @@ var DictPriorityName = map[string]int {
 }
 
 var DictActionType = map[int]string {
-	1: "CREATE_ORDER",
+	1: "CREATED",
+	2: "EDITED",
+	3: "COMMENTED",
+	4: "ACCEPTED",
+	5: "DECLINED",
+	6: "ASSIGNED",
 }
 
 var DictActionTypeName = map[string]int {
-	"CREATE_ORDER": 1,
+	"CREATED": 1,
+	"EDITED": 2,
+	"COMMENTED": 3,
+	"ACCEPTED": 4,
+	"DECLINED": 5,
+	"ASSIGNED": 6,
 }
