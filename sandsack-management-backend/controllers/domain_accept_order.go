@@ -12,6 +12,7 @@ import (
 func (a *App) AcceptOrder(c *gin.Context) {
 	orderId, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
+		log.Println("Error in parsing", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode: http.StatusBadRequest,
 			ErrMessage: "incorrect input",

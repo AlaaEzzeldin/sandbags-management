@@ -56,16 +56,6 @@ func (a *App) Login(c *gin.Context){
 		return
 	}
 
-	// check password is correct
-	ok := functions.CheckPasswordHash(input.Password, user.Password)
-	if !ok {
-		log.Println("CheckPasswordHash error")
-		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
-			ErrMessage: "wrong password",
-		})
-		return
-	}
 
 	// if email is not verified, user cannot be logged in
 	if !user.IsEmailVerified {
@@ -84,6 +74,18 @@ func (a *App) Login(c *gin.Context){
 		})
 		return
 	}
+
+	// check password is correct
+	ok := functions.CheckPasswordHash(input.Password, user.Password)
+	if !ok {
+		log.Println("CheckPasswordHash error")
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			ErrCode: http.StatusBadRequest,
+			ErrMessage: "wrong password",
+		})
+		return
+	}
+
 
 	tokens, err := service.GenerateTokens(a.DB, email)
 	if err != nil {

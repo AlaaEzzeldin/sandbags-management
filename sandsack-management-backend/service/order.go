@@ -15,12 +15,13 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 	}
 	order.Id = orderId
 	if err := InsertOrderEquipment(a, order.Id, order.Equipments); err != nil {
+		log.Println("InsertOrderEquipment error", err.Error())
 		return err
 	}
-	log.Println(order.Comments, len(order.Comments))
 
 	if len(order.Comments) > 0 {
 		if err := InsertComments(a, order.UserId, order.Id, order.Comments); err != nil {
+			log.Println("InsertComments error", err.Error())
 			return err
 		}
 	}
@@ -30,10 +31,12 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 			OrderId: order.Id,
 			ActionTypeId: models.DictActionTypeName["CREATED"],
 			UpdatedBy: order.UserId,
-			Description: userName + " created order " + order.Name,
+			Description: userName + " hat die Bestellung " + order.Name + " erstellt",
 		},
 	}
+
 	if err := InsertLogs(a, logs); err != nil {
+		log.Println("InsertLogs error", err.Error())
 		return err
 	}
 	userOrderPermissions := []int{
@@ -43,6 +46,7 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 		models.DictPermissionName["CAN COMMENT"],
 	}
 	if err := InsertUserOrderPermissions(a, order.UserId, order.Id, userOrderPermissions); err != nil {
+		log.Println("InsertUserOrderPermissions error", err.Error())
 		return err
 	}
 
@@ -55,9 +59,11 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 	}
 	parent, err := GetParent(a, order.UserId)
 	if err != nil {
+		log.Println("GetParent error", err.Error())
 		return err
 	}
 	if err := InsertUserOrderPermissions(a, parent.Id, order.Id, parentOrderPermissions); err != nil {
+		log.Println("InsertUserOrderPermissions error", err.Error())
 		return err
 	}
 
@@ -72,11 +78,15 @@ func InsertOrder(a *gorm.DB, order *models.Order) (int, error) {
 		order.AddressTo, order.AddressFrom).Scan(&id).Error
 	if err != nil {
 		log.Println("InsertOrder error", err.Error())
-		//a.Rollback()
 		return 0, err
 	}
+
 	query = `update public.order set name = ?, update_date = ? where id = ?;`
 	err = a.Exec(query, order.Name + " #" + strconv.Itoa(id.Id), id.Id).Error
+	if err != nil {
+		log.Println("Updating name of order error", err.Error())
+		return 0, err
+	}
 
 	return id.Id, nil
 }
@@ -86,6 +96,7 @@ func InsertOrderEquipment(a *gorm.DB, orderId int, equipments []models.OrderEqui
 		query := `insert into public.order_equipment(equipment_id, quantity, order_id) values(?,?,?);`
 		err := a.Exec(query, row.EquipmentId, row.Quantity, orderId).Error
 		if err != nil {
+			log.Println("InsertOrderEquipment error", err.Error())
 			return err
 		}
 	}
@@ -97,6 +108,7 @@ func InsertComments(a *gorm.DB, userId, orderId int, comments []models.Comment) 
 		query := `insert into public.comment(order_id, comment_text, user_id) values(?,?,?);`
 		err := a.Exec(query, orderId, row.CommentText, userId).Error
 		if err != nil {
+			log.Println("InsertComments error", err.Error())
 			return err
 		}
 	}
@@ -108,6 +120,7 @@ func InsertLogs(a *gorm.DB, logs []models.Log) error {
 		query := `insert into public.log(action_type_id, description, order_id, updated_by)values(?,?,?,?);`
 		err := a.Exec(query, row.ActionTypeId, row.Description, row.OrderId, row.UpdatedBy).Error
 		if err != nil {
+			log.Println("InsertLogs error", err.Error())
 			return err
 		}
 	}
@@ -119,6 +132,7 @@ func InsertUserOrderPermissions(a *gorm.DB, userId int, orderId int, permissionL
 		query := `insert into public.user_order_permission(user_id, order_id, permission_id) values(?,?,?);`
 		err := a.Exec(query, userId, orderId, row).Error
 		if err != nil {
+			log.Println("InsertUserOrderPermissions error", err.Error())
 			return err
 		}
 	}
@@ -128,7 +142,11 @@ func InsertUserOrderPermissions(a *gorm.DB, userId int, orderId int, permissionL
 func DeleteUserOrderPermission(a *gorm.DB, userId int, orderId int, permissionId int) error {
 	query := `delete from public.user_order_permission where user_id = ? and order_id = ? and permission_id = ?;`
 	err := a.Exec(query, userId, orderId, permissionId).Error
-	return err
+	if err != nil {
+		log.Println("DeleteUserOrderPermission error", err.Error())
+		return err
+	}
+	return nil
 }
 
 func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
@@ -145,7 +163,7 @@ func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 							u.name
 				from public.order o, public.status s, public.user u
 				where o.status_id = s.id
-				  and o.id in (select order_id from user_order_permission where user_id = ? and permission_id= (select id from permission where name = 'CAN VIEW'))
+				  and o.id in (select order_id from user_order_permission where user_id = ? and permission_id = (select id from permission where name = 'CAN VIEW'))
 				and o.user_id = u.id
 				and o.id=?;
 	`
@@ -153,6 +171,7 @@ func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 
 	err := a.Raw(query, userId, orderId).Scan(&simpleOrder).Error
 	if err != nil {
+		log.Println("GetOrder error", err.Error())
 		return models.Order{}, err
 	}
 
@@ -164,19 +183,31 @@ func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 	)
 	query = `select comment_text from public.comment where order_id = ?;`
 	err = a.Raw(query, simpleOrder.Id).Scan(&comments).Error
+	if err != nil {
+		log.Println("GetComments error", err.Error())
+	}
 
-	query = `select oe.id as equipment_id, e.name, oe.quantity 
+	query = `select e.id as equipment_id, e.name, oe.quantity 
 				from public.order_equipment oe, public.equipment e 
 				where oe.order_id = ? and e.id = oe.equipment_id;`
 	err = a.Raw(query, simpleOrder.Id).Scan(&equipments).Error
+	if err != nil {
+		log.Println("GetEquipment error", err.Error())
+	}
 
 	query = `select description from public.log where order_id = ?;`
 	err = a.Raw(query, simpleOrder.Id).Scan(&logs).Error
+	if err != nil {
+		log.Println("GetLogs error", err.Error())
+	}
 
 	query = `select p.name from public.permission p, public.user_order_permission uop 
 				where uop.user_id = ? and uop.order_id = ?
 				and uop.permission_id = p.id;`
 	err = a.Raw(query, userId, simpleOrder.Id).Scan(&permissions).Error
+	if err != nil {
+		log.Println("GetPermissions error", err.Error())
+	}
 
 	order := models.Order{
 		Id: simpleOrder.Id,
@@ -217,7 +248,6 @@ func GetOrderList(a *gorm.DB, userId int) (orderList []models.Order, err error) 
 
 	if err := a.Raw(query, userId).Scan(&simpleOrderList).Error; err != nil {
 		log.Println("GetOrderList err", err.Error())
-		log.Println("Here", err.Error() )
 		return nil, err
 	}
 
@@ -230,20 +260,31 @@ func GetOrderList(a *gorm.DB, userId int) (orderList []models.Order, err error) 
 		)
 		query := `select comment_text from public.comment where order_id = ?;`
 		err = a.Raw(query, row.Id).Scan(&comments).Error
+		if err != nil {
+			log.Println("GetComments error", err.Error())
+		}
 
-		log.Println("Comments", comments)
-		query = `select oe.id as equipment_id, e.name, oe.quantity 
+		query = `select e.id as equipment_id, e.name, oe.quantity 
 				from public.order_equipment oe, public.equipment e 
 				where oe.order_id = ? and e.id = oe.equipment_id;`
 		err = a.Raw(query, row.Id).Scan(&equipments).Error
+		if err != nil {
+			log.Println("GetEquipment error", err.Error())
+		}
 
-		query = `select description from public.log where order_id = ?;`
+		query = `select description, create_date from public.log where order_id = ?;`
 		err = a.Raw(query, row.Id).Scan(&logs).Error
+		if err != nil {
+			log.Println("GetLogs error", err.Error())
+		}
 
 		query = `select p.name from public.permission p, public.user_order_permission uop 
 				where uop.user_id = ? and uop.order_id = ?
 				and uop.permission_id = p.id;`
 		err = a.Raw(query, userId, row.Id).Scan(&permissions).Error
+		if err != nil {
+			
+		}
 
 		order := models.Order{
 			Id: row.Id,
@@ -472,6 +513,7 @@ func DeclineOrder(db *gorm.DB, userId, orderId int) error {
 		if err != nil {
 			return err
 		}
+		log.Println("Children", children)
 		for _, child := range *children {
 			query = `delete from user_order_permission 
 				where user_id = ? and order_id = ?

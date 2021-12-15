@@ -10,8 +10,10 @@ import (
 )
 
 func (a *App) DeclineOrder(c *gin.Context) {
-	orderId, err := strconv.Atoi(c.Query("id"))
+	id := c.Query("id")
+	orderId, err := strconv.Atoi(id)
 	if err != nil {
+		log.Println("Error in parsing", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode: http.StatusBadRequest,
 			ErrMessage: "incorrect input",
@@ -25,8 +27,7 @@ func (a *App) DeclineOrder(c *gin.Context) {
 
 	flag := 0
 	for _, i := range permissions {
-	// CAN DECLINE
-		if i == 4 {
+		if i == models.DictPermissionName["CAN DECLINE"]{
 			flag = 1
 			break
 		}

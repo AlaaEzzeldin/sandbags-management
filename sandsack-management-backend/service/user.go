@@ -191,11 +191,11 @@ func GetParent(db *gorm.DB, userId int) (user *models.User, err error) {
 
 
 func GetChildren(db *gorm.DB, parentId int) (users *[]models.User, err error) {
-	query := `select u.id, u.name, u.email, u.branch_id, b.name as branch_name 
-				from public.user u, branch b, hierarchy h 
+	query := `select u.id, u.name, u.email, u.branch_id, b.name as branch_name
+				from public.user u, branch b, hierarchy h
 				where b.id = u.branch_id
-				and u.id = ?
-				and u.id = h.user2_id;`
+				  and u.id = h.user2_id
+					and h.user1_id = ?;`
 	if err := db.Raw(query, parentId).Scan(&users).Error; err != nil {
 		return nil, err
 	}

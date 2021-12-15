@@ -19,6 +19,59 @@
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-[GIN-debug] redirecting request 301: /users/ --> /users/
-2021/12/15 16:19:43 interrupt
-2021/12/15 16:19:43 Exit command received. Exiting ....
+2021/12/15 16:41:09 Comments []
+2021/12/15 16:41:09 Comments []
+2021/12/15 16:41:09 Comments []
+2021/12/15 16:46:49 Comments []
+2021/12/15 16:46:49 Comments []
+2021/12/15 16:46:49 Comments []
+2021/12/15 16:47:54 User branch 5
+2021/12/15 16:47:54 [] 0
+2021/12/15 16:48:02 USER branchID: 4
+2021/12/15 16:48:02 Order 1
+2021/12/15 16:48:05 Comments []
+2021/12/15 16:48:05 Comments []
+2021/12/15 16:48:05 Comments []
+2021/12/15 16:48:05 Comments []
+2021/12/15 16:48:10 Comments []
+2021/12/15 16:48:10 Comments []
+2021/12/15 16:48:10 Comments []
+2021/12/15 16:48:10 Comments []
+2021/12/15 16:48:13 Comments []
+2021/12/15 16:48:49 Comments []
+2021/12/15 16:49:04 ID 40
+2021/12/15 16:49:04 Children &[{14 EA1 - Mitte   ea1mitte@user.com  false false false Einsatzabschnitt 4 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC}]
+2021/12/15 16:49:07 Comments []
+2021/12/15 16:49:11 Comments []
+2021/12/15 16:49:11 Comments []
+2021/12/15 16:49:11 Comments []
+2021/12/15 16:49:11 Comments []
+2021/12/15 16:49:20 USER branchID: 3
+2021/12/15 16:49:20 Order 6
+2021/12/15 16:49:23 Comments []
+2021/12/15 16:49:26 Comments []
+2021/12/15 16:49:26 Comments []
+2021/12/15 16:49:26 Comments []
+2021/12/15 16:49:26 Comments []
+2021/12/15 16:49:29 User cannot view this order
+2021/12/15 16:49:37 ID 40
+2021/12/15 16:49:37 No access for this action error
+2021/12/15 16:50:18 Comments []
+2021/12/15 16:50:22 Comments []
+2021/12/15 16:50:25 Comments []
+2021/12/15 16:50:25 Comments []
+2021/12/15 16:50:25 Comments []
+2021/12/15 16:50:25 Comments []
+2021/12/15 16:50:34 Comments []
+2021/12/15 16:50:59 ID 40
+2021/12/15 16:50:59 Children &[{12 Mitte   mitte@user.com  false false false Hauptabschnitt 3 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC} {15 Nord   nord@user.com  false false false Hauptabschnitt 3 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC}]
+2021/12/15 16:51:01 Comments []
+2021/12/15 16:51:32 Exists? true
+2021/12/15 16:51:55 Comments []
+2021/12/15 16:52:00 Comments []
+2021/12/15 16:52:05 USER branchID: 2
+2021/12/15 16:52:05 Order 7
+2021/12/15 16:52:08 Comments []
+2021/12/15 16:52:12 Comments []
+2021/12/15 17:19:50 interrupt
+2021/12/15 17:19:50 Exit command received. Exiting ....

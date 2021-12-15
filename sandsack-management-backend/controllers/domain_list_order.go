@@ -2,21 +2,51 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
+	"strconv"
+	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/service"
 )
 
 func (a *App) ListOrder(c *gin.Context) {
+	id := c.Query("id")
+
 	claims, err := GetClaims(c)
 	if err != nil {
 		return
 	}
 
-	orders, err := service.GetOrderList(a.DB, claims.Id)
-	if err != nil {
+	if len(id) == 0{
+		orders, err := service.GetOrderList(a.DB, claims.Id)
+		if err != nil {
+			return
+		}
+		c.JSON(http.StatusOK, orders)
 		return
 	}
 
-	c.JSON(http.StatusOK, orders)
+	orderId, err := strconv.Atoi(id)
+	if err != nil {
+		log.Println("Error in parsing", err.Error())
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			ErrCode: http.StatusBadRequest,
+			ErrMessage: "incorrect input",
+		})
+		return
+	}
+	order, err := service.GetOrder(a.DB, claims.Id, orderId)
+	if err != nil {
+		log.Println("GetOrder error", err.Error())
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			ErrCode: http.StatusInternalServerError,
+			ErrMessage: "something went wrong",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, order)
+
+
+
 
 }
