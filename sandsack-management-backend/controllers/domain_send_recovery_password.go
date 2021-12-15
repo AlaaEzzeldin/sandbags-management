@@ -10,16 +10,14 @@ import (
 )
 
 // SendRecoveryPassword
-// @Description This endpoint enables to reset the forgotten password
-// @Summary Reset forgotten password of user
+// @Description SendRecoveryPassword - user requests to reset password, when he forgets his password in order to login
+// @Summary SendRecoveryPassword - user requests to reset password, when he forgets his password in order to login
 // @Accept json
-// @Produce json
-// @Param Authorization header string true "Bearer "
-// @Param input body models.SendRecoveryPasswordInput true "User forgot password model"
-// @Success 200 "OTP object"
-// @Failure 401 "Token is not valid or missing"
-// @Failure 400 "Bad request (e.g. parameter in body is not given or incorrect)"
-// @Failure 500 "Something went wrong"
+// @Param input body models.SendRecoveryPasswordInput true "SendRecoveryPassword"
+// @Success 200
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
 // @Tags Authentication
 // @Router /users/forgot_password [post]
 func (a *App) SendRecoveryPassword(c *gin.Context) {

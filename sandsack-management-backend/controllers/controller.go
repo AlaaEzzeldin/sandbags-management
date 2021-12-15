@@ -16,7 +16,7 @@ func AuthorizeJWT() gin.HandlerFunc {
 		token, err := service.VerifyToken(tokenStr)
 		if err != nil {
 			log.Println("VerifyToken error", err.Error())
-			c.JSON(http.StatusUnauthorized, models.ErrorResponse{
+			c.AbortWithStatusJSON(http.StatusUnauthorized, models.ErrorResponse{
 				ErrCode: http.StatusUnauthorized,
 				ErrMessage: "no access",
 			})

@@ -25,11 +25,16 @@ func GenerateTokens(db *gorm.DB, email string) (map[string]string, error) {
 		return nil, err
 	}
 
+	role := "user"
+	if user.IsSuperUser {
+		role = "admin"
+	}
 
 	var atClaims = models.CustomClaims{
 		Id:    user.Id,
 		Email: email,
 		Type: "access",
+		Role: role,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(ACCESS_TOKEN_TTL).Unix(),
 		},
@@ -45,6 +50,7 @@ func GenerateTokens(db *gorm.DB, email string) (map[string]string, error) {
 		Id:    user.Id,
 		Email: email,
 		Type: "refresh",
+		Role: role,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(REFRESH_TOKEN_TTL).Unix(),
 		},
@@ -109,15 +115,4 @@ func GetClaims(encodedToken string) (*models.CustomClaims, error){
 
 	return claims, nil
 }
-
-func verifyFunc(token *jwt.Token) (interface{}, error) {
-	return []byte(os.Getenv("SECRET_CODE")), nil
-}
-
-// todo
-func RefreshAccessToken(refreshToken string) (accessToken string, err error) {
-	return "", nil
-}
-
-
 

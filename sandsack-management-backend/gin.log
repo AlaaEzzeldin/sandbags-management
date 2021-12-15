@@ -10,12 +10,14 @@
 [GIN-debug] PUT    /users/password           --> team2/sandsack-management-backend/controllers.(*App).ChangePassword-fm (4 handlers)
 [GIN-debug] POST   /users/me                 --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func1 (4 handlers)
 [GIN-debug] POST   /users/logout             --> team2/sandsack-management-backend/controllers.(*App).Logout-fm (4 handlers)
-[GIN-debug] POST   /users/change_password    --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func2 (4 handlers)
-[GIN-debug] POST   /order                    --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func3 (3 handlers)
-[GIN-debug] POST   /order/upgrade            --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func4 (3 handlers)
-[GIN-debug] POST   /order/cancel             --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func5 (3 handlers)
+[GIN-debug] POST   /users/change_password    --> team2/sandsack-management-backend/controllers.(*App).ChangePassword-fm (4 handlers)
+[GIN-debug] POST   /users/order              --> team2/sandsack-management-backend/controllers.(*App).CreateOrder-fm (4 handlers)
+[GIN-debug] GET    /users/order              --> team2/sandsack-management-backend/controllers.(*App).ListOrder-fm (4 handlers)
+[GIN-debug] POST   /users/order/cancel       --> team2/sandsack-management-backend/controllers.(*App).DeclineOrder-fm (4 handlers)
+[GIN-debug] POST   /users/order/accept       --> team2/sandsack-management-backend/controllers.(*App).AcceptOrder-fm (4 handlers)
+[GIN-debug] PATCH  /users/order/upgrade      --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func2 (4 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-2021/12/08 15:30:18 interrupt
-2021/12/08 15:30:18 Exit command received. Exiting ....
+2021/12/15 11:56:36 interrupt
+2021/12/15 11:56:36 Exit command received. Exiting ....

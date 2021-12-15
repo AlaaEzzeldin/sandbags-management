@@ -66,6 +66,17 @@ func (a *App) CreateUser(c *gin.Context) {
 		return
 	}
 
+
+
+	parent, err := service.GetUserByID(a.DB, input.ParentId)
+	if parent.Name == "Mollnhof" {
+		log.Println("Mollnhof cannot have any branches except Einsatzleiter")
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			ErrCode: http.StatusBadRequest,
+			ErrMessage: "Mollnhof cannot have any branched except Einsatzleiter",
+		})
+	}
+
 	if err := service.CreateUser(a.DB, &input); err != nil {
 		log.Println("CreateUser error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{

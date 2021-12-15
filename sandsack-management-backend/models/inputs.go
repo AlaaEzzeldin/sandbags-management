@@ -35,7 +35,14 @@ type RecoveryPasswordInput struct {
 	Password string `json:"password"`
 }
 
-type PatchProfileInput struct {
-	Name string `json:"name"`
-	Phone string `json:"phone"`
+type CreateOrderInput struct {
+	AddressTo  string           `json:"address_to,required"`
+	Priority   int              `json:"priority,required"`
+	Equipments []OrderEquipment `json:"equipments,required"`
+	Comments   []Comment        `json:"comments,omitempty"`
+}
+
+
+type AcceptOrderInput struct {
+	OrderId int `json:"order_id"`
 }
