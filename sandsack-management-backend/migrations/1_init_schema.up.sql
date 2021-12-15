@@ -3,7 +3,7 @@ CREATE TABLE "user" (
                         "name" varchar,
                         "phone" varchar,
                         "password" varchar,
-                        "email" varchar,
+                        "email" varchar unique,
                         "token" varchar,
                         "is_activated" boolean,
                         "is_super_user" boolean,

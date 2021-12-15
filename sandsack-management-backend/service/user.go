@@ -64,18 +64,23 @@ type Id struct {
 }
 
 func CreateUser(db *gorm.DB, user *models.CreateUser) error {
+	parent, err := GetUserByID(db, user.ParentId)
+	if err != nil {
+		return err
+	}
+	log.Println("Parent ", parent.BranchId)
+	if parent.BranchId == models.DictBranchName["Unterabschnitt"] {
+		return errors.New("unterabschnitt darf keine Abschnitten haben")
+	}
+
 	var model Id
 	hashedPassword, err := functions.HashPassword(user.Password)
 	if err != nil {
 		return err
 	}
+
 	query := `insert into public.user(name, email, phone, password) values(?,?,?,?) returning id;`
 	if err := db.Raw(query, user.Name, user.Email, user.Phone, hashedPassword).Scan(&model).Error; err != nil {
-		return err
-	}
-
-	parent, err := GetUserByID(db, user.ParentId)
-	if err != nil {
 		return err
 	}
 
@@ -92,7 +97,7 @@ func AddHierarchy(db *gorm.DB, parentId int, childId int, branchId int) error {
 	}
 
 	branchId += 1
-	query = `update public.user set branch_id = ? where id = ?;`
+	query = `update public.user set branch_id = ?, update_date = now() where id = ?;`
 	if err := db.Exec(query, branchId, childId).Error; err != nil {
 		return err
 	}
@@ -101,7 +106,13 @@ func AddHierarchy(db *gorm.DB, parentId int, childId int, branchId int) error {
 
 
 func GetUserList(db *gorm.DB) (userList *[]models.User, err error) {
-	query := `select u.id, u.name, u.email, u.branch_id, b.name as branch_name from public.user u, branch b where b.id = u.branch_id;`
+	query := `select c.id, c.name, c.email, c.branch_id, b.name as branch_name, 
+					c.create_date, c.update_date, p.id as parent_id, p.name as parent_name
+				from hierarchy h
+				join "user" c on h.user2_id = c.id
+				join "user" p on h.user1_id = p.id
+				join branch b on c.branch_id=b.id
+				order by c.branch_id;`
 	if err := db.Raw(query).Scan(&userList).Error; err != nil {
 		return nil, err
 	}
@@ -110,7 +121,7 @@ func GetUserList(db *gorm.DB) (userList *[]models.User, err error) {
 
 
 func RevokeToken(db *gorm.DB, token string) error {
-	query := `update public.user set token = null where token = ?'`
+	query := `update public.user set token = null, update_date = now() where token = ?'`
 	if err := db.Exec(query, token).Error; err != nil {
 		return err
 	}

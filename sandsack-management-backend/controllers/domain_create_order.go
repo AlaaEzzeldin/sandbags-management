@@ -51,7 +51,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 		return
 	}
 	log.Println("User branch", user.BranchId)
-	if user.BranchId != 5 {
+	if user.BranchId != models.DictBranchName["Unterabschnitt"] {
 		log.Println("It's not Unterabschnitt")
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
 			ErrCode: http.StatusUnauthorized,

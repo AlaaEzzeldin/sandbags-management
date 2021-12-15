@@ -19,5 +19,6 @@
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-2021/12/15 11:56:36 interrupt
-2021/12/15 11:56:36 Exit command received. Exiting ....
+[GIN-debug] redirecting request 301: /users/ --> /users/
+2021/12/15 16:19:43 interrupt
+2021/12/15 16:19:43 Exit command received. Exiting ....

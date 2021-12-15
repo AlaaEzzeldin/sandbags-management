@@ -26,7 +26,7 @@ values
      'mollnhof@user.com', '', true, false, true, 1);
 
 insert into "hierarchy" (user1_id, user2_id)
-values(1, 2);
+values(2, 1);
 
 
 insert into permission(id, name) values
@@ -53,6 +53,7 @@ insert into priority(id, level, name) values
 
 insert into equipment(id, name, quantity) values
     (1, 'Sandsack', 100000);
+
 
 
 create sequence order_number_id_seq

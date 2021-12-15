@@ -28,7 +28,7 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 	logs := []models.Log{
 		{
 			OrderId: order.Id,
-			ActionTypeId: models.DictActionTypeName["CREATE_ORDER"],
+			ActionTypeId: models.DictActionTypeName["CREATED"],
 			UpdatedBy: order.UserId,
 			Description: userName + " created order " + order.Name,
 		},
@@ -37,14 +37,21 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 		return err
 	}
 	userOrderPermissions := []int{
-		1,2,3,4,5,6,
+		models.DictPermissionName["CAN VIEW"],
+		models.DictPermissionName["CAN EDIT"],
+		models.DictPermissionName["CAN DECLINE"],
+		models.DictPermissionName["CAN COMMENT"],
 	}
 	if err := InsertUserOrderPermissions(a, order.UserId, order.Id, userOrderPermissions); err != nil {
 		return err
 	}
 
 	parentOrderPermissions := []int{
-		1,2,3,4,5,6,
+		models.DictPermissionName["CAN VIEW"],
+		models.DictPermissionName["CAN EDIT"],
+		models.DictPermissionName["CAN DECLINE"],
+		models.DictPermissionName["CAN ACCEPT"],
+		models.DictPermissionName["CAN COMMENT"],
 	}
 	parent, err := GetParent(a, order.UserId)
 	if err != nil {
@@ -68,7 +75,7 @@ func InsertOrder(a *gorm.DB, order *models.Order) (int, error) {
 		//a.Rollback()
 		return 0, err
 	}
-	query = `update public.order set name = ? where id = ?;`
+	query = `update public.order set name = ?, update_date = ? where id = ?;`
 	err = a.Exec(query, order.Name + " #" + strconv.Itoa(id.Id), id.Id).Error
 
 	return id.Id, nil
@@ -204,7 +211,7 @@ func GetOrderList(a *gorm.DB, userId int) (orderList []models.Order, err error) 
 				where o.status_id = s.id
 				and o.id in (select order_id from user_order_permission where user_id = ? 
 							 and permission_id = (select id from permission where name = 'CAN VIEW'))
-				order by o.create_date DESC;`
+				order by o.update_date DESC;`
 
 	var simpleOrderList []models.SimpleOrder
 
@@ -300,44 +307,56 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 	order, err := GetOrder(db, userId, orderId)
 
 	log.Println("USER branchID:", user.BranchId)
-	log.Println("ORder", order.StatusId)
+	log.Println("Order", order.StatusId)
 
 	var statusId int
-	if user.BranchId == 5 { // Unterabschnitt
-		return errors.New("User from Unterabschnitt cannot accept orders")
-	}else if user.BranchId == 4 { // Einsatzabschnitt
-		if order.StatusId == 1 {
-			statusId = 3
+	if user.BranchId == models.DictBranchName["Unterabschnitt"] {
+		return errors.New("unterabschnitt kann nicht Bestellung akzeptieren")
+
+	} else if user.BranchId == models.DictBranchName["Einsatzabschnitt"]{
+		if order.StatusId == models.DictStatusName["ANSTEHEND"] ||
+		   order.StatusId == models.DictStatusName["ABGELEHNT BEI EINSATZABSCHNITT"] {
+
+				statusId = models.DictStatusName["WEITERGELEITET BEI EINSATZABSCHNITT"]
+
 		} else {
-			return errors.New("einsatzabschnitt cannot weitergeleit")
+			return errors.New("einsatzabschnitt kann nicht weiterleiten")
 		}
-	}else if user.BranchId == 3 { // Hauptabschnitt
-		if order.StatusId == 3 {
-			statusId = 4
+	} else if user.BranchId == models.DictBranchName["Hauptabschnitt"] {
+		if order.StatusId == models.DictStatusName["WEITERGELEITET BEI EINSATZABSCHNITT"] ||
+		   order.StatusId == models.DictStatusName["ABGELEHNT BEI HAUPTABSCHNITT"] {
+
+				statusId = models.DictStatusName["WEITERGELEITET BEI HAUPTABSCHNITT"]
+
 		} else {
-			return errors.New("hauptabschnitt cannot weiterhgeleit")
+			return errors.New("hauptabschnitt kann nicht weiterleiten")
 		}
-	}else if  user.BranchId == 2 { // Einsatzleiter
-		if order.StatusId == 4 { //weitergeleitet bei Hauptabschnitt
-			statusId = 6 // akzeptiert
-		}else{
-			return errors.New("einsatzleiter cannot weitergeleiten")
+	} else if  user.BranchId == models.DictBranchName["Einsatzleiter"] {
+		if order.StatusId == models.DictStatusName["WEITERGELEITET BEI HAUPTABSCHNITT"] ||
+		   order.StatusId == models.DictStatusName["ABGELEHNT BEI EINSATZLEITER"] {
+
+				statusId = models.DictStatusName["AKZEPTIERT"]
+
+		} else {
+			return errors.New("einsatzleiter kann nicht weiterleiten")
 		}
-	}else if user.BranchId == 1 { // Mollnhof
-		if order.StatusId == 6{
-			statusId = 6
-		}else{
-			return errors.New("mollnhof cannot weitergeleiten")
+	} else if user.BranchId == models.DictBranchName["Mollnhof"] {
+		if order.StatusId == models.DictStatusName["AKZEPTIERT"] {
+			statusId = models.DictStatusName["AKZEPTIERT"]
+
+		} else {
+			return errors.New("mollnhof kann nicht weiterleiten")
 		}
+	} else {
+		return errors.New("something went wrong")
 	}
 
-	query := `update public.order set status_id = ? where id = ?;`
+	query := `update public.order set status_id = ?, update_date = now() where id = ?;`
 	err = db.Exec(query, statusId, orderId).Error
 	if err != nil {
 		return nil
 	}
 
-	// permissionId = 1 -- CAN VIEW
 	for _, child := range *children {
 		query = `delete from user_order_permission 
 			where user_id = ? and order_id = ? and 
@@ -350,18 +369,27 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 		}
 	}
 
-	if user.BranchId > 1 {
+	if user.BranchId > models.DictBranchName["Mollnhof"] {
 		parent, err := GetParent(db, user.Id)
 		if err != nil {
 			return err
 		}
-		permissions := []int{1,3,4,5,6} //view, edit, decline, accept, comment
-		if parent.BranchId == 1 {
-			permissions = append(permissions, 2) // can confirm delivery
-			permissions = append(permissions, 7) // can assign to
+		parentPermissions := []int{
+			models.DictPermissionName["CAN VIEW"],
+			models.DictPermissionName["CAN EDIT"],
+			models.DictPermissionName["CAN DECLINE"],
+			models.DictPermissionName["CAN ACCEPT"],
+			models.DictPermissionName["CAN COMMENT"],
 		}
-		log.Println("Permissions", permissions)
-		err = InsertUserOrderPermissions(db, parent.Id, orderId, permissions)
+		if parent.BranchId == 1 {
+			parentPermissions = []int{
+				models.DictPermissionName["CAN VIEW"],
+				models.DictPermissionName["CAN CONFIRM DELIVERY"],
+				models.DictPermissionName["CAN ASSIGN TO"],
+				models.DictPermissionName["CAN ACCEPT"],
+			}
+		}
+		err = InsertUserOrderPermissions(db, parent.Id, orderId, parentPermissions)
 		if err != nil {
 			return err
 		}
@@ -386,14 +414,78 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 }
 
 func DeclineOrder(db *gorm.DB, userId, orderId int) error {
-	query := `update public.order set status_id = 2 where id = ?;`
-	err := db.Exec(query, orderId).Error
-	if err != nil {
+	user, _ := GetUserByID(db, userId)
+	order, _ := GetOrder(db, userId, orderId)
+
+	var statusId int
+
+	if order.StatusId == models.DictStatusName["STORNIERT"] ||
+		order.StatusId == models.DictStatusName["ABGELEHNT BEI EINSATZABSCHNITT"] ||
+		order.StatusId == models.DictStatusName["ABGELEHNT BEI HAUPTABSCHNITT"] ||
+		order.StatusId == models.DictStatusName["ABGELEHNT BEI EINSATZLEITER"] {
+
+		return errors.New("die Bestellung wurde bereits storniert")
+	}
+
+	if user.BranchId == models.DictBranchName["Unterabschnitt"] {
+		if order.StatusId == models.DictStatusName["ANSTEHEND"] {
+				statusId = models.DictStatusName["STORNIERT"]
+		} else {
+			return errors.New("unterabschnitt kann die Bestellung nicht stornieren")
+		}
+	} else if user.BranchId == models.DictBranchName["Einsatzabschnitt"] {
+		if order.StatusId == models.DictStatusName["ANSTEHEND"] ||
+		   order.StatusId == models.DictStatusName["WEITERGELEITET BEI EINSATZABSCHNITT"] {
+
+				statusId = models.DictStatusName["ABGELEHNT BEI EINSATZABSCHNITT"]
+		} else {
+			return errors.New("einsatzabschnitt kann die Bestellung nicht stornieren")
+		}
+	} else if user.BranchId == models.DictBranchName["Hauptabschnitt"] {
+		if order.StatusId == models.DictStatusName["WEITERGELEITET BEI EINSATZABSCHNITT"] ||
+		   order.StatusId == models.DictStatusName["WEITERGELEITET BEI HAUPTABSCHNITT"] {
+
+				statusId = models.DictStatusName["ABGELEHNT BEI HAUPTABSCHNITT"]
+		} else {
+			return errors.New("hauptabschnitt kann die Bestellung nicht stornieren")
+		}
+	} else if user.BranchId == models.DictBranchName["Einsatzleiter"] {
+		if order.StatusId == models.DictStatusName["WEITERGELEITET BEI HAUPTABSCHNITT"] {
+
+			statusId = models.DictStatusName["ABGELEHNT BEI EINSATZLEITER"]
+		} else {
+			return errors.New("einsatzleiter kann die Bestellung nicht stornieren")
+		}
+	} else if user.BranchId == models.DictBranchName["Mollnhof"] {
+		return errors.New("mollnhof kann die Bestellung nicht stornieren")
+	} else {
+		return errors.New("something went wrong")
+	}
+
+	query := `update public.order set status_id = ?, update_date = now() where id = ?;`
+	if err := db.Exec(query, statusId, orderId).Error; err != nil {
 		return err
 	}
 
-	user, _ := GetUserByID(db, userId)
-	order, _ := GetOrder(db, userId, orderId)
+	if user.BranchId < 5 {
+		children, err := GetChildren(db, user.Id)
+		if err != nil {
+			return err
+		}
+		for _, child := range *children {
+			query = `delete from user_order_permission 
+				where user_id = ? and order_id = ?
+				and permission_id in 
+					(select id 
+					from permission 
+					where name = 'CAN EDIT' or name = 'CAN DECLINE' or name = 'CAN ACCEPT');`
+
+			err = db.Exec(query, child.Id, orderId).Error
+			if err != nil {
+				return err
+			}
+		}
+	}
 
 	logs := []models.Log{
 		{
@@ -404,7 +496,7 @@ func DeclineOrder(db *gorm.DB, userId, orderId int) error {
 		},
 	}
 
-	err = InsertLogs(db, logs)
+	err := InsertLogs(db, logs)
 	if err != nil {
 		return err
 	}
