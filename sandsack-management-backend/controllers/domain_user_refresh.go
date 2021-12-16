@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"team2/sandsack-management-backend/middleware"
 	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/service"
 	"time"
@@ -43,7 +44,7 @@ func (a *App) RefreshAccessToken(c *gin.Context) {
 		return
 	}
 
-	token, err := service.VerifyToken(user.Token)
+	token, err := middleware.VerifyToken(user.Token)
 	if err != nil {
 		log.Println("VerifyToken error: ", err.Error())
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse {
@@ -63,7 +64,7 @@ func (a *App) RefreshAccessToken(c *gin.Context) {
 		return
 	}
 
-	tokens, err := service.GenerateTokens(a.DB, claims.Email)
+	tokens, err := middleware.GenerateTokens(a.DB, claims.Email)
 	if err != nil{
 		log.Println("RefreshToken error in GeneratePairToken: ", err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{

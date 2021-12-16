@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 	"team2/sandsack-management-backend/functions"
+	"team2/sandsack-management-backend/middleware"
 	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/service"
 )
@@ -86,7 +87,7 @@ func (a *App) Login(c *gin.Context){
 	}
 
 
-	tokens, err := service.GenerateTokens(a.DB, email)
+	tokens, err := middleware.GenerateTokens(a.DB, email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode: http.StatusInternalServerError,

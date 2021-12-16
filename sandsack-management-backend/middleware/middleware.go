@@ -1,4 +1,4 @@
-package service
+package middleware
 
 import (
 	"errors"
@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 	"os"
 	"team2/sandsack-management-backend/models"
+	"team2/sandsack-management-backend/service"
 	"time"
 )
 
@@ -20,7 +21,7 @@ var jwtPrivateKey = []byte(os.Getenv("JWT_SECRET"))
 
 
 func GenerateTokens(db *gorm.DB, email string) (map[string]string, error) {
-	user, err := GetUserByEmail(db, email)
+	user, err := service.GetUserByEmail(db, email)
 	if err != nil {
 		return nil, err
 	}
