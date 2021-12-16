@@ -66,6 +66,7 @@ func (a *App) RunAllRoutes(){
 	auth.GET("/order", a.ListOrder)
 	auth.POST("/order/cancel", a.DeclineOrder)
 	auth.POST("/order/accept", a.AcceptOrder)
+	auth.POST("/order/comment", a.CommentOrder)
 
 	auth.PATCH("/order/upgrade", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{

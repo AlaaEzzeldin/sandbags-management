@@ -51,3 +51,8 @@ type CreateOrderInput struct {
 type AcceptOrderInput struct {
 	OrderId int `json:"order_id"`
 }
+
+type CommentInput struct {
+	OrderId int `json:"order_id"`
+	Comments []string `json:"comments"`
+}

@@ -14,9 +14,11 @@
 [GIN-debug] GET    /users/order              --> team2/sandsack-management-backend/controllers.(*App).ListOrder-fm (4 handlers)
 [GIN-debug] POST   /users/order/cancel       --> team2/sandsack-management-backend/controllers.(*App).DeclineOrder-fm (4 handlers)
 [GIN-debug] POST   /users/order/accept       --> team2/sandsack-management-backend/controllers.(*App).AcceptOrder-fm (4 handlers)
+[GIN-debug] POST   /users/order/comment      --> team2/sandsack-management-backend/controllers.(*App).CommentOrder-fm (4 handlers)
 [GIN-debug] PATCH  /users/order/upgrade      --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func1 (4 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-2021/12/16 13:23:30 interrupt
-2021/12/16 13:23:30 Exit command received. Exiting ....
+2021/12/16 16:09:02 Length of comments is 0 0
+2021/12/16 16:14:22 interrupt
+2021/12/16 16:14:22 Exit command received. Exiting ....
