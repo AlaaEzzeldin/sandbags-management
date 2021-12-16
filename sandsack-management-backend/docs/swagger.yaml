@@ -407,6 +407,11 @@ paths:
       - application/json
       description: Logout an authenticated user
       parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Logout
         in: body
         name: input

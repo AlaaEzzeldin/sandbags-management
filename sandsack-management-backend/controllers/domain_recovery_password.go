@@ -82,8 +82,6 @@ func (a *App) RecoveryPassword(c *gin.Context) {
 		return
 	}
 
-
-
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusOK, "The new password has been set")
 	return
 }

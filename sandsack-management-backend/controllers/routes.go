@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"team2/sandsack-management-backend/docs"
 	_ "team2/sandsack-management-backend/docs"
 )
 
@@ -38,21 +39,22 @@ func (a *App) RunAllRoutes(){
 	r.POST("/users/recovery_password", a.RecoveryPassword)
 	r.POST("/users/refresh", a.RefreshAccessToken)
 
+	// Admin endpoints
 	admin := r.Group("/admin")
 	admin.Use(a.AuthorizeAdmin())
 	admin.POST("/user", a.CreateUser)
 	admin.POST("/user/email_verification", a.SendVerifyEmail)
 
+	// Authentication and user profile endpoints
 	auth := r.Group("/users")
 	auth.Use(AuthorizeJWT())
 
 	auth.GET("/", a.GetUserList)
-	auth.PUT("/password", a.ChangePassword)
-	auth.POST("/me", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
+	auth.POST("/login", a.Login)
+	auth.POST("/activation", a.VerifyEmail)
+	auth.POST("/forgot_password", a.SendRecoveryPassword)
+	auth.POST("/recovery_password", a.RecoveryPassword)
+	auth.POST("/refresh", a.RefreshAccessToken)
 	auth.POST("/logout", a.Logout)
 	auth.POST("/change_password", a.ChangePassword)
 
