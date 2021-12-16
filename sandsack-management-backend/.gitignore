@@ -1,3 +1,7 @@
 .exe
 .env
 gin.log
+
+../.idea/dataSources.xml
+../.idea/sqldialects.xml
+../.idea/team2.iml

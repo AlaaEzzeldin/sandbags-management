@@ -37,7 +37,6 @@ func (a *App) Login(c *gin.Context){
 	email := strings.ToLower(input.Email)
 
 	exists := service.CheckUserExists(a.DB, email)
-	log.Println("Exists?", exists)
 	if !exists {
 		log.Println("CheckUserExists error: user does not exist")
 		c.JSON(http.StatusNotFound, models.ErrorResponse{

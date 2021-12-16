@@ -166,6 +166,14 @@ func GetUserByOTP(db *gorm.DB, otp, reason string)  (user *models.User, err erro
 	return
 }
 
+func PatchProfile(db *gorm.DB, name string, phone string) error {
+	query := `update public.user set name = ?, phone = ? where name = ?, phone = ?`
+	if err := db.Exec(query, name, phone).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 
 func GetUserByID(db *gorm.DB, userId int) (user *models.User, err error) {
 	query := `select id, name, phone, password, email, token, is_activated, is_email_verified, is_super_user, create_date, branch_id 
@@ -191,11 +199,11 @@ func GetParent(db *gorm.DB, userId int) (user *models.User, err error) {
 
 
 func GetChildren(db *gorm.DB, parentId int) (users *[]models.User, err error) {
-	query := `select u.id, u.name, u.email, u.branch_id, b.name as branch_name
-				from public.user u, branch b, hierarchy h
+	query := `select u.id, u.name, u.email, u.branch_id, b.name as branch_name 
+				from public.user u, branch b, hierarchy h 
 				where b.id = u.branch_id
-				  and u.id = h.user2_id
-					and h.user1_id = ?;`
+				and u.id = ?
+				and u.id = h.user2_id;`
 	if err := db.Raw(query, parentId).Scan(&users).Error; err != nil {
 		return nil, err
 	}

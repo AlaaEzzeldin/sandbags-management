@@ -1,77 +1,22 @@
 [GIN-debug] GET    /api-doc/swagger/*any     --> github.com/swaggo/gin-swagger.CustomWrapHandler.func1 (3 handlers)
-[GIN-debug] POST   /users/login              --> team2/sandsack-management-backend/controllers.(*App).Login-fm (3 handlers)
-[GIN-debug] POST   /users/activation         --> team2/sandsack-management-backend/controllers.(*App).VerifyEmail-fm (3 handlers)
-[GIN-debug] POST   /users/forgot_password    --> team2/sandsack-management-backend/controllers.(*App).SendRecoveryPassword-fm (3 handlers)
-[GIN-debug] POST   /users/recovery_password  --> team2/sandsack-management-backend/controllers.(*App).RecoveryPassword-fm (3 handlers)
-[GIN-debug] POST   /users/refresh            --> team2/sandsack-management-backend/controllers.(*App).RefreshAccessToken-fm (3 handlers)
 [GIN-debug] POST   /admin/user               --> team2/sandsack-management-backend/controllers.(*App).CreateUser-fm (4 handlers)
 [GIN-debug] POST   /admin/user/email_verification --> team2/sandsack-management-backend/controllers.(*App).SendVerifyEmail-fm (4 handlers)
 [GIN-debug] GET    /users/                   --> team2/sandsack-management-backend/controllers.(*App).GetUserList-fm (4 handlers)
-[GIN-debug] PUT    /users/password           --> team2/sandsack-management-backend/controllers.(*App).ChangePassword-fm (4 handlers)
-[GIN-debug] POST   /users/me                 --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func1 (4 handlers)
+[GIN-debug] POST   /users/login              --> team2/sandsack-management-backend/controllers.(*App).Login-fm (4 handlers)
+[GIN-debug] POST   /users/activation         --> team2/sandsack-management-backend/controllers.(*App).VerifyEmail-fm (4 handlers)
+[GIN-debug] POST   /users/forgot_password    --> team2/sandsack-management-backend/controllers.(*App).SendRecoveryPassword-fm (4 handlers)
+[GIN-debug] POST   /users/recovery_password  --> team2/sandsack-management-backend/controllers.(*App).RecoveryPassword-fm (4 handlers)
+[GIN-debug] POST   /users/refresh            --> team2/sandsack-management-backend/controllers.(*App).RefreshAccessToken-fm (4 handlers)
 [GIN-debug] POST   /users/logout             --> team2/sandsack-management-backend/controllers.(*App).Logout-fm (4 handlers)
 [GIN-debug] POST   /users/change_password    --> team2/sandsack-management-backend/controllers.(*App).ChangePassword-fm (4 handlers)
+[GIN-debug] PATCH  /users/me                 --> team2/sandsack-management-backend/controllers.(*App).PatchProfile-fm (4 handlers)
 [GIN-debug] POST   /users/order              --> team2/sandsack-management-backend/controllers.(*App).CreateOrder-fm (4 handlers)
 [GIN-debug] GET    /users/order              --> team2/sandsack-management-backend/controllers.(*App).ListOrder-fm (4 handlers)
 [GIN-debug] POST   /users/order/cancel       --> team2/sandsack-management-backend/controllers.(*App).DeclineOrder-fm (4 handlers)
 [GIN-debug] POST   /users/order/accept       --> team2/sandsack-management-backend/controllers.(*App).AcceptOrder-fm (4 handlers)
-[GIN-debug] PATCH  /users/order/upgrade      --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func2 (4 handlers)
+[GIN-debug] PATCH  /users/order/upgrade      --> team2/sandsack-management-backend/controllers.(*App).RunAllRoutes.func1 (4 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-2021/12/15 16:41:09 Comments []
-2021/12/15 16:41:09 Comments []
-2021/12/15 16:41:09 Comments []
-2021/12/15 16:46:49 Comments []
-2021/12/15 16:46:49 Comments []
-2021/12/15 16:46:49 Comments []
-2021/12/15 16:47:54 User branch 5
-2021/12/15 16:47:54 [] 0
-2021/12/15 16:48:02 USER branchID: 4
-2021/12/15 16:48:02 Order 1
-2021/12/15 16:48:05 Comments []
-2021/12/15 16:48:05 Comments []
-2021/12/15 16:48:05 Comments []
-2021/12/15 16:48:05 Comments []
-2021/12/15 16:48:10 Comments []
-2021/12/15 16:48:10 Comments []
-2021/12/15 16:48:10 Comments []
-2021/12/15 16:48:10 Comments []
-2021/12/15 16:48:13 Comments []
-2021/12/15 16:48:49 Comments []
-2021/12/15 16:49:04 ID 40
-2021/12/15 16:49:04 Children &[{14 EA1 - Mitte   ea1mitte@user.com  false false false Einsatzabschnitt 4 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC}]
-2021/12/15 16:49:07 Comments []
-2021/12/15 16:49:11 Comments []
-2021/12/15 16:49:11 Comments []
-2021/12/15 16:49:11 Comments []
-2021/12/15 16:49:11 Comments []
-2021/12/15 16:49:20 USER branchID: 3
-2021/12/15 16:49:20 Order 6
-2021/12/15 16:49:23 Comments []
-2021/12/15 16:49:26 Comments []
-2021/12/15 16:49:26 Comments []
-2021/12/15 16:49:26 Comments []
-2021/12/15 16:49:26 Comments []
-2021/12/15 16:49:29 User cannot view this order
-2021/12/15 16:49:37 ID 40
-2021/12/15 16:49:37 No access for this action error
-2021/12/15 16:50:18 Comments []
-2021/12/15 16:50:22 Comments []
-2021/12/15 16:50:25 Comments []
-2021/12/15 16:50:25 Comments []
-2021/12/15 16:50:25 Comments []
-2021/12/15 16:50:25 Comments []
-2021/12/15 16:50:34 Comments []
-2021/12/15 16:50:59 ID 40
-2021/12/15 16:50:59 Children &[{12 Mitte   mitte@user.com  false false false Hauptabschnitt 3 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC} {15 Nord   nord@user.com  false false false Hauptabschnitt 3 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC}]
-2021/12/15 16:51:01 Comments []
-2021/12/15 16:51:32 Exists? true
-2021/12/15 16:51:55 Comments []
-2021/12/15 16:52:00 Comments []
-2021/12/15 16:52:05 USER branchID: 2
-2021/12/15 16:52:05 Order 7
-2021/12/15 16:52:08 Comments []
-2021/12/15 16:52:12 Comments []
-2021/12/15 17:19:50 interrupt
-2021/12/15 17:19:50 Exit command received. Exiting ....
+2021/12/15 18:05:51 interrupt
+2021/12/15 18:05:51 Exit command received. Exiting ....

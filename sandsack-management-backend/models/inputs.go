@@ -35,6 +35,10 @@ type RecoveryPasswordInput struct {
 	Password string `json:"password"`
 }
 
+type PatchProfileInput struct {
+	Name string `json:"name"`
+	Phone string `json:"phone"`
+
 type CreateOrderInput struct {
 	AddressTo  string           `json:"address_to,required"`
 	Priority   int              `json:"priority,required"`
