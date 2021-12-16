@@ -34,7 +34,26 @@ func (a *App) PatchProfile(c *gin.Context) {
 		return
 	}
 
-	if err := service.PatchProfile(a.DB, input.Name, input.Phone); err != nil {
+	claims, err := GetClaims(c)
+	if err != nil {
+		log.Println("GetClaims error: ", err.Error())
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			ErrCode: http.StatusInternalServerError,
+			ErrMessage: "Something went wrong",
+		})
+		return
+	}
+
+	if len(input.Name) == 0 || len(input.Phone) == 0 {
+		log.Println("Length of name is ", len(input.Name), ", length of phone is ", len(input.Phone))
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			ErrCode: http.StatusBadRequest,
+			ErrMessage: "please fill the form",
+		})
+		return
+	}
+
+	if err := service.PatchProfile(a.DB, claims.Id, input.Name, input.Phone); err != nil {
 		log.Println("Profile error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode: http.StatusInternalServerError,

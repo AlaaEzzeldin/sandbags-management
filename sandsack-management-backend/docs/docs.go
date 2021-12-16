@@ -35,6 +35,13 @@ var doc = `{
                 "summary": "SendVerifyEmail - admin sends email to user for him to verify",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "SendVerifyEmail",
                         "name": "input",
                         "in": "body",
@@ -84,6 +91,13 @@ var doc = `{
                 "summary": "Create a new user (branch) in the system",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "User registration model",
                         "name": "input",
                         "in": "body",
@@ -116,6 +130,15 @@ var doc = `{
                     "Authentication"
                 ],
                 "summary": "GetUserList - get list of all users",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -158,6 +181,13 @@ var doc = `{
                 ],
                 "summary": "VerifyEmail - when user got email with otp to verify email, it has to input this otp to verify email and set new password",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "VerifyEmail",
                         "name": "input",
@@ -257,6 +287,13 @@ var doc = `{
                 ],
                 "summary": "SendRecoveryPassword - user requests to reset password, when he forgets his password in order to login",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "SendRecoveryPassword",
                         "name": "input",
@@ -441,6 +478,13 @@ var doc = `{
                 "summary": "CreateOrder - Unterabschnitt creates the order",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "CreateOrder",
                         "name": "input",
                         "in": "body",
@@ -489,6 +533,13 @@ var doc = `{
                 ],
                 "summary": "ListOrder - user can decline order",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Id of the order",
@@ -541,6 +592,13 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "Id of the order",
                         "name": "id",
                         "in": "path",
@@ -583,6 +641,13 @@ var doc = `{
                 ],
                 "summary": "DeclineOrder - user can decline order",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Id of the order",
@@ -630,6 +695,13 @@ var doc = `{
                 ],
                 "summary": "CommentOrder - user can write comments for the order",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Comment input",
                         "name": "input",

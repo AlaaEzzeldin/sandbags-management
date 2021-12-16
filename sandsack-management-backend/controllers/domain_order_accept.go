@@ -13,6 +13,7 @@ import (
 // @Description AcceptOrder - user can accept order
 // @Summary AcceptOrder - user can accept order
 // @Accept json
+// @Param Authorization header string true "Bearer "
 // @Param id path string true "Id of the order"
 // @Success 200
 // @Failure 500 {object} models.ErrorResponse

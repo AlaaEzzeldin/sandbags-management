@@ -7,7 +7,6 @@ import (
 	"github.com/swaggo/gin-swagger"
 	"io"
 	"log"
-	"net/http"
 	"os"
 	"team2/sandsack-management-backend/docs"
 	_ "team2/sandsack-management-backend/docs"
@@ -67,12 +66,7 @@ func (a *App) RunAllRoutes(){
 	auth.POST("/order/cancel", a.DeclineOrder)
 	auth.POST("/order/accept", a.AcceptOrder)
 	auth.POST("/order/comment", a.CommentOrder)
-
-	auth.PATCH("/order/upgrade", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
+	auth.PATCH("/order/edit", a.EditOrder)
 
 	_ = r.Run(port)
 }

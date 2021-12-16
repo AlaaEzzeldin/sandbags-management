@@ -13,6 +13,7 @@ import (
 // @Summary Create a new user (branch) in the system
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer "
 // @Param input body models.CreateUser true "User registration model"
 // @Success 201 "User has been created"
 // @Failure 401 "Permission to create the user is not given"

@@ -13,6 +13,7 @@ import (
 // @Description ListOrder - user can decline order
 // @Summary ListOrder - user can decline order
 // @Accept json
+// @Param Authorization header string true "Bearer "
 // @Param id path string true "Id of the order"
 // @Success 200 {array} models.Order
 // @Failure 500 {object} models.ErrorResponse

@@ -238,6 +238,11 @@ paths:
       - application/json
       description: SendVerifyEmail - admin sends email to user for him to verify
       parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: SendVerifyEmail
         in: body
         name: input
@@ -269,6 +274,11 @@ paths:
       description: This endpoint is implemented to register new user by Einsatzleiter
         and get a new token pair
       parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: User registration model
         in: body
         name: input
@@ -292,6 +302,12 @@ paths:
       consumes:
       - application/json
       description: GetUserList - get list of all users
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
       responses:
         "200":
           description: OK
@@ -321,6 +337,11 @@ paths:
       description: VerifyEmail - when user got email with otp to verify email, it
         has to input this otp to verify email and set new password
       parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: VerifyEmail
         in: body
         name: input
@@ -388,6 +409,11 @@ paths:
       description: SendRecoveryPassword - user requests to reset password, when he
         forgets his password in order to login
       parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: SendRecoveryPassword
         in: body
         name: input
@@ -509,6 +535,11 @@ paths:
       - application/json
       description: CreateOrder - Unterabschnitt creates the order
       parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: CreateOrder
         in: body
         name: input
@@ -541,6 +572,11 @@ paths:
       - application/json
       description: ListOrder - user can decline order
       parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Id of the order
         in: path
         name: id
@@ -574,6 +610,11 @@ paths:
       - application/json
       description: AcceptOrder - user can accept order
       parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Id of the order
         in: path
         name: id
@@ -603,6 +644,11 @@ paths:
       - application/json
       description: DeclineOrder - user can decline order
       parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Id of the order
         in: path
         name: id
@@ -632,6 +678,11 @@ paths:
       - application/json
       description: CommentOrder - user can write comments for the order
       parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Comment input
         in: body
         name: input

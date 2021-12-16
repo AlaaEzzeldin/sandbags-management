@@ -12,6 +12,7 @@ import (
 // @Description CreateOrder - Unterabschnitt creates the order
 // @Summary CreateOrder - Unterabschnitt creates the order
 // @Accept json
+// @Param Authorization header string true "Bearer "
 // @Param input body models.CreateOrderInput true "CreateOrder"
 // @Success 200 {object} models.Order
 // @Failure 500 {object} models.ErrorResponse
