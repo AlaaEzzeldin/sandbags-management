@@ -19,6 +19,15 @@ definitions:
       update_date:
         type: string
     type: object
+  models.CommentInput:
+    properties:
+      comments:
+        items:
+          type: string
+        type: array
+      order_id:
+        type: integer
+    type: object
   models.CreateOrderInput:
     properties:
       address_to:
@@ -615,6 +624,38 @@ paths:
           schema:
             $ref: '#/definitions/models.ErrorResponse'
       summary: DeclineOrder - user can decline order
+      tags:
+      - Order
+  /users/order/comment:
+    post:
+      consumes:
+      - application/json
+      description: CommentOrder - user can write comments for the order
+      parameters:
+      - description: Comment input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.CommentInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: CommentOrder - user can write comments for the order
       tags:
       - Order
   /users/recovery_password:

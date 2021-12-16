@@ -616,6 +616,55 @@ var doc = `{
                 }
             }
         },
+        "/users/order/comment": {
+            "post": {
+                "description": "CommentOrder - user can write comments for the order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "CommentOrder - user can write comments for the order",
+                "parameters": [
+                    {
+                        "description": "Comment input",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CommentInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/users/recovery_password": {
             "post": {
                 "description": "RecoveryPassword - when user got OTP per email, he needs to input new password and otp to set password",
@@ -741,6 +790,20 @@ var doc = `{
                 },
                 "update_date": {
                     "type": "string"
+                }
+            }
+        },
+        "models.CommentInput": {
+            "type": "object",
+            "properties": {
+                "comments": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "order_id": {
+                    "type": "integer"
                 }
             }
         },

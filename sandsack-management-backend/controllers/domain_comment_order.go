@@ -8,6 +8,18 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// CommentOrder
+// @Description CommentOrder - user can write comments for the order
+// @Summary CommentOrder - user can write comments for the order
+// @Accept json
+// @Produce json
+// @Param input body models.CommentInput true "Comment input"
+// @Success 200
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Order
+// @Router /users/order/comment [post]
 func (a *App) CommentOrder(c *gin.Context) {
 	var input models.CommentInput
 
@@ -74,6 +86,6 @@ func (a *App) CommentOrder(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, input)
+	c.JSON(http.StatusOK, nil)
 	return
 }
