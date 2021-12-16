@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"team2/sandsack-management-backend/docs"
 	_ "team2/sandsack-management-backend/docs"
 )
 
