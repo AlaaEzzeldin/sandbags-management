@@ -36,8 +36,9 @@ type RecoveryPasswordInput struct {
 }
 
 type PatchProfileInput struct {
-	Name string `json:"name"`
+	Name  string `json:"name"`
 	Phone string `json:"phone"`
+}
 
 type CreateOrderInput struct {
 	AddressTo  string           `json:"address_to,required"`

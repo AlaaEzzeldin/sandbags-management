@@ -19,7 +19,7 @@ import (
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
 // @Tags Order
-// @Router /users/order/&id= [get]
+// @Router /users/order/ [get]
 func (a *App) ListOrder(c *gin.Context) {
 	id := c.Query("id")
 

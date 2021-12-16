@@ -69,19 +69,22 @@ var doc = `{
                 }
             }
         },
-        "/admin/user": {
+        "/user/": {
             "post": {
-                "description": "CreateUser - Einsatzleiter can create a new user",
+                "description": "This endpoint is implemented to register new user by Einsatzleiter and get a new token pair",
                 "consumes": [
+                    "application/json"
+                ],
+                "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Admin"
                 ],
-                "summary": "CreateUser - Einsatzleiter can create a new user",
+                "summary": "Create a new user (branch) in the system",
                 "parameters": [
                     {
-                        "description": "CreateUser",
+                        "description": "User registration model",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -91,29 +94,14 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
+                    "201": {
+                        "description": "User has been created"
                     },
                     "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
+                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
                     },
                     "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
+                        "description": "Permission to create the user is not given"
                     }
                 }
             }
@@ -207,6 +195,53 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/models.ErrorResponse"
                         }
+                    }
+                }
+            }
+        },
+        "/users/change_password": {
+            "patch": {
+                "description": "This endpoint enables to set new password for the user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Change password of an authenticated user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "User change password model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ChangePasswordInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success message"
+                    },
+                    "400": {
+                        "description": "Bad request (e.g. validation error) OR wrong password given"
+                    },
+                    "401": {
+                        "description": "Token is not valid"
+                    },
+                    "500": {
+                        "description": "Something unexpected went wrong"
                     }
                 }
             }
@@ -347,6 +382,53 @@ var doc = `{
                 }
             }
         },
+        "/users/me": {
+            "patch": {
+                "description": "This endpoint enables to change some user profile information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Change profile information",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "User profile change model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PatchProfileInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success message"
+                    },
+                    "400": {
+                        "description": "Bad request (e.g. validation error) OR wrong password given"
+                    },
+                    "401": {
+                        "description": "Token is not valid"
+                    },
+                    "500": {
+                        "description": "Something unexpected went wrong"
+                    }
+                }
+            }
+        },
         "/users/order": {
             "post": {
                 "description": "CreateOrder - Unterabschnitt creates the order",
@@ -396,33 +478,131 @@ var doc = `{
                 }
             }
         },
-        "/users/password": {
-            "put": {
-                "description": "ChangePassword of the user",
+        "/users/order/": {
+            "get": {
+                "description": "ListOrder - user can decline order",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
-                    "Authentication"
+                    "Order"
                 ],
-                "summary": "ChangePassword of the user",
+                "summary": "ListOrder - user can decline order",
                 "parameters": [
                     {
-                        "description": "ChangePassword",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.ChangePasswordInput"
-                        }
+                        "type": "string",
+                        "description": "Id of the order",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Password was changed successfully"
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Order"
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/order/accept": {
+            "post": {
+                "description": "AcceptOrder - user can accept order",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "AcceptOrder - user can accept order",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Id of the order",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/order/cancel": {
+            "post": {
+                "description": "DeclineOrder - user can decline order",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "DeclineOrder - user can decline order",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Id of the order",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorResponse"
                         }
@@ -745,6 +925,17 @@ var doc = `{
                 }
             }
         },
+        "models.PatchProfileInput": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Permission": {
             "type": "object",
             "properties": {
@@ -805,7 +996,7 @@ var doc = `{
         "models.User": {
             "type": "object",
             "properties": {
-                "branchId": {
+                "branch_id": {
                     "type": "integer"
                 },
                 "branch_name": {
@@ -830,6 +1021,12 @@ var doc = `{
                     "type": "boolean"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "integer"
+                },
+                "parent_name": {
                     "type": "string"
                 },
                 "password": {
