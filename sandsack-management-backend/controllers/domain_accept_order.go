@@ -9,6 +9,17 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// AcceptOrder
+// @Description AcceptOrder - user can accept order
+// @Summary AcceptOrder - user can accept order
+// @Accept json
+// @Param id path string true "Id of the order"
+// @Success 200
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Order
+// @Router /users/order/accept [post]
 func (a *App) AcceptOrder(c *gin.Context) {
 	orderId, err := strconv.Atoi(c.Query("id"))
 	if err != nil {

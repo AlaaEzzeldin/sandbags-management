@@ -9,6 +9,17 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// DeclineOrder
+// @Description DeclineOrder - user can decline order
+// @Summary DeclineOrder - user can decline order
+// @Accept json
+// @Param id path string true "Id of the order"
+// @Success 200
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Order
+// @Router /users/order/cancel [post]
 func (a *App) DeclineOrder(c *gin.Context) {
 	id := c.Query("id")
 	orderId, err := strconv.Atoi(id)
