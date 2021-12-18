@@ -16,8 +16,9 @@
 [GIN-debug] POST   /order/accept             --> team2/sandsack-management-backend/controllers.(*App).AcceptOrder-fm (4 handlers)
 [GIN-debug] POST   /order/comment            --> team2/sandsack-management-backend/controllers.(*App).CommentOrder-fm (4 handlers)
 [GIN-debug] PATCH  /order/edit               --> team2/sandsack-management-backend/controllers.(*App).EditOrder-fm (4 handlers)
+[GIN-debug] GET    /order/equipment          --> team2/sandsack-management-backend/controllers.(*App).GetEquipment-fm (4 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-2021/12/18 12:49:11 interrupt
-2021/12/18 12:49:11 Exit command received. Exiting ....
+2021/12/18 13:14:03 interrupt
+2021/12/18 13:14:03 Exit command received. Exiting ....

@@ -68,6 +68,7 @@ func (a *App) RunAllRoutes() {
 	order.POST("/accept", a.AcceptOrder)
 	order.POST("/comment", a.CommentOrder)
 	order.PATCH("/edit", a.EditOrder)
+	order.GET("/equipment", a.GetEquipment)
 
 	_ = r.Run(port)
 }
