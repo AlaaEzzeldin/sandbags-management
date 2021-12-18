@@ -26,16 +26,11 @@ func GenerateTokens(db *gorm.DB, email string) (map[string]string, error) {
 		return nil, err
 	}
 
-	role := "user"
-	if user.IsSuperUser {
-		role = "admin"
-	}
-
 	var atClaims = models.CustomClaims{
 		Id:    user.Id,
 		Email: email,
 		Type: "access",
-		Role: role,
+		Role: user.BranchName,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(ACCESS_TOKEN_TTL).Unix(),
 		},
@@ -51,7 +46,7 @@ func GenerateTokens(db *gorm.DB, email string) (map[string]string, error) {
 		Id:    user.Id,
 		Email: email,
 		Type: "refresh",
-		Role: role,
+		Role: user.BranchName,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(REFRESH_TOKEN_TTL).Unix(),
 		},

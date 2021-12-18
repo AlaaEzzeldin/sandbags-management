@@ -117,17 +117,8 @@ func (a *App) Login(c *gin.Context){
 	// return access and refresh tokens
 	c.JSON(http.StatusOK, models.Tokens{
 		RefreshToken: tokens["refresh_token"],
-		AccessToken: tokens["access_token"],
-	})
-	return
-}
-
-
-
-
-func (a *App) Hello(c *gin.Context){
-	c.JSON(http.StatusOK, gin.H{
-		"message": "hello",
+		AccessToken:  tokens["access_token"],
+		Role:         user.BranchName,
 	})
 	return
 }

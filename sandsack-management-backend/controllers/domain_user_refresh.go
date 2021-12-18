@@ -74,8 +74,9 @@ func (a *App) RefreshAccessToken(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, models.Tokens{
-		AccessToken: tokens["access_token"],
+		AccessToken:  tokens["access_token"],
 		RefreshToken: input.RefreshToken,
+		Role:         user.BranchName,
 	})
 
 }
