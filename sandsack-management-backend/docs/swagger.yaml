@@ -188,6 +188,8 @@ definitions:
         type: string
       refresh_token:
         type: string
+      role:
+        type: string
     type: object
   models.User:
     properties:
@@ -232,7 +234,37 @@ definitions:
 info:
   contact: {}
 paths:
-  /admin/email_verification:
+  /create_user/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint is implemented to register new user by Einsatzleiter
+        and get a new token pair
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User registration model
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User has been created
+        "400":
+          description: Bad request (e.g. parameter in body is not given or incorrect)
+        "401":
+          description: Permission to create the user is not given
+      summary: Create a new user (branch) in the system
+      tags:
+      - Admin
+  /email_verification:
     post:
       consumes:
       - application/json
@@ -267,36 +299,186 @@ paths:
       summary: SendVerifyEmail - admin sends email to user for him to verify
       tags:
       - Admin
-  /user/:
+  /order:
     post:
       consumes:
       - application/json
-      description: This endpoint is implemented to register new user by Einsatzleiter
-        and get a new token pair
+      description: CreateOrder - Unterabschnitt creates the order
       parameters:
       - description: 'Bearer '
         in: header
         name: Authorization
         required: true
         type: string
-      - description: User registration model
+      - description: CreateOrder
         in: body
         name: input
         required: true
         schema:
-          $ref: '#/definitions/models.CreateUser'
+          $ref: '#/definitions/models.CreateOrderInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: CreateOrder - Unterabschnitt creates the order
+      tags:
+      - Order
+  /order/:
+    get:
+      consumes:
+      - application/json
+      description: ListOrder - user can decline order
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Id of the order
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: ListOrder - user can decline order
+      tags:
+      - Order
+  /order/accept:
+    post:
+      consumes:
+      - application/json
+      description: AcceptOrder - user can accept order
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Id of the order
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: AcceptOrder - user can accept order
+      tags:
+      - Order
+  /order/cancel:
+    post:
+      consumes:
+      - application/json
+      description: DeclineOrder - user can decline order
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Id of the order
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: DeclineOrder - user can decline order
+      tags:
+      - Order
+  /order/comment:
+    post:
+      consumes:
+      - application/json
+      description: CommentOrder - user can write comments for the order
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Comment input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.CommentInput'
       produces:
       - application/json
       responses:
-        "201":
-          description: User has been created
+        "200":
+          description: ""
         "400":
-          description: Bad request (e.g. parameter in body is not given or incorrect)
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
         "401":
-          description: Permission to create the user is not given
-      summary: Create a new user (branch) in the system
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: CommentOrder - user can write comments for the order
       tags:
-      - Admin
+      - Order
   /users/:
     get:
       consumes:
@@ -529,186 +711,6 @@ paths:
       summary: Change profile information
       tags:
       - Authentication
-  /users/order:
-    post:
-      consumes:
-      - application/json
-      description: CreateOrder - Unterabschnitt creates the order
-      parameters:
-      - description: 'Bearer '
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: CreateOrder
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/models.CreateOrderInput'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Order'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: CreateOrder - Unterabschnitt creates the order
-      tags:
-      - Order
-  /users/order/:
-    get:
-      consumes:
-      - application/json
-      description: ListOrder - user can decline order
-      parameters:
-      - description: 'Bearer '
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Id of the order
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.Order'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: ListOrder - user can decline order
-      tags:
-      - Order
-  /users/order/accept:
-    post:
-      consumes:
-      - application/json
-      description: AcceptOrder - user can accept order
-      parameters:
-      - description: 'Bearer '
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Id of the order
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: ""
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: AcceptOrder - user can accept order
-      tags:
-      - Order
-  /users/order/cancel:
-    post:
-      consumes:
-      - application/json
-      description: DeclineOrder - user can decline order
-      parameters:
-      - description: 'Bearer '
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Id of the order
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: ""
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: DeclineOrder - user can decline order
-      tags:
-      - Order
-  /users/order/comment:
-    post:
-      consumes:
-      - application/json
-      description: CommentOrder - user can write comments for the order
-      parameters:
-      - description: 'Bearer '
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Comment input
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/models.CommentInput'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ""
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: CommentOrder - user can write comments for the order
-      tags:
-      - Order
   /users/recovery_password:
     post:
       consumes:

@@ -20,7 +20,7 @@ import (
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
 // @Tags Order
-// @Router /users/order/ [get]
+// @Router /order/ [get]
 func (a *App) ListOrder(c *gin.Context) {
 	id := c.Query("id")
 
@@ -29,7 +29,7 @@ func (a *App) ListOrder(c *gin.Context) {
 		return
 	}
 
-	if len(id) == 0{
+	if len(id) == 0 {
 		orders, err := service.GetOrderList(a.DB, claims.Id)
 		if err != nil {
 			return
@@ -42,7 +42,7 @@ func (a *App) ListOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("Error in parsing", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect input",
 		})
 		return
@@ -51,14 +51,11 @@ func (a *App) ListOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("GetOrder error", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
 	}
 	c.JSON(http.StatusOK, order)
-
-
-
 
 }

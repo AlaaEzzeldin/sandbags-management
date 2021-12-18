@@ -20,15 +20,15 @@ import (
 // @Failure 401 "Permission to create the user is not given"
 // @Failure 400 "Bad request (e.g. parameter in body is not given or incorrect)"
 // @Tags Admin
-// @Router /user/ [post]
+// @Router /create_user/ [post]
 func (a *App) CreateUser(c *gin.Context) {
 	var input models.CreateUser
 
 	// check whether the structure of request is correct
-	if err := c.ShouldBindJSON(&input); err != nil{
+	if err := c.ShouldBindJSON(&input); err != nil {
 		log.Println("Registration error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
@@ -42,7 +42,7 @@ func (a *App) CreateUser(c *gin.Context) {
 	if err != nil {
 		log.Println("GetEmail error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: err.Error(),
 		})
 		return
@@ -52,7 +52,7 @@ func (a *App) CreateUser(c *gin.Context) {
 	if err != nil {
 		log.Println("GetUserByToken error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
@@ -62,18 +62,17 @@ func (a *App) CreateUser(c *gin.Context) {
 	if !meUser.IsSuperUser {
 		log.Println("Trying to create user error")
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
-			ErrCode: http.StatusUnauthorized,
+			ErrCode:    http.StatusUnauthorized,
 			ErrMessage: "you don't have this right",
 		})
 		return
 	}
 
-
 	parent, err := service.GetUserByID(a.DB, input.ParentId)
 	if parent.Name == "Mollnhof" {
 		log.Println("Mollnhof cannot have any branches except Einsatzleiter")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "Mollnhof cannot have any branched except Einsatzleiter",
 		})
 		return
@@ -82,7 +81,7 @@ func (a *App) CreateUser(c *gin.Context) {
 	if err := service.CreateUser(a.DB, &input); err != nil {
 		log.Println("CreateUser error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
