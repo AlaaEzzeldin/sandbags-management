@@ -12,6 +12,7 @@ import (
 // @Description GetUserList - get list of all users
 // @Summary GetUserList - get list of all users
 // @Accept json
+// @Param Authorization header string true "Bearer "
 // @Success 200 {array} models.User
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse

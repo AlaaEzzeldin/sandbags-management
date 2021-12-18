@@ -3,7 +3,7 @@ CREATE TABLE "user" (
                         "name" varchar,
                         "phone" varchar,
                         "password" varchar,
-                        "email" varchar,
+                        "email" varchar unique,
                         "token" varchar,
                         "is_activated" boolean,
                         "is_super_user" boolean,
@@ -38,7 +38,6 @@ CREATE TABLE "order_equipment" (
 CREATE TABLE "equipment" (
                              "id" serial PRIMARY KEY,
                              "name" varchar,
-                             "quantity" integer,
                              "create_date" timestamp,
                              "update_date" timestamp
 );

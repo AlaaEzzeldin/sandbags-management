@@ -13,6 +13,7 @@ import (
 // @Description SendRecoveryPassword - user requests to reset password, when he forgets his password in order to login
 // @Summary SendRecoveryPassword - user requests to reset password, when he forgets his password in order to login
 // @Accept json
+// @Param Authorization header string true "Bearer "
 // @Param input body models.SendRecoveryPasswordInput true "SendRecoveryPassword"
 // @Success 200
 // @Failure 500 {object} models.ErrorResponse
