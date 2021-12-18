@@ -8,6 +8,17 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// GetEquipment
+// @Description GetEquipment - array of equipment and current quantity of it in Mollnhof
+// @Summary GetEquipment - array of equipment and current quantity of it in Mollnhof
+// @Accept json
+// @Param Authorization header string true "Bearer "
+// @Success 200 {array} models.OrderEquipment
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Order
+// @Router /order/equipment [get]
 func (a *App) GetEquipment(c *gin.Context) {
 	equipment, err := service.GetEquipment(a.DB)
 	if err != nil {

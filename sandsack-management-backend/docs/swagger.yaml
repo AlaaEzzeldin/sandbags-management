@@ -448,6 +448,40 @@ paths:
       summary: CommentOrder - user can write comments for the order
       tags:
       - Order
+  /order/equipment:
+    get:
+      consumes:
+      - application/json
+      description: GetEquipment - array of equipment and current quantity of it in
+        Mollnhof
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OrderEquipment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: GetEquipment - array of equipment and current quantity of it in Mollnhof
+      tags:
+      - Order
   /user/:
     post:
       consumes:
