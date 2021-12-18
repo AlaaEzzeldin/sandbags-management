@@ -20,7 +20,7 @@ import (
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
 // @Tags Order
-// @Router /users/order/comment [post]
+// @Router /order/comment [post]
 func (a *App) CommentOrder(c *gin.Context) {
 	var input models.CommentInput
 
