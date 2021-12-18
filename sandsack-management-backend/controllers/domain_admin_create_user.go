@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"team2/sandsack-management-backend/middleware"
 	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/service"
 )
@@ -13,6 +14,7 @@ import (
 // @Summary Create a new user (branch) in the system
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer "
 // @Param input body models.CreateUser true "User registration model"
 // @Success 201 "User has been created"
 // @Failure 401 "Permission to create the user is not given"
@@ -36,7 +38,7 @@ func (a *App) CreateUser(c *gin.Context) {
 	header := c.GetHeader("Authorization")
 	tokenStr := header[len(bearer):]
 
-	email, err := service.GetEmail(tokenStr)
+	email, err := middleware.GetEmail(tokenStr)
 	if err != nil {
 		log.Println("GetEmail error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
@@ -67,7 +69,6 @@ func (a *App) CreateUser(c *gin.Context) {
 	}
 
 
-
 	parent, err := service.GetUserByID(a.DB, input.ParentId)
 	if parent.Name == "Mollnhof" {
 		log.Println("Mollnhof cannot have any branches except Einsatzleiter")
@@ -75,6 +76,7 @@ func (a *App) CreateUser(c *gin.Context) {
 			ErrCode: http.StatusBadRequest,
 			ErrMessage: "Mollnhof cannot have any branched except Einsatzleiter",
 		})
+		return
 	}
 
 	if err := service.CreateUser(a.DB, &input); err != nil {

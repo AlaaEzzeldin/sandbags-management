@@ -1,4 +1,4 @@
-package service
+package middleware
 
 import (
 	"errors"
@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 	"os"
 	"team2/sandsack-management-backend/models"
+	"team2/sandsack-management-backend/service"
 	"time"
 )
 
@@ -20,21 +21,16 @@ var jwtPrivateKey = []byte(os.Getenv("JWT_SECRET"))
 
 
 func GenerateTokens(db *gorm.DB, email string) (map[string]string, error) {
-	user, err := GetUserByEmail(db, email)
+	user, err := service.GetUserByEmail(db, email)
 	if err != nil {
 		return nil, err
-	}
-
-	role := "user"
-	if user.IsSuperUser {
-		role = "admin"
 	}
 
 	var atClaims = models.CustomClaims{
 		Id:    user.Id,
 		Email: email,
 		Type: "access",
-		Role: role,
+		Role: user.BranchName,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(ACCESS_TOKEN_TTL).Unix(),
 		},
@@ -50,7 +46,7 @@ func GenerateTokens(db *gorm.DB, email string) (map[string]string, error) {
 		Id:    user.Id,
 		Email: email,
 		Type: "refresh",
-		Role: role,
+		Role: user.BranchName,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(REFRESH_TOKEN_TTL).Unix(),
 		},

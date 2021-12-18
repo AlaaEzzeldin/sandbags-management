@@ -17,8 +17,10 @@ type User struct {
 	IsActivated     bool      `json:"is_activated,omitempty" gorm:"column:is_activated"`
 	IsSuperUser     bool      `json:"is_super_user,omitempty" gorm:"column:is_super_user"`
 	IsEmailVerified bool      `json:"is_email_verified,omitempty" gorm:"column:is_email_verified"`
-	BranchName      string    `json:"branch_name" gorm:"column:branch_name"`
-	BranchId        int       `gorm:"column:branch_id"`
+	BranchName      string    `json:"branch_name,omitempty" gorm:"column:branch_name"`
+	BranchId        int       `json:"branch_id,omitempty" gorm:"column:branch_id"`
+	ParentId        int       `json:"parent_id,omitempty" gorm:"column:parent_id"`
+	ParentName      string    `json:"parent_name,omitempty" gorm:"column:parent_name"`
 	CreateDate      time.Time `json:"create_date,omitempty" gorm:"column:create_date"`
 	UpdateDate      time.Time `json:"update_date,omitempty" gorm:"column:update_date"`
 }

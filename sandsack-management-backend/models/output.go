@@ -8,4 +8,5 @@ type SendVerifyMailOutput struct {
 type Tokens struct {
 	RefreshToken string `json:"refresh_token,omitempty"`
 	AccessToken  string `json:"access_token,omitempty"`
+	Role         string `json:"role,omitempty"`
 }

@@ -7,7 +7,6 @@ import (
 	"github.com/swaggo/gin-swagger"
 	"io"
 	"log"
-	"net/http"
 	"os"
 	"team2/sandsack-management-backend/docs"
 	_ "team2/sandsack-management-backend/docs"
@@ -39,6 +38,13 @@ func (a *App) RunAllRoutes(){
 	// unauthorized endpoints
 	r.GET("/api-doc/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	//todo: check inserting hierarchy
+	r.POST("/users/login", a.Login)
+	r.POST("/users/activation", a.VerifyEmail)
+	r.POST("/users/forgot_password", a.SendRecoveryPassword)
+	r.POST("/users/recovery_password", a.RecoveryPassword)
+	r.POST("/users/refresh", a.RefreshAccessToken)
+
 	// Admin endpoints
 	admin := r.Group("/admin")
 	admin.Use(a.AuthorizeAdmin())
@@ -50,11 +56,6 @@ func (a *App) RunAllRoutes(){
 	auth.Use(AuthorizeJWT())
 
 	auth.GET("/", a.GetUserList)
-	auth.POST("/login", a.Login)
-	auth.POST("/activation", a.VerifyEmail)
-	auth.POST("/forgot_password", a.SendRecoveryPassword)
-	auth.POST("/recovery_password", a.RecoveryPassword)
-	auth.POST("/refresh", a.RefreshAccessToken)
 	auth.POST("/logout", a.Logout)
 	auth.POST("/change_password", a.ChangePassword)
 	auth.PATCH("/me", a.PatchProfile)
@@ -64,15 +65,8 @@ func (a *App) RunAllRoutes(){
 	auth.GET("/order", a.ListOrder)
 	auth.POST("/order/cancel", a.DeclineOrder)
 	auth.POST("/order/accept", a.AcceptOrder)
-
-	auth.PATCH("/order/upgrade", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
-
-
-
+	auth.POST("/order/comment", a.CommentOrder)
+	auth.PATCH("/order/edit", a.EditOrder)
 
 	_ = r.Run(port)
 }
