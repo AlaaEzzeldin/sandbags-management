@@ -20,13 +20,13 @@ import (
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
 // @Tags Order
-// @Router /users/order/accept [post]
+// @Router /order/accept [post]
 func (a *App) AcceptOrder(c *gin.Context) {
 	orderId, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
 		log.Println("Error in parsing", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect input",
 		})
 		return
@@ -36,7 +36,7 @@ func (a *App) AcceptOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("AcceptOrder error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
@@ -46,7 +46,7 @@ func (a *App) AcceptOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("AcceptOrder error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
@@ -64,7 +64,7 @@ func (a *App) AcceptOrder(c *gin.Context) {
 	if flag != 1 {
 		log.Println("User cannot view this order")
 		c.JSON(http.StatusNotFound, models.ErrorResponse{
-			ErrCode: http.StatusNotFound,
+			ErrCode:    http.StatusNotFound,
 			ErrMessage: "you cannot view this order",
 		})
 		return

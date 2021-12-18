@@ -20,15 +20,15 @@ import (
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
 // @Tags Admin
-// @Router /admin/email_verification [post]
+// @Router /email_verification [post]
 func (a *App) SendVerifyEmail(c *gin.Context) {
 	var input models.SendVerifyEmail
 
 	// check whether the structure of request is correct
-	if err := c.ShouldBindJSON(&input); err != nil{
+	if err := c.ShouldBindJSON(&input); err != nil {
 		log.Println("SendVerifyEmail error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
@@ -38,7 +38,7 @@ func (a *App) SendVerifyEmail(c *gin.Context) {
 	if err != nil {
 		log.Println("GetUserByEmail error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
@@ -48,7 +48,7 @@ func (a *App) SendVerifyEmail(c *gin.Context) {
 	if err != nil {
 		log.Println("GenerateAndSaveOTP error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
@@ -57,7 +57,7 @@ func (a *App) SendVerifyEmail(c *gin.Context) {
 	if err := functions.SendEmail(a.DB, user.Email, otp, "verification"); err != nil {
 		log.Println("SendEmail error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
