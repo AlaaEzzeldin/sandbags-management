@@ -2,14 +2,15 @@
 
 ### Commits to the repo
 
-Type | Description
------|-------------
-**feat** | new feature being added
-**fix**| fixing the bug
-**style**| stilization updates
-**refactor** | refactoring the code
-**test** | everything with testing
-**doc** | everything with documentation
+| Type         | Description                   |
+|--------------|-------------------------------|
+| **feat**     | new feature being added       |
+| **fix**      | fixing the bug                |
+| **style**    | stilization updates           |
+| **refactor** | refactoring the code          |
+| **test**     | everything with testing       |
+| **doc**      | everything with documentation |
+| **infra**    | everything with deployment    |
 
 Specify the commit type and the message, use present tense inside, do not use semicolon at the end!
 
@@ -17,3 +18,16 @@ Specify the commit type and the message, use present tense inside, do not use se
 ### Git Strategy 
 
 The repo follows feature flow
+
+
+### Run
+
+The application is divided into frontend and backend apps that are put into Docker containers. 
+
+Each app has its own ```Dockerfile``` that are managed through ```docker-compose.yml```.
+
+Run ```docker-compose up -d --build``` to build the app. It will build corresponding apps in separate containers
+
+Then do ```docker-compose up``` to start running the app. The app will be started on ```localhost``` or ```172.26.0.2```
+
+(TO BE UPDATED)
