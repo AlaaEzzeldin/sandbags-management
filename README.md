@@ -28,6 +28,6 @@ Each app has its own ```Dockerfile``` that are managed through ```docker-compose
 
 Run ```docker-compose up -d --build``` to build the app. It will build corresponding apps in separate containers
 
-Then do ```docker-compose up``` to start running the app. The app will be started on ```localhost``` or ```172.26.0.2```
+Then do ```docker-compose up``` to start running the app. The app will be started on ```localhost:8000```
 
 (TO BE UPDATED)
