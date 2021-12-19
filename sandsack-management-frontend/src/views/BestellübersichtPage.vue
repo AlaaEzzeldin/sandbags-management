@@ -5,7 +5,6 @@
         <h1 style="font-weight: bolder;">Bestellübersicht</h1>
       </v-col>
       <v-spacer></v-spacer>
-
       <v-col sm="4" class="pt-15 justify-center align-center">
         <v-menu
             v-model="menu"
@@ -36,19 +35,45 @@
     </v-row>
     <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px">
       <v-col>
-        <h1 style="color: red">35</h1>
-        <h3>Bestellungen</h3>
+        <v-list-item
+            v-for="(item, i) in getStatisticschart"
+            :key="i"
+        >
+          <h1 style="text-align: center ;color: red">
+            <div v-if="item.type ==='Hauptabschnitten'">
+              {{item.general_statistics.total_number_of_orders}}
+            </div>
+          </h1>
+        </v-list-item>
+        <h3 style="text-align: left">Bestellungen</h3>
       </v-col>
       <v-col>
-        <h1 style="color: red">94%</h1>
-        <h3>Bestellungen bestatigt</h3>
+        <v-list-item
+            v-for="(item, i) in getStatisticschart"
+            :key="i"
+        >
+          <h1 style="color: red">
+            <div v-if="item.type ==='Hauptabschnitten'">
+              {{item.general_statistics.total_number_of_accepted_orders}}%
+            </div>
+          </h1>
+        </v-list-item>
+        <h3 style="text-align: left">Bestellungen bestatigt</h3>
       </v-col>
       <v-col>
-        <h1 style="color: red">5</h1>
-        <h3>Bestellungen/Uhr</h3>
+        <v-list-item
+            v-for="(item, i) in getStatisticschart"
+            :key="i"
+        >
+          <h1 style="color: red">
+            <div v-if="item.type ==='Hauptabschnitten'">
+              {{item.general_statistics.average_processing_time}}
+            </div>
+          </h1>
+        </v-list-item>
+        <h3 style="text-align: left">Bestellungen/Uhr</h3>
       </v-col>
     </v-row>
-
     <v-row>
       <v-col cols="6">
         <h2>
@@ -57,10 +82,23 @@
       </v-col>
       <v-col cols="6">
         <v-select
+            v-if="this.getLoggedInUserRole()===1 || this.getLoggedInUserRole()===2"
             v-model="select"
-            :items="selectOptions"
+            :items="getHauptdata"
             item-text="state"
-            label="Beim Abschnitt"
+            label="Hauptabschnitt"
+            filled
+            outlined
+            persistent-hint
+            return-object
+            single-line
+        ></v-select>
+        <v-select
+            v-if="this.getLoggedInUserRole()===1 || this.getLoggedInUserRole()===2"
+            v-model="select"
+            :items="getEinsatzdata"
+            item-text="state"
+            label="Einsatzabschnitt"
             filled
             outlined
             persistent-hint
@@ -69,23 +107,25 @@
         ></v-select>
       </v-col>
     </v-row>
-
     <div ref="content">
-      <GChart type="ColumnChart" :data="chartData" :options="chartOptions"/>
+      <GChart
+          type="ColumnChart"
+          :data="getUnterdata"
+          :options="chartOptions"/>
     </div>
     <br>
-
     <v-row>
       <v-col cols="12" sm="3" offset="9">
         <v-btn
-            align="right"
+            v-if="this.getLoggedInUserRole()===1 || this.getLoggedInUserRole()===2"
             style="text-transform: capitalize; font-weight: bolder;"
             block
             rounded
             color="red"
             dark
         >
-          <button  @click="download">Export pdf</button>
+
+          <button v-on:click="download">Export pdf</button>
         </v-btn>
       </v-col>
     </v-row>
@@ -97,10 +137,13 @@ import jsPDF from "jspdf";
 import domtoimage from "dom-to-image";
 import { GChart } from "vue-google-charts";
 export default {
-  name: "App",
+
+  name: 'BestellübersichtPage',
+
   components: {
     GChart,
   },
+
   data() {
     return {
 
@@ -111,25 +154,22 @@ export default {
       menu: false,
 
       // Array will be automatically processed with visualization.arrayToDataTable function
-      chartData: [
+      /*chartData: [
         ["Abschnitt", "Bestellungen"],
-        ["EA 1.1 Altstadt - Ost", 5],
-        ["EA 1.2 Altstadt - Mitte", 12],
-        ["EA 1.3 Altstadt - West", 9],
-        ["EA 2.1 Neumarkt - Nord", 25],
-      ],
+        ["Unterabschnitt-1", 5],
+        ["Unterabschnitt-2", 12],
+        ["Unterabschnitt-3", 9],
+        ["Unterabschnitt-4", 18],
+        ["Unterabschnitt-5", 25],
+      ],*/
 
-      selectOptions: [
-        { state: 'Beim Abschnitt',},
-        { state: 'Beim Tag',},
-      ],
       chartOptions: {
         hAxis: {
           title: "Abschnitt",
         },
         vAxis: {
           title: "Bestellungen",
-          ticks: [0,5,10,15,20,25,30]
+          ticks: [0,10,20,30,40,50,60,70,80,90,100]
         },
         chart: {
           title: "order status",
@@ -140,11 +180,59 @@ export default {
       },
     };
   },
+  created() {
+    this.$store.dispatch("loadStatisticschart")
+  },
+
+
   computed: {
+    getStatisticschart() {
+      return this.$store.getters.getStatisticschart
+    },
     dateRangeText () {
       return this.dates.join(' / ')
     },
+    getHauptdata(){
+      var HauptselectOptions = []
+      for (let i=0; i<this.getStatisticschart.length; i++){
+        if(this.getStatisticschart[i].type == "Hauptabschnitten") {
+          for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
+            HauptselectOptions.push(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].name)
+          }
+        }
+      }
+      return HauptselectOptions;
+    },
+
+    getEinsatzdata(){
+      var EinsatzselectOptions = []
+      for(let i=0; i<this.getStatisticschart.length; i++) {
+        if(this.getStatisticschart[i].type == "Einsatzabschnitten") {
+          for(let j=0; j<this.getStatisticschart[i].statistics_per_Einsatzabschnitt.length; j++){
+            EinsatzselectOptions.push(this.getStatisticschart[i].statistics_per_Einsatzabschnitt[j].name)
+          }
+        }
+      }
+      return EinsatzselectOptions;
+    },
+
+    getUnterdata(){
+      var UnterselectOptions = []
+      UnterselectOptions.push(["Abschnitt","Bestellungen"])
+      for(let i=0; i<this.getStatisticschart.length; i++) {
+        if(this.getStatisticschart[i].type == "unterabschnitten") {
+          for(let j=0; j<this.getStatisticschart[i].statistics_per_unterabschnitt.length; j++){
+            UnterselectOptions.push([this.getStatisticschart[i].statistics_per_unterabschnitt[j].name,
+              parseInt(this.getStatisticschart[i].statistics_per_unterabschnitt[j].total_number_of_orders)])
+
+
+          }
+        }
+      }
+      return UnterselectOptions;
+    }
   },
+
   props: {
     msg: String
   },
@@ -166,7 +254,7 @@ export default {
             const date = new Date();
             const url = window.URL.createObjectURL;
             const filename =
-                "OrderStatusReport_" +
+                "StatusReport_" +
                 date.getFullYear() +
                 ("0" + (date.getMonth() + 1)).slice(-2) +
                 ("0" + date.getDate()).slice(-2) +
@@ -174,17 +262,29 @@ export default {
                 ".pdf";
             doc.save(filename)
             window.URL.revokeObjectURL(url);
-            alert("Export File has downloaded!"); // or you know, something with better UX...
+            alert("Export File has downloaded!");
           })
           .catch(function(error) {
             console.error("oops, something went wrong!", error);
           });
     },
+
+    // hard coding the users roles
+    getLoggedInUserRole() {
+      if (this.$route.params.userRole === '1') // Hauptabschintt
+        return 1
+      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
+        return 2
+      else if (this.$route.params.userRole === '3') //Unterabschnitt
+        return 3
+      else if (this.$route.params.userRole === '4') // Mollhof
+        return 4
+    }
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+&lt;!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40pt 0 0;
@@ -198,6 +298,6 @@ li {
   margin: 0 10px;
 }
 a {
-  color: #42b983;
+  color: #D7201F;
 }
 </style>
