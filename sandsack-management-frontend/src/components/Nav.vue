@@ -36,13 +36,20 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
+    <v-spacer/>
+    <EquipmentQuantityTable/>
   </v-navigation-drawer>
 </template>
 
 <script>
+import EquipmentQuantityTable from '@/components/EquipmentQuantityTable.vue'
 
 export default {
   name: "Navigation",
+
+  components: {
+    EquipmentQuantityTable
+  },
 
   data() {
     return {

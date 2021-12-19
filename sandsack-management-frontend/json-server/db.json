@@ -203,5 +203,19 @@
       "deliveryAddress": "3",
       "notesByUnterabschnitt": "3dee"
     }
+  ],
+  "equipment": [
+    {
+      "id": 1,
+      "type": "Sandsäck",
+      "amount": 50,
+      "measure": "Paletten"
+    },
+    {
+      "id": 2,
+      "type": "Wasser",
+      "amount": 50,
+      "measure": "Litre"
+    }
   ]
 }
