@@ -1,13 +1,15 @@
 <template>
-  <v-card class="elevation-0 rounded-lg" outlined>
+  <v-card class="elevation-0 rounded-lg">
     <v-list rounded>
+      <h3 class="ml-4 mb-4">Restliche Ausrüstung</h3>
       <v-list-item-group>
         <v-list-item
             v-for="(item, i) in getEquipment"
             :key="i"
         >
-          {{item.type}}
-          {{item.amount}}
+          {{item.type}} ({{item.measure}})
+          <v-spacer/>
+          <b>{{item.amount}}</b>
         </v-list-item>
       </v-list-item-group>
     </v-list>
@@ -20,14 +22,6 @@ export default {
 
   created() {
     this.$store.dispatch("loadEquipment")
-  },
-
-  data() {
-    return {
-      options: {
-        itemsPerPage: -1,
-      },
-    }
   },
 
   computed: {

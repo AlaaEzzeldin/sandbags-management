@@ -18,7 +18,7 @@
       </v-row>
     </div>
 
-    <v-list rounded>
+    <v-list rounded class="mb-16">
       <v-list-item-group>
         <v-list-item
             v-for="(item, i) in getNavListForLoggedInUserRoll()"
@@ -36,7 +36,6 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
-    <v-spacer/>
     <EquipmentQuantityTable/>
   </v-navigation-drawer>
 </template>
