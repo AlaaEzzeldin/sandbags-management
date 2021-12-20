@@ -38,13 +38,6 @@ var doc = `{
                 "summary": "Create a new user (branch) in the system",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Bearer ",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "User registration model",
                         "name": "input",
                         "in": "body",
