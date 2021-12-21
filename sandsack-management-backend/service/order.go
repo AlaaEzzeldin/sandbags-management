@@ -346,3 +346,7 @@ func DeclineOrder(db *gorm.DB, userId, orderId int) error {
 func InsertComments(a *gorm.DB, userId, orderId int, comments []models.Comment) error {
 	return repo_order.InsertComments(a, userId, orderId, comments)
 }
+
+func GetEquipment(a *gorm.DB) ([]models.OrderEquipment, error) {
+	return repo_order.GetEquipment(a)
+}
