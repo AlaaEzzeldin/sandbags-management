@@ -94,10 +94,15 @@ export default {
           icon: 'mdi-format-list-bulleted',
         },
         {
+          title: 'Ausrüstungverwaltung',
+          component: 'ManageEquipmentPage',
+          icon: 'mdi-cog'
+        },
+        {
           title: 'Konto',
           component: 'KontoPage',
           icon: 'mdi-account',
-        },
+        }
       ],
     }
   },

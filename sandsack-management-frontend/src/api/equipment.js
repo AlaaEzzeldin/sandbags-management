@@ -6,8 +6,10 @@ export default {
         })
     },
 
-    update( id, data ){
-        return axios.patch( 'http://localhost:3001/equipment/'+id, data );
+    update( params ){
+        return axios.patch( 'http://localhost:3001/equipment', {
+            params: params
+        });
     },
 
 }
