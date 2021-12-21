@@ -294,43 +294,6 @@ paths:
       summary: SendVerifyEmail - admin sends email to user for him to verify
       tags:
       - Admin
-  /order:
-    post:
-      consumes:
-      - application/json
-      description: CreateOrder - Unterabschnitt creates the order
-      parameters:
-      - description: 'Bearer '
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: CreateOrder
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/models.CreateOrderInput'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Order'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: CreateOrder - Unterabschnitt creates the order
-      tags:
-      - Order
   /order/:
     get:
       consumes:
@@ -367,6 +330,42 @@ paths:
           schema:
             $ref: '#/definitions/models.ErrorResponse'
       summary: ListOrder - user can decline order
+      tags:
+      - Order
+    post:
+      consumes:
+      - application/json
+      description: CreateOrder - Unterabschnitt creates the order
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: CreateOrder
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateOrderInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: CreateOrder - Unterabschnitt creates the order
       tags:
       - Order
   /order/accept:
@@ -474,6 +473,70 @@ paths:
       summary: CommentOrder - user can write comments for the order
       tags:
       - Order
+  /order/equipment:
+    get:
+      consumes:
+      - application/json
+      description: GetEquipment - array of equipment and current quantity of it in
+        Mollnhof
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OrderEquipment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: GetEquipment - array of equipment and current quantity of it in Mollnhof
+      tags:
+      - Order
+  /user/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint is implemented to register new user by Einsatzleiter
+        and get a new token pair
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User registration model
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User has been created
+        "400":
+          description: Bad request (e.g. parameter in body is not given or incorrect)
+        "401":
+          description: Permission to create the user is not given
+      summary: Create a new user (branch) in the system
+      tags:
+      - Admin
   /users/:
     get:
       consumes:
