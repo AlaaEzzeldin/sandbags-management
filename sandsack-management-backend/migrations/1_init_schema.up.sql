@@ -170,4 +170,5 @@ ALTER TABLE "otp" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
 CREATE SEQUENCE IF NOT EXISTS order_number_id_seq
     AS INTEGER;
 
+
 ALTER SEQUENCE order_number_id_seq owner TO postgres;
