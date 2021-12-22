@@ -191,7 +191,7 @@ export default {
         "notesByHauptabschnitt": this.getOrder.notesByHauptabschnitt
       }
       let id= this.getOrder.id
-      this.$store.dispatch("updateOrder",  {id, data},  )
+      this.$store.dispatch("updateOrder",  {id, data}  )
       this.gotToOrderDetails()
     },
     gotToOrderDetails(){

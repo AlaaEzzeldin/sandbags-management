@@ -40,7 +40,10 @@ const mutations = {
     state.equipment = equipment;
   },
   UPDATE_EQUIPMENT(state, updatedEquipment) {
-    state.equipment = updatedEquipment
+    const index = state.equipment.findIndex(eq => {
+      return (updatedEquipment.id === eq.id)
+    })
+    state.equipment.splice(index, 1, updatedEquipment)
   },
 }
 
