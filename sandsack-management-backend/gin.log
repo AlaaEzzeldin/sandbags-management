@@ -20,5 +20,13 @@
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-2021/12/18 13:14:03 interrupt
-2021/12/18 13:14:03 Exit command received. Exiting ....
+2021/12/21 20:00:01 VerifyToken error:  token contains an invalid number of segments
+2021/12/21 20:06:44 VerifyToken error token is expired by 146h42m25s
+2021/12/21 20:06:44 Token is not valid
+2021/12/21 20:07:08 USER &{1 Einsatzleiter 1234 $2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa admin@admin.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJ0eXBlIjoicmVmcmVzaCIsInJvbGUiOiJhZG1pbiIsInN0YW5kYXJkX2NsYWltcyI6eyJleHAiOjE2NDk5NDU4NTR9fQ.-YulSRsLd9HfYQFd112R5ifi2-HiZc5rqeg-9qvbNes true true true Einsatzleiter 2 0  2021-12-15 12:16:44.000415 +0100 CET 0001-01-01 00:00:00 +0000 UTC}
+2021/12/21 20:07:08 Parent  4
+2021/12/21 20:09:22 SMTP client connect error Mail Error on Auth: 535 5.7.8 Username and Password not accepted. Learn more at
+5.7.8  https://support.google.com/mail/?p=BadCredentials r17sm3500247wmq.5 - gsmtp
+2021/12/21 20:09:22 Mail Error: No SMTP Client Provided
+2021/12/21 23:05:10 interrupt
+2021/12/21 23:05:10 Exit command received. Exiting ....

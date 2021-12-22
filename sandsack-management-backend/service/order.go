@@ -192,7 +192,7 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 		}
 	} else if user.BranchId == models.DictBranchName["Mollnhof"] {
 		if order.StatusId == models.DictStatusName["AKZEPTIERT"] {
-			statusId = models.DictStatusName["AKZEPTIERT"]
+			statusId = models.DictStatusName["AUF DEM WEG"]
 
 		} else {
 			return errors.New("mollnhof kann nicht weiterleiten")
@@ -349,4 +349,8 @@ func InsertComments(a *gorm.DB, userId, orderId int, comments []models.Comment) 
 
 func GetEquipment(a *gorm.DB) ([]models.OrderEquipment, error) {
 	return repo_order.GetEquipment(a)
+}
+
+func GetPriority(a *gorm.DB) ([]models.Priority, error) {
+	return repo_order.GetPriority(a)
 }

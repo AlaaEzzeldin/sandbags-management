@@ -17,8 +17,8 @@ import (
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
-// @Tags Order
-// @Router /order/equipment [get]
+// @Tags Core
+// @Router /core/equipment [get]
 func (a *App) GetEquipment(c *gin.Context) {
 	equipment, err := service.GetEquipment(a.DB)
 	if err != nil {

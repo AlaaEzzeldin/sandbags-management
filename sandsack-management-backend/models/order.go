@@ -65,3 +65,9 @@ type SimpleOrder struct {
 	CreateDate  time.Time        `json:"create_date,omitempty" gorm:"column:create_date"`
 	UpdateDate  time.Time        `json:"update_date,omitempty" gorm:"column:update_date"`
 }
+
+type Priority struct {
+	Id int `json:"id" gorm:"column:id"`
+	Level int `json:"level" gorm:"column:level"`
+	Name string `json:"name" gorm:"column:name"`
+}
