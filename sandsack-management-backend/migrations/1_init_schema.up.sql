@@ -3,7 +3,7 @@ CREATE TABLE "user" (
                         "name" varchar,
                         "phone" varchar,
                         "password" varchar,
-                        "email" varchar,
+                        "email" varchar unique,
                         "token" varchar,
                         "is_activated" boolean,
                         "is_super_user" boolean,
@@ -166,3 +166,9 @@ ALTER TABLE "order" ADD FOREIGN KEY ("assigned_to") REFERENCES "driver" ("id");
 ALTER TABLE "user" ADD FOREIGN KEY ("branch_id") REFERENCES "branch" ("id");
 
 ALTER TABLE "otp" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+
+CREATE SEQUENCE IF NOT EXISTS order_number_id_seq
+    AS INTEGER;
+
+
+ALTER SEQUENCE order_number_id_seq owner TO postgres;

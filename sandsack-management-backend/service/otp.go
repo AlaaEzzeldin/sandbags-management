@@ -3,8 +3,8 @@ package service
 import (
 	"errors"
 	"gorm.io/gorm"
-	"log"
 	"math/rand"
+	repo_otp "team2/sandsack-management-backend/repository/otp"
 	"time"
 )
 
@@ -33,55 +33,28 @@ func GenerateAndSaveOTP(db *gorm.DB, userId int, reason string) (string, error) 
 	return otp, nil
 }
 
-func existOTPByUser(db *gorm.DB, userId int) bool {
-	query := `select count(1) from otp where user_id = ?;`
-	var count int
-	if err := db.Raw(query, userId).Scan(&count).Error; err != nil {
-		log.Println("existOTP error", err.Error())
-		return false
-	}
-	if count == 0 {
-		return false
-	}
-	return true
-}
 
 
 func SaveOTP(db *gorm.DB, userId int, otp, reason string) error {
-	if exist := existOTPByUser(db, userId); exist {
-		query := `update otp set code = ? where user_id = ? and type = ?;`
-		if err := db.Exec(query, otp, userId, reason).Error; err != nil {
+	if exist := repo_otp.ExistOTPByUser(db, userId); exist {
+		if err := repo_otp.UpdateOTP(db, userId, otp, reason); err != nil {
 			return err
 		}
 	} else {
-		query := `insert into otp(code, user_id, type) values(?, ?, ?);`
-		if err := db.Exec(query, otp, userId, reason).Error; err != nil {
+		if err := repo_otp.InsertOTP(db, userId, otp, reason); err != nil {
 			return err
 		}
 	}
-
 	return nil
 }
 
-func existOtpByCode(db *gorm.DB, otp string, reason string) bool {
-	query := `select count(*) from otp where code = ? and type = ?;`
-	var count int
-	if err := db.Raw(query, otp, reason).Scan(&count).Error; err != nil {
-		return false
-	}
-	if count != 0 {
-		return true
-	}
-	return false
-}
 
 func GetOTP(db *gorm.DB, otp string, reason string) (string, error){
-	if exists := existOtpByCode(db, otp, reason); !exists {
+	if exists := repo_otp.ExistOtpByCode(db, otp, reason); !exists {
 		return "", errors.New("does not exist")
 	}
-	query := `select code from otp where code = ? and type = ?`
-	var code string
-	if err := db.Raw(query, otp, reason).Scan(&code).Error; err != nil {
+	code, err := repo_otp.GetOTP(db, otp, reason)
+	if err != nil {
 		return "", err
 	}
 	return code, nil
@@ -89,9 +62,5 @@ func GetOTP(db *gorm.DB, otp string, reason string) (string, error){
 
 
 func DeleteOTP(db *gorm.DB, userId int, reason string) error {
-	query := `delete from otp where user_id = ? and type = ?;`
-	if err := db.Exec(query, userId, reason).Error; err != nil {
-		return err
-	}
-	return nil
+	return repo_otp.DeleteOTP(db, userId, reason)
 }

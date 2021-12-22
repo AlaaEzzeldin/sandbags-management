@@ -8,7 +8,6 @@ import (
 	"github.com/swaggo/gin-swagger"
 	"io"
 	"log"
-	"net/http"
 	"os"
 	"team2/sandsack-management-backend/docs"
 	_ "team2/sandsack-management-backend/docs"
@@ -40,37 +39,38 @@ func (a *App) RunAllRoutes() {
 	// unauthorized endpoints
 	r.GET("/api-doc/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	notAuthUsers := r.Group("/users")
+	notAuthUsers.POST("/login", a.Login)
+	notAuthUsers.POST("/activation", a.VerifyEmail)
+	notAuthUsers.POST("/forgot_password", a.SendRecoveryPassword)
+	notAuthUsers.POST("/recovery_password", a.RecoveryPassword)
+	notAuthUsers.POST("/refresh", a.RefreshAccessToken)
+
 	// Admin endpoints
 	admin := r.Group("/admin")
 	admin.Use(a.AuthorizeAdmin())
-	admin.POST("/user", a.CreateUser)
-	admin.POST("/user/email_verification", a.SendVerifyEmail)
+	admin.POST("/create_user", a.CreateUser)
+	admin.POST("/email_verification", a.SendVerifyEmail)
 
 	// Authentication and user profile endpoints
-	auth := r.Group("/users")
+	auth := r.Group("/")
 	auth.Use(AuthorizeJWT())
 
-	auth.GET("/", a.GetUserList)
-	auth.POST("/login", a.Login)
-	auth.POST("/activation", a.VerifyEmail)
-	auth.POST("/forgot_password", a.SendRecoveryPassword)
-	auth.POST("/recovery_password", a.RecoveryPassword)
-	auth.POST("/refresh", a.RefreshAccessToken)
-	auth.POST("/logout", a.Logout)
-	auth.POST("/change_password", a.ChangePassword)
-	auth.PATCH("/me", a.PatchProfile)
+	users := auth.Group("users")
+	users.GET("/", a.GetUserList)
+	users.POST("/logout", a.Logout)
+	users.POST("/change_password", a.ChangePassword)
+	users.PATCH("/me", a.PatchProfile)
 
 	//order
-	auth.POST("/order", a.CreateOrder)
-	auth.GET("/order", a.ListOrder)
-	auth.POST("/order/cancel", a.DeclineOrder)
-	auth.POST("/order/accept", a.AcceptOrder)
-
-	auth.PATCH("/order/upgrade", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
+	order := auth.Group("order")
+	order.POST("/", a.CreateOrder)
+	order.GET("/", a.ListOrder)
+	order.POST("/cancel", a.DeclineOrder)
+	order.POST("/accept", a.AcceptOrder)
+	order.POST("/comment", a.CommentOrder)
+	order.PATCH("/edit", a.EditOrder)
+	order.GET("/equipment", a.GetEquipment)
 
 	_ = r.Run(port)
 }

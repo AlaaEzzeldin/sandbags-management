@@ -12,13 +12,14 @@ import (
 // @Description CreateOrder - Unterabschnitt creates the order
 // @Summary CreateOrder - Unterabschnitt creates the order
 // @Accept json
+// @Param Authorization header string true "Bearer "
 // @Param input body models.CreateOrderInput true "CreateOrder"
 // @Success 200 {object} models.Order
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
 // @Tags Order
-// @Router /users/order [post]
+// @Router /order/ [post]
 func (a *App) CreateOrder(c *gin.Context) {
 	var input models.CreateOrderInput
 	// check whether the structure of request is correct
@@ -51,7 +52,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 		return
 	}
 	log.Println("User branch", user.BranchId)
-	if user.BranchId != 5 {
+	if user.BranchId != models.DictBranchName["Unterabschnitt"] {
 		log.Println("It's not Unterabschnitt")
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
 			ErrCode: http.StatusUnauthorized,
@@ -65,7 +66,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 		UserId: user.Id,
 		AddressTo: input.AddressTo,
 		AddressFrom: "Mollnhof",
-		StatusId: models.DictStatusName["PENDING"],
+		StatusId: models.DictStatusName["ANSTEHEND"],
 		PriorityId: models.DictPriorityName["HIGH"],
 		Comments: input.Comments,
 		Equipments: input.Equipments,

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"team2/sandsack-management-backend/middleware"
 	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/service"
 )
@@ -13,7 +14,7 @@ func AuthorizeJWT() gin.HandlerFunc {
 		const bearer = "Bearer "
 		header := c.GetHeader("Authorization")
 		tokenStr := header[len(bearer):]
-		token, err := service.VerifyToken(tokenStr)
+		token, err := middleware.VerifyToken(tokenStr)
 		if err != nil {
 			log.Println("VerifyToken error", err.Error())
 			c.AbortWithStatusJSON(http.StatusUnauthorized, models.ErrorResponse{
@@ -39,7 +40,7 @@ func (a *App) AuthorizeAdmin() gin.HandlerFunc {
 		const bearer = "Bearer "
 		header := c.GetHeader("Authorization")
 		tokenStr := header[len(bearer):]
-		token, err := service.VerifyToken(tokenStr)
+		token, err := middleware.VerifyToken(tokenStr)
 		if err != nil {
 			log.Println("VerifyToken error", err.Error())
 			c.AbortWithStatusJSON(http.StatusUnauthorized, models.ErrorResponse{
@@ -78,7 +79,7 @@ func GetClaims(c *gin.Context) (*models.CustomClaims, error){
 	header := c.GetHeader("Authorization")
 	tokenStr := header[len(bearer):]
 
-	claims, err := service.GetClaims(tokenStr)
+	claims, err := middleware.GetClaims(tokenStr)
 	if err != nil {
 		return nil, err
 	}

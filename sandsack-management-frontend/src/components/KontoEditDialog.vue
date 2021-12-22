@@ -1,24 +1,10 @@
 <template>
   <v-dialog
       v-model="dialog"
-      width="500"
+      width="800"
   >
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn
-          style="text-transform: capitalize; font-weight: bolder;"
-          rounded
-          color="orange"
-          v-bind="attrs"
-          v-on="on"
-          dark
-          block
-      >
-        Bearbeiten
-      </v-btn>
-    </template>
-
-    <v-card outlined class="pa-5">
-      <v-row>
+    <v-card outlined >
+      <v-card-title>
         <v-col cols="2">
           <v-avatar
               color="white"
@@ -27,91 +13,107 @@
           </v-avatar>
         </v-col>
         <v-col cols="10">
-          <h2>{{getLoggedInBranchDetails().name}}</h2>
-          <h3>{{getLoggedInBranchDetails().roleName}}</h3>
+          <h2>{{getLoggedInUser.name}}</h2>
+          <h3>{{getLoggedInUser.roleName}}</h3>
         </v-col>
-      </v-row>
-      <v-row class="pt-2">
+      </v-card-title>
+      <v-card-text>
         <v-form
             ref="form"
             v-model="valid"
             lazy-validation
         >
           <v-text-field
-              v-model="email"
+              v-model="getLoggedInUser.email"
               :rules="emailRules"
               label="E-mail"
               required
               filled
               outlined
+              prepend-icon="mdi-email"
           ></v-text-field>
           <v-text-field
-              v-model="phone"
+              v-model="getLoggedInUser.phone"
               :rules="phoneRules"
               label="Phone"
               required
               filled
               outlined
+              prepend-icon="mdi-phone"
           ></v-text-field>
           <v-text-field
-              v-model="password"
+              v-model="getLoggedInUser.password"
               :rules="passwordRules"
               label="Altes Passwort"
+              prepend-icon="mdi-lock"
               required
               filled
               outlined
           ></v-text-field>
           <v-text-field
-              v-model="password"
+              v-model="getLoggedInUser.password"
               :rules="passwordRules"
               label="Neues Passwort"
+              prepend-icon="mdi-lock"
               required
               filled
               outlined
           ></v-text-field>
         </v-form>
-      </v-row>
-      <v-row class="pt-2">
+      </v-card-text>
         <v-card-actions>
-          <v-btn
-              color="primary"
-              text
-              @click="dialog = false"
-          >
-            Cancel
-          </v-btn>
-          <v-btn
-              color="primary"
-              text
-              @click="dialog = false"
-          >
-            Speichern
-          </v-btn>
+          <v-row>
+            <v-col class="align-center justify-center" cols="3" offset="3">
+              <v-btn
+                  style="text-transform: capitalize; font-weight: bolder;"
+                  block
+                  rounded
+                  color="red"
+                  dark
+                  @click="dialog = false"
+              >
+                Abrechen
+              </v-btn>
+
+            </v-col>
+            <v-col cols="3">
+
+              <v-btn
+                  style="text-transform: capitalize; font-weight: bolder;"
+                  block
+                  rounded
+                  color="red"
+                  dark
+                  @click="submitUpdatedInfo"
+              >
+                Speichern
+              </v-btn>
+            </v-col>
+
+          </v-row>
+
         </v-card-actions>
-      </v-row>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+
 export default {
   name: 'KontoEditDialog',
+  props: ['dialog'],
+
   data() {
-    let self = this;
     return {
-      dialog: false,
       valid: true,
-      email: self.getLoggedInBranchDetails().email,
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
-      phone: self.getLoggedInBranchDetails().phone,
       phoneRules: [
         v => !!v || 'Phone is required',
         v => /\(?\+\(?49\)?[ ()]?([- ()]?\d[- ()]?){10}/.test(v) || 'Phone must be valid',
       ],
-      password: '',
       passwordRules: [
         v => !!v || 'Password is required',
       ],
@@ -119,10 +121,23 @@ export default {
   },
 
   computed: {
-
-  },
+    getLoggedInUser() {
+      return this.$store.getters.getLoggedInUser
+    }
+    },
   methods: {
-    // hard coding for the branch name
+    submitUpdatedInfo(){
+      let data={
+        "address": this.getLoggedInUser.address,
+        "email": this.getLoggedInUser.email,
+        "phone": this.getLoggedInUser.phone,
+        "password": this.getLoggedInUser.password,
+      }
+      let id= this.getLoggedInUser.id
+      this.$store.dispatch("updateUserInfo",  {id, data} )
+      this.$emit("close")
+    },
+/*    // hard coding for the branch name
     getLoggedInBranchDetails() {
       if (this.getLoggedInUserRole() === 1)
         return {
@@ -168,7 +183,7 @@ export default {
         return 3
       else if (this.$route.params.userRole === '4') // Mollhof
         return 4
-    }
+    }*/
   }
 }
 </script>
