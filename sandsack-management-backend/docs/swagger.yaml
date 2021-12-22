@@ -243,6 +243,7 @@ definitions:
 info:
   contact: {}
 paths:
+<<<<<<< HEAD
   /core/equipment:
     get:
       consumes:
@@ -288,10 +289,21 @@ paths:
         required: true
         type: string
       - description: Needed only name and quantity of new equipment
+=======
+  /create_user/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint is implemented to register new user by Einsatzleiter
+        and get a new token pair
+      parameters:
+      - description: User registration model
+>>>>>>> abff89d838329ae2d6250e11a9016c7726751442
         in: body
         name: input
         required: true
         schema:
+<<<<<<< HEAD
           $ref: '#/definitions/models.OrderEquipment'
       produces:
       - application/json
@@ -346,6 +358,21 @@ paths:
       summary: GetPriority - array of priorities in system
       tags:
       - Core
+=======
+          $ref: '#/definitions/models.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User has been created
+        "400":
+          description: Bad request (e.g. parameter in body is not given or incorrect)
+        "401":
+          description: Permission to create the user is not given
+      summary: Create a new user (branch) in the system
+      tags:
+      - Admin
+>>>>>>> abff89d838329ae2d6250e11a9016c7726751442
   /email_verification:
     post:
       consumes:
