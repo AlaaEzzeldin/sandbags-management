@@ -15,7 +15,7 @@
             <v-row>
               <v-col>
                 <v-text-field
-                    v-model="email"
+                    v-model="data.email"
                     :rules="emailRules"
                     label="E-mail"
                     required
@@ -30,7 +30,7 @@
             <v-row>
               <v-col>
                 <v-text-field
-                    v-model="password"
+                    v-model="data.password"
                     :rules="passwordRules"
                     label="Password"
                     required
@@ -59,13 +59,12 @@
             <v-row no-gutters>
               <v-col>
                 <v-btn
-                    style="text-transform: capitalize; font-weight: bolder;"
+                    :disabled="!valid"
+                    style="text-transform: capitalize; font-weight: bolder; color: white"
                     color="red"
-                    dark
                     block
                     class="mr-4"
-                    @click="validate"
-                    :to="`/orders-list/`+getUserRole()"
+                    @click="submit"
                 >
                   Einloggen
                 </v-btn>
@@ -96,14 +95,16 @@ export default {
   name: 'LoginPage',
 
   data: () => ({
+    data:{
+      email: '',
+      password: '',
+    },
     valid: true,
     checkbox: false,
-    email: '',
     emailRules: [
       v => !!v || 'E-mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
     ],
-    password: '',
     passwordRules: [
       v => !!v || 'Password is required',
     ],
@@ -117,16 +118,14 @@ export default {
     validate() {
       this.$refs.form.validate()
     },
-    getUserRole() {
-      if (this.email === 'haupt@gmail.com')
-        return 1
-      else if (this.email === 'einsatz@gmail.com')
-        return 2
-      else if (this.email === 'unter@gmail.com')
-        return 3
-      else if (this.email === 'mollnhof@gmail.com')
-        return 4
+    submit(){
+      console.log("submit", this.data.email, this.data.password)
+      this.$store.dispatch("login",  this.data )
+
+      // this.$router.push({name: 'BestellungslistePage', params: 3})
+
     }
+
   }
 
 }
