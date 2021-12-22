@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
@@ -15,12 +16,12 @@ import (
 
 const defaultPort = ":8000"
 
-func (a *App) RunAllRoutes(){
+func (a *App) RunAllRoutes() {
 	var port = defaultPort
 
 	r := gin.Default()
+	r.Use(cors.Default())
 	f, err := os.Create("gin.log")
-
 
 	if err != nil {
 		fmt.Println("file create error", err.Error())
@@ -71,9 +72,5 @@ func (a *App) RunAllRoutes(){
 		})
 	})
 
-
-
-
 	_ = r.Run(port)
 }
-
