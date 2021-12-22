@@ -59,11 +59,13 @@ func (a *App) DeclineOrder(c *gin.Context) {
 		log.Println("DeclineOrder error", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	order, err := service.GetOrder(a.DB, claims.Id, orderId)
+
+	c.JSON(http.StatusOK, order)
 
 }

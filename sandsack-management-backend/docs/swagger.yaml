@@ -160,6 +160,15 @@ definitions:
       name:
         type: string
     type: object
+  models.Priority:
+    properties:
+      id:
+        type: integer
+      level:
+        type: integer
+      name:
+        type: string
+    type: object
   models.RecoveryPasswordInput:
     properties:
       otp:
@@ -234,6 +243,109 @@ definitions:
 info:
   contact: {}
 paths:
+  /core/equipment:
+    get:
+      consumes:
+      - application/json
+      description: GetEquipment - array of equipment and current quantity of it in
+        Mollnhof
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OrderEquipment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: GetEquipment - array of equipment and current quantity of it in Mollnhof
+      tags:
+      - Core
+    post:
+      consumes:
+      - application/json
+      description: Admin can add new type of equipment
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Needed only name and quantity of new equipment
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.OrderEquipment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OrderEquipment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "505":
+          description: HTTP Version Not Supported
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Admin can add new type of equipment
+      tags:
+      - Core
+  /core/priority:
+    get:
+      consumes:
+      - application/json
+      description: GetPriority - array of priorities in system
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Priority'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: GetPriority - array of priorities in system
+      tags:
+      - Core
   /email_verification:
     post:
       consumes:
@@ -446,40 +558,6 @@ paths:
           schema:
             $ref: '#/definitions/models.ErrorResponse'
       summary: CommentOrder - user can write comments for the order
-      tags:
-      - Order
-  /order/equipment:
-    get:
-      consumes:
-      - application/json
-      description: GetEquipment - array of equipment and current quantity of it in
-        Mollnhof
-      parameters:
-      - description: 'Bearer '
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.OrderEquipment'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: GetEquipment - array of equipment and current quantity of it in Mollnhof
       tags:
       - Order
   /user/:

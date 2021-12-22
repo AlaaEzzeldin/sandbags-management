@@ -71,6 +71,8 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 	return nil
 }
 
+
+
 func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 	simpleOrder, err := repo_order.GetSimpleOrder(a, userId, orderId)
 	if err != nil {
@@ -79,7 +81,7 @@ func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 	comments := repo_order.GetComments(a, orderId)
 	equipments := repo_order.GetEquipments(a, orderId)
 	logs := repo_order.GetLogs(a, orderId)
-	permissions := repo_order.GetPermissions(a, userId, orderId)
+	//permissions := repo_order.GetPermissions(a, userId, orderId)
 
 	order := models.Order{
 		Id: simpleOrder.Id,
@@ -93,7 +95,7 @@ func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 		Comments: comments,
 		Logs: logs,
 		Equipments: equipments,
-		Permissions: permissions,
+		//Permissions: permissions,
 	}
 	return order, nil
 }
@@ -109,7 +111,7 @@ func GetOrderList(a *gorm.DB, userId int) (orderList []models.Order, err error) 
 		comments := repo_order.GetComments(a, row.Id)
 		equipments := repo_order.GetEquipments(a, row.Id)
 		logs := repo_order.GetLogs(a, row.Id)
-		permissions := repo_order.GetPermissions(a, userId, row.Id)
+		//permissions := repo_order.GetPermissions(a, userId, row.Id)
 
 		order := models.Order{
 			Id: row.Id,
@@ -123,7 +125,7 @@ func GetOrderList(a *gorm.DB, userId int) (orderList []models.Order, err error) 
 			Comments: comments,
 			Logs: logs,
 			Equipments: equipments,
-			Permissions: permissions,
+			//Permissions: permissions,
 		}
 
 		orderList = append(orderList, order)
@@ -207,6 +209,7 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 		return nil
 	}
 
+	log.Println("CHILDREN", children)
 	for _, child := range *children {
 		err = repo_order.DeleteUserOrderPermission(db, child.Id, order.Id)
 		if err != nil {
@@ -353,4 +356,47 @@ func GetEquipment(a *gorm.DB) ([]models.OrderEquipment, error) {
 
 func GetPriority(a *gorm.DB) ([]models.Priority, error) {
 	return repo_order.GetPriority(a)
+}
+
+func CreateEquipment(a *gorm.DB, name string, quantity int) ([]models.OrderEquipment, error) {
+	err := repo_order.CreateEquipment(a, name, quantity)
+	if err != nil {
+		return nil, err
+	}
+
+	equipment, err := repo_order.GetEquipment(a)
+	if err != nil {
+		return nil, err
+	}
+	return equipment, nil
+}
+
+func AddEquipmentQuantity(a *gorm.DB, equipmentId int, quantity int) error {
+	return repo_order.AddEquipmentQuantity(a, equipmentId, quantity)
+}
+
+func AddPriority(db *gorm.DB, name string, level int) error {
+	return repo_order.AddPriority(db, name, level)
+}
+
+func AddEquipment(db *gorm.DB, name string, quantity int) error {
+	return repo_order.AddEquipment(db, name, quantity)
+}
+
+func ConfirmDelivery(db *gorm.DB, userId int, orderId int) error {
+	statusId := models.DictStatusName["GELIEFERT"]
+	err := repo_order.ConfirmDelivery(db, userId, orderId, statusId)
+	if err != nil {
+		return err
+	}
+
+	logs := []models.Log{{
+		OrderId: orderId,
+		UpdatedBy: userId,
+		//todo add to database action CONFIRMED DELIVERY
+		ActionTypeId: models.DictActionTypeName["ACCEPTED"],
+	}}
+	err = repo_order.InsertLogs(db, logs)
+
+	return nil
 }

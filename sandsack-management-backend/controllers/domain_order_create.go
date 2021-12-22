@@ -61,6 +61,9 @@ func (a *App) CreateOrder(c *gin.Context) {
 		return
 	}
 
+	var comments []models.Comment
+	comments = append(comments, models.Comment{CommentText: input.Comment})
+
 	order := &models.Order{
 		Name: user.Name,
 		UserId: user.Id,
@@ -68,7 +71,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 		AddressFrom: "Mollnhof",
 		StatusId: models.DictStatusName["ANSTEHEND"],
 		PriorityId: models.DictPriorityName["HIGH"],
-		Comments: input.Comments,
+		Comments:  comments,
 		Equipments: input.Equipments,
 	}
 
