@@ -43,8 +43,8 @@ func (a *App) RunAllRoutes() {
 	// Admin endpoints
 	admin := r.Group("/admin")
 	admin.Use(a.AuthorizeAdmin())
-	admin.POST("/user", a.CreateUser)
-	admin.POST("/user/email_verification", a.SendVerifyEmail)
+	admin.POST("/create_user", a.CreateUser)
+	admin.POST("/email_verification", a.SendVerifyEmail)
 
 	// Authentication and user profile endpoints
 	auth := r.Group("/users")
@@ -71,6 +71,14 @@ func (a *App) RunAllRoutes() {
 			"message": "in development",
 		})
 	})
+	// order
+	order := r.Group("/order")
+	order.POST("/", a.CreateOrder)
+	order.GET("/", a.ListOrder)
+	order.POST("/cancel", a.DeclineOrder)
+	order.POST("/accept", a.AcceptOrder)
+	order.POST("/comment", a.CommentOrder)
+	order.PATCH("/edit", a.EditOrder)
 
 	_ = r.Run(port)
 }

@@ -12,20 +12,21 @@ import (
 // @Description CreateOrder - Unterabschnitt creates the order
 // @Summary CreateOrder - Unterabschnitt creates the order
 // @Accept json
+// @Param Authorization header string true "Bearer "
 // @Param input body models.CreateOrderInput true "CreateOrder"
 // @Success 200 {object} models.Order
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
 // @Tags Order
-// @Router /users/order [post]
+// @Router /order [post]
 func (a *App) CreateOrder(c *gin.Context) {
 	var input models.CreateOrderInput
 	// check whether the structure of request is correct
-	if err := c.ShouldBindJSON(&input); err != nil{
+	if err := c.ShouldBindJSON(&input); err != nil {
 		log.Println("CreateOrder error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
@@ -35,7 +36,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("GetClaims error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
@@ -45,37 +46,36 @@ func (a *App) CreateOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("GetUserByEmail error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
 	}
 	log.Println("User branch", user.BranchId)
-	if user.BranchId != 5 {
+	if user.BranchId != models.DictBranchName["Unterabschnitt"] {
 		log.Println("It's not Unterabschnitt")
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
-			ErrCode: http.StatusUnauthorized,
+			ErrCode:    http.StatusUnauthorized,
 			ErrMessage: "you are not allowed to create order",
 		})
 		return
 	}
 
 	order := &models.Order{
-		Name: user.Name,
-		UserId: user.Id,
-		AddressTo: input.AddressTo,
+		Name:        user.Name,
+		UserId:      user.Id,
+		AddressTo:   input.AddressTo,
 		AddressFrom: "Mollnhof",
-		StatusId: models.DictStatusName["PENDING"],
-		PriorityId: models.DictPriorityName["HIGH"],
-		Comments: input.Comments,
-		Equipments: input.Equipments,
+		StatusId:    models.DictStatusName["ANSTEHEND"],
+		PriorityId:  models.DictPriorityName["HIGH"],
+		Comments:    input.Comments,
+		Equipments:  input.Equipments,
 	}
-
 
 	if err := service.CreateOrder(a.DB, user.Name, order); err != nil {
 		log.Println("CreateOrder error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
