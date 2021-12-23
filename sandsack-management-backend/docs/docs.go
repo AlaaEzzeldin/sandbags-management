@@ -127,6 +127,118 @@ var doc = `{
                 }
             }
         },
+        "/core/equipment/add": {
+            "post": {
+                "description": "This endpoint adds new equipment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Core"
+                ],
+                "summary": "This endpoint adds new equipment",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "name, quantity",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OrderEquipment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.OrderEquipment"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/core/equipment/return": {
+            "patch": {
+                "description": "This endpoint increase the quantity of chosen equipment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Core"
+                ],
+                "summary": "This endpoint increase the quantity of chosen equipment",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "equipment_id, quantity",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OrderEquipment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.OrderEquipment"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/core/priority": {
             "get": {
                 "description": "GetPriority - array of priorities in system",
@@ -164,6 +276,62 @@ var doc = `{
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/core/priority/add": {
+            "post": {
+                "description": "This endpoint adds new priority",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Core"
+                ],
+                "summary": "This endpoint adds new priority",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "level, name",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Priority"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Priority"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorResponse"
                         }
@@ -499,6 +667,62 @@ var doc = `{
                 }
             }
         },
+        "/order/delivery/confirm/": {
+            "post": {
+                "description": "Unterabschnitt confirms that equipment is successfully delivered",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Unterabschnitt confirms that equipment is successfully delivered",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "ConfirmDelivery",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ConfirmDeliveryInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Order"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/user/": {
             "post": {
                 "description": "This endpoint is implemented to register new user by Einsatzleiter and get a new token pair",
@@ -513,13 +737,6 @@ var doc = `{
                 ],
                 "summary": "Create a new user (branch) in the system",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Bearer ",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "User registration model",
                         "name": "input",
@@ -1000,6 +1217,9 @@ var doc = `{
         "models.Comment": {
             "type": "object",
             "properties": {
+                "branch_name": {
+                    "type": "string"
+                },
                 "comment_text": {
                     "type": "string"
                 },
@@ -1008,6 +1228,9 @@ var doc = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "order_id": {
                     "type": "integer"
@@ -1020,12 +1243,17 @@ var doc = `{
         "models.CommentInput": {
             "type": "object",
             "properties": {
-                "comments": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                "comment": {
+                    "type": "string"
                 },
+                "order_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.ConfirmDeliveryInput": {
+            "type": "object",
+            "properties": {
                 "order_id": {
                     "type": "integer"
                 }
@@ -1037,11 +1265,8 @@ var doc = `{
                 "address_to": {
                     "type": "string"
                 },
-                "comments": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Comment"
-                    }
+                "comment": {
+                    "type": "string"
                 },
                 "equipments": {
                     "type": "array",
@@ -1412,5 +1637,5 @@ func (s *s) ReadDoc() string {
 }
 
 func init() {
-	swag.Register(swag.Name, &s{})
+	swag.Register("swagger", &s{})
 }
