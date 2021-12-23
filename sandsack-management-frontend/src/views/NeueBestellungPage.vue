@@ -140,31 +140,17 @@ export default {
     }
 
   }),
-  computed: {
+
+  computed:{
+    getCurrentUserRole(){
+      return this.$store.getters.getCurrentUserRole
+    },
     getBranchName() {
-      if (this.getLoggedInUserRole() === 1)
-        return  "Hauptabschintt-Mitte";
-      else if (this.getLoggedInUserRole() === 2)
-        return "EA 1-Altstadt";
-      else if (this.getLoggedInUserRole() === 3)
-        return "EA 1.1 Altstadt- Ost";
-      else return  "Mollnhof";
+      return this.$store.getters.getCurrentUserRole
     },
   },
+
   methods: {
-    // hard coding the users roles
-    getLoggedInUserRole() {
-      if (this.$route.params.userRole === '1') // Hauptabschintt
-        return 1
-      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
-        return 2
-      else if (this.$route.params.userRole === '3') //Unterabschnitt
-        return 3
-      else if (this.$route.params.userRole === '4') // Mollhof
-        return 4
-    },
-
-
     createOrder() {
       this.newOrder.from= this.getBranchName
       console.log("new order", this.newOrder)
