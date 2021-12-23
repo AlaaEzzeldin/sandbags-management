@@ -80,6 +80,8 @@ func (a *App) AcceptOrder(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	order, err := service.GetOrder(a.DB, claims.Id, orderId)
+	c.JSON(http.StatusOK, order)
+	return
 
 }
