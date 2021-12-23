@@ -33,7 +33,6 @@ func (a *App) RunAllRoutes() {
 	// Swagger
 	docs.SwaggerInfo.Title = "ASPD API Documentation"
 	docs.SwaggerInfo.Description = "This page provides overview of all API endpoints and necessary details"
-	docs.SwaggerInfo.BasePath = "/api"
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
@@ -88,4 +87,3 @@ func (a *App) RunAllRoutes() {
 
 	_ = r.Run(port)
 }
-
