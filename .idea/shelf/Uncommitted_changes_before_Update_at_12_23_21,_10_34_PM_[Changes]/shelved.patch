@@ -1,0 +1,78 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"1ba52210-f74b-4df9-9c80-69b7d14adcd9\" name=\"Changes\" comment=\"\">\n      <change beforePath=\"$PROJECT_DIR$/sandsack-management-frontend/json-server/db.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/sandsack-management-frontend/json-server/db.json\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/sandsack-management-frontend/src/views/BestellungslistePage.vue\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/sandsack-management-frontend/src/views/BestellungslistePage.vue\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"ProjectId\" id=\"22hWpO1zY3ztsZGwBeQ7m8eXIlw\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n    <option name=\"showMembers\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\n    <property name=\"node.js.detected.package.eslint\" value=\"true\" />\n    <property name=\"node.js.selected.package.eslint\" value=\"(autodetect)\" />\n    <property name=\"nodejs_interpreter_path.stuck_in_default_project\" value=\"undefined stuck path\" />\n    <property name=\"nodejs_npm_path_reset_for_default_project\" value=\"true\" />\n    <property name=\"nodejs_package_manager_path\" value=\"yarn\" />\n    <property name=\"settings.editor.selected.configurable\" value=\"preferences.updates\" />\n    <property name=\"vue.rearranger.settings.migration\" value=\"true\" />\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"1ba52210-f74b-4df9-9c80-69b7d14adcd9\" name=\"Changes\" comment=\"\" />\n      <created>1640290482223</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1640290482223</updated>\n      <workItem from=\"1640290486051\" duration=\"676000\" />\n    </task>\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision b223b872b73a1778a76c87944519431ca3016df8)
++++ b/.idea/workspace.xml	(date 1640295249156)
+@@ -2,8 +2,7 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="1ba52210-f74b-4df9-9c80-69b7d14adcd9" name="Changes" comment="">
+-      <change beforePath="$PROJECT_DIR$/sandsack-management-frontend/json-server/db.json" beforeDir="false" afterPath="$PROJECT_DIR$/sandsack-management-frontend/json-server/db.json" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/sandsack-management-frontend/src/views/BestellungslistePage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/sandsack-management-frontend/src/views/BestellungslistePage.vue" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -12,8 +11,29 @@
+   </component>
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
++    <option name="UPDATE_TYPE" value="REBASE" />
++  </component>
++  <component name="GitSEFilterConfiguration">
++    <file-type-list>
++      <filtered-out-file-type name="LOCAL_BRANCH" />
++      <filtered-out-file-type name="REMOTE_BRANCH" />
++      <filtered-out-file-type name="TAG" />
++      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
++    </file-type-list>
++  </component>
++  <component name="HighlightingSettingsPerFile">
++    <setting file="file://$PROJECT_DIR$/sandsack-management-frontend/src/components/KontoEditDialog.vue" root0="FORCE_HIGHLIGHTING" />
++    <setting file="file://$PROJECT_DIR$/sandsack-management-frontend/json-server/db.json" root0="FORCE_HIGHLIGHTING" />
++    <setting file="file://$PROJECT_DIR$/sandsack-management-frontend/src/views/BestellungslistePage.vue" root0="SKIP_INSPECTION" />
++    <setting file="file://$PROJECT_DIR$/sandsack-management-frontend/src/store/index.js" root0="FORCE_HIGHLIGHTING" />
++    <setting file="file://$PROJECT_DIR$/sandsack-management-frontend/src/components/Nav.vue" root0="FORCE_HIGHLIGHTING" />
++    <setting file="file://$PROJECT_DIR$/.gitlab-ci.yml" root0="FORCE_HIGHLIGHTING" />
++    <setting file="file://$PROJECT_DIR$/sandsack-management-frontend/src/store/modules/orders.js" root0="FORCE_HIGHLIGHTING" />
++    <setting file="file://$PROJECT_DIR$/sandsack-management-frontend/src/components/EditRequestCard.vue" root0="FORCE_HIGHLIGHTING" />
++    <setting file="file://$PROJECT_DIR$/sandsack-management-frontend/src/api/orders.js" root0="FORCE_HIGHLIGHTING" />
+   </component>
+   <component name="ProjectId" id="22hWpO1zY3ztsZGwBeQ7m8eXIlw" />
++  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+@@ -40,10 +60,26 @@
+       <option name="presentableId" value="Default" />
+       <updated>1640290482223</updated>
+       <workItem from="1640290486051" duration="676000" />
++      <workItem from="1640294454074" duration="795000" />
+     </task>
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+     <option name="version" value="3" />
+   </component>
++  <component name="Vcs.Log.Tabs.Properties">
++    <option name="TAB_STATES">
++      <map>
++        <entry key="MAIN">
++          <value>
++            <State />
++          </value>
++        </entry>
++      </map>
++    </option>
++  </component>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="resolve untracked files" />
++    <option name="LAST_COMMIT_MESSAGE" value="resolve untracked files" />
++  </component>
+ </project>
+\ No newline at end of file
