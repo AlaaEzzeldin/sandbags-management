@@ -60,6 +60,11 @@ export default {
     'orderID',
     'hasTextField'
   ],
+  computed: {
+    getCurrentUserRole(){
+      return this.$store.getters.getCurrentUserRole
+    }
+  },
   methods: {
     closeDialog() {
       this.$emit('close')
@@ -82,7 +87,7 @@ export default {
       }
     },
     submitUpdatedOrder() {
-      let TextBy = this.getLoggedInUserRole()
+      let TextBy = this.getCommentWriter()
       let data = {
         "status": this.newStatus,
         [TextBy] : this.textFieldValue
@@ -92,15 +97,14 @@ export default {
       this.closeDialog()
     },
     // hard coding the users roles
-    getLoggedInUserRole() {
-      if (this.$route.params.userRole === '1') // Hauptabschintt
+    getCommentWriter() {
+      if (this.getCurrentUserRole=='Hauptabschnitt')
         return 'notesByHauptabschnitt'
-      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
+      else if (this.getCurrentUserRole=='Einsatzabschnitt')
         return 'notesByEinsatzabschnitt'
-      else if (this.$route.params.userRole === '5') //Einsatzleiter
+      else if (this.getCurrentUserRole=='Einsatzleiter')
         return 'notesByEinsatzleiter'
     }
-
   }
 }
 </script>
