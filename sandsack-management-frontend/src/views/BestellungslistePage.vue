@@ -13,8 +13,9 @@
             color="red"
             dark
             block
+            @click="exportAllOrders"
         >
-          <button  @click="pdfgen">Exportiern</button>
+          Exportieren
         </v-btn>
         <v-btn
             v-if="this.getLoggedInUserRole() === 4"
@@ -31,7 +32,10 @@
     </v-row>
     <v-row no-gutters>
       <v-col cols="12">
-        <Bestelltabelle class="mt-10"></Bestelltabelle>
+        <Bestelltabelle
+            class="mt-10"
+            :orders="getOrders"
+        ></Bestelltabelle>
       </v-col>
     </v-row>
 
@@ -41,6 +45,7 @@
 
 <script>
 import Bestelltabelle from "@/components/Bestelltabelle";
+import moment from 'moment';
 
 export default {
   name: 'BestellungslistePage',
@@ -52,18 +57,15 @@ export default {
   created() {
     this.$store.dispatch("loadOrders")
   },
+
   computed: {
     getOrders() {
       return this.$store.getters.getOrders
     }
   },
-  methods:{
-    pdfgen: function () {
-      var pdfMake = require('pdfmake/build/pdfmake.js')
-      if (pdfMake.vfs === undefined){
-        var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      }
+
+  methods: {
+    exportAllOrders () {
       let body =  [[ 'id', 'Zeit', 'Von', 'Priorität', 'Status', 'Anschrift' ]];
       for (let order of this.getOrders) {
         body.push(
@@ -77,29 +79,16 @@ export default {
             ]
         );
       }
-      var docDefinition = {
-        content: [
-          {
-            layout: 'lightHorizontalLines',
-            table: {
-              headerRows: 1,
-              body: body
-            }
-          }
-        ]
-      }
-      pdfMake.createPdf(docDefinition).download('Bestellungen.pdf')
+      this.printPDF(body, "Bestellungen");
     },
 
     lieferscheinDruecken: function () {
-      var pdfMake = require('pdfmake/build/pdfmake.js')
-      if (pdfMake.vfs === undefined){
-        var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      }
       let body =  [[ 'id', 'Von', 'Priorität', 'Anschrift', 'Menge' ]];
       for (let order of this.getOrders) {
-        if (order.status === 'akzeptiert') {
+        let dateCreated = moment(order.created_at, 'DD.MM.yyyy HH:mm');
+        if (order.status === 'akzeptiert' &&
+            dateCreated.isSame(moment(), "day")
+        ) {
           body.push(
               [
                 order.id,
@@ -111,7 +100,16 @@ export default {
           );
         }
       }
-      var docDefinition = {
+      this.printPDF(body, "Lieferschein");
+    },
+
+    printPDF(body, name) {
+      let pdfMake = require('pdfmake/build/pdfmake.js')
+      if (pdfMake.vfs === undefined){
+        let pdfFonts = require('pdfmake/build/vfs_fonts.js')
+        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+      }
+      let docDefinition = {
         content: [
           {
             layout: 'lightHorizontalLines',
@@ -122,9 +120,8 @@ export default {
           }
         ]
       }
-      pdfMake.createPdf(docDefinition).download('Lieferschein.pdf')
+      pdfMake.createPdf(docDefinition).download(name+'.pdf')
     },
-
 
     // hard coding the users roles
     getLoggedInUserRole() {
