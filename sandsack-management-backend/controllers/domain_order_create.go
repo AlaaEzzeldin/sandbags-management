@@ -12,7 +12,7 @@ import (
 // @Description CreateOrder - Unterabschnitt creates the order
 // @Summary CreateOrder - Unterabschnitt creates the order
 // @Accept json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.CreateOrderInput true "CreateOrder"
 // @Success 200 {object} models.Order
 // @Failure 500 {object} models.ErrorResponse
@@ -23,10 +23,10 @@ import (
 func (a *App) CreateOrder(c *gin.Context) {
 	var input models.CreateOrderInput
 	// check whether the structure of request is correct
-	if err := c.ShouldBindJSON(&input); err != nil{
+	if err := c.ShouldBindJSON(&input); err != nil {
 		log.Println("CreateOrder error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
@@ -36,7 +36,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("GetClaims error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
@@ -46,7 +46,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("GetUserByEmail error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
@@ -55,7 +55,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 	if user.BranchId != models.DictBranchName["Unterabschnitt"] {
 		log.Println("It's not Unterabschnitt")
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
-			ErrCode: http.StatusUnauthorized,
+			ErrCode:    http.StatusUnauthorized,
 			ErrMessage: "you are not allowed to create order",
 		})
 		return
@@ -65,21 +65,20 @@ func (a *App) CreateOrder(c *gin.Context) {
 	comments = append(comments, models.Comment{CommentText: input.Comment})
 
 	order := &models.Order{
-		Name: user.Name,
-		UserId: user.Id,
-		AddressTo: input.AddressTo,
+		Name:        user.Name,
+		UserId:      user.Id,
+		AddressTo:   input.AddressTo,
 		AddressFrom: "Mollnhof",
-		StatusId: models.DictStatusName["ANSTEHEND"],
-		PriorityId: models.DictPriorityName["HIGH"],
-		Comments:  comments,
-		Equipments: input.Equipments,
+		StatusId:    models.DictStatusName["ANSTEHEND"],
+		PriorityId:  models.DictPriorityName["HIGH"],
+		Comments:    comments,
+		Equipments:  input.Equipments,
 	}
-
 
 	if err := service.CreateOrder(a.DB, user.Name, order); err != nil {
 		log.Println("CreateOrder error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return

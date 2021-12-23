@@ -13,7 +13,7 @@ import (
 // @Description SendVerifyEmail - admin sends email to user for him to verify
 // @Summary SendVerifyEmail - admin sends email to user for him to verify
 // @Accept json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.SendVerifyEmail true "SendVerifyEmail"
 // @Success 200
 // @Failure 500 {object} models.ErrorResponse

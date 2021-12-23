@@ -12,7 +12,7 @@ import (
 // @Description GetEquipment - array of equipment and current quantity of it in Mollnhof
 // @Summary GetEquipment - array of equipment and current quantity of it in Mollnhof
 // @Accept json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Success 200 {array} models.OrderEquipment
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
