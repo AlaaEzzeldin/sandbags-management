@@ -41,6 +41,7 @@
 
 <script>
 import Bestelltabelle from "@/components/Bestelltabelle";
+import moment from 'moment';
 
 export default {
   name: 'BestellungslistePage',
@@ -99,7 +100,10 @@ export default {
       }
       let body =  [[ 'id', 'Von', 'Priorität', 'Anschrift', 'Menge' ]];
       for (let order of this.getOrders) {
-        if (order.status === 'akzeptiert') {
+        let dateCreated = moment(order.created_at, 'DD.MM.yyyy HH:mm');
+        if (order.status === 'akzeptiert' &&
+            dateCreated.isSame(moment(), "day")
+        ) {
           body.push(
               [
                 order.id,
