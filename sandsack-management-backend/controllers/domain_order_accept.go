@@ -13,7 +13,7 @@ import (
 // @Description AcceptOrder - user can accept order
 // @Summary AcceptOrder - user can accept order
 // @Accept json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param id path string true "Id of the order"
 // @Success 200
 // @Failure 500 {object} models.ErrorResponse
@@ -80,6 +80,8 @@ func (a *App) AcceptOrder(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	order, err := service.GetOrder(a.DB, claims.Id, orderId)
+	c.JSON(http.StatusOK, order)
+	return
 
 }

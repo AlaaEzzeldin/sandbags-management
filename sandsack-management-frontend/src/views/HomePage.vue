@@ -21,6 +21,10 @@ export default {
   components: {
     Navigation
   },
+  created() {
+    this.$store.dispatch("loadLoggedIn", '0')
+    console.log("user ", this.$store.getters.getLoggedInUser)
+  },
 
 };
 </script>

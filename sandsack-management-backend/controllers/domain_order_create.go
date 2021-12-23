@@ -12,14 +12,14 @@ import (
 // @Description CreateOrder - Unterabschnitt creates the order
 // @Summary CreateOrder - Unterabschnitt creates the order
 // @Accept json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.CreateOrderInput true "CreateOrder"
 // @Success 200 {object} models.Order
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
 // @Tags Order
-// @Router /order [post]
+// @Router /order/ [post]
 func (a *App) CreateOrder(c *gin.Context) {
 	var input models.CreateOrderInput
 	// check whether the structure of request is correct
@@ -61,6 +61,9 @@ func (a *App) CreateOrder(c *gin.Context) {
 		return
 	}
 
+	var comments []models.Comment
+	comments = append(comments, models.Comment{CommentText: input.Comment})
+
 	order := &models.Order{
 		Name:        user.Name,
 		UserId:      user.Id,
@@ -68,7 +71,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 		AddressFrom: "Mollnhof",
 		StatusId:    models.DictStatusName["ANSTEHEND"],
 		PriorityId:  models.DictPriorityName["HIGH"],
-		Comments:    input.Comments,
+		Comments:    comments,
 		Equipments:  input.Equipments,
 	}
 

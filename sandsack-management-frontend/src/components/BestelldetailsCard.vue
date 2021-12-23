@@ -91,6 +91,25 @@
           ></v-textarea>
         </v-col>
       </v-row>
+      <v-row v-if="getOrder.logs">
+        <v-col cols="12" sm="12">
+          <h3 style="font-weight: bolder; color: black">Bestellverlauf</h3>
+        </v-col>
+      </v-row>
+      <v-row
+          v-for="item in getOrder.logs"
+          :key="item.id"
+          style="color: black"
+      >
+        <v-col cols="3">
+          <b>{{item.create_date}}</b>
+        </v-col>
+        <v-col>
+          <div class="float-right">
+            {{item.description}}
+          </div>
+        </v-col>
+      </v-row>
     </v-card-text>
 
     <!------------------------------------------------- Unterabschnitt ------------------------------------------->

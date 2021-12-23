@@ -23,10 +23,20 @@ values
     (1, 'Einsatzleiter', '1234', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa',
      'admin@admin.com', '', true, true, true, 2),
     (2, 'Mollnhof', '1212', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa',
-     'mollnhof@user.com', '', true, false, true, 1);
+     'mollnhof@user.com', '', true, false, true, 1),
+    (3, 'Mitte Hauptabschnitt', '092019', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa',
+     'mitte_hauptabschnitt@user.com', '', true, false, true, 3),
+    (4, 'EA 1 - Altstadt', '122342', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa',
+     'ea1_altstadt@user.com', '', true, false, true, 4),
+    (5, 'EA 1.1 Altstadt - Ost', '132324', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa',
+     'ea11_altstadt_ost@user.com', '', true, false, true, 5),
+    (6, 'EA 1.2 Altstadt - Mitte', '2425', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa',
+     'ea12_altstadt_mitte@user.com', '', true, false, true, 5),
+    (7, 'EA 2 - Neumarkt', '12322', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa',
+     'ea2_neumarkt@user.com', '', true, false, true, 3);
 
 insert into "hierarchy" (user1_id, user2_id)
-values(2, 1);
+values(2, 1), (1, 3), (3, 4), (3, 7), (4, 5), (4, 6);
 
 
 insert into permission(id, name) values
@@ -55,7 +65,3 @@ insert into equipment(id, name, quantity) values
     (1, 'Sandsack', 100000);
 
 
-create sequence order_number_id_seq
-    as integer;
-
-alter sequence order_number_id_seq owner to postgres;

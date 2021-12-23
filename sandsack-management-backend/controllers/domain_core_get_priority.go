@@ -8,28 +8,28 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
-// GetUserList
-// @Description GetUserList - get list of all users
-// @Summary GetUserList - get list of all users
+// GetPriority
+// @Description GetPriority - array of priorities in system
+// @Summary GetPriority - array of priorities in system
 // @Accept json
 // @Param Authorization header string true " "
-// @Success 200 {array} models.User
+// @Success 200 {array} models.Priority
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
-// @Tags Authentication
-// @Router /users/ [get]
-func (a *App) GetUserList(c *gin.Context) {
-	userList, err := service.GetUserList(a.DB)
+// @Tags Core
+// @Router /core/priority [get]
+func (a *App) GetPriority(c *gin.Context) {
+	priority, err := service.GetPriority(a.DB)
 	if err != nil {
-		log.Println("GetUserList error", err.Error())
+		log.Println("GetPriority error", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusInternalServerError,
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, userList)
+	c.JSON(http.StatusOK, priority)
 	return
 }

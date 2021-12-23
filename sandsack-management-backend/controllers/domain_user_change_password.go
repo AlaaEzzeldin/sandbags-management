@@ -14,7 +14,7 @@ import (
 // @Summary Change password of an authenticated user
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.ChangePasswordInput true "User change password model"
 // @Success 200 "Success message"
 // @Failure 401 "Token is not valid"
@@ -26,10 +26,10 @@ func (a *App) ChangePassword(c *gin.Context) {
 	var input models.ChangePasswordInput
 
 	// check whether the structure of request is correct
-	if err := c.ShouldBindJSON(&input); err != nil{
+	if err := c.ShouldBindJSON(&input); err != nil {
 		log.Println("ChangePassword error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
@@ -39,7 +39,7 @@ func (a *App) ChangePassword(c *gin.Context) {
 	if err != nil {
 		log.Println("GetClaims error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
@@ -49,7 +49,7 @@ func (a *App) ChangePassword(c *gin.Context) {
 	if err != nil {
 		log.Println("GetUserByEmail error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
@@ -58,7 +58,7 @@ func (a *App) ChangePassword(c *gin.Context) {
 	if ok := functions.CheckPasswordHash(input.OldPassword, user.Password); !ok {
 		log.Println("CheckPasswordHash error")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "wrong password",
 		})
 		return
@@ -67,7 +67,7 @@ func (a *App) ChangePassword(c *gin.Context) {
 	if len(input.NewPassword) < 6 {
 		log.Println("NewPassword length: less than 6 symbols ")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "new password should be longer than 6 symbols",
 		})
 		return
@@ -77,7 +77,7 @@ func (a *App) ChangePassword(c *gin.Context) {
 	if err != nil {
 		log.Println("HashPassword error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
@@ -86,13 +86,13 @@ func (a *App) ChangePassword(c *gin.Context) {
 	if err := service.UpdatePassword(a.DB, claims.Email, hashedPassword); err != nil {
 		log.Println("UpdatePassword error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, "The password has been changed successfully" )
+	c.JSON(http.StatusOK, "The password has been changed successfully")
 	return
 
 }
