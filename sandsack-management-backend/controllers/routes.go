@@ -2,11 +2,13 @@ package controllers
 
 import (
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
 	"io"
 	"log"
+	"net/http"
 	"os"
 	"team2/sandsack-management-backend/docs"
 	_ "team2/sandsack-management-backend/docs"
@@ -18,6 +20,7 @@ func (a *App) RunAllRoutes() {
 	var port = defaultPort
 
 	r := gin.Default()
+	r.Use(cors.Default())
 	f, err := os.Create("gin.log")
 
 	if err != nil {
@@ -60,7 +63,7 @@ func (a *App) RunAllRoutes() {
 	users.POST("/change_password", a.ChangePassword)
 	users.PATCH("/me", a.PatchProfile)
 
-	//order
+	// order
 	order := auth.Group("order")
 	order.POST("/", a.CreateOrder)
 	order.GET("/", a.ListOrder)
@@ -68,7 +71,11 @@ func (a *App) RunAllRoutes() {
 	order.POST("/accept", a.AcceptOrder)
 	order.POST("/comment", a.CommentOrder)
 	order.PATCH("/edit", a.EditOrder)
-
+	order.PATCH("/upgrade", func(context *gin.Context) {
+		context.JSON(http.StatusNoContent, gin.H{
+			"message": "in development",
+		})
+	})
 	order.POST("/delivery/confirm", a.ConfirmDelivery)
 
 	// core
@@ -78,7 +85,6 @@ func (a *App) RunAllRoutes() {
 	core.PATCH("/equipment/return", a.AddEquipmentQuantity)
 	core.POST("/priority/add", a.AddPriority)
 	core.POST("/equipment/add", a.AddEquipment)
-
 
 	_ = r.Run(port)
 }

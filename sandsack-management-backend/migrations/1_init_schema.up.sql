@@ -38,6 +38,7 @@ CREATE TABLE "order_equipment" (
 CREATE TABLE "equipment" (
                              "id" serial PRIMARY KEY,
                              "name" varchar,
+                             "quantity" integer,
                              "create_date" timestamp,
                              "update_date" timestamp
 );
@@ -165,3 +166,9 @@ ALTER TABLE "order" ADD FOREIGN KEY ("assigned_to") REFERENCES "driver" ("id");
 ALTER TABLE "user" ADD FOREIGN KEY ("branch_id") REFERENCES "branch" ("id");
 
 ALTER TABLE "otp" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+
+CREATE SEQUENCE IF NOT EXISTS order_number_id_seq
+    AS INTEGER;
+
+
+ALTER SEQUENCE order_number_id_seq owner TO postgres;
