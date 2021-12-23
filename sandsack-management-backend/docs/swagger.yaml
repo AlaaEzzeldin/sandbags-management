@@ -255,7 +255,7 @@ paths:
       description: GetEquipment - array of equipment and current quantity of it in
         Mollnhof
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -287,7 +287,7 @@ paths:
       - application/json
       description: Admin can add new type of equipment
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -324,7 +324,7 @@ paths:
       - application/json
       description: This endpoint adds new equipment
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -361,7 +361,7 @@ paths:
       - application/json
       description: This endpoint increase the quantity of chosen equipment
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -398,7 +398,7 @@ paths:
       - application/json
       description: GetPriority - array of priorities in system
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -431,7 +431,7 @@ paths:
       - application/json
       description: This endpoint adds new priority
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -468,7 +468,7 @@ paths:
       - application/json
       description: SendVerifyEmail - admin sends email to user for him to verify
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -503,7 +503,7 @@ paths:
       - application/json
       description: ListOrder - user can decline order
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -540,7 +540,7 @@ paths:
       - application/json
       description: CreateOrder - Unterabschnitt creates the order
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -577,7 +577,7 @@ paths:
       - application/json
       description: AcceptOrder - user can accept order
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -611,7 +611,7 @@ paths:
       - application/json
       description: DeclineOrder - user can decline order
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -645,7 +645,7 @@ paths:
       - application/json
       description: CommentOrder - user can write comments for the order
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -682,7 +682,7 @@ paths:
       - application/json
       description: Unterabschnitt confirms that equipment is successfully delivered
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -744,7 +744,7 @@ paths:
       - application/json
       description: GetUserList - get list of all users
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -778,7 +778,7 @@ paths:
       description: VerifyEmail - when user got email with otp to verify email, it
         has to input this otp to verify email and set new password
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -818,7 +818,7 @@ paths:
       - application/json
       description: This endpoint enables to set new password for the user
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -850,7 +850,7 @@ paths:
       description: SendRecoveryPassword - user requests to reset password, when he
         forgets his password in order to login
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -918,7 +918,7 @@ paths:
       - application/json
       description: Logout an authenticated user
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true
@@ -945,7 +945,7 @@ paths:
       - application/json
       description: This endpoint enables to change some user profile information
       parameters:
-      - description: 'Bearer '
+      - description: ' '
         in: header
         name: Authorization
         required: true

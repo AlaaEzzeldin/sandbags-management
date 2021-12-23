@@ -13,7 +13,7 @@ import (
 // @Summary This endpoint adds new priority
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.Priority true "level, name"
 // @Success 200 {array} models.Priority
 // @Failure 500 {object} models.ErrorResponse

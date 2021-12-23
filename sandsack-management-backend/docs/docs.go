@@ -36,7 +36,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -87,7 +87,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -143,7 +143,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -199,7 +199,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -252,7 +252,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -305,7 +305,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -358,7 +358,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -411,7 +411,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -466,7 +466,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -522,7 +522,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -573,7 +573,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -627,7 +627,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -683,7 +683,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -773,7 +773,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -823,7 +823,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -885,7 +885,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -929,7 +929,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -1031,7 +1031,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -1075,7 +1075,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true

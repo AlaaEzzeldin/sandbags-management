@@ -17,7 +17,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -68,7 +68,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -124,7 +124,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -180,7 +180,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -233,7 +233,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -286,7 +286,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -339,7 +339,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -392,7 +392,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -447,7 +447,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -503,7 +503,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -554,7 +554,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -608,7 +608,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -664,7 +664,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -754,7 +754,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -804,7 +804,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -866,7 +866,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -910,7 +910,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -1012,7 +1012,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -1056,7 +1056,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true

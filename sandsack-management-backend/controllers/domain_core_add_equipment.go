@@ -13,7 +13,7 @@ import (
 // @Summary This endpoint adds new equipment
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.OrderEquipment true "name, quantity"
 // @Success 200 {array} models.OrderEquipment
 // @Failure 500 {object} models.ErrorResponse
