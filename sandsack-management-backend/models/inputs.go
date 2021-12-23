@@ -44,7 +44,7 @@ type CreateOrderInput struct {
 	AddressTo  string           `json:"address_to,required"`
 	Priority   int              `json:"priority,required"`
 	Equipments []OrderEquipment `json:"equipments,required"`
-	Comments   []Comment        `json:"comments,omitempty"`
+	Comment   string       `json:"comment,omitempty"`
 }
 
 
@@ -54,5 +54,9 @@ type AcceptOrderInput struct {
 
 type CommentInput struct {
 	OrderId int `json:"order_id"`
-	Comments []string `json:"comments"`
+	Comment string `json:"comment"`
+}
+
+type ConfirmDeliveryInput struct {
+	OrderId int `json:"order_id"`
 }

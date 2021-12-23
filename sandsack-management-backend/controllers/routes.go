@@ -77,6 +77,16 @@ func (a *App) RunAllRoutes() {
 			"message": "in development",
 		})
 	})
-	order.GET("/equipment", a.GetEquipment)
+	order.POST("/delivery/confirm", a.ConfirmDelivery)
+
+	// core
+	core := auth.Group("core")
+	core.GET("/equipment", a.GetEquipment)
+	core.GET("/priority", a.GetPriority)
+	core.PATCH("/equipment/return", a.AddEquipmentQuantity)
+	core.POST("/priority/add", a.AddPriority)
+	core.POST("/equipment/add", a.AddEquipment)
+
 	_ = r.Run(port)
 }
+

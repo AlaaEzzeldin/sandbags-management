@@ -9,9 +9,11 @@ type OrderEquipment struct {
 }
 
 type Comment struct {
-	CommentId          int       `json:"id,omitempty" gorm:"column:comment_id"`
+	CommentId   int       `json:"id,omitempty" gorm:"column:comment_id"`
 	CommentText string    `json:"comment_text,omitempty" gorm:"column:comment_text"`
 	OrderId     int       `json:"order_id,omitempty" gorm:"column:order_id"`
+	Name        string    `json:"name,omitempty" gorm:"column:name"`
+	BranchName  string    `json:"branch_name,omitempty" gorm:"column:branch_name"`
 	CreateDate  time.Time `json:"create_date,omitempty" gorm:"column:create_date"`
 	UpdateDate  time.Time `json:"update_date,omitempty" gorm:"column:update_date"`
 }
@@ -64,4 +66,10 @@ type SimpleOrder struct {
 	AssignedTo  int              `json:"assigned_to,omitempty" gorm:"column:assigned_to"`
 	CreateDate  time.Time        `json:"create_date,omitempty" gorm:"column:create_date"`
 	UpdateDate  time.Time        `json:"update_date,omitempty" gorm:"column:update_date"`
+}
+
+type Priority struct {
+	Id int `json:"id,omitempty" gorm:"column:id"`
+	Level int `json:"level,omitempty" gorm:"column:level"`
+	Name string `json:"name,omitempty" gorm:"column:name"`
 }

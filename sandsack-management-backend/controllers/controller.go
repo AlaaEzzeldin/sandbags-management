@@ -13,6 +13,14 @@ func AuthorizeJWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		const bearer = "Bearer "
 		header := c.GetHeader("Authorization")
+		if len(header) == 0 {
+			log.Println("Length of header is 0 error")
+			c.AbortWithStatusJSON(http.StatusBadRequest, models.ErrorResponse{
+				ErrCode: http.StatusBadRequest,
+				ErrMessage: "length of header is 0",
+			})
+			return
+		}
 		tokenStr := header[len(bearer):]
 		token, err := middleware.VerifyToken(tokenStr)
 		if err != nil {
