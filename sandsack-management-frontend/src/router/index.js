@@ -48,7 +48,7 @@ const routes = [
                 component: BestellungslistePage
             },
             {
-                path: '/account/:userRole',
+                path: '/account',
                 name: 'KontoPage',
                 component: KontoPage
             },
@@ -58,7 +58,7 @@ const routes = [
                 component: NeueBestellungPage
             },
             {
-                path: '/overview/:userRole',
+                path: '/overview',
                 name: 'BestellübersichtPage',
                 component: BestellübersichtPage
             },
