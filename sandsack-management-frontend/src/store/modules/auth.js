@@ -1,39 +1,72 @@
-import authAPI from '../../api/auth';
+//import authAPI from '../../api/auth';
+import AuthService from '../../services/auth.service';
 
-const state = {
-    userRole: ''
-}
+const user = JSON.parse(localStorage.getItem('user'));
+const initialState = user
+    ? { status: { loggedIn: true }, user }
+    : { status: { loggedIn: false }, user: null };
+
+   const state= initialState
 
 const getters = {
-    getUserRole(state) {
-        return state.userRole;
-    },
-}
-
-const actions = {
-    login({commit}, payload) {
-        authAPI.login(payload)
-            .then(function (response) {
-                    console.log("response", response)
-                    commit('SET_USER_ROLE', response.role);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    },
-
-}
-
-const mutations = {
-
-    SET_USER_ROLE(state, role) {
-        state.userRole = role;
+    getCurrentUserRole(state) {
+        return state.user.role;
     }
 }
+   const actions= {
+       login({commit}, user) {
+           return AuthService.login(user).then(
+               user => {
+                   commit('loginSuccess', user);
+                   return Promise.resolve(user);
+               },
+               error => {
+                   commit('loginFailure');
+                   return Promise.reject(error);
+               }
+           );
+       },
+       logout({commit}) {
+           AuthService.logout();
+           commit('logout');
+       },
+       register({commit}, user) {
+           return AuthService.register(user).then(
+               response => {
+                   commit('registerSuccess');
+                   return Promise.resolve(response.data);
+               },
+               error => {
+                   commit('registerFailure');
+                   return Promise.reject(error);
+               }
+           );
+       }
+   }
+        const mutations= {
+        loginSuccess(state, user) {
+            state.status.loggedIn = true;
+            state.user = user;
+        },
+        loginFailure(state) {
+            state.status.loggedIn = false;
+            state.user = null;
+        },
+        logout(state) {
+            state.status.loggedIn = false;
+            state.user = null;
+        },
+        registerSuccess(state) {
+            state.status.loggedIn = false;
+        },
+        registerFailure(state) {
+            state.status.loggedIn = false;
+        }
+    }
 
 export default {
     state,
-    getters,
     actions,
-    mutations
+    mutations,
+    getters
 }

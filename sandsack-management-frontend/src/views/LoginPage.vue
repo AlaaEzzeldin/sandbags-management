@@ -15,7 +15,7 @@
             <v-row>
               <v-col>
                 <v-text-field
-                    v-model="data.email"
+                    v-model="user.email"
                     :rules="emailRules"
                     label="E-mail"
                     required
@@ -30,7 +30,7 @@
             <v-row>
               <v-col>
                 <v-text-field
-                    v-model="data.password"
+                    v-model="user.password"
                     :rules="passwordRules"
                     label="Password"
                     required
@@ -95,7 +95,7 @@ export default {
   name: 'LoginPage',
 
   data: () => ({
-    data:{
+    user: {
       email: '',
       password: '',
     },
@@ -118,12 +118,21 @@ export default {
     validate() {
       this.$refs.form.validate()
     },
-    submit(){
-      console.log("submit", this.data.email, this.data.password)
-      this.$store.dispatch("login",  this.data )
+    submit() {
+      console.log("submit", this.user)
+      this.$store.dispatch('login', this.user).then(
+          () => {
+            const userRole= '3'
+            this.$router.push({name: 'BestellungslistePage', params: {userRole}})
 
-      // this.$router.push({name: 'BestellungslistePage', params: 3})
-
+          },
+          error => {
+            this.message =
+                (error.response && error.response) ||
+                error.message ||
+                error.toString();
+          }
+      );
     }
 
   }

@@ -10,7 +10,9 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "date-fns": "^2.23.0",
+    "dom-to-image": "^2.6.0",
     "es6-promise": "^4.2.8",
+    "jspdf": "^2.5.0",
     "vue": "^2.6.11",
     "vue-google-charts": "^0.3.3",
     "vue-router": "^3.2.0",
