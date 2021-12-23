@@ -6,7 +6,7 @@
       "from": "EA 1.1 Altstadt- Ost",
       "type": "sandsack",
       "priority": "Hohe",
-      "status": "abgelehnt",
+      "status": "akzeptiert",
       "quantity": "319",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByUnterabschnitt": "please process ASAP3",
@@ -158,7 +158,7 @@
       "from": "EA 3.2 Universität-West",
       "type": "sandsack",
       "priority": "niedrige",
-      "status": "anstehend",
+      "status": "akzeptiert",
       "quantity": "10",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },

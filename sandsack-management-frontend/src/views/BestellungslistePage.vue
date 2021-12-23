@@ -23,8 +23,9 @@
             color="primary"
             dark
             block
+            @click="lieferscheinDruecken"
         >
-          Lieferschein drucken
+          Lieferschein drücken
         </v-btn>
       </v-col>
     </v-row>
@@ -88,6 +89,40 @@ export default {
         ]
       }
       pdfMake.createPdf(docDefinition).download('Bestellungen.pdf')
+    },
+
+    lieferscheinDruecken: function () {
+      var pdfMake = require('pdfmake/build/pdfmake.js')
+      if (pdfMake.vfs === undefined){
+        var pdfFonts = require('pdfmake/build/vfs_fonts.js')
+        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+      }
+      let body =  [[ 'id', 'Von', 'Priorität', 'Anschrift', 'Menge' ]];
+      for (let order of this.getOrders) {
+        if (order.status === 'akzeptiert') {
+          body.push(
+              [
+                order.id,
+                order.from,
+                order.priority,
+                order.deliveryAddress,
+                order.quantity
+              ]
+          );
+        }
+      }
+      var docDefinition = {
+        content: [
+          {
+            layout: 'lightHorizontalLines',
+            table: {
+              headerRows: 1,
+              body: body
+            }
+          }
+        ]
+      }
+      pdfMake.createPdf(docDefinition).download('Lieferschein.pdf')
     },
 
 
