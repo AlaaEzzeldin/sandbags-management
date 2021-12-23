@@ -60,17 +60,6 @@ func (a *App) RunAllRoutes() {
 	auth.POST("/change_password", a.ChangePassword)
 	auth.PATCH("/me", a.PatchProfile)
 
-	//order
-	auth.POST("/order", a.CreateOrder)
-	auth.GET("/order", a.ListOrder)
-	auth.POST("/order/cancel", a.DeclineOrder)
-	auth.POST("/order/accept", a.AcceptOrder)
-
-	auth.PATCH("/order/upgrade", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
 	// order
 	order := r.Group("/order")
 	order.POST("/", a.CreateOrder)
@@ -79,6 +68,12 @@ func (a *App) RunAllRoutes() {
 	order.POST("/accept", a.AcceptOrder)
 	order.POST("/comment", a.CommentOrder)
 	order.PATCH("/edit", a.EditOrder)
+
+	order.PATCH("/upgrade", func(context *gin.Context) {
+		context.JSON(http.StatusNoContent, gin.H{
+			"message": "in development",
+		})
+	})
 
 	_ = r.Run(port)
 }
