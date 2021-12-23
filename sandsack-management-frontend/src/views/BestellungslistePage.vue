@@ -7,7 +7,7 @@
       <v-spacer></v-spacer>
       <v-col sm="2" class="pt-15 justify-center align-center">
         <v-btn
-            v-if="this.getLoggedInUserRole()===1 || this.getLoggedInUserRole()===2"
+            v-if="this.getCurrentUserRole==='Einsatzleiter' || this.getCurrentUserRole==='Hauptabschnitt' ||this.getCurrentUserRole==='Einsatzabschnitt'"
             style="text-transform: capitalize; font-weight: bolder;"
             rounded
             color="primary"
@@ -17,7 +17,7 @@
           exportieren
         </v-btn>
         <v-btn
-            v-if="this.getLoggedInUserRole() === 4"
+            v-if="this.getCurrentUserRole === 'Mollnhof'"
             style="text-transform: capitalize; font-weight: bolder;"
             rounded
             color="primary"
@@ -47,21 +47,10 @@ export default {
     Bestelltabelle
   },
   computed:{
-
-  },
-  methods:{
-
-    // hard coding the users roles
-    getLoggedInUserRole() {
-      if (this.$route.params.userRole === '1') // Hauptabschintt
-        return 1
-      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
-        return 2
-      else if (this.$route.params.userRole === '3') //Unterabschnitt
-        return 3
-      else if (this.$route.params.userRole === '4') // Mollhof
-        return 4
+    getCurrentUserRole(){
+      return this.$store.getters.getCurrentUserRole
     }
-  }
+  },
+
 }
 </script>
