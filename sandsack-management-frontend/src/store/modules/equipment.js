@@ -8,6 +8,9 @@ const getters = {
   getEquipment(state) {
     return state.equipment;
   },
+  getEquipmentByType: state => type => {
+    return state.equipment.find(item => item.type === type);
+  }
 }
 
 const actions = {

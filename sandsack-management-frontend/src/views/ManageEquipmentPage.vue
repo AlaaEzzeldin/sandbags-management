@@ -5,16 +5,21 @@
         <h1 style="font-weight: bolder;">Restliche Ausrüstung Bearbeiten</h1>
       </v-col>
     </v-row>
-    <v-row
-        v-for="(item, i) in getEquipment"
-        :key="i">
+    <v-row>
       <v-col>
-        {{item.type}} ({{item.measure}})
-        </v-col>
+        <v-select
+            :items="getEquipment.map(item => item.type)"
+            @change="setCurrentType"
+            label="Ausrüstungtyp"
+            outlined
+        ></v-select>
+      </v-col>
       <v-col>
         <v-text-field
             style="max-width: 50px;"
-            v-model="item.amount"
+            :value="getCurrentEquipment.amount"
+            v-model="newAmount"
+            outlined
         ></v-text-field>
       </v-col>
     </v-row>
@@ -23,6 +28,7 @@
         color="green"
         style="min-width: 120px;"
         @click="updateEquipment"
+        :disabled="getBtnDisabled"
     >
       Speichern
     </v-btn>
@@ -34,7 +40,8 @@ export default {
   name: "ManageEquipmentPage",
 
   data: () => ({
-    equipment: {},
+    currentType: "",
+    newAmount: "0",
   }),
 
   created() {
@@ -44,12 +51,33 @@ export default {
   computed: {
     getEquipment() {
       return this.$store.getters.getEquipment;
+    },
+    getCurrentEquipment() {
+      if (this.currentType) {
+        return this.$store.getters.getEquipmentByType(this.currentType);
+      }
+      return 0;
+    },
+    getBtnDisabled() {
+      return !this.currentType || (parseInt(this.newAmount) === parseInt(this.getCurrentEquipment.amount))
     }
   },
 
   methods: {
     updateEquipment() {
-      this.$store.dispatch("updateEquipment",  this.getEquipment );
+      let id = this.getCurrentEquipment.id;
+      let type = this.currentType;
+      let amount = this.newAmount;
+      let data = {
+        "id": id,
+        "amount": amount,
+        "type": type
+      }
+      this.$store.dispatch("updateEquipment", {id, data} );
+    },
+    setCurrentType(e) {
+      this.currentType = e;
+      this.newAmount = this.getCurrentEquipment.amount;
     }
   }
 }

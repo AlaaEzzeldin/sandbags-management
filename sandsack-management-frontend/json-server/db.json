@@ -208,13 +208,19 @@
     {
       "id": 1,
       "type": "Sandsäck",
-      "amount": 50,
+      "amount": 100,
       "measure": "Paletten"
     },
     {
       "id": 2,
       "type": "Wasser",
       "amount": 50,
+      "measure": "Litre"
+    },
+    {
+      "id": 3,
+      "type": "Sand",
+      "amount": 150,
       "measure": "Litre"
     }
   ]
