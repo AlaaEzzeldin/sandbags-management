@@ -13,10 +13,26 @@
       "notesByEinsatzabschnitt": "test this notes 2",
       "notesByHauptabschnitt": "declined there is no enough sandbags",
       "logs": [
-        "the request has been created by the unterabschnitt bla bla",
-        "the request has been edited by the unterabschnitt bla bla",
-        "the request has been commented by the Einsatstazabschnitt bla bla",
-        "the request has been commented and declined by the Hauptabschnitt bla bla"
+        {
+          "id": 0,
+          "create_date": "10.11.2021 12:01",
+          "description": "The request has been created by the unterabschnitt"
+        },
+        {
+          "id": 1,
+          "create_date": "10.11.2021 13:01",
+          "description": "The request has been edited by the unterabschnitt"
+        },
+        {
+          "id": 2,
+          "create_date": "10.11.2021 14:01",
+          "description": "The request has been commented by the Einsatstazabschnitt"
+        },
+        {
+          "id": 3,
+          "create_date": "10.11.2021 15:01",
+          "description": "The request has been commented and declined by the Hauptabschnitt"
+        }
       ]
     },
     {
@@ -29,11 +45,27 @@
       "quantity": "5",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByUnterabschnitt": "please process ASAP",
-      "logs": [
-        "the request has been created by the unterabschnitt bla bla",
-        "the request has been edited by the unterabschnitt bla bla",
-        "the request has been edited and accepted  by the Einsatstazabschnitt bla bla",
-        "the request has been accepted by the Hauptabschnitt bla bla"
+      "logs":  [
+        {
+          "id": 0,
+          "create_date": "10.11.2021 12:01",
+          "description": "The request has been created by the unterabschnitt"
+        },
+        {
+          "id": 1,
+          "create_date": "10.11.2021 13:01",
+          "description": "The request has been edited by the unterabschnitt"
+        },
+        {
+          "id": 2,
+          "create_date": "10.11.2021 14:01",
+          "description": "The request has been commented by the Einsatstazabschnitt"
+        },
+        {
+          "id": 3,
+          "create_date": "10.11.2021 15:01",
+          "description": "The request has been commented and declined by the Hauptabschnitt"
+        }
       ]
     },
     {
