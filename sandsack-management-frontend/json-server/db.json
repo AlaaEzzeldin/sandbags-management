@@ -13,26 +13,10 @@
       "notesByEinsatzabschnitt": "test this notes 2",
       "notesByHauptabschnitt": "declined there is no enough sandbags",
       "logs": [
-        {
-          "id": 0,
-          "create_date": "10.11.2021 12:01",
-          "description": "The request has been created by the unterabschnitt"
-        },
-        {
-          "id": 1,
-          "create_date": "10.11.2021 13:01",
-          "description": "The request has been edited by the unterabschnitt"
-        },
-        {
-          "id": 2,
-          "create_date": "10.11.2021 14:01",
-          "description": "The request has been commented by the Einsatstazabschnitt"
-        },
-        {
-          "id": 3,
-          "create_date": "10.11.2021 15:01",
-          "description": "The request has been commented and declined by the Hauptabschnitt"
-        }
+        "the request has been created by the unterabschnitt bla bla",
+        "the request has been edited by the unterabschnitt bla bla",
+        "the request has been commented by the Einsatstazabschnitt bla bla",
+        "the request has been commented and declined by the Hauptabschnitt bla bla"
       ]
     },
     {
@@ -45,27 +29,11 @@
       "quantity": "5",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByUnterabschnitt": "please process ASAP",
-      "logs":  [
-        {
-          "id": 0,
-          "create_date": "10.11.2021 12:01",
-          "description": "The request has been created by the unterabschnitt"
-        },
-        {
-          "id": 1,
-          "create_date": "10.11.2021 13:01",
-          "description": "The request has been edited by the unterabschnitt"
-        },
-        {
-          "id": 2,
-          "create_date": "10.11.2021 14:01",
-          "description": "The request has been commented by the Einsatstazabschnitt"
-        },
-        {
-          "id": 3,
-          "create_date": "10.11.2021 15:01",
-          "description": "The request has been commented and declined by the Hauptabschnitt"
-        }
+      "logs": [
+        "the request has been created by the unterabschnitt bla bla",
+        "the request has been edited by the unterabschnitt bla bla",
+        "the request has been edited and accepted  by the Einsatstazabschnitt bla bla",
+        "the request has been accepted by the Hauptabschnitt bla bla"
       ]
     },
     {
@@ -236,15 +204,24 @@
       "notesByUnterabschnitt": "3dee"
     }
   ],
-  "users": [
+  "equipment": [
     {
-      "address": "Leonhard-Paminger-Str. 20",
-      "email": "info@ffpassau.de223",
-      "phone": "+49 123 45 67 8 901232",
-      "password": "eedd",
-      "id": 0,
-      "name": "Abschnittname",
-      "roleName": "Abschnittrole"
+      "id": 1,
+      "type": "Sandsäck",
+      "amount": 100,
+      "measure": "Paletten"
+    },
+    {
+      "id": 2,
+      "type": "Wasser",
+      "amount": "30",
+      "measure": "Litre"
+    },
+    {
+      "id": 3,
+      "type": "Sand",
+      "amount": 150,
+      "measure": "Litre"
     }
   ]
 }

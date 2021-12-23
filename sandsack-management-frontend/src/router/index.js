@@ -13,6 +13,7 @@ import RecoverPasswordPage from "../views/RecoverPasswordPage";
 import RecoverPasswordConfirmPage from "../views/RecoverPasswordConfirmPage";
 import HomePage from "../views/HomePage";
 import BestellBearbeitenPage from "../views/BestellBearbeitenPage";
+import ManageEquipmentPage from "../views/ManageEquipmentPage";
 
 Vue.use(VueRouter)
 
@@ -71,6 +72,11 @@ const routes = [
                 path: '/:userRole/order-edit/:orderId',
                 name: 'BestellBearbeitenPage',
                 component: BestellBearbeitenPage
+            },
+            {
+                path: '/:userRole/equipment-edit',
+                name: 'ManageEquipmentPage',
+                component: ManageEquipmentPage
             },
         ]
     },

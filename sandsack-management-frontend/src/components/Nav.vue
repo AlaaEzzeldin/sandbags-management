@@ -18,7 +18,7 @@
       </v-row>
     </div>
 
-    <v-list rounded>
+    <v-list rounded class="mb-16">
       <v-list-item-group>
         <v-list-item
             v-for="(item, i) in getNavListForLoggedInUserRoll()"
@@ -36,13 +36,19 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
+    <EquipmentQuantityTable/>
   </v-navigation-drawer>
 </template>
 
 <script>
+import EquipmentQuantityTable from '@/components/EquipmentQuantityTable.vue'
 
 export default {
   name: "Navigation",
+
+  components: {
+    EquipmentQuantityTable
+  },
 
   data() {
     return {
@@ -88,10 +94,15 @@ export default {
           icon: 'mdi-format-list-bulleted',
         },
         {
+          title: 'Ausrüstungverwaltung',
+          component: 'ManageEquipmentPage',
+          icon: 'mdi-cog'
+        },
+        {
           title: 'Konto',
           component: 'KontoPage',
           icon: 'mdi-account',
-        },
+        }
       ],
     }
   },
