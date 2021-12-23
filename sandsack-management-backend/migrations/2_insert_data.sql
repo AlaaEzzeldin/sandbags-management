@@ -55,7 +55,3 @@ insert into equipment(id, name, quantity) values
     (1, 'Sandsack', 100000);
 
 
-create sequence order_number_id_seq
-    as integer;
-
-alter sequence order_number_id_seq owner to postgres;

@@ -18,3 +18,16 @@ func GetEquipments(a *gorm.DB, orderId int) []models.OrderEquipment {
 	}
 	return equipments
 }
+
+
+func GetEquipment(a *gorm.DB) ([]models.OrderEquipment, error) {
+	var equipments []models.OrderEquipment
+	query := `select id as equipment_id, name, quantity 
+				from public.equipment;`
+	err := a.Raw(query).Scan(&equipments).Error
+	if err != nil {
+		log.Println("GetEquipment error", err.Error())
+		return nil, err
+	}
+	return equipments, nil
+}

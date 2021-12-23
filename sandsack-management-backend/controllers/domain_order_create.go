@@ -19,7 +19,7 @@ import (
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
 // @Tags Order
-// @Router /order [post]
+// @Router /order/ [post]
 func (a *App) CreateOrder(c *gin.Context) {
 	var input models.CreateOrderInput
 	// check whether the structure of request is correct
