@@ -101,10 +101,13 @@
           :key="item.id"
           style="color: black"
       >
-        <v-col cols="12" sm="12">
+        <v-col cols="3">
           <b>{{item.create_date}}</b>
-          <v-spacer></v-spacer>
-          {{item.description}}
+        </v-col>
+        <v-col>
+          <div class="float-right">
+            {{item.description}}
+          </div>
         </v-col>
       </v-row>
     </v-card-text>
