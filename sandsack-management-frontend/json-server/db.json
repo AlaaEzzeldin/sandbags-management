@@ -214,7 +214,7 @@
     {
       "id": 2,
       "type": "Wasser",
-      "amount": 50,
+      "amount": "30",
       "measure": "Litre"
     },
     {
