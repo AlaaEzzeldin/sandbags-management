@@ -104,10 +104,11 @@ export default {
       {
         // hard coding for the branch name
         getLoggedInBranchName() {
+          return this.$store.getters.getCurrentUserRole
 
         },
         getNavListForLoggedInUserRoll() {
-          if (this.getCurrentUserRole === 'Einsatzleiter' || this.getCurrentUserRole === 'Hauptabschnitt' ||this.getCurrentUserRole === 'Einsatzabschnitt')
+          if (['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter'].includes(this.getCurrentUserRole))
             return this.navItemsEinsatzabschnittAndHauptabschnitt;
           else if (this.getCurrentUserRole === 'Unterabschnitt')
             return this.navItemsUnterabschintt;

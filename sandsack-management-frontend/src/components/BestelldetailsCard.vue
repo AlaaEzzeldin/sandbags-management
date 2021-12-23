@@ -286,7 +286,7 @@ export default {
     },
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
-    },
+    }
   },
   methods: {
     getColor(status) {
