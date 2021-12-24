@@ -119,12 +119,9 @@ export default {
       this.$refs.form.validate()
     },
     submit() {
-      console.log("submit", this.user)
       this.$store.dispatch('login', this.user).then(
           () => {
             this.$router.push({name: 'BestellungslistePage'})
-            console.log("user", this.$store.state.user)
-
           },
           error => {
             this.message =
