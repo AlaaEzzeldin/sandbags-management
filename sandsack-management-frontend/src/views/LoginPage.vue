@@ -122,8 +122,8 @@ export default {
       console.log("submit", this.user)
       this.$store.dispatch('login', this.user).then(
           () => {
-            const userRole= '3'
-            this.$router.push({name: 'BestellungslistePage', params: {userRole}})
+            this.$router.push({name: 'BestellungslistePage'})
+            console.log("user", this.$store.state.user)
 
           },
           error => {

@@ -1,17 +1,16 @@
 //import authAPI from '../../api/auth';
 import AuthService from '../../services/auth.service';
 
-const user = JSON.parse(localStorage.getItem('user'));
-const initialState = user
-    ? { status: { loggedIn: true }, user }
-    : { status: { loggedIn: false }, user: null };
 
-   const state= initialState
+const state= {
+    isLoggedIn: !!JSON.parse(localStorage.getItem('access_token')),
+    user :JSON.parse(localStorage.getItem('user'))
+}
 
 const getters = {
     getCurrentUserRole(state) {
         return state.user.role;
-    }
+    },
 }
    const actions= {
        login({commit}, user) {
@@ -44,23 +43,20 @@ const getters = {
        }
    }
         const mutations= {
-        loginSuccess(state, user) {
-            state.status.loggedIn = true;
-            state.user = user;
+        loginSuccess(state) {
+            state.loggedIn = true;
         },
         loginFailure(state) {
-            state.status.loggedIn = false;
-            state.user = null;
+            state.loggedIn = false;
         },
         logout(state) {
-            state.status.loggedIn = false;
-            state.user = null;
+            state.loggedIn = false;
         },
         registerSuccess(state) {
-            state.status.loggedIn = false;
+            state.loggedIn = false;
         },
         registerFailure(state) {
-            state.status.loggedIn = false;
+            state.loggedIn = false;
         }
     }
 
