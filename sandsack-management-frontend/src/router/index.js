@@ -74,7 +74,7 @@ const routes = [
                 component: BestellBearbeitenPage
             },
             {
-                path: '/:userRole/equipment-edit',
+                path: '/equipment-edit',
                 name: 'ManageEquipmentPage',
                 component: ManageEquipmentPage
             },

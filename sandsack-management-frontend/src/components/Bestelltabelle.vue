@@ -110,7 +110,7 @@ export default {
     options: {
       itemsPerPage: 10,
     },
-  })
+  }),
   computed: {
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole

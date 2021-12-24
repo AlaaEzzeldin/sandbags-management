@@ -215,5 +215,27 @@
       "name": "Abschnittname",
       "roleName": "Abschnittrole"
     }
+  ],
+  "equipment": [
+    {
+      "id": 1,
+      "type": "Sandsäck",
+      "amount": 100,
+      "measure": "Paletten"
+    },
+    {
+      "id": 2,
+      "type": "Wasser",
+      "amount": "30",
+      "measure": "Litre"
+    },
+    {
+      "id": 3,
+      "type": "Sand",
+      "amount": 150,
+      "measure": "Litre"
+    }
   ]
 }
+
+

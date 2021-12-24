@@ -58,19 +58,19 @@ export default {
     this.$store.dispatch("loadOrders")
   },
 
-  computed: {
-    getOrders() {
-      return this.$store.getters.getOrders
-    }
   computed:{
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
+    },
+    getOrders() {
+      return this.$store.getters.getOrders
     }
+
   },
 
   methods: {
-    exportAllOrders () {
-      let body =  [[ 'id', 'Zeit', 'Von', 'Priorität', 'Status', 'Anschrift' ]];
+    exportAllOrders() {
+      let body = [['id', 'Zeit', 'Von', 'Priorität', 'Status', 'Anschrift']];
       for (let order of this.getOrders) {
         body.push(
             [
@@ -87,7 +87,7 @@ export default {
     },
 
     lieferscheinDruecken: function () {
-      let body =  [[ 'id', 'Von', 'Priorität', 'Anschrift', 'Menge' ]];
+      let body = [['id', 'Von', 'Priorität', 'Anschrift', 'Menge']];
       for (let order of this.getOrders) {
         let dateCreated = moment(order.created_at, 'DD.MM.yyyy HH:mm');
         if (order.status === 'akzeptiert' &&
@@ -109,7 +109,7 @@ export default {
 
     printPDF(body, name) {
       let pdfMake = require('pdfmake/build/pdfmake.js')
-      if (pdfMake.vfs === undefined){
+      if (pdfMake.vfs === undefined) {
         let pdfFonts = require('pdfmake/build/vfs_fonts.js')
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
       }
@@ -124,8 +124,8 @@ export default {
           }
         ]
       }
-      pdfMake.createPdf(docDefinition).download(name+'.pdf')
-    },
-
+      pdfMake.createPdf(docDefinition).download(name + '.pdf')
+    }
+  }
 }
 </script>
