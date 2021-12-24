@@ -13,7 +13,7 @@ import (
 // @Summary CommentOrder - user can write comments for the order
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.CommentInput true "Comment input"
 // @Success 200
 // @Failure 500 {object} models.ErrorResponse
@@ -62,23 +62,17 @@ func (a *App) CommentOrder(c *gin.Context) {
 		})
 		return
 	}
-
-	var comments []models.Comment
-	for _, row := range input.Comments {
-		comment := models.Comment{
-			CommentText: row,
-		}
-		comments = append(comments, comment)
-	}
-
-	if len(comments) == 0 {
-		log.Println("Length of comments is 0", len(comments))
+	if len(input.Comment) == 0 {
+		log.Println("Length of comments is 0", len(input.Comment))
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "there should be comments",
 		})
 		return
 	}
+
+	var comments []models.Comment
+	comments = append(comments, models.Comment{CommentText: input.Comment})
 
 	if err := service.InsertComments(a.DB, claims.Id, input.OrderId, comments); err != nil {
 		return

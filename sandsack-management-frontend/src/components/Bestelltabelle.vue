@@ -2,7 +2,7 @@
   <v-card class="elevation-0 rounded-lg" outlined>
     <v-data-table
         :headers="headers"
-        :items="getOrders"
+        :items="orders"
         class="elevation-2 rounded-lg"
         :search="search"
         :options="options"
@@ -91,6 +91,7 @@
 
 export default {
   name: 'Bestelltabelle',
+  props: ['orders'],
   components: {},
   data: () => ({
     search: '',
@@ -109,14 +110,8 @@ export default {
     options: {
       itemsPerPage: 10,
     },
-  }),
-  created() {
-    this.$store.dispatch("loadOrders")
-  },
+  })
   computed: {
-    getOrders() {
-      return this.$store.getters.getOrders
-    },
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
     }

@@ -1,0 +1,11 @@
+version: "3"
+services:
+  client:
+    container_name: sandsack-management-frontend
+    build:
+      context: sandsack-management-frontend
+      dockerfile: Dockerfile
+    stdin_open: true
+    ports:
+      - "8000:80"
+    restart: on-failure

@@ -21,10 +21,10 @@ type App struct {
 //)
 
 var (
-	Server = "localhost"
-	Port = "5432"
+	Server   = "localhost"
+	Port     = "5432"
 	Database = "feuerwehr"
-	User = "postgres"
+	User     = "postgres"
 	Password = "qwerty"
 )
 
@@ -47,12 +47,4 @@ func (a *App) Init() {
 		//log.Println("Connection to database failed:", err.Error())
 		log.Fatal("Connection to database failed: ", err.Error())
 	}
-
-
-	// logging from database
-	//a.DB..LogMode(true)
-	//a.DB.SingularTable(true)
-
 }
-
-

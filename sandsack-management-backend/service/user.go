@@ -74,7 +74,25 @@ func AddHierarchy(db *gorm.DB, parentId int, childId int, branchId int) error {
 }
 
 func GetUserList(db *gorm.DB) (userList *[]models.User, err error) {
-	return repo_user.GetUserList(db)
+	userList, err = repo_user.GetUserList(db)
+	if err != nil {
+		return nil, err
+	}
+
+	mollnhof, err := repo_user.GetUserByID(db, 2)
+	mollnhofUser := &models.User{
+		Id: mollnhof.Id,
+		Name: mollnhof.Name,
+		Email: mollnhof.Email,
+		BranchName: mollnhof.BranchName,
+		BranchId: mollnhof.BranchId,
+		CreateDate: mollnhof.CreateDate,
+		UpdateDate: mollnhof.UpdateDate,
+		ParentId: 0,
+		ParentName: "",
+	}
+	*userList = append(*userList, *mollnhofUser)
+	return userList, nil
 }
 
 func RevokeToken(db *gorm.DB, token string) error {

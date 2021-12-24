@@ -13,7 +13,7 @@ import (
 // @Description DeclineOrder - user can decline order
 // @Summary DeclineOrder - user can decline order
 // @Accept json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param id path string true "Id of the order"
 // @Success 200
 // @Failure 500 {object} models.ErrorResponse
@@ -59,11 +59,13 @@ func (a *App) DeclineOrder(c *gin.Context) {
 		log.Println("DeclineOrder error", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	order, err := service.GetOrder(a.DB, claims.Id, orderId)
+
+	c.JSON(http.StatusOK, order)
 
 }

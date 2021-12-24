@@ -12,7 +12,7 @@ import (
 // @Description Logout an authenticated user
 // @Summary Logout an authenticated user
 // @Accept json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.Logout true "Logout"
 // @Success 204 "Logged out successfully"
 // @Failure 401 "Access token is missing"
@@ -25,7 +25,7 @@ func (a *App) Logout(c *gin.Context) {
 	if err := c.ShouldBindJSON(&refresh); err != nil {
 		log.Println("Logout error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "The provided refresh token is not valid or not provided",
 		})
 		return
@@ -34,7 +34,7 @@ func (a *App) Logout(c *gin.Context) {
 	if err := service.RevokeToken(a.DB, refresh.Token); err != nil {
 		log.Println("Logout error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "Something went wrong",
 		})
 		return
