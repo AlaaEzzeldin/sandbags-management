@@ -60,3 +60,9 @@ type CommentInput struct {
 type ConfirmDeliveryInput struct {
 	OrderId int `json:"order_id"`
 }
+
+type EditOrderInput struct {
+	OrderId int `json:"order_id"`
+	Equipments []OrderEquipment `json:"equipments,omitempty"`
+	Priority int `json:"priority,omitempty"`
+}

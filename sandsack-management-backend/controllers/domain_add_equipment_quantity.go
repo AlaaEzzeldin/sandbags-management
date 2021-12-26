@@ -9,7 +9,7 @@ import (
 )
 
 // AddEquipmentQuantity
-// @Description This endpoint increase the quantity of chosen equipment
+// @Description This endpoint increase the quantity of chosen equipment, when it is returned to the station. Only Mollnhof can do it.
 // @Summary This endpoint increase the quantity of chosen equipment
 // @Accept json
 // @Produce json
@@ -19,7 +19,7 @@ import (
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Tags Core
-// @Router core/equipment/return [patch]
+// @Router /core/equipment/return [patch]
 func (a *App) AddEquipmentQuantity(c *gin.Context) {
 	var input models.OrderEquipment
 	if err := c.ShouldBindJSON(&input); err != nil {

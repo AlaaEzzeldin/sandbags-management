@@ -55,7 +55,8 @@ insert into action_type(id, name) values
                                       (3, 'COMMENTED'),
                                       (4, 'ACCEPTED'),
                                       (5, 'DECLINED'),
-                                      (6, 'ASSIGNED');
+                                      (6, 'ASSIGNED'),
+                                      (7, 'CONFIRMED DELIVERY');
 
 insert into priority(id, level, name) values
                                           (1, 1, 'HIGH'), (2, 2, 'MIDDLE'), (3, 3, 'LOW');

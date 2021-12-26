@@ -20,7 +20,7 @@ import (
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Tags Order
-// @Router order/delivery/confirm/ [post]
+// @Router /order/delivery/confirm/ [post]
 func (a *App) ConfirmDelivery(c *gin.Context) {
 	var input models.ConfirmDeliveryInput
 	if err := c.ShouldBindJSON(&input); err != nil {

@@ -14,17 +14,24 @@ definitions:
         type: string
       id:
         type: integer
+      name:
+        type: string
       order_id:
         type: integer
+      role:
+        type: string
       update_date:
         type: string
     type: object
   models.CommentInput:
     properties:
-      comments:
-        items:
-          type: string
-        type: array
+      comment:
+        type: string
+      order_id:
+        type: integer
+    type: object
+  models.ConfirmDeliveryInput:
+    properties:
       order_id:
         type: integer
     type: object
@@ -32,10 +39,8 @@ definitions:
     properties:
       address_to:
         type: string
-      comments:
-        items:
-          $ref: '#/definitions/models.Comment'
-        type: array
+      comment:
+        type: string
       equipments:
         items:
           $ref: '#/definitions/models.OrderEquipment'
@@ -55,6 +60,17 @@ definitions:
         type: string
       phone:
         type: string
+    type: object
+  models.EditOrderInput:
+    properties:
+      equipments:
+        items:
+          $ref: '#/definitions/models.OrderEquipment'
+        type: array
+      order_id:
+        type: integer
+      priority:
+        type: integer
     type: object
   models.ErrorResponse:
     properties:
@@ -243,7 +259,6 @@ definitions:
 info:
   contact: {}
 paths:
-<<<<<<< HEAD
   /core/equipment:
     get:
       consumes:
@@ -289,21 +304,10 @@ paths:
         required: true
         type: string
       - description: Needed only name and quantity of new equipment
-=======
-  /create_user/:
-    post:
-      consumes:
-      - application/json
-      description: This endpoint is implemented to register new user by Einsatzleiter
-        and get a new token pair
-      parameters:
-      - description: User registration model
->>>>>>> abff89d838329ae2d6250e11a9016c7726751442
         in: body
         name: input
         required: true
         schema:
-<<<<<<< HEAD
           $ref: '#/definitions/models.OrderEquipment'
       produces:
       - application/json
@@ -323,6 +327,81 @@ paths:
           schema:
             $ref: '#/definitions/models.ErrorResponse'
       summary: Admin can add new type of equipment
+      tags:
+      - Core
+  /core/equipment/add:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint adds new equipment
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: name, quantity
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.OrderEquipment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OrderEquipment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: This endpoint adds new equipment
+      tags:
+      - Core
+  /core/equipment/return:
+    patch:
+      consumes:
+      - application/json
+      description: This endpoint increase the quantity of chosen equipment, when it
+        is returned to the station. Only Mollnhof can do it.
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: equipment_id, quantity
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.OrderEquipment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OrderEquipment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: This endpoint increase the quantity of chosen equipment
       tags:
       - Core
   /core/priority:
@@ -358,21 +437,43 @@ paths:
       summary: GetPriority - array of priorities in system
       tags:
       - Core
-=======
-          $ref: '#/definitions/models.CreateUser'
+  /core/priority/add:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint adds new priority
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: level, name
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Priority'
       produces:
       - application/json
       responses:
-        "201":
-          description: User has been created
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Priority'
+            type: array
         "400":
-          description: Bad request (e.g. parameter in body is not given or incorrect)
-        "401":
-          description: Permission to create the user is not given
-      summary: Create a new user (branch) in the system
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: This endpoint adds new priority
       tags:
-      - Admin
->>>>>>> abff89d838329ae2d6250e11a9016c7726751442
+      - Core
   /email_verification:
     post:
       consumes:
@@ -587,6 +688,79 @@ paths:
       summary: CommentOrder - user can write comments for the order
       tags:
       - Order
+  /order/delivery/confirm/:
+    post:
+      consumes:
+      - application/json
+      description: Unterabschnitt confirms that equipment is successfully delivered
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: ConfirmDelivery
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.ConfirmDeliveryInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Unterabschnitt confirms that equipment is successfully delivered
+      tags:
+      - Order
+  /order/edit:
+    patch:
+      consumes:
+      - application/json
+      description: This endpoint edits priority and/or quantity of equipment of the
+        order
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: EditOrder
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.EditOrderInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: This endpoint edits priority and/or quantity of equipment of the order
+      tags:
+      - Order
   /user/:
     post:
       consumes:
@@ -594,11 +768,6 @@ paths:
       description: This endpoint is implemented to register new user by Einsatzleiter
         and get a new token pair
       parameters:
-      - description: 'Bearer '
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: User registration model
         in: body
         name: input

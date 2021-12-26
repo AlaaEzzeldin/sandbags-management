@@ -394,9 +394,17 @@ func ConfirmDelivery(db *gorm.DB, userId int, orderId int) error {
 		OrderId: orderId,
 		UpdatedBy: userId,
 		//todo add to database action CONFIRMED DELIVERY
-		ActionTypeId: models.DictActionTypeName["ACCEPTED"],
+		ActionTypeId: models.DictActionTypeName["CONFIRMED DELIVERY"],
 	}}
 	err = repo_order.InsertLogs(db, logs)
 
 	return nil
+}
+
+func EditOrderEquipment(db *gorm.DB, orderId, equipmentId, quantity int) error {
+	return repo_order.EditOrderEquipment(db, orderId, equipmentId, quantity)
+}
+
+func EditOrderPriority(db *gorm.DB, orderId, priority int) error {
+	return repo_order.EditOrderPriority(db, orderId, priority)
 }

@@ -1,133 +1,134 @@
 CREATE TABLE "user" (
                         "id" serial PRIMARY KEY,
-                        "name" varchar,
-                        "phone" varchar,
-                        "password" varchar,
-                        "email" varchar unique,
+                        "name" varchar not null,
+                        "phone" varchar not null,
+                        "password" varchar not null,
+                        "email" varchar unique not null,
                         "token" varchar,
-                        "is_activated" boolean,
-                        "is_super_user" boolean,
-                        "is_email_verified" boolean,
-                        "branch_id" integer,
-                        "create_date" timestamp,
-                        "update_date" timestamp
+                        "is_activated" boolean default false,
+                        "is_super_user" boolean default false,
+                        "is_email_verified" boolean default false,
+                        "branch_id" integer not null,
+                        "create_date" timestamptz not null default now(),
+                        "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "order" (
                          "id" serial PRIMARY KEY,
-                         "user_id" integer,
-                         "name" varchar,
-                         "address_to" varchar,
-                         "address_from" varchar,
-                         "status_id" integer,
-                         "priority_id" integer,
+                         "user_id" integer not null,
+                         "name" varchar not null,
+                         "address_to" varchar not null,
+                         "address_from" varchar not null,
+                         "status_id" integer not null,
+                         "priority_id" integer not null,
                          "assigned_to" integer,
-                         "create_date" timestamp,
-                         "update_date" timestamp
+                         "create_date" timestamptz not null default now(),
+                         "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "order_equipment" (
                                    "id" serial PRIMARY KEY,
-                                   "order_id" integer,
-                                   "equipment_id" integer,
-                                   "quantity" integer,
-                                   "create_date" timestamp,
-                                   "update_date" timestamp
+                                   "order_id" integer not null,
+                                   "equipment_id" integer not null,
+                                   "quantity" integer not null,
+                                   "create_date" timestamptz not null default now(),
+                                   "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "equipment" (
                              "id" serial PRIMARY KEY,
-                             "name" varchar,
-                             "create_date" timestamp,
-                             "update_date" timestamp
+                             "name" varchar not null,
+                             "quantity" integer not null,
+                             "create_date" timestamptz not null default now(),
+                             "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "status" (
                           "id" serial PRIMARY KEY,
-                          "name" varchar,
-                          "create_date" timestamp,
-                          "update_date" timestamp
+                          "name" varchar not null,
+                          "create_date" timestamptz not null default now(),
+                          "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "action_type" (
                                "id" serial PRIMARY KEY,
-                               "name" varchar
+                               "name" varchar not null
 );
 
 CREATE TABLE "log" (
                        "id" serial PRIMARY KEY,
-                       "order_id" integer,
-                       "description" varchar,
-                       "action_type_id" integer,
+                       "order_id" integer not null,
+                       "description" varchar not null,
+                       "action_type_id" integer not null,
                        "ip_address" varchar,
-                       "updated_by" integer,
-                       "create_date" timestamp,
-                       "update_date" timestamp
+                       "updated_by" integer not null,
+                       "create_date" timestamptz not null default now(),
+                       "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "comment" (
                            "id" serial PRIMARY KEY,
-                           "user_id" integer,
-                           "order_id" integer,
-                           "comment_text" varchar,
-                           "create_date" timestamp,
-                           "update_date" timestamp
+                           "user_id" integer not null,
+                           "order_id" integer not null,
+                           "comment_text" varchar not null,
+                           "create_date" timestamptz not null default now(),
+                           "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "hierarchy" (
                              "id" serial PRIMARY KEY,
-                             "user1_id" integer,
-                             "user2_id" integer,
-                             "create_date" timestamp,
-                             "update_date" timestamp
+                             "user1_id" integer not null,
+                             "user2_id" integer not null,
+                             "create_date" timestamptz not null default now(),
+                             "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "user_order_permission" (
-                                         "id" serial PRIMARY KEY,
-                                         "user_id" integer,
-                                         "order_id" integer,
-                                         "permission_id" integer,
-                                         "create_date" timestamp,
-                                         "update_date" timestamp
+                             "id" serial PRIMARY KEY,
+                             "user_id" integer not null,
+                             "order_id" integer not null,
+                             "permission_id" integer not null,
+                             "create_date" timestamptz not null default now(),
+                             "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "permission" (
                               "id" serial PRIMARY KEY,
-                              "name" varchar,
-                              "create_date" timestamp,
-                              "update_date" timestamp
+                              "name" varchar not null,
+                              "create_date" timestamptz not null default now(),
+                              "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "priority" (
                             "id" serial PRIMARY KEY,
-                            "level" integer,
-                            "name" varchar,
-                            "create_date" timestamp,
-                            "update_date" timestamp
+                            "level" integer not null,
+                            "name" varchar not null,
+                            "create_date" timestamptz not null default now(),
+                            "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "driver" (
                           "id" serial PRIMARY KEY,
-                          "name" varchar,
-                          "description" varchar,
-                          "create_date" timestamp,
-                          "update_date" timestamp
+                          "name" varchar not null,
+                          "description" varchar not null,
+                          "create_date" timestamptz not null default now(),
+                          "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "branch" (
                           "id" serial PRIMARY KEY,
-                          "name" varchar,
-                          "create_date" timestamp,
-                          "update_date" timestamp
+                          "name" varchar not null,
+                          "create_date" timestamptz not null default now(),
+                          "update_date" timestamptz not null default now()
 );
 
 CREATE TABLE "otp" (
                        "id" serial PRIMARY KEY,
-                       "code" varchar,
-                       "user_id" integer,
-                       "type" varchar,
-                       "create_date" timestamp,
-                       "update_date" timestamp
+                       "code" varchar not null,
+                       "user_id" integer not null,
+                       "type" varchar not null,
+                       "create_date" timestamptz not null default now(),
+                       "update_date" timestamptz not null default now()
 );
 
 ALTER TABLE "order" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");

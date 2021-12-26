@@ -21,7 +21,7 @@ import (
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Tags Core
-// @Router core/priority/add [post]
+// @Router /core/priority/add [post]
 func (a *App) AddPriority(c *gin.Context) {
 	var input models.Priority
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -54,12 +54,12 @@ func (a *App) AddPriority(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer "
-// @Param input body models.Equipment true "name, quantity"
-// @Success 200 {array} models.Equipment
+// @Param input body models.OrderEquipment true "name, quantity"
+// @Success 200 {array} models.OrderEquipment
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Tags Core
-// @Router core/equipment/add [post]
+// @Router /core/equipment/add [post]
 func (a *App) AddEquipment(c *gin.Context) {
 	var input models.OrderEquipment
 	if err := c.ShouldBindJSON(&input); err != nil {
