@@ -13,7 +13,7 @@ import (
 // @Summary This endpoint increase the quantity of chosen equipment
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.OrderEquipment true "equipment_id, quantity"
 // @Success 200 {array} models.OrderEquipment
 // @Failure 500 {object} models.ErrorResponse
@@ -21,6 +21,7 @@ import (
 // @Tags Core
 // @Router /core/equipment/return [patch]
 func (a *App) AddEquipmentQuantity(c *gin.Context) {
+	// TODO: controller name to be clarified with Nastya
 	var input models.OrderEquipment
 	if err := c.ShouldBindJSON(&input); err != nil {
 		log.Println("AddEquipmentQuantity error: ", err.Error())

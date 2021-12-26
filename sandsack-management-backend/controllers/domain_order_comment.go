@@ -13,7 +13,7 @@ import (
 // @Summary CommentOrder - user can write comments for the order
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.CommentInput true "Comment input"
 // @Success 200
 // @Failure 500 {object} models.ErrorResponse
@@ -25,10 +25,10 @@ func (a *App) CommentOrder(c *gin.Context) {
 	var input models.CommentInput
 
 	// check whether the structure of request is correct
-	if err := c.ShouldBindJSON(&input); err != nil{
+	if err := c.ShouldBindJSON(&input); err != nil {
 		log.Println("CommentOrder error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
@@ -38,7 +38,7 @@ func (a *App) CommentOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("GetClaims error", err.Error())
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
-			ErrCode: http.StatusUnauthorized,
+			ErrCode:    http.StatusUnauthorized,
 			ErrMessage: "no access",
 		})
 		return
@@ -48,7 +48,7 @@ func (a *App) CommentOrder(c *gin.Context) {
 
 	flag := 0
 	for _, i := range permissions {
-		if i == models.DictPermissionName["CAN COMMENT"]{
+		if i == models.DictPermissionName["CAN COMMENT"] {
 			flag = 1
 			break
 		}
@@ -57,7 +57,7 @@ func (a *App) CommentOrder(c *gin.Context) {
 	if flag == 0 {
 		log.Println("No access for this action error")
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
-			ErrCode: http.StatusForbidden,
+			ErrCode:    http.StatusForbidden,
 			ErrMessage: "no access",
 		})
 		return
@@ -65,7 +65,7 @@ func (a *App) CommentOrder(c *gin.Context) {
 	if len(input.Comment) == 0 {
 		log.Println("Length of comments is 0", len(input.Comment))
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "there should be comments",
 		})
 		return
@@ -73,7 +73,6 @@ func (a *App) CommentOrder(c *gin.Context) {
 
 	var comments []models.Comment
 	comments = append(comments, models.Comment{CommentText: input.Comment})
-
 
 	if err := service.InsertComments(a.DB, claims.Id, input.OrderId, comments); err != nil {
 		return

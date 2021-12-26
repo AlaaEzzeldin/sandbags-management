@@ -8,23 +8,22 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
-// CreateEquipment Registration
-// @Description Admin can add new type of equipment
-// @Summary Admin can add new type of equipment
+// AddEquipment
+// @Description This endpoint adds new equipment
+// @Summary This endpoint adds new equipment
 // @Accept json
 // @Produce json
 // @Param Authorization header string true " "
-// @Param input body models.OrderEquipment true "Needed only name and quantity of new equipment"
+// @Param input body models.OrderEquipment true "name, quantity"
 // @Success 200 {array} models.OrderEquipment
-// @Failure 505 {object} models.ErrorResponse
+// @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Tags Core
-// @Router /core/equipment [post]
-func (a *App) CreateEquipment(c *gin.Context) {
+// @Router /core/equipment/add [post]
+func (a *App) AddEquipment(c *gin.Context) {
 	var input models.OrderEquipment
-	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("CreateEquipment error: ", err.Error())
+		log.Println("AddEquipment error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
@@ -32,9 +31,9 @@ func (a *App) CreateEquipment(c *gin.Context) {
 		return
 	}
 
-	equipments, err := service.CreateEquipment(a.DB, input.Name, input.Quantity)
+	err := service.AddEquipment(a.DB, input.Name, input.Quantity)
 	if err != nil {
-		log.Println("CreateEquipment error: ", err.Error())
+		log.Println("AddEquipment error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "something went wrong",
@@ -42,6 +41,7 @@ func (a *App) CreateEquipment(c *gin.Context) {
 		return
 	}
 
+	equipments, err := service.GetEquipment(a.DB)
 	c.JSON(http.StatusOK, equipments)
 	return
 }

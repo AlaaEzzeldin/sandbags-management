@@ -8,13 +8,12 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
-
 // ConfirmDelivery
 // @Description Unterabschnitt confirms that equipment is successfully delivered
 // @Summary Unterabschnitt confirms that equipment is successfully delivered
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.ConfirmDeliveryInput true "ConfirmDelivery"
 // @Success 200 {array} models.Order
 // @Failure 500 {object} models.ErrorResponse
@@ -31,7 +30,6 @@ func (a *App) ConfirmDelivery(c *gin.Context) {
 		})
 		return
 	}
-
 
 	claims, _ := GetClaims(c)
 	if claims.Role != "Unterabschnitt" {

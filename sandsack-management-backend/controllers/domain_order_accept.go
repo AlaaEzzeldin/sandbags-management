@@ -13,7 +13,7 @@ import (
 // @Description AcceptOrder - user can accept order
 // @Summary AcceptOrder - user can accept order
 // @Accept json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param id path string true "Id of the order"
 // @Success 200
 // @Failure 500 {object} models.ErrorResponse
@@ -26,7 +26,7 @@ func (a *App) AcceptOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("Error in parsing", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect input",
 		})
 		return
@@ -36,7 +36,7 @@ func (a *App) AcceptOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("AcceptOrder error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
@@ -46,7 +46,7 @@ func (a *App) AcceptOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("AcceptOrder error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
+			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
 		})
 		return
@@ -64,7 +64,7 @@ func (a *App) AcceptOrder(c *gin.Context) {
 	if flag != 1 {
 		log.Println("User cannot view this order")
 		c.JSON(http.StatusNotFound, models.ErrorResponse{
-			ErrCode: http.StatusNotFound,
+			ErrCode:    http.StatusNotFound,
 			ErrMessage: "you cannot view this order",
 		})
 		return
