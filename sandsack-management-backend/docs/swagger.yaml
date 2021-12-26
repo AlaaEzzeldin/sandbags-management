@@ -8,8 +8,6 @@ definitions:
     type: object
   models.Comment:
     properties:
-      branch_name:
-        type: string
       comment_text:
         type: string
       create_date:
@@ -20,6 +18,8 @@ definitions:
         type: string
       order_id:
         type: integer
+      role:
+        type: string
       update_date:
         type: string
     type: object
@@ -60,6 +60,17 @@ definitions:
         type: string
       phone:
         type: string
+    type: object
+  models.EditOrderInput:
+    properties:
+      equipments:
+        items:
+          $ref: '#/definitions/models.OrderEquipment'
+        type: array
+      order_id:
+        type: integer
+      priority:
+        type: integer
     type: object
   models.ErrorResponse:
     properties:
@@ -324,7 +335,7 @@ paths:
       - application/json
       description: This endpoint adds new equipment
       parameters:
-      - description: ' '
+      - description: 'Bearer '
         in: header
         name: Authorization
         required: true
@@ -359,7 +370,8 @@ paths:
     patch:
       consumes:
       - application/json
-      description: This endpoint increase the quantity of chosen equipment
+      description: This endpoint increase the quantity of chosen equipment, when it
+        is returned to the station. Only Mollnhof can do it.
       parameters:
       - description: ' '
         in: header
@@ -431,7 +443,7 @@ paths:
       - application/json
       description: This endpoint adds new priority
       parameters:
-      - description: ' '
+      - description: 'Bearer '
         in: header
         name: Authorization
         required: true
@@ -711,6 +723,42 @@ paths:
           schema:
             $ref: '#/definitions/models.ErrorResponse'
       summary: Unterabschnitt confirms that equipment is successfully delivered
+      tags:
+      - Order
+  /order/edit:
+    patch:
+      consumes:
+      - application/json
+      description: This endpoint edits priority and/or quantity of equipment of the
+        order
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: EditOrder
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.EditOrderInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: This endpoint edits priority and/or quantity of equipment of the order
       tags:
       - Order
   /user/:

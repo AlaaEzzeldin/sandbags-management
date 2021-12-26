@@ -124,7 +124,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": " ",
+                        "description": "Bearer ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -166,7 +166,7 @@
         },
         "/core/equipment/return": {
             "patch": {
-                "description": "This endpoint increase the quantity of chosen equipment",
+                "description": "This endpoint increase the quantity of chosen equipment, when it is returned to the station. Only Mollnhof can do it.",
                 "consumes": [
                     "application/json"
                 ],
@@ -286,7 +286,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": " ",
+                        "description": "Bearer ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -687,6 +687,59 @@
                             "items": {
                                 "$ref": "#/definitions/models.Order"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/edit": {
+            "patch": {
+                "description": "This endpoint edits priority and/or quantity of equipment of the order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "This endpoint edits priority and/or quantity of equipment of the order",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "EditOrder",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.EditOrderInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Order"
                         }
                     },
                     "400": {
@@ -1198,9 +1251,6 @@
         "models.Comment": {
             "type": "object",
             "properties": {
-                "branch_name": {
-                    "type": "string"
-                },
                 "comment_text": {
                     "type": "string"
                 },
@@ -1215,6 +1265,9 @@
                 },
                 "order_id": {
                     "type": "integer"
+                },
+                "role": {
+                    "type": "string"
                 },
                 "update_date": {
                     "type": "string"
@@ -1277,6 +1330,23 @@
                 },
                 "phone": {
                     "type": "string"
+                }
+            }
+        },
+        "models.EditOrderInput": {
+            "type": "object",
+            "properties": {
+                "equipments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.OrderEquipment"
+                    }
+                },
+                "order_id": {
+                    "type": "integer"
+                },
+                "priority": {
+                    "type": "integer"
                 }
             }
         },
