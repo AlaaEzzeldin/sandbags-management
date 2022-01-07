@@ -202,6 +202,16 @@
       "priority": "Hohe",
       "deliveryAddress": "3",
       "notesByUnterabschnitt": "3dee"
+    },
+    {
+      "id": 18,
+      "status": "anstehend",
+      "from": "EA 1.1 Altstadt- Ost",
+      "type": "Sandsäcke",
+      "quantity": "94032",
+      "priority": "Hohe",
+      "deliveryAddress": "kirchenplatz 1",
+      "notesByUnterabschnitt": ""
     }
   ],
   "equipment": [
@@ -214,7 +224,7 @@
     {
       "id": 2,
       "type": "Wasser",
-      "amount": "30",
+      "amount": "50",
       "measure": "Litre"
     },
     {
@@ -222,6 +232,77 @@
       "type": "Sand",
       "amount": 150,
       "measure": "Litre"
+    }
+  ],
+  "statisticschart": [
+    {
+      "type": "unterabschnitten",
+      "general_statistics": {
+        "created_at": "17.11.2021 12:01",
+        "total_number_of_orders": "100",
+        "total_number_of_accepted_orders": "70",
+        "averge_processing_time": "3 mins"
+      },
+      "statistics_per_unterabschnitt": [
+        {
+          "name": "unterabschnitte_1",
+          "created_at": "17.11.2021 12:01",
+          "total_number_of_orders": "10",
+          "total_number_of_accepted_orders": "7"
+        },
+        {
+          "name": "unterabschnitte_2",
+          "created_at": "17.11.2021 12:01",
+          "total_number_of_orders": "20",
+          "total_number_of_accepted_orders": "8"
+        }
+      ]
+    },
+    {
+      "type": "Einsatzabschnitten",
+      "general_statistics": {
+        "created_at": "17.11.2021 12:01",
+        "total_number_of_orders": "100",
+        "total_number_of_accepted_orders": "70",
+        "averge_processing_time": "3 mins"
+      },
+      "statistics_per_Einsatzabschnitt": [
+        {
+          "name": "Einsatzabschnitte_1",
+          "created_at": "17.11.2021 12:01",
+          "total_number_of_orders": "10",
+          "total_number_of_accepted_orders": "7"
+        },
+        {
+          "name": "Einsatzabschnitte_2",
+          "created_at": "17.11.2021 12:01",
+          "total_number_of_orders": "20",
+          "total_number_of_accepted_orders": "8"
+        }
+      ]
+    },
+    {
+      "type": "Hauptabschnitten",
+      "general_statistics": {
+        "created_at": "17.11.2021 12:01",
+        "total_number_of_orders": "90",
+        "total_number_of_accepted_orders": "70",
+        "averge_processing_time": "3 mins"
+      },
+      "statistics_per_hauptabschnitt": [
+        {
+          "name": "Hauptabschnitte_1",
+          "created_at": "17.11.2021 12:01",
+          "total_number_of_orders": "10",
+          "total_number_of_accepted_orders": "7"
+        },
+        {
+          "name": "Hauptabschnitte_2",
+          "created_at": "17.11.2021 12:01",
+          "total_number_of_orders": "20",
+          "total_number_of_accepted_orders": "8"
+        }
+      ]
     }
   ]
 }
