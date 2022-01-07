@@ -2,11 +2,11 @@
   "orders": [
     {
       "id": 0,
-      "created_at": "10.11.2021 12:01",
+      "created_at": "24.12.2021 12:01",
       "from": "EA 1.1 Altstadt- Ost",
       "type": "sandsack",
       "priority": "Hohe",
-      "status": "abgelehnt",
+      "status": "akzeptiert",
       "quantity": "319",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByUnterabschnitt": "please process ASAP3",
@@ -126,7 +126,7 @@
       "from": "EA 3.2 Universität-West",
       "type": "sandsack",
       "priority": "niedrige",
-      "status": "anstehend",
+      "status": "akzeptiert",
       "quantity": "10",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -202,17 +202,107 @@
       "priority": "Hohe",
       "deliveryAddress": "3",
       "notesByUnterabschnitt": "3dee"
+    },
+    {
+      "id": 18,
+      "status": "anstehend",
+      "from": "EA 1.1 Altstadt- Ost",
+      "type": "Sandsäcke",
+      "quantity": "94032",
+      "priority": "Hohe",
+      "deliveryAddress": "kirchenplatz 1",
+      "notesByUnterabschnitt": ""
     }
   ],
-  "users": [
+  "equipment": [
     {
-      "address": "Leonhard-Paminger-Str. 20",
-      "email": "info@ffpassau.de223",
-      "phone": "+49 123 45 67 8 901232",
-      "password": "eedd",
-      "id": 0,
-      "name": "Abschnittname",
-      "roleName": "Abschnittrole"
+      "id": 1,
+      "type": "Sandsäck",
+      "amount": 100,
+      "measure": "Paletten"
+    },
+    {
+      "id": 2,
+      "type": "Wasser",
+      "amount": "50",
+      "measure": "Litre"
+    },
+    {
+      "id": 3,
+      "type": "Sand",
+      "amount": 150,
+      "measure": "Litre"
+    }
+  ],
+  "statisticschart": [
+    {
+      "type": "unterabschnitten",
+      "general_statistics": {
+        "created_at": "17.11.2021 12:01",
+        "total_number_of_orders": "100",
+        "total_number_of_accepted_orders": "70",
+        "averge_processing_time": "3 mins"
+      },
+      "statistics_per_unterabschnitt": [
+        {
+          "name": "unterabschnitte_1",
+          "created_at": "17.11.2021 12:01",
+          "total_number_of_orders": "10",
+          "total_number_of_accepted_orders": "7"
+        },
+        {
+          "name": "unterabschnitte_2",
+          "created_at": "17.11.2021 12:01",
+          "total_number_of_orders": "20",
+          "total_number_of_accepted_orders": "8"
+        }
+      ]
+    },
+    {
+      "type": "Einsatzabschnitten",
+      "general_statistics": {
+        "created_at": "17.11.2021 12:01",
+        "total_number_of_orders": "100",
+        "total_number_of_accepted_orders": "70",
+        "averge_processing_time": "3 mins"
+      },
+      "statistics_per_Einsatzabschnitt": [
+        {
+          "name": "Einsatzabschnitte_1",
+          "created_at": "17.11.2021 12:01",
+          "total_number_of_orders": "10",
+          "total_number_of_accepted_orders": "7"
+        },
+        {
+          "name": "Einsatzabschnitte_2",
+          "created_at": "17.11.2021 12:01",
+          "total_number_of_orders": "20",
+          "total_number_of_accepted_orders": "8"
+        }
+      ]
+    },
+    {
+      "type": "Hauptabschnitten",
+      "general_statistics": {
+        "created_at": "17.11.2021 12:01",
+        "total_number_of_orders": "90",
+        "total_number_of_accepted_orders": "70",
+        "averge_processing_time": "3 mins"
+      },
+      "statistics_per_hauptabschnitt": [
+        {
+          "name": "Hauptabschnitte_1",
+          "created_at": "17.11.2021 12:01",
+          "total_number_of_orders": "10",
+          "total_number_of_accepted_orders": "7"
+        },
+        {
+          "name": "Hauptabschnitte_2",
+          "created_at": "17.11.2021 12:01",
+          "total_number_of_orders": "20",
+          "total_number_of_accepted_orders": "8"
+        }
+      ]
     }
   ]
 }
