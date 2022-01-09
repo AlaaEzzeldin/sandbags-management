@@ -241,7 +241,7 @@
         "created_at": "17.11.2021 12:01",
         "total_number_of_orders": "100",
         "total_number_of_accepted_orders": "70",
-        "averge_processing_time": "3 mins"
+        "average_processing_time": "3 mins"
       },
       "statistics_per_unterabschnitt": [
         {
@@ -264,7 +264,7 @@
         "created_at": "17.11.2021 12:01",
         "total_number_of_orders": "100",
         "total_number_of_accepted_orders": "70",
-        "averge_processing_time": "3 mins"
+        "average_processing_time": "3 mins"
       },
       "statistics_per_Einsatzabschnitt": [
         {
@@ -287,7 +287,7 @@
         "created_at": "17.11.2021 12:01",
         "total_number_of_orders": "90",
         "total_number_of_accepted_orders": "70",
-        "averge_processing_time": "3 mins"
+        "average_processing_time": "3 mins"
       },
       "statistics_per_hauptabschnitt": [
         {

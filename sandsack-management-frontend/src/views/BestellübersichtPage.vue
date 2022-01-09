@@ -67,7 +67,7 @@
         >
           <h1 style="color: red">
             <div v-if="item.type ==='Hauptabschnitten'">
-              {{item.general_statistics.averge_processing_time}}
+              {{item.general_statistics.average_processing_time}}
             </div>
           </h1>
         </v-list-item>
@@ -124,7 +124,7 @@
             color="red"
             dark
         >
-          <!--          <button  @click="download">Export pdf</button>-->
+
           <button v-on:click="download">Export pdf</button>
         </v-btn>
       </v-col>
@@ -136,7 +136,6 @@
 import jsPDF from "jspdf";
 import domtoimage from "dom-to-image";
 import { GChart } from "vue-google-charts";
-import json from "../../json-server/db.json";
 export default {
 
   name: 'BestellübersichtPage',
@@ -195,10 +194,10 @@ export default {
     },
     getHauptdata(){
       var HauptselectOptions = []
-      for(let i=0; i<json.statisticschart.length; i++) {
-        if(json.statisticschart[i].type == "Hauptabschnitten") {
-          for(let j=0; j<json.statisticschart[i].statistics_per_hauptabschnitt.length; j++){
-            HauptselectOptions.push(json.statisticschart[i].statistics_per_hauptabschnitt[j].name)
+      for (let i=0; i<this.getStatisticschart.length; i++){
+        if(this.getStatisticschart[i].type == "Hauptabschnitten") {
+          for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
+            HauptselectOptions.push(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].name)
           }
         }
       }
@@ -207,10 +206,10 @@ export default {
 
     getEinsatzdata(){
       var EinsatzselectOptions = []
-      for(let i=0; i<json.statisticschart.length; i++) {
-        if(json.statisticschart[i].type == "Einsatzabschnitten") {
-          for(let j=0; j<json.statisticschart[i].statistics_per_Einsatzabschnitt.length; j++){
-            EinsatzselectOptions.push(json.statisticschart[i].statistics_per_Einsatzabschnitt[j].name)
+      for(let i=0; i<this.getStatisticschart.length; i++) {
+        if(this.getStatisticschart[i].type == "Einsatzabschnitten") {
+          for(let j=0; j<this.getStatisticschart[i].statistics_per_Einsatzabschnitt.length; j++){
+            EinsatzselectOptions.push(this.getStatisticschart[i].statistics_per_Einsatzabschnitt[j].name)
           }
         }
       }
@@ -219,17 +218,14 @@ export default {
 
     getUnterdata(){
       var UnterselectOptions = []
-      UnterselectOptions.push(["Abschnitt","Bestellungen"/*,"Bestellungen bestatigt"*/])
-      for(let i=0; i<json.statisticschart.length; i++) {
-        if(json.statisticschart[i].type == "unterabschnitten") {
-          for(let j=0; j<json.statisticschart[i].statistics_per_unterabschnitt.length; j++){
-            UnterselectOptions.push([json.statisticschart[i].statistics_per_unterabschnitt[j].name,
-                  parseInt(json.statisticschart[i].statistics_per_unterabschnitt[j].total_number_of_orders)]
-                /*parseInt(json.statisticschart[i].statistics_per_unterabschnitt[j].total_number_of_accepted_orders)]*/)
+      UnterselectOptions.push(["Abschnitt","Bestellungen"])
+      for(let i=0; i<this.getStatisticschart.length; i++) {
+        if(this.getStatisticschart[i].type == "unterabschnitten") {
+          for(let j=0; j<this.getStatisticschart[i].statistics_per_unterabschnitt.length; j++){
+            UnterselectOptions.push([this.getStatisticschart[i].statistics_per_unterabschnitt[j].name,
+              parseInt(this.getStatisticschart[i].statistics_per_unterabschnitt[j].total_number_of_orders)])
 
-            //console.log('Array is' ,UnterselectOptions)
-            //UnterselectOptions[i][1].push(json.statisticschart[i].statistics_per_unterabschnitt[j].total_number_of_orders)
-            //UnterselectOptions[i][2].push(json.statisticschart[i].statistics_per_unterabschnitt[j].total_number_of_accepted_orders)
+
           }
         }
       }
@@ -288,7 +284,7 @@ export default {
 };
 </script>
 
-&lt;!&ndash; Add "scoped" attribute to limit CSS to this component only -->
+&lt;!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40pt 0 0;
@@ -302,6 +298,6 @@ li {
   margin: 0 10px;
 }
 a {
-  color: #42b983;
+  color: #D7201F;
 }
 </style>
