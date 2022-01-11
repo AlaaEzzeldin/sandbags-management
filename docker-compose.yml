@@ -1,11 +1,16 @@
-version: "3"
+version: "3.6"
 services:
-  client:
-    container_name: sandsack-management-frontend
-    build:
-      context: sandsack-management-frontend
-      dockerfile: Dockerfile
-    stdin_open: true
+  goservice:
+    build: "./sandsack-management-backend"
     ports:
-      - "8000:80"
-    restart: on-failure
+      - "8000"
+    depends_on:
+      - "db"
+    env_file:
+      - ./.env
+  frontend:
+    build: "./sandsack-management-frontend"
+    ports:
+      - "80:80"
+volumes:
+  database:
