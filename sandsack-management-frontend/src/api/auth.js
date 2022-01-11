@@ -1,9 +1,8 @@
 import axios from 'axios'
-
-const API_URL = 'http://18.193.112.34:8001/';
+import {BASE_URL} from "./config";
 
 export default {
     login( data ){
-        return axios.post( API_URL + 'users/login', data );
+        return axios.post( BASE_URL + 'users/login', data );
     }
 }

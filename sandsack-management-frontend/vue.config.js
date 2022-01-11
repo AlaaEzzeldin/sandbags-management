@@ -1,8 +1,10 @@
+const {BASE_URL} = require("./src/api/config");
+
 module.exports = {
   transpileDependencies: [
     'vuetify'
   ],
   devServer: {
-    proxy: 'http://46.101.254.157:8000/',
+    proxy: BASE_URL,
   }
 }
