@@ -82,7 +82,7 @@
               class="mt-3"
               v-model="getOrder.notesByUnterabschnitt"
               outlined
-              :disabled="getCurrentUserRole!==3"
+              :disabled="getCurrentUserRole!=='Unterabschnitt'"
           ></v-textarea>
         </v-col>
       </v-row>
