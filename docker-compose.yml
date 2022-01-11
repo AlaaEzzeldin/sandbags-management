@@ -8,6 +8,12 @@ services:
       - "db"
     env_file:
       - ./.env
+  nginx:
+    build: "./nginx"
+    ports:
+      - "8001:8001"
+    depends_on:
+      - "goservice"
   frontend:
     build: "./sandsack-management-frontend"
     ports:
