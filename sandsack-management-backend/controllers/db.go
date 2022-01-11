@@ -6,27 +6,28 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
+	"os"
 )
 
 type App struct {
 	DB *gorm.DB
 }
 
-//var (
-//	Server = os.Getenv("DATABASE_HOST")
-//	Port = os.Getenv("DATABASE_PORT")
-//	Database = os.Getenv("DATABASE_NAME")
-//	User = os.Getenv("DATABASE_USER")
-//	Password = os.Getenv("DATABASE_PASSWORD")
-//)
-
 var (
-	Server   = "localhost"
-	Port     = "5432"
-	Database = "feuerwehr"
-	User     = "postgres"
-	Password = "qwerty"
+	Server   = os.Getenv("DATABASE_HOST")
+	Port     = os.Getenv("DATABASE_PORT")
+	Database = os.Getenv("DATABASE_NAME")
+	User     = os.Getenv("DATABASE_USER")
+	Password = os.Getenv("DATABASE_PASSWORD")
 )
+
+//var (
+//	Server   = "localhost"
+//	Port     = "5432"
+//	Database = "feuerwehr"
+//	User     = "postgres"
+//	Password = "qwerty"
+//)
 
 func (a *App) Init() {
 	// postgres connection

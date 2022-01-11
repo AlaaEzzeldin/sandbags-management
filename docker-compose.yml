@@ -12,7 +12,6 @@ services:
     build: "./sandsack-management-frontend"
     ports:
       - "80:80"
-      -
   db:
     image: postgres
     volumes:
