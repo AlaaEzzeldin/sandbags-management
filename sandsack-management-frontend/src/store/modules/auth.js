@@ -11,12 +11,19 @@ const getters = {
     getCurrentUserRole(state) {
         return state.user.role;
     },
+    getCurrentUserName(state) {
+        return state.user.name;
+    },
+    isLoggedIn(state) {
+        return state.user;
+    },
 }
    const actions= {
        login({commit}, user) {
            return AuthService.login(user).then(
                user => {
                    commit('loginSuccess', user);
+                   console.log("user role", user)
                    return Promise.resolve(user);
                },
                error => {

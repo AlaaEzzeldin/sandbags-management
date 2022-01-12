@@ -1,6 +1,6 @@
 <!-- TODO: Add link to login page on Ausloggen button after authentication feature has been merged -->
 <template>
-  <div v-if="getLoggedInUser">
+  <div v-if="isLoggedIn">
     <v-row no-gutters>
       <v-col sm="3" class="pt-13 justify-center align-center">
         <h1 style="font-weight: bolder;">Konto</h1>
@@ -45,8 +45,8 @@
             </v-avatar>
           </v-col>
           <v-col cols="10">
-            <h2>{{ getLoggedInUser.name }}</h2>
-            <h3>{{ getLoggedInUser.roleName }}</h3>
+            <h2>{{ getLoggedInBranchName }}</h2>
+            <h3>{{ getCurrentUserRole }}</h3>
           </v-col>
         </v-row>
         <v-row class="pt-2">
@@ -96,9 +96,18 @@ export default {
   }),
 
   computed: {
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn
+    },
     getLoggedInUser() {
       return this.$store.getters.getLoggedInUser
-    }
+    },
+    getCurrentUserRole(){
+      return this.$store.getters.getCurrentUserRole
+    },
+    getLoggedInBranchName() {
+      return this.$store.getters.getCurrentUserName
+    },
   },
   methods:
       {
