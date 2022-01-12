@@ -57,11 +57,54 @@ func (a *App) PatchProfile(c *gin.Context) {
 		log.Println("Profile error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "Something went wrong",
+			ErrMessage: "something went wrong",
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, "The profile data has been changed successfully")
 	return
+}
+
+
+
+// GetProfile
+// @Description GetProfile - get info of the user
+// @Summary GetProfile - get info of the user
+// @Accept json
+// @Param Authorization header string true " "
+// @Success 200 {array} models.User
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Authentication
+// @Router /users/me [get]
+func (a *App) GetProfile(c *gin.Context) {
+	claims, err := GetClaims(c)
+	if err != nil {
+		log.Println("GetClaims error:", err.Error())
+		c.JSON(http.StatusForbidden, models.ErrorResponse{
+			ErrCode: http.StatusForbidden,
+			ErrMessage: "something went wrong",
+		})
+		return
+	}
+
+	user, err := service.GetUserByEmail(a.DB, claims.Email)
+	if err != nil {
+		log.Println("GetUserByID error:", err.Error())
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			ErrCode: http.StatusInternalServerError,
+			ErrMessage: "something went wrong",
+		})
+		return
+	}
+
+	user.Password = ""
+	user.Token = ""
+
+	c.JSON(http.StatusOK, user)
+	return
+
+
 }

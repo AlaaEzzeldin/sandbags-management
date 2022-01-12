@@ -60,3 +60,19 @@ type CommentInput struct {
 type ConfirmDeliveryInput struct {
 	OrderId int `json:"order_id"`
 }
+
+type EditOrderInput struct {
+	OrderId int `json:"order_id"`
+	Equipments []OrderEquipment `json:"equipments,omitempty"`
+	Priority int `json:"priority,omitempty"`
+}
+
+type AddDriverInput struct {
+	Name string `json:"name,required"`
+	Description string `json:"description,omitempty"`
+}
+
+type UpdateEquipmentInput struct {
+	Id int `json:"id"`
+	Quantity int `json:"quantity"`
+}

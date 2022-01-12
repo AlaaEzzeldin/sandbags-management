@@ -4,6 +4,7 @@ import (
 	"errors"
 	"gorm.io/gorm"
 	"log"
+	"strconv"
 	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/repository/order"
 	repo_user "team2/sandsack-management-backend/repository/user"
@@ -27,19 +28,7 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 		}
 	}
 
-	logs := []models.Log{
-		{
-			OrderId:      order.Id,
-			ActionTypeId: models.DictActionTypeName["CREATED"],
-			UpdatedBy:    order.UserId,
-			Description:  userName + " hat die Bestellung " + order.Name + " erstellt",
-		},
-	}
 
-	if err := repo_order.InsertLogs(a, logs); err != nil {
-		log.Println("InsertLogs error", err.Error())
-		return err
-	}
 	userOrderPermissions := []int{
 		models.DictPermissionName["CAN VIEW"],
 		models.DictPermissionName["CAN EDIT"],
@@ -68,6 +57,23 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 		return err
 	}
 
+	newOrder, err := GetOrder(a, order.UserId, orderId)
+	log.Println("NEW ORDER NAME", newOrder.Name)
+
+	logs := []models.Log{
+		{
+			OrderId:      order.Id,
+			ActionTypeId: models.DictActionTypeName["CREATED"],
+			UpdatedBy:    order.UserId,
+			Description:  userName + " hat die Bestellung '" +  newOrder.Name + " #" + strconv.Itoa(newOrder.Id) + "' erstellt",
+		},
+	}
+
+	if err := repo_order.InsertLogs(a, logs); err != nil {
+		log.Println("InsertLogs error", err.Error())
+		return err
+	}
+
 	return nil
 }
 
@@ -93,6 +99,8 @@ func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 		Comments:    comments,
 		Logs:        logs,
 		Equipments:  equipments,
+		CreateDate: simpleOrder.CreateDate,
+		UpdateDate: simpleOrder.UpdateDate,
 		//Permissions: permissions,
 	}
 	return order, nil
@@ -122,6 +130,8 @@ func GetOrderList(a *gorm.DB, userId int) (orderList []models.Order, err error) 
 			Comments:    comments,
 			Logs:        logs,
 			Equipments:  equipments,
+			CreateDate: row.CreateDate,
+			UpdateDate: row.UpdateDate,
 			//Permissions: permissions,
 		}
 
@@ -389,10 +399,25 @@ func ConfirmDelivery(db *gorm.DB, userId int, orderId int) error {
 	logs := []models.Log{{
 		OrderId:   orderId,
 		UpdatedBy: userId,
-		//todo add to database action CONFIRMED DELIVERY
-		ActionTypeId: models.DictActionTypeName["ACCEPTED"],
+		ActionTypeId: models.DictActionTypeName["CONFIRMED DELIVERY"],
 	}}
 	err = repo_order.InsertLogs(db, logs)
 
 	return nil
+}
+
+func EditOrderEquipment(db *gorm.DB, orderId, equipmentId, quantity int) error {
+	return repo_order.EditOrderEquipment(db, orderId, equipmentId, quantity)
+}
+
+func EditOrderPriority(db *gorm.DB, orderId, priority int) error {
+	return repo_order.EditOrderPriority(db, orderId, priority)
+}
+
+func AddDriver(db *gorm.DB, name, description string) error {
+	return repo_order.AddDriver(db, name, description)
+}
+
+func UpdateEquipment(db *gorm.DB, equipmentId int, quantity int) error {
+	return repo_order.UpdateEquipment(db, equipmentId, quantity)
 }

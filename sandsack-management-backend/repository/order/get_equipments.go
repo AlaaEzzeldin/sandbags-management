@@ -8,7 +8,7 @@ import (
 
 func GetEquipments(a *gorm.DB, orderId int) []models.OrderEquipment {
 	var equipments []models.OrderEquipment
-	query := `select e.id as equipment_id, e.name, oe.quantity 
+	query := `select e.id as equipment_id, e.name, oe.quantity, oe.create_date, oe.update_date
 				from public.order_equipment oe, public.equipment e 
 				where oe.order_id = ? and e.id = oe.equipment_id;`
 	err := a.Raw(query, orderId).Scan(&equipments).Error
