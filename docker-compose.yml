@@ -4,8 +4,6 @@ services:
     build: "./sandsack-management-backend"
     ports:
       - "8000"
-    depends_on:
-      - "db"
     env_file:
       - ./.env
   nginx:
@@ -18,15 +16,3 @@ services:
     build: "./sandsack-management-frontend"
     ports:
       - "80:80"
-  db:
-    image: postgres
-    volumes:
-      - database:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - "5432:5432"
-volumes:
-  database:
