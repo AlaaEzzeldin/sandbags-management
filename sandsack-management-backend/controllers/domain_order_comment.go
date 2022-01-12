@@ -62,6 +62,7 @@ func (a *App) CommentOrder(c *gin.Context) {
 		})
 		return
 	}
+
 	if len(input.Comment) == 0 {
 		log.Println("Length of comments is 0", len(input.Comment))
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
