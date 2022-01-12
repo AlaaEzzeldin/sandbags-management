@@ -395,8 +395,7 @@ func ConfirmDelivery(db *gorm.DB, userId int, orderId int) error {
 	logs := []models.Log{{
 		OrderId:   orderId,
 		UpdatedBy: userId,
-		//todo add to database action CONFIRMED DELIVERY
-		ActionTypeId: models.DictActionTypeName["ACCEPTED"],
+		ActionTypeId: models.DictActionTypeName["CONFIRMED DELIVERY"],
 	}}
 	err = repo_order.InsertLogs(db, logs)
 
@@ -409,4 +408,8 @@ func EditOrderEquipment(db *gorm.DB, orderId, equipmentId, quantity int) error {
 
 func EditOrderPriority(db *gorm.DB, orderId, priority int) error {
 	return repo_order.EditOrderPriority(db, orderId, priority)
+}
+
+func AddDriver(db *gorm.DB, name, description string) error {
+	return repo_order.AddDriver(db, name, description)
 }

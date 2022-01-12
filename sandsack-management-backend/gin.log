@@ -26,16 +26,6 @@
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-[GIN-debug] redirecting request 307: /order/ --> /order/
-2021/12/28 12:31:19 User branch 5
-2021/12/28 12:31:19 OrderID 53
-2021/12/28 12:31:19 OrderName EA 1.1 Altstadt - Ost #53
-2021/12/28 12:31:19 NEW ORDER NAME EA 1.1 Altstadt - Ost
-[GIN-debug] redirecting request 301: /order/ --> /order/
-2021/12/28 12:32:00 CHILDREN &[{6 EA 1.2 Altstadt - Mitte   ea12_altstadt_mitte@user.com  false false false Unterabschnitt 5 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC} {5 EA 1.1 Altstadt - Ost   ea11_altstadt_ost@user.com  false false false Unterabschnitt 5 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC}]
-2021/12/28 12:32:18 Children &[{6 EA 1.2 Altstadt - Mitte   ea12_altstadt_mitte@user.com  false false false Unterabschnitt 5 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC} {5 EA 1.1 Altstadt - Ost   ea11_altstadt_ost@user.com  false false false Unterabschnitt 5 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC}]
-2021/12/28 12:32:22 CHILDREN &[{6 EA 1.2 Altstadt - Mitte   ea12_altstadt_mitte@user.com  false false false Unterabschnitt 5 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC} {5 EA 1.1 Altstadt - Ost   ea11_altstadt_ost@user.com  false false false Unterabschnitt 5 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC}]
-[GIN-debug] redirecting request 301: /order/ --> /order/
-2021/12/28 13:29:04 CheckPasswordHash error
-[GIN-debug] redirecting request 301: /order/ --> /order/
-2021/12/28 15:11:52 CHILDREN &[{7 EA 2 - Neumarkt   ea2_neumarkt@user.com  false false false Hauptabschnitt 3 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC} {4 EA 1 - Altstadt   ea1_altstadt@user.com  false false false Einsatzabschnitt 4 0  0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC}]
+[GIN-debug] redirecting request 301: /users/ --> /users/
+2022/01/12 13:03:53 interrupt
+2022/01/12 13:03:53 Exit command received. Exiting ....

@@ -66,3 +66,6 @@ insert into equipment(id, name, quantity) values
     (1, 'Sandsack', 100000);
 
 
+insert into driver(id, name, description) values
+    (1, 'Denis Müller', ''),
+    (2, 'Michael Sommer', '');
