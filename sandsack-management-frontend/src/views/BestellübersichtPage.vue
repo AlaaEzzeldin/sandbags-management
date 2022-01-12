@@ -83,7 +83,7 @@
       <v-col cols="6">
         <v-select
             v-if="this.getLoggedInUserRole()===1 || this.getLoggedInUserRole()===2"
-            v-model="select"
+            v-model="selectedHaupt"
             :items="getHauptdata"
             item-text="state"
             label="Hauptabschnitt"
@@ -95,7 +95,7 @@
         ></v-select>
         <v-select
             v-if="this.getLoggedInUserRole()===1 || this.getLoggedInUserRole()===2"
-            v-model="select"
+            v-model="selectedEinz"
             :items="getEinsatzdata"
             item-text="state"
             label="Einsatzabschnitt"
@@ -152,6 +152,8 @@ export default {
             (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)],
       modal: false,
       menu: false,
+      selectedHaupt:'',
+      selectedEinz:'',
 
       // Array will be automatically processed with visualization.arrayToDataTable function
       /*chartData: [
@@ -195,39 +197,52 @@ export default {
     getHauptdata(){
       var HauptselectOptions = []
       for (let i=0; i<this.getStatisticschart.length; i++){
-        if(this.getStatisticschart[i].type == "Hauptabschnitten") {
+        if(this.getStatisticschart[i].type === "Hauptabschnitten") {
+          console.log('length of chart', this.getStatisticschart[i].statistics_per_hauptabschnitt.length)
           for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
             HauptselectOptions.push(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].name)
           }
         }
       }
+
+      console.log('SelectedHaupt is',this.$data.selectedHaupt)
       return HauptselectOptions;
     },
 
     getEinsatzdata(){
       var EinsatzselectOptions = []
-      for(let i=0; i<this.getStatisticschart.length; i++) {
-        if(this.getStatisticschart[i].type == "Einsatzabschnitten") {
-          for(let j=0; j<this.getStatisticschart[i].statistics_per_Einsatzabschnitt.length; j++){
-            EinsatzselectOptions.push(this.getStatisticschart[i].statistics_per_Einsatzabschnitt[j].name)
+      for(let i=0; i<this.getHauptdata.length; i++) {
+        if(this.$data.selectedHaupt == this.getHauptdata[i]) {
+          for(let j=0; j<this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt.length; j++){
+            EinsatzselectOptions.push(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].name)
           }
         }
       }
+      console.log('SelectedEinz is',this.$data.selectedEinz)
       return EinsatzselectOptions;
     },
 
     getUnterdata(){
       var UnterselectOptions = []
-      UnterselectOptions.push(["Abschnitt","Bestellungen"])
-      for(let i=0; i<this.getStatisticschart.length; i++) {
-        if(this.getStatisticschart[i].type == "unterabschnitten") {
-          for(let j=0; j<this.getStatisticschart[i].statistics_per_unterabschnitt.length; j++){
-            UnterselectOptions.push([this.getStatisticschart[i].statistics_per_unterabschnitt[j].name,
-              parseInt(this.getStatisticschart[i].statistics_per_unterabschnitt[j].total_number_of_orders)])
-
+      UnterselectOptions.push(["Abschnitt","Bestellungen"],['unterabschnitt',20],['unterabschnitt',20])
+      for(let i=0; i<this.getHauptdata.length; i++){
+        for(let j=0; j<this.getEinsatzdata.length; j++){
+          if(this.$data.selectedHaupt == this.getHauptdata[i] &&
+              this.$data.selectedEinz == this.getEinsatzdata[j])
+          {
+            UnterselectOptions.pop()
+            UnterselectOptions.pop()
+            for(let k=0; k<this.getStatisticschart[0].statistics_per_hauptabschnitt[i].
+                statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt.length; k++ ){
+              UnterselectOptions.push([this.getStatisticschart[0].statistics_per_hauptabschnitt[i].
+                  statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].name,
+                parseInt(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].
+                    statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].total_number_of_orders)])
+            }
 
           }
         }
+
       }
       return UnterselectOptions;
     }
