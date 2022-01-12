@@ -7,9 +7,9 @@
             v-for="(item, i) in getEquipment"
             :key="i"
         >
-          {{item.type}} ({{item.measure}})
+          {{item.name}}
           <v-spacer/>
-          <b>{{item.amount}}</b>
+          <b>{{item.quantity}}</b>
         </v-list-item>
       </v-list-item-group>
     </v-list>

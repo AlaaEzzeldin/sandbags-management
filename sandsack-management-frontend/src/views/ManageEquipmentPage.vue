@@ -59,7 +59,7 @@ export default {
       return 0;
     },
     getBtnDisabled() {
-      return !this.currentType || (parseInt(this.newAmount) === parseInt(this.getCurrentEquipment.amount))
+      return !this.currentType || (parseInt(this.newAmount) === parseInt(this.getCurrentEquipment.quantity))
     }
   },
 
@@ -77,7 +77,7 @@ export default {
     },
     setCurrentType(e) {
       this.currentType = e;
-      this.newAmount = this.getCurrentEquipment.amount;
+      this.newAmount = this.getCurrentEquipment.quantity;
     }
   }
 }
