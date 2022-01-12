@@ -15,11 +15,7 @@
             block
             @click="exportAllOrders"
         >
-<<<<<<< HEAD
           Exportieren
-=======
-          <button  @click="download">Exportiern</button>
->>>>>>> 285d454f5d7d37370b314a62a759391e4489de7c
         </v-btn>
         <v-btn
             v-if="this.getLoggedInUserRole() === 4"
@@ -48,11 +44,6 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-=======
-import jsPDF from "jspdf";
-import domtoimage from "dom-to-image";
->>>>>>> 285d454f5d7d37370b314a62a759391e4489de7c
 import Bestelltabelle from "@/components/Bestelltabelle";
 import moment from 'moment';
 
@@ -131,38 +122,6 @@ export default {
       }
       pdfMake.createPdf(docDefinition).download(name+'.pdf')
     },
-
-    download() {
-      /** WITH CSS */
-      domtoimage
-          .toPng(this.$refs.content)
-          .then(function(dataUrl) {
-            var img = new Image();
-            img.src = dataUrl;
-            const doc = new jsPDF({
-              orientation: "portrait",
-              unit: "pt",
-              format: [900, 1500]
-            });
-            doc.addImage(img, "JPEG", 100, 100);
-            const date = new Date();
-            const url = window.URL.createObjectURL;
-            const filename =
-                "Exportiern_" +
-                date.getFullYear() +
-                ("0" + (date.getMonth() + 1)).slice(-2) +
-                ("0" + date.getDate()).slice(-2) +
-                ("0" + date.getHours()).slice(-2) +
-                ".pdf";
-            doc.save(filename)
-            window.URL.revokeObjectURL(url);
-            alert("Exportiern Downloaded!"); // or you know, something with better UX...
-          })
-          .catch(function(error) {
-            console.error("oops, something went wrong!", error);
-          });
-    },
-
 
     // hard coding the users roles
     getLoggedInUserRole() {
