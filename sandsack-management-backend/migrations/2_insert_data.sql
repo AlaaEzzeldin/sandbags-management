@@ -55,7 +55,8 @@ insert into action_type(id, name) values
                                       (3, 'COMMENTED'),
                                       (4, 'ACCEPTED'),
                                       (5, 'DECLINED'),
-                                      (6, 'ASSIGNED');
+                                      (6, 'ASSIGNED'),
+                                      (7, 'CONFIRMED DELIVERY');
 
 insert into priority(id, level, name) values
                                           (1, 1, 'HIGH'), (2, 2, 'MIDDLE'), (3, 3, 'LOW');
@@ -65,3 +66,6 @@ insert into equipment(id, name, quantity) values
     (1, 'Sandsack', 100000);
 
 
+insert into driver(id, name, description) values
+    (1, 'Denis Müller', ''),
+    (2, 'Michael Sommer', '');

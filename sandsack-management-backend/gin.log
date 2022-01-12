@@ -9,6 +9,7 @@
 [GIN-debug] GET    /users/                   --> team2/sandsack-management-backend/controllers.(*App).GetUserList-fm (5 handlers)
 [GIN-debug] POST   /users/logout             --> team2/sandsack-management-backend/controllers.(*App).Logout-fm (5 handlers)
 [GIN-debug] POST   /users/change_password    --> team2/sandsack-management-backend/controllers.(*App).ChangePassword-fm (5 handlers)
+[GIN-debug] GET    /users/me                 --> team2/sandsack-management-backend/controllers.(*App).GetProfile-fm (5 handlers)
 [GIN-debug] PATCH  /users/me                 --> team2/sandsack-management-backend/controllers.(*App).PatchProfile-fm (5 handlers)
 [GIN-debug] POST   /order/                   --> team2/sandsack-management-backend/controllers.(*App).CreateOrder-fm (5 handlers)
 [GIN-debug] GET    /order/                   --> team2/sandsack-management-backend/controllers.(*App).ListOrder-fm (5 handlers)
@@ -23,8 +24,9 @@
 [GIN-debug] PATCH  /core/equipment/return    --> team2/sandsack-management-backend/controllers.(*App).AddEquipmentQuantity-fm (5 handlers)
 [GIN-debug] POST   /core/priority/add        --> team2/sandsack-management-backend/controllers.(*App).AddPriority-fm (5 handlers)
 [GIN-debug] POST   /core/equipment/add       --> team2/sandsack-management-backend/controllers.(*App).AddEquipment-fm (5 handlers)
+[GIN-debug] POST   /core/driver/add          --> team2/sandsack-management-backend/controllers.(*App).AddDriver-fm (5 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-2021/12/23 03:14:10 interrupt
-2021/12/23 03:14:10 Exit command received. Exiting ....
+2022/01/12 13:25:19 interrupt
+2022/01/12 13:25:19 Exit command received. Exiting ....

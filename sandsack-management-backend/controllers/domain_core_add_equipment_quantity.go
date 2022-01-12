@@ -9,7 +9,7 @@ import (
 )
 
 // AddEquipmentQuantity
-// @Description This endpoint increase the quantity of chosen equipment
+// @Description This endpoint increase the quantity of chosen equipment, when it is returned to the station. Only Mollnhof can do it.
 // @Summary This endpoint increase the quantity of chosen equipment
 // @Accept json
 // @Produce json
