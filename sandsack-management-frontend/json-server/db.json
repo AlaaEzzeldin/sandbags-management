@@ -219,21 +219,18 @@
   "equipment": [
     {
       "id": 1,
-      "type": "Sandsäck",
-      "amount": 100,
-      "measure": "Paletten"
+      "name": "Sandsäck",
+      "quantity": 100
     },
     {
       "id": 2,
-      "type": "Wasser",
-      "amount": "30",
-      "measure": "Litre"
+      "name": "Wasser",
+      "quantity": "30"
     },
     {
       "id": 3,
-      "type": "Sand",
-      "amount": 150,
-      "measure": "Litre"
+      "name": "Sand",
+      "amount": 150
     }
   ]
 }
