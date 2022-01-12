@@ -71,3 +71,8 @@ type AddDriverInput struct {
 	Name string `json:"name,required"`
 	Description string `json:"description,omitempty"`
 }
+
+type UpdateEquipmentInput struct {
+	Id int `json:"id"`
+	Quantity int `json:"quantity"`
+}

@@ -417,3 +417,7 @@ func EditOrderPriority(db *gorm.DB, orderId, priority int) error {
 func AddDriver(db *gorm.DB, name, description string) error {
 	return repo_order.AddDriver(db, name, description)
 }
+
+func UpdateEquipment(db *gorm.DB, equipmentId int, quantity int) error {
+	return repo_order.UpdateEquipment(db, equipmentId, quantity)
+}

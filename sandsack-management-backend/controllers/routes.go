@@ -83,6 +83,7 @@ func (a *App) RunAllRoutes() {
 	core.GET("/equipment", a.GetEquipment)
 	core.GET("/priority", a.GetPriority)
 	core.PATCH("/equipment/return", a.AddEquipmentQuantity)
+	core.PATCH("/equipment/update", a.UpdateEquipment)
 	core.POST("/priority/add", a.AddPriority)
 	core.POST("/equipment/add", a.AddEquipment)
 	core.POST("/driver/add", a.AddDriver)

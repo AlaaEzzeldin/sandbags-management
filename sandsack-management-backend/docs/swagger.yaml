@@ -218,10 +218,19 @@ definitions:
     properties:
       access_token:
         type: string
+      name:
+        type: string
       refresh_token:
         type: string
       role:
         type: string
+    type: object
+  models.UpdateEquipmentInput:
+    properties:
+      id:
+        type: integer
+      quantity:
+        type: integer
     type: object
   models.User:
     properties:
@@ -442,6 +451,40 @@ paths:
           schema:
             $ref: '#/definitions/models.ErrorResponse'
       summary: This endpoint increase the quantity of chosen equipment
+      tags:
+      - Core
+  /core/equipment/update:
+    patch:
+      consumes:
+      - application/json
+      description: This endpoint change quantity of equipment. It is used only by
+        Einsatzleiter
+      parameters:
+      - description: ' '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id, quantity
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateEquipmentInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: This endpoint change quantity of equipment. It is used only by Einsatzleiter
       tags:
       - Core
   /core/priority:

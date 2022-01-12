@@ -270,6 +270,56 @@
                 }
             }
         },
+        "/core/equipment/update": {
+            "patch": {
+                "description": "This endpoint change quantity of equipment. It is used only by Einsatzleiter",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Core"
+                ],
+                "summary": "This endpoint change quantity of equipment. It is used only by Einsatzleiter",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "id, quantity",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateEquipmentInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/core/priority": {
             "get": {
                 "description": "GetPriority - array of priorities in system",
@@ -1674,11 +1724,25 @@
                 "access_token": {
                     "type": "string"
                 },
+                "name": {
+                    "type": "string"
+                },
                 "refresh_token": {
                     "type": "string"
                 },
                 "role": {
                     "type": "string"
+                }
+            }
+        },
+        "models.UpdateEquipmentInput": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
                 }
             }
         },
