@@ -66,3 +66,8 @@ type EditOrderInput struct {
 	Equipments []OrderEquipment `json:"equipments,omitempty"`
 	Priority int `json:"priority,omitempty"`
 }
+
+type AddDriverInput struct {
+	Name string `json:"name,required"`
+	Description string `json:"description,omitempty"`
+}

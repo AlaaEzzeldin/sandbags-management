@@ -89,6 +89,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 		log.Println("GetOrder error", err.Error())
 	}
 
+
 	c.JSON(http.StatusOK, updatedOrder)
 
 }

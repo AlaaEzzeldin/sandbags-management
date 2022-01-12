@@ -13,13 +13,16 @@ type Id struct {
 
 func CreateOrder(a *gorm.DB, order *models.Order) (int, error) {
 	orderId, err := insertOrder(a, order)
+	log.Println("OrderID", orderId)
 	if err != nil {
 		return 0, err
 	}
 
 	orderName := order.Name + " #" + strconv.Itoa(orderId)
+	log.Println("OrderName", orderName)
 	if err := updateOrderName(a, orderId, orderName); err != nil {
-		return orderId, err
+		log.Println("CreateOrder error", err.Error())
+		return orderId, nil
 	}
 
 

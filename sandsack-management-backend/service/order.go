@@ -4,6 +4,7 @@ import (
 	"errors"
 	"gorm.io/gorm"
 	"log"
+	"strconv"
 	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/repository/order"
 	repo_user "team2/sandsack-management-backend/repository/user"
@@ -27,19 +28,7 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 		}
 	}
 
-	logs := []models.Log{
-		{
-			OrderId:      order.Id,
-			ActionTypeId: models.DictActionTypeName["CREATED"],
-			UpdatedBy:    order.UserId,
-			Description:  userName + " hat die Bestellung " + order.Name + " erstellt",
-		},
-	}
 
-	if err := repo_order.InsertLogs(a, logs); err != nil {
-		log.Println("InsertLogs error", err.Error())
-		return err
-	}
 	userOrderPermissions := []int{
 		models.DictPermissionName["CAN VIEW"],
 		models.DictPermissionName["CAN EDIT"],
@@ -65,6 +54,23 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 	}
 	if err := repo_order.InsertUserOrderPermissions(a, parent.Id, order.Id, parentOrderPermissions); err != nil {
 		log.Println("InsertUserOrderPermissions error", err.Error())
+		return err
+	}
+
+	newOrder, err := GetOrder(a, order.UserId, orderId)
+	log.Println("NEW ORDER NAME", newOrder.Name)
+
+	logs := []models.Log{
+		{
+			OrderId:      order.Id,
+			ActionTypeId: models.DictActionTypeName["CREATED"],
+			UpdatedBy:    order.UserId,
+			Description:  userName + " hat die Bestellung '" +  newOrder.Name + " #" + strconv.Itoa(newOrder.Id) + "' erstellt",
+		},
+	}
+
+	if err := repo_order.InsertLogs(a, logs); err != nil {
+		log.Println("InsertLogs error", err.Error())
 		return err
 	}
 
