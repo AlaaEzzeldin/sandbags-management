@@ -43,7 +43,7 @@
       <template v-slot:item.actions="{ item }">
         <v-row>
           <v-col cols="12">
-            <v-tooltip top v-if="getLoggedInUserRole()=== 1 || getLoggedInUserRole()=== 2 ||getLoggedInUserRole()=== 3 ">
+            <v-tooltip top v-if="['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter', 'Unterabschnitt'].includes(getCurrentUserRole)">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     v-bind="attrs"
@@ -51,8 +51,8 @@
                     style="text-transform: capitalize; font-weight: bolder;"
                     @click="editItem(item)"
                     small
-                    :disabled="(item.status!=='anstehend' &&    ( getLoggedInUserRole()=== 2 ||getLoggedInUserRole()=== 3) )
-                    || (item.status!=='weitergeleitet' && getLoggedInUserRole()=== 1) "
+                    :disabled="(item.status!=='anstehend' &&   ['Einsatzabschnitt', 'Unterabschnitt'].includes(getCurrentUserRole) )
+                    || (item.status!=='weitergeleitet' && getCurrentUserRole=== 'Hauptabschnitt') "
                     class="elevation-0"
                     color="primary"
                     rounded
@@ -88,10 +88,12 @@
 
 <script>
 
+import {Mixin} from '../mixin/mixin.js'
 
 export default {
   name: 'Bestelltabelle',
   props: ['orders'],
+  mixins: [Mixin],
   components: {},
   data: () => ({
     search: '',
@@ -111,27 +113,13 @@ export default {
       itemsPerPage: 10,
     },
   }),
+  computed: {
+    getCurrentUserRole(){
+      return this.$store.getters.getCurrentUserRole
+    }
+  },
   methods: {
-    // hard coding the users roles
-    getLoggedInUserRole() {
-      if (this.$route.params.userRole === '1') // Hauptabschintt
-        return 1
-      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
-        return 2
-      else if (this.$route.params.userRole === '3') //Unterabschnitt
-        return 3
-      else if (this.$route.params.userRole === '4') // Mollhof
-        return 4
-    },
-    getColor(status) {
-      if (status === 'akzeptiert') return 'blue'
-      if (status === 'geliefert') return 'green'
-      else if (status === 'abgelehnt') return 'red'
-      else if (status === 'storniert') return 'red'
-      else if (status === 'Auf dem Weg') return 'orange'
-      else if (status === 'anstehend') return 'grey'
-      else if (status === 'weitergeleitet') return 'black'
-    },
+
     editItem(Item) {
       const orderId = Item.id;
       this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
