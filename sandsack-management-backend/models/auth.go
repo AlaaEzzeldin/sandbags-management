@@ -11,7 +11,7 @@ type User struct {
 	Id              int       `json:"id,omitempty" gorm:"column:id"`
 	Name            string    `json:"name,omitempty" gorm:"column:name"`
 	Phone           string    `json:"phone,omitempty" gorm:"column:phone"`
-	Password        string    `gorm:"column:password"`
+	Password        string    `json:"password,omitempty" gorm:"column:password"`
 	Email           string    `json:"email,omitempty" gorm:"column:email"`
 	Token           string    `json:"token,omitempty" gorm:"column:token"`
 	IsActivated     bool      `json:"is_activated,omitempty" gorm:"column:is_activated"`

@@ -60,6 +60,7 @@ func (a *App) RunAllRoutes() {
 	users.GET("/", a.GetUserList)
 	users.POST("/logout", a.Logout)
 	users.POST("/change_password", a.ChangePassword)
+	users.GET("/me", a.GetProfile)
 	users.PATCH("/me", a.PatchProfile)
 
 	// order

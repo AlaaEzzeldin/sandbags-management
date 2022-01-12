@@ -1028,6 +1028,38 @@ paths:
       tags:
       - Authentication
   /users/me:
+    get:
+      consumes:
+      - application/json
+      description: GetProfile - get info of the user
+      parameters:
+      - description: ' '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: GetProfile - get info of the user
+      tags:
+      - Authentication
     patch:
       consumes:
       - application/json

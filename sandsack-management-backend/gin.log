@@ -9,6 +9,7 @@
 [GIN-debug] GET    /users/                   --> team2/sandsack-management-backend/controllers.(*App).GetUserList-fm (5 handlers)
 [GIN-debug] POST   /users/logout             --> team2/sandsack-management-backend/controllers.(*App).Logout-fm (5 handlers)
 [GIN-debug] POST   /users/change_password    --> team2/sandsack-management-backend/controllers.(*App).ChangePassword-fm (5 handlers)
+[GIN-debug] GET    /users/me                 --> team2/sandsack-management-backend/controllers.(*App).GetProfile-fm (5 handlers)
 [GIN-debug] PATCH  /users/me                 --> team2/sandsack-management-backend/controllers.(*App).PatchProfile-fm (5 handlers)
 [GIN-debug] POST   /order/                   --> team2/sandsack-management-backend/controllers.(*App).CreateOrder-fm (5 handlers)
 [GIN-debug] GET    /order/                   --> team2/sandsack-management-backend/controllers.(*App).ListOrder-fm (5 handlers)
@@ -27,6 +28,5 @@
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-[GIN-debug] redirecting request 301: /order/ --> /order/?id=1
-2022/01/12 13:15:30 interrupt
-2022/01/12 13:15:30 Exit command received. Exiting ....
+2022/01/12 13:22:50 interrupt
+2022/01/12 13:22:50 Exit command received. Exiting ....
