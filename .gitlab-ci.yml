@@ -9,8 +9,8 @@ before_script:
 
 staging:
   stage: test
-  tags:
-    - docker
+#  tags:
+#    - docker
   script:
     - docker-compose -f docker-compose-staging.yml build
   only:
