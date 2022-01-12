@@ -2,11 +2,11 @@
   "orders": [
     {
       "id": 0,
-      "created_at": "10.11.2021 12:01",
+      "created_at": "24.12.2021 12:01",
       "from": "EA 1.1 Altstadt- Ost",
       "type": "sandsack",
       "priority": "Hohe",
-      "status": "abgelehnt",
+      "status": "akzeptiert",
       "quantity": "319",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByUnterabschnitt": "please process ASAP3",
@@ -126,7 +126,7 @@
       "from": "EA 3.2 Universität-West",
       "type": "sandsack",
       "priority": "niedrige",
-      "status": "anstehend",
+      "status": "akzeptiert",
       "quantity": "10",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -204,15 +204,24 @@
       "notesByUnterabschnitt": "3dee"
     }
   ],
-  "users": [
+  "equipment": [
     {
-      "address": "Leonhard-Paminger-Str. 20",
-      "email": "info@ffpassau.de223",
-      "phone": "+49 123 45 67 8 901232",
-      "password": "eedd",
-      "id": 0,
-      "name": "Abschnittname",
-      "roleName": "Abschnittrole"
+      "id": 1,
+      "type": "Sandsäck",
+      "amount": 100,
+      "measure": "Paletten"
+    },
+    {
+      "id": 2,
+      "type": "Wasser",
+      "amount": "30",
+      "measure": "Litre"
+    },
+    {
+      "id": 3,
+      "type": "Sand",
+      "amount": 150,
+      "measure": "Litre"
     }
   ]
 }
