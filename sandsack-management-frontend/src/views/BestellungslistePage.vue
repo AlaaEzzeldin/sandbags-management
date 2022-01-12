@@ -7,7 +7,7 @@
       <v-spacer></v-spacer>
       <v-col sm="2" class="pt-15 justify-center align-center">
         <v-btn
-            v-if="this.getLoggedInUserRole()===1 || this.getLoggedInUserRole()===2"
+            v-if="this.getCurrentUserRole==='Einsatzleiter' || this.getCurrentUserRole==='Hauptabschnitt' ||this.getCurrentUserRole==='Einsatzabschnitt'"
             style="text-transform: capitalize; font-weight: bolder;"
             rounded
             color="red"
@@ -18,7 +18,7 @@
           Exportieren
         </v-btn>
         <v-btn
-            v-if="this.getLoggedInUserRole() === 4"
+            v-if="this.getCurrentUserRole === 'Mollnhof'"
             style="text-transform: capitalize; font-weight: bolder;"
             rounded
             color="primary"
@@ -58,15 +58,19 @@ export default {
     this.$store.dispatch("loadOrders")
   },
 
-  computed: {
+  computed:{
+    getCurrentUserRole(){
+      return this.$store.getters.getCurrentUserRole
+    },
     getOrders() {
       return this.$store.getters.getOrders
     }
+
   },
 
   methods: {
-    exportAllOrders () {
-      let body =  [[ 'id', 'Zeit', 'Von', 'Priorität', 'Status', 'Anschrift' ]];
+    exportAllOrders() {
+      let body = [['id', 'Zeit', 'Von', 'Priorität', 'Status', 'Anschrift']];
       for (let order of this.getOrders) {
         body.push(
             [
@@ -83,7 +87,7 @@ export default {
     },
 
     lieferscheinDruecken: function () {
-      let body =  [[ 'id', 'Von', 'Priorität', 'Anschrift', 'Menge' ]];
+      let body = [['id', 'Von', 'Priorität', 'Anschrift', 'Menge']];
       for (let order of this.getOrders) {
         let dateCreated = moment(order.created_at, 'DD.MM.yyyy HH:mm');
         if (order.status === 'akzeptiert' &&
@@ -105,7 +109,7 @@ export default {
 
     printPDF(body, name) {
       let pdfMake = require('pdfmake/build/pdfmake.js')
-      if (pdfMake.vfs === undefined){
+      if (pdfMake.vfs === undefined) {
         let pdfFonts = require('pdfmake/build/vfs_fonts.js')
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
       }
@@ -120,19 +124,7 @@ export default {
           }
         ]
       }
-      pdfMake.createPdf(docDefinition).download(name+'.pdf')
-    },
-
-    // hard coding the users roles
-    getLoggedInUserRole() {
-      if (this.$route.params.userRole === '1') // Hauptabschintt
-        return 1
-      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
-        return 2
-      else if (this.$route.params.userRole === '3') //Unterabschnitt
-        return 3
-      else if (this.$route.params.userRole === '4') // Mollhof
-        return 4
+      pdfMake.createPdf(docDefinition).download(name + '.pdf')
     }
   }
 }

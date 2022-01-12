@@ -1,43 +1,28 @@
-# Start from golang base image
-FROM golang:alpine as builder
+FROM golang:1.13.1-alpine3.10 as prepare
 
-# Enable go modules
-ENV GO111MODULE=on
+WORKDIR /source
 
-# Install git. (alpine image does not have git in it)
-RUN apk update && apk add --no-cache git
+COPY go.mod .
+COPY go.sum .
 
-# Set current working directory
-WORKDIR /app
-
-# Note here: To avoid downloading dependencies every time we
-# build image. Here, we are caching all the dependencies by
-# first copying go.mod and go.sum files and downloading them,
-# to be used every time we build the image if the dependencies
-# are not changed.
-
-# Copy go mod and sum files
-COPY go.mod ./
-COPY go.sum ./
-
-# Download all dependencies.
 RUN go mod download
 
-# Now, copy the source code
+#
+# STAGE 2: build
+#
+FROM prepare AS build
+
 COPY . .
 
-# Note here: CGO_ENABLED is disabled for cross system compilation
-# It is also a common best practise.
+RUN CGO_ENABLED=0 go build -ldflags "-s -w" -o bin/server -v ./main.go
 
-# Build the application.
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ./bin/main .
+#
+# STAGE 3: run
+#
+FROM scratch as run
 
-# Finally our multi-stage to build a small image
-# Start a new stage from scratch
-FROM scratch
+COPY --from=build /source/bin/server /server
 
-# Copy the Pre-built binary file
-COPY --from=builder /app/bin/main .
+EXPOSE 8080
 
-# Run executable
-CMD ["./main"]
+ENTRYPOINT ["/server"]
