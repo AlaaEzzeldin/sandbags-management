@@ -23,9 +23,10 @@
 [GIN-debug] PATCH  /core/equipment/return    --> team2/sandsack-management-backend/controllers.(*App).AddEquipmentQuantity-fm (5 handlers)
 [GIN-debug] POST   /core/priority/add        --> team2/sandsack-management-backend/controllers.(*App).AddPriority-fm (5 handlers)
 [GIN-debug] POST   /core/equipment/add       --> team2/sandsack-management-backend/controllers.(*App).AddEquipment-fm (5 handlers)
+[GIN-debug] POST   /core/driver/add          --> team2/sandsack-management-backend/controllers.(*App).AddDriver-fm (5 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-[GIN-debug] redirecting request 301: /users/ --> /users/
-2022/01/12 13:03:53 interrupt
-2022/01/12 13:03:53 Exit command received. Exiting ....
+[GIN-debug] redirecting request 301: /order/ --> /order/?id=1
+2022/01/12 13:15:30 interrupt
+2022/01/12 13:15:30 Exit command received. Exiting ....

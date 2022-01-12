@@ -65,3 +65,8 @@ func (a *App) PatchProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, "The profile data has been changed successfully")
 	return
 }
+
+
+func (a *App) GetProfile(c *gin.Context) {
+
+}

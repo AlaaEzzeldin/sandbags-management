@@ -8,7 +8,7 @@ import (
 
 func GetComments(a *gorm.DB, orderId int) []models.Comment {
 	var comments []models.Comment
-	query := `select com.comment_text, u.name, b.name as "role" 
+	query := `select com.comment_text, u.name, b.name as "role", com.create_date, com.update_date 
 				from public.comment com, public.user u, branch b 
 				where com.order_id = ? 
 				and u.id = com.user_id

@@ -99,6 +99,8 @@ func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 		Comments:    comments,
 		Logs:        logs,
 		Equipments:  equipments,
+		CreateDate: simpleOrder.CreateDate,
+		UpdateDate: simpleOrder.UpdateDate,
 		//Permissions: permissions,
 	}
 	return order, nil
@@ -128,6 +130,8 @@ func GetOrderList(a *gorm.DB, userId int) (orderList []models.Order, err error) 
 			Comments:    comments,
 			Logs:        logs,
 			Equipments:  equipments,
+			CreateDate: row.CreateDate,
+			UpdateDate: row.UpdateDate,
 			//Permissions: permissions,
 		}
 
