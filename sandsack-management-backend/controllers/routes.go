@@ -84,6 +84,7 @@ func (a *App) RunAllRoutes() {
 	core.PATCH("/equipment/return", a.AddEquipmentQuantity)
 	core.POST("/priority/add", a.AddPriority)
 	core.POST("/equipment/add", a.AddEquipment)
+	core.POST("/driver/add", a.AddDriver)
 
 	_ = r.Run(port)
 }

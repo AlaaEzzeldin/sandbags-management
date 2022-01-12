@@ -8,6 +8,18 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
+// AddDriver
+// @Description This endpoint adds new driver
+// @Summary This endpoint adds new driver
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer "
+// @Param input body models.AddDriverInput true "name, description"
+// @Success 200
+// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Tags Core
+// @Router /core/driver/add [post]
 func (a *App) AddDriver(c *gin.Context) {
 	var input models.AddDriverInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -47,5 +59,6 @@ func (a *App) AddDriver(c *gin.Context) {
 		return
 	}
 
+	c.JSON(http.StatusOK, nil)
 	return
 }

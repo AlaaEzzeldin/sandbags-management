@@ -1,4 +1,11 @@
 definitions:
+  models.AddDriverInput:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
   models.ChangePasswordInput:
     properties:
       new_password:
@@ -259,6 +266,39 @@ definitions:
 info:
   contact: {}
 paths:
+  /core/driver/add:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint adds new driver
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: name, description
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddDriverInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: This endpoint adds new driver
+      tags:
+      - Core
   /core/equipment:
     get:
       consumes:
