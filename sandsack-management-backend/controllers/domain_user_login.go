@@ -119,6 +119,7 @@ func (a *App) Login(c *gin.Context){
 		RefreshToken: tokens["refresh_token"],
 		AccessToken:  tokens["access_token"],
 		Role:         user.BranchName,
+		Name: user.Name,
 	})
 	return
 }

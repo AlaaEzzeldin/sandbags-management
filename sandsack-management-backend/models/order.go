@@ -13,7 +13,7 @@ type Comment struct {
 	CommentText string    `json:"comment_text,omitempty" gorm:"column:comment_text"`
 	OrderId     int       `json:"order_id,omitempty" gorm:"column:order_id"`
 	Name        string    `json:"name,omitempty" gorm:"column:name"`
-	BranchName  string    `json:"branch_name,omitempty" gorm:"column:branch_name"`
+	Role  string    `json:"role,omitempty" gorm:"column:role"`
 	CreateDate  time.Time `json:"create_date,omitempty" gorm:"column:create_date"`
 	UpdateDate  time.Time `json:"update_date,omitempty" gorm:"column:update_date"`
 }

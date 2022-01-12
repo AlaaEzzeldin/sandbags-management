@@ -60,6 +60,7 @@ func (a *App) RunAllRoutes() {
 	users.GET("/", a.GetUserList)
 	users.POST("/logout", a.Logout)
 	users.POST("/change_password", a.ChangePassword)
+	users.GET("/me", a.GetProfile)
 	users.PATCH("/me", a.PatchProfile)
 
 	// order
@@ -82,8 +83,10 @@ func (a *App) RunAllRoutes() {
 	core.GET("/equipment", a.GetEquipment)
 	core.GET("/priority", a.GetPriority)
 	core.PATCH("/equipment/return", a.AddEquipmentQuantity)
+	core.PATCH("/equipment/update", a.UpdateEquipment)
 	core.POST("/priority/add", a.AddPriority)
 	core.POST("/equipment/add", a.AddEquipment)
+	core.POST("/driver/add", a.AddDriver)
 
 	_ = r.Run(port)
 }

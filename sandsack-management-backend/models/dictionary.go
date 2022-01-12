@@ -46,6 +46,7 @@ var DictActionType = map[int]string {
 	4: "ACCEPTED",
 	5: "DECLINED",
 	6: "ASSIGNED",
+	7: "CONFIRMED DELIVERY",
 }
 
 var DictActionTypeName = map[string]int{
@@ -55,6 +56,7 @@ var DictActionTypeName = map[string]int{
 	"ACCEPTED":  4,
 	"DECLINED":  5,
 	"ASSIGNED":  6,
+	"CONFIRMED DELIVERY": 7,
 }
 
 var DictPermission = map[int]string {

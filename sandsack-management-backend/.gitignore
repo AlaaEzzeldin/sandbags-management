@@ -1,5 +1,4 @@
 .exe
-.env
 gin.log
 
 ../.idea/dataSources.xml
