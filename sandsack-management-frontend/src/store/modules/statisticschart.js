@@ -31,6 +31,10 @@ const actions = {
     }
 };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 285d454f5d7d37370b314a62a759391e4489de7c
 export default({
     state,
     mutations,

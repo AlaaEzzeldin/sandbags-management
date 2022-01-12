@@ -9,6 +9,7 @@ import statisticschart from './modules/statisticschart'
 Vue.use(Vuex)
 
 export default  new Vuex.Store({
+<<<<<<< HEAD
     modules: {
         orders,
         users,
@@ -17,4 +18,14 @@ export default  new Vuex.Store({
 
 
     }
+=======
+  modules: {
+    orders,
+    users,
+    equipment,
+    statisticschart,
+
+
+  }
+>>>>>>> 285d454f5d7d37370b314a62a759391e4489de7c
 })
