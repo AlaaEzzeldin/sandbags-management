@@ -7,14 +7,14 @@ before_script:
   - docker info
   - docker-compose --version
 
-staging:
-  stage: test
-#  tags:
-#    - docker
-  script:
-    - docker-compose -f docker-compose-staging.yml build
-  only:
-    - development
+#staging:
+#  stage: test
+##  tags:
+##    - docker
+#  script:
+#    - docker-compose -f docker-compose-staging.yml build
+#  only:
+#    - development
 
 deployment:
   stage: deploy
