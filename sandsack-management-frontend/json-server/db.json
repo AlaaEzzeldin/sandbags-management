@@ -230,7 +230,7 @@
     {
       "id": 3,
       "name": "Sand",
-      "amount": 150
+      "quantity": 150
     }
   ]
 }
