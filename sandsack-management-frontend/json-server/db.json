@@ -6,7 +6,7 @@
       "from": "EA 1.1 Altstadt- Ost",
       "type": "sandsack",
       "priority": "Hohe",
-      "status": "abgelehnt",
+      "status": "ABGELEHNT BEI EINSATZABSCHNITT",
       "quantity": "319",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByUnterabschnitt": "please process ASAP3",
@@ -25,7 +25,7 @@
       "from": "EA 1.1 Altstadt- Ost",
       "type": "sandsack",
       "priority": "hohe",
-      "status": "Auf dem Weg",
+      "status": "ABGELEHNT BEI EINSATZABSCHNITT",
       "quantity": "5",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByUnterabschnitt": "please process ASAP",
@@ -41,8 +41,8 @@
       "created_at": "12.11.2021 12:01",
       "from": "EA 1.1 Altstadt- West",
       "type": "sandsack",
-      "priority": "niedrige",
-      "status": "Auf dem Weg",
+      "priority": "Mittle",
+      "status": "ABGELEHNT BEI EINSATZABSCHNITT",
       "quantity": "20",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByUnterabschnitt": "please process ASAP"
@@ -53,7 +53,7 @@
       "from": "EA 1.1 Altstadt- Mitte",
       "type": "sandsack",
       "priority": "mittel",
-      "status": "geliefert",
+      "status": "ABGELEHNT BEI EINSATZLEITER",
       "quantity": "7",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByEinsatzabschnitt": "please process ASAP"
@@ -64,7 +64,7 @@
       "from": "EA 2.1 Nuemarkt- Nord",
       "type": "sandsack",
       "priority": "hohe",
-      "status": "akzeptiert",
+      "status": "ABGELEHNT BEI HAUPTABSCHNITT",
       "quantity": "3",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByEinsatzabschnitt": "please process ASAP"
@@ -75,7 +75,7 @@
       "from": "EA 3.2 Universität-West",
       "type": "sandsack",
       "priority": "Mittle",
-      "status": "abgelehnt",
+      "status": "GELIEFERT",
       "quantity": "9",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByEinsatzabschnitt": "There is no need for it, we don not have enough bags"
@@ -86,7 +86,7 @@
       "from": "EA 1.1 Altstadt- Ost",
       "type": "sandsack",
       "priority": "Mittle",
-      "status": "abgelehnt",
+      "status": "ABGELEHNT BEI EINSATZABSCHNITT",
       "quantity": "12",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -96,7 +96,7 @@
       "from": "EA 1.1 Altstadt- West",
       "type": "sandsack",
       "priority": "niedrige",
-      "status": "Auf dem Weg",
+      "status": "STORNIERT",
       "quantity": "20",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -106,7 +106,7 @@
       "from": "EA 1.1 Altstadt- Mitte",
       "type": "sandsack",
       "priority": "Hohe",
-      "status": "weitergeleitet",
+      "status": "ANSTEHEND",
       "quantity": "26",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -116,7 +116,7 @@
       "from": "EA 2.1 Nuemarkt- Nord",
       "type": "sandsack",
       "priority": "hohe",
-      "status": "anstehend",
+      "status": "ANSTEHEND",
       "quantity": "9",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -126,7 +126,7 @@
       "from": "EA 3.2 Universität-West",
       "type": "sandsack",
       "priority": "Mittle",
-      "status": "abgelehnt",
+      "status": "ANSTEHEND",
       "quantity": "12",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByEinsatzabschnitt": "this is number 10 test"
@@ -137,7 +137,7 @@
       "from": "EA 1.1 Altstadt- West",
       "type": "sandsack",
       "priority": "niedrige",
-      "status": "abgelehnt",
+      "status": "ANSTEHEND",
       "quantity": "14",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByHauptabschnitt": "notes by haupt"
@@ -148,7 +148,7 @@
       "from": "EA 1.1 Altstadt- Mitte",
       "type": "sandsack",
       "priority": "mittel",
-      "status": "geliefert",
+      "status": "ANSTEHEND",
       "quantity": "20",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -158,7 +158,7 @@
       "from": "EA 2.1 Nuemarkt- Nord",
       "type": "sandsack",
       "priority": "hohe",
-      "status": "Auf dem Weg",
+      "status": "ANSTEHEND",
       "quantity": "17",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -168,7 +168,7 @@
       "from": "EA 3.2 Universität-West",
       "type": "sandsack",
       "priority": "niedrige",
-      "status": "abgelehnt",
+      "status": "ANSTEHEND",
       "quantity": "12",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -178,14 +178,14 @@
       "from": "EA 1.1 Altstadt- West",
       "type": "sandsack",
       "priority": "niedrige",
-      "status": "abgelehnt",
+      "status": "ANSTEHEND",
       "quantity": "12",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
     {
       "id": 16,
       "created_at": "16.11.2021 12:01",
-      "status": "abgelehnt",
+      "status": "ANSTEHEND",
       "from": "EA 1.1 Altstadt- Ost",
       "type": "Sandsäcke",
       "quantity": "12",
@@ -196,7 +196,7 @@
     {
       "id": 17,
       "created_at": "17.11.2021 12:01",
-      "status": "storniert",
+      "status": "ANSTEHEND",
       "from": "EA 1.1 Altstadt- Ost",
       "type": "Sandsäcke",
       "quantity": "3",
@@ -237,5 +237,3 @@
     }
   ]
 }
-
-

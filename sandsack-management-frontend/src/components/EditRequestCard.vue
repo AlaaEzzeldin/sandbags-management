@@ -149,8 +149,11 @@
 </template>
 
 <script>
+import {Mixin} from '../mixin/mixin.js'
+
 export default {
   name: 'EditRequestCard',
+  mixins: [Mixin],
   data: () => ({
     priorities: [
       'Niedrig',
@@ -171,15 +174,6 @@ export default {
     },
   },
   methods: {
-    getColor(status) {
-      if (status === 'akzeptiert') return 'blue'
-      if (status === 'geliefert') return 'green'
-      else if (status === 'abgelehnt') return 'red'
-      else if (status === 'storniert') return 'red'
-      else if (status === 'Auf dem Weg') return 'orange'
-      else if (status === 'anstehend') return 'grey'
-      else if (status === 'weitergeleitet') return 'black'
-    },
     goBack() {
       this.$router.go(-1)
     },
