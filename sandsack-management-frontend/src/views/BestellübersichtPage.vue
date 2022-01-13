@@ -1,24 +1,24 @@
 <template>
   <div ref="content">
     <v-row>
-      <v-col sm="3" class="pt-13 justify-center align-center">
+      <v-col class="pt-13 justify-center align-center" sm="3">
         <h1 style="font-weight: bolder;">Bestellübersicht</h1>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col sm="4" class="pt-15 justify-center align-center">
+      <v-col class="pt-15 justify-center align-center" sm="4">
         <v-menu
             v-model="menu"
             :close-on-content-click="false"
             :nudge-right="50"
-            transition="scale-transition"
-            offset-y
             min-width="auto"
+            offset-y
+            transition="scale-transition"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
                 v-model="dateRangeText"
-                label="Tage"
                 filled
+                label="Tage"
                 prepend-icon="mdi-calendar"
                 readonly
                 v-bind="attrs"
@@ -82,24 +82,22 @@
       </v-col>
       <v-col cols="6">
         <v-select
-            v-if="this.getLoggedInUserRole()===1 || this.getLoggedInUserRole()===2"
             v-model="selectedHaupt"
             :items="getHauptdata"
+            filled
             item-text="state"
             label="Hauptabschnitt"
-            filled
             outlined
             persistent-hint
             return-object
             single-line
         ></v-select>
         <v-select
-            v-if="this.getLoggedInUserRole()===1 || this.getLoggedInUserRole()===2"
             v-model="selectedEinz"
             :items="getEinsatzdata"
+            filled
             item-text="state"
             label="Einsatzabschnitt"
-            filled
             outlined
             persistent-hint
             return-object
@@ -109,22 +107,20 @@
     </v-row>
     <div ref="content">
       <GChart
-          type="ColumnChart"
           :data="getUnterdata"
-          :options="chartOptions"/>
+          :options="chartOptions"
+          type="ColumnChart"/>
     </div>
     <br>
     <v-row>
-      <v-col cols="12" sm="3" offset="9">
+      <v-col cols="12" offset="9" sm="3">
         <v-btn
-            v-if="this.getLoggedInUserRole()===1 || this.getLoggedInUserRole()===2"
-            style="text-transform: capitalize; font-weight: bolder;"
             block
-            rounded
             color="red"
             dark
+            rounded
+            style="text-transform: capitalize; font-weight: bolder;"
         >
-
           <button v-on:click="download">Export pdf</button>
         </v-btn>
       </v-col>
@@ -155,16 +151,6 @@ export default {
       menu: false,
       selectedHaupt: '',
       selectedEinz: '',
-
-      // Array will be automatically processed with visualization.arrayToDataTable function
-      /*chartData: [
-        ["Abschnitt", "Bestellungen"],
-        ["Unterabschnitt-1", 5],
-        ["Unterabschnitt-2", 12],
-        ["Unterabschnitt-3", 9],
-        ["Unterabschnitt-4", 18],
-        ["Unterabschnitt-5", 25],
-      ],*/
 
       chartOptions: {
         hAxis: {
@@ -205,8 +191,6 @@ export default {
           }
         }
       }
-
-      console.log('SelectedHaupt is', this.$data.selectedHaupt)
       return HauptselectOptions;
     },
 
@@ -219,7 +203,6 @@ export default {
           }
         }
       }
-      console.log('SelectedEinz is', this.$data.selectedEinz)
       return EinsatzselectOptions;
     },
 
@@ -281,17 +264,6 @@ export default {
           });
     },
 
-    // hard coding the users roles
-    getLoggedInUserRole() {
-      if (this.$route.params.userRole === '1') // Hauptabschintt
-        return 1
-      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
-        return 2
-      else if (this.$route.params.userRole === '3') //Unterabschnitt
-        return 3
-      else if (this.$route.params.userRole === '4') // Mollhof
-        return 4
-    }
   }
 };
 </script>
