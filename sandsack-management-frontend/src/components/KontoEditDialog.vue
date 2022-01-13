@@ -23,7 +23,7 @@
             v-model="valid"
             lazy-validation
         >
-          <v-text-field
+<!--          <v-text-field
               v-model="getLoggedInUser.email"
               :rules="emailRules"
               label="E-mail"
@@ -31,6 +31,15 @@
               filled
               outlined
               prepend-icon="mdi-email"
+          ></v-text-field>-->
+          <v-text-field
+              v-model="getLoggedInUser.name"
+              :rules="nameRules"
+              label="Name"
+              required
+              filled
+              outlined
+              prepend-icon="mdi-phone"
           ></v-text-field>
           <v-text-field
               v-model="getLoggedInUser.phone"
@@ -41,7 +50,8 @@
               outlined
               prepend-icon="mdi-phone"
           ></v-text-field>
-          <v-text-field
+
+<!--          <v-text-field
               v-model="getLoggedInUser.password"
               :rules="passwordRules"
               label="Altes Passwort"
@@ -58,7 +68,7 @@
               required
               filled
               outlined
-          ></v-text-field>
+          ></v-text-field>-->
         </v-form>
       </v-card-text>
         <v-card-actions>
@@ -114,6 +124,9 @@ export default {
         v => !!v || 'Phone is required',
         v => /\(?\+\(?49\)?[ ()]?([- ()]?\d[- ()]?){10}/.test(v) || 'Phone must be valid',
       ],
+      nameRules: [
+        v => !!v || 'Name is required',
+      ],
       passwordRules: [
         v => !!v || 'Password is required',
       ],
@@ -128,13 +141,10 @@ export default {
   methods: {
     submitUpdatedInfo(){
       let data={
-        "address": this.getLoggedInUser.address,
-        "email": this.getLoggedInUser.email,
+        "name": this.getLoggedInUser.name,
         "phone": this.getLoggedInUser.phone,
-        "password": this.getLoggedInUser.password,
       }
-      let id= this.getLoggedInUser.id
-      this.$store.dispatch("updateUserInfo",  {id, data} )
+      this.$store.dispatch("updateUserInfo",  data)
       this.$emit("close")
     }
   }
