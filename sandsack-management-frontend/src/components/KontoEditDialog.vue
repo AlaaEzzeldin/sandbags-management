@@ -13,8 +13,8 @@
           </v-avatar>
         </v-col>
         <v-col cols="10">
-          <h2>{{getLoggedInUser.name}}</h2>
-          <h3>{{getLoggedInUser.role}}</h3>
+          <h2>{{getUser.name}}</h2>
+          <h3>{{getUser.role}}</h3>
         </v-col>
       </v-card-title>
       <v-card-text>
@@ -138,9 +138,10 @@ export default {
     this.name = this.$store.getters.getLoggedInUser.name
   },
   computed: {
-    getLoggedInUser(){
+    getUser(){
       return this.$store.getters.getLoggedInUser
-    }
+    },
+
   },
   methods: {
     submitUpdatedInfo(){
