@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
@@ -12,6 +11,7 @@ import (
 	"os"
 	"team2/sandsack-management-backend/docs"
 	_ "team2/sandsack-management-backend/docs"
+	"team2/sandsack-management-backend/middleware"
 )
 
 const defaultPort = ":8000"
@@ -20,7 +20,7 @@ func (a *App) RunAllRoutes() {
 	var port = defaultPort
 
 	r := gin.Default()
-	r.Use(cors.Default())
+	r.Use(middleware.CORSMiddleware())
 	f, err := os.Create("gin.log")
 
 	if err != nil {
