@@ -79,6 +79,8 @@ export default {
   data() {
     return {
       valid: true,
+      oldPassword: "",
+      newPassword: "",
       passwordRules: [
         v => !!v || 'Password is required',
       ],
