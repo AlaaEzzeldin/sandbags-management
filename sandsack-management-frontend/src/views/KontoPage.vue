@@ -79,7 +79,8 @@
         </v-row>
       </v-card>
     </v-row>
-    <konto-edit-dialog :dialog="dialog"
+    <konto-edit-dialog
+        v-if="dialog" :dialog="dialog"
                        @close="dialog=false"
     ></konto-edit-dialog>
   </div>
