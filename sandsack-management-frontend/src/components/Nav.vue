@@ -48,7 +48,7 @@
          class="hidden-sm-and-up"
          @click.stop="drawer = !drawer">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      Feuerwehr Passau ({{ getLoggedInBranchName() }})
+      <h3>Feuerwehr Passau ({{ getLoggedInBranchName() }})</h3>
     </v-toolbar>
   </div>
 </template>
