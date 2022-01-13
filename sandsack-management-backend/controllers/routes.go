@@ -69,6 +69,7 @@ func (a *App) RunAllRoutes() {
 	order.GET("/", a.ListOrder)
 	order.POST("/cancel", a.DeclineOrder)
 	order.POST("/accept", a.AcceptOrder)
+	order.POST("/dispatch", a.DispatchOrder)
 	order.POST("/comment", a.CommentOrder)
 	order.PATCH("/edit", a.EditOrder)
 	order.PATCH("/upgrade", func(context *gin.Context) {

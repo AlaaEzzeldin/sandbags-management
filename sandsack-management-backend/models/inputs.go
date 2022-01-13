@@ -76,3 +76,8 @@ type UpdateEquipmentInput struct {
 	Id int `json:"id"`
 	Quantity int `json:"quantity"`
 }
+
+type DispatchOrderInput struct {
+	OrderId int `json:"order_id,required"`
+	DriverId int `json:"driver_id,omitempty"`
+}

@@ -68,6 +68,13 @@ definitions:
       phone:
         type: string
     type: object
+  models.DispatchOrderInput:
+    properties:
+      driver_id:
+        type: integer
+      order_id:
+        type: integer
+    type: object
   models.EditOrderInput:
     properties:
       equipments:
@@ -806,6 +813,45 @@ paths:
           schema:
             $ref: '#/definitions/models.ErrorResponse'
       summary: Unterabschnitt confirms that equipment is successfully delivered
+      tags:
+      - Order
+  /order/dispatch:
+    post:
+      consumes:
+      - application/json
+      description: DispatchOrder - Mollnhof can dispatch the order and assign it to
+        the driver
+      parameters:
+      - description: ' '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: DispatchOrder
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.DispatchOrderInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: DispatchOrder - Mollnhof can dispatch the order and assign it to the
+        driver
       tags:
       - Order
   /order/edit:
