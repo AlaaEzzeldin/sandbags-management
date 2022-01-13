@@ -13,7 +13,7 @@ import (
 // @Summary CommentOrder - user can write comments for the order
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.CommentInput true "Comment input"
 // @Success 200
 // @Failure 500 {object} models.ErrorResponse

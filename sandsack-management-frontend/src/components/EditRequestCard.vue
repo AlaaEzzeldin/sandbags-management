@@ -82,7 +82,7 @@
               class="mt-3"
               v-model="getOrder.notesByUnterabschnitt"
               outlined
-              :disabled="getLoggedInUserRole()!==3"
+              :disabled="getCurrentUserRole!=='Unterabschnitt'"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -113,7 +113,7 @@
     </v-card-text>
 
     <!------------------------------------------------- Actions ------------------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole()===1   || getLoggedInUserRole()===2 ||getLoggedInUserRole()===3 ">
+    <v-card-actions v-if="['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter', 'Unterabschnitt'].includes(getCurrentUserRole)">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -166,7 +166,9 @@ export default {
     getOrder() {
       return this.$store.getters.getOrder
     },
-
+    getCurrentUserRole(){
+      return this.$store.getters.getCurrentUserRole
+    },
   },
   methods: {
     getColor(status) {
@@ -191,23 +193,12 @@ export default {
         "notesByHauptabschnitt": this.getOrder.notesByHauptabschnitt
       }
       let id= this.getOrder.id
-      this.$store.dispatch("updateOrder",  {id, data},  )
+      this.$store.dispatch("updateOrder",  {id, data}  )
       this.gotToOrderDetails()
     },
     gotToOrderDetails(){
       const orderId = this.getOrder.id;
       this.$router.push({name: 'BestelldetailsPage', params: {orderId}})
-    },
-    // hard coding the users roles
-    getLoggedInUserRole() {
-      if (this.$route.params.userRole === '1') // Hauptabschintt
-        return 1
-      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
-        return 2
-      else if (this.$route.params.userRole === '3') //Unterabschnitt
-        return 3
-      else if (this.$route.params.userRole === '4') // Mollhof
-        return 4
     }
 
   }

@@ -13,6 +13,7 @@ import RecoverPasswordPage from "../views/RecoverPasswordPage";
 import RecoverPasswordConfirmPage from "../views/RecoverPasswordConfirmPage";
 import HomePage from "../views/HomePage";
 import BestellBearbeitenPage from "../views/BestellBearbeitenPage";
+import ManageEquipmentPage from "../views/ManageEquipmentPage";
 
 Vue.use(VueRouter)
 
@@ -43,34 +44,39 @@ const routes = [
         component: HomePage,
         children: [
             {
-                path: '/orders-list/:userRole',
+                path: '/orders-list',
                 name: 'BestellungslistePage',
                 component: BestellungslistePage
             },
             {
-                path: '/account/:userRole',
+                path: '/account',
                 name: 'KontoPage',
                 component: KontoPage
             },
             {
-                path: '/new-order/:userRole',
+                path: '/new-order',
                 name: 'NeueBestellungPage',
                 component: NeueBestellungPage
             },
             {
-                path: '/overview/:userRole',
+                path: '/overview',
                 name: 'BestellübersichtPage',
                 component: BestellübersichtPage
             },
             {
-                path: '/:userRole/order-details/:orderId',
+                path: '/order-details/:orderId',
                 name: 'BestelldetailsPage',
                 component: BestelldetailsPage
             },
             {
-                path: '/:userRole/order-edit/:orderId',
+                path: '/order-edit/:orderId',
                 name: 'BestellBearbeitenPage',
                 component: BestellBearbeitenPage
+            },
+            {
+                path: '/equipment-edit',
+                name: 'ManageEquipmentPage',
+                component: ManageEquipmentPage
             },
         ]
     },

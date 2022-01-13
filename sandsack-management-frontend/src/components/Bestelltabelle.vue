@@ -2,7 +2,7 @@
   <v-card class="elevation-0 rounded-lg" outlined>
     <v-data-table
         :headers="headers"
-        :items="getOrders"
+        :items="orders"
         class="elevation-2 rounded-lg"
         :search="search"
         :options="options"
@@ -43,7 +43,7 @@
       <template v-slot:item.actions="{ item }">
         <v-row>
           <v-col cols="12">
-            <v-tooltip top v-if="getLoggedInUserRole()=== 1 || getLoggedInUserRole()=== 2 ||getLoggedInUserRole()=== 3 ">
+            <v-tooltip top v-if="['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter', 'Unterabschnitt'].includes(getCurrentUserRole)">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     v-bind="attrs"
@@ -51,8 +51,8 @@
                     style="text-transform: capitalize; font-weight: bolder;"
                     @click="editItem(item)"
                     small
-                    :disabled="(item.status!=='anstehend' &&    ( getLoggedInUserRole()=== 2 ||getLoggedInUserRole()=== 3) )
-                    || (item.status!=='weitergeleitet' && getLoggedInUserRole()=== 1) "
+                    :disabled="(item.status!=='anstehend' &&   ['Einsatzabschnitt', 'Unterabschnitt'].includes(getCurrentUserRole) )
+                    || (item.status!=='weitergeleitet' && getCurrentUserRole=== 'Hauptabschnitt') "
                     class="elevation-0"
                     color="primary"
                     rounded
@@ -91,6 +91,7 @@
 
 export default {
   name: 'Bestelltabelle',
+  props: ['orders'],
   components: {},
   data: () => ({
     search: '',
@@ -110,27 +111,12 @@ export default {
       itemsPerPage: 10,
     },
   }),
-  created() {
-    this.$store.dispatch("loadOrders")
-  },
   computed: {
-    getOrders() {
-      return this.$store.getters.getOrders
+    getCurrentUserRole(){
+      return this.$store.getters.getCurrentUserRole
     }
   },
   methods: {
-
-    // hard coding the users roles
-    getLoggedInUserRole() {
-      if (this.$route.params.userRole === '1') // Hauptabschintt
-        return 1
-      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
-        return 2
-      else if (this.$route.params.userRole === '3') //Unterabschnitt
-        return 3
-      else if (this.$route.params.userRole === '4') // Mollhof
-        return 4
-    },
     getColor(status) {
       if (status === 'akzeptiert') return 'blue'
       if (status === 'geliefert') return 'green'

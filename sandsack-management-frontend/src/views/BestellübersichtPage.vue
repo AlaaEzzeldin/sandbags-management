@@ -1,11 +1,10 @@
 <template>
-  <div>
+  <div ref="content">
     <v-row>
       <v-col sm="3" class="pt-13 justify-center align-center">
         <h1 style="font-weight: bolder;">Bestellübersicht</h1>
       </v-col>
       <v-spacer></v-spacer>
-
 
       <v-col sm="4" class="pt-15 justify-center align-center">
         <v-menu
@@ -35,7 +34,6 @@
         </v-menu>
       </v-col>
     </v-row>
-
     <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px">
       <v-col>
         <h1 style="color: red">35</h1>
@@ -50,50 +48,53 @@
         <h3>Bestellungen/Uhr</h3>
       </v-col>
     </v-row>
-      <v-container fluid style="margin-top: 20px">
-        <v-row>
-          <v-col cols="6">
-            <h2>
-              Bestellungen
-            </h2>
-          </v-col>
-          <v-col cols="6">
-            <v-select
-                v-model="select"
-                :items="selectOptions"
-                item-text="state"
-                label="Beim Abschnitt"
-                filled
-                outlined
-                persistent-hint
-                return-object
-                single-line
-            ></v-select>
-          </v-col>
-        </v-row>
-        <GChart type="ColumnChart" :data="chartData" :options="chartOptions" />
-        <v-row>
-          <v-col cols="12" sm="3" offset="9">
-            <v-btn
-                align="right"
-                style="text-transform: capitalize; font-weight: bolder;"
-                block
-                rounded
-                color="red"
-                dark
-            >
-              Pdf Export
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
+
+    <v-row>
+      <v-col cols="6">
+        <h2>
+          Bestellungen
+        </h2>
+      </v-col>
+      <v-col cols="6">
+        <v-select
+            v-model="select"
+            :items="selectOptions"
+            item-text="state"
+            label="Beim Abschnitt"
+            filled
+            outlined
+            persistent-hint
+            return-object
+            single-line
+        ></v-select>
+      </v-col>
+    </v-row>
+
+    <div ref="content">
+      <GChart type="ColumnChart" :data="chartData" :options="chartOptions"/>
+    </div>
+    <br>
+
+    <v-row>
+      <v-col cols="12" sm="3" offset="9">
+        <v-btn
+            align="right"
+            style="text-transform: capitalize; font-weight: bolder;"
+            block
+            rounded
+            color="red"
+            dark
+        >
+          <button  @click="download">Export pdf</button>
+        </v-btn>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
-
-
-
 <script>
+import jsPDF from "jspdf";
+import domtoimage from "dom-to-image";
 import { GChart } from "vue-google-charts";
 export default {
   name: "App",
@@ -108,7 +109,7 @@ export default {
             (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)],
       modal: false,
       menu: false,
-      select: false,
+
       // Array will be automatically processed with visualization.arrayToDataTable function
       chartData: [
         ["Abschnitt", "Bestellungen"],
@@ -141,9 +142,62 @@ export default {
   },
   computed: {
     dateRangeText () {
-      return this.dates.join(' - ')
+      return this.dates.join(' / ')
     },
   },
+  props: {
+    msg: String
+  },
+  methods: {
+
+    download() {
+      /** WITH CSS */
+      domtoimage
+          .toPng(this.$refs.content)
+          .then(function(dataUrl) {
+            var img = new Image();
+            img.src = dataUrl;
+            const doc = new jsPDF({
+              orientation: "portrait",
+              unit: "pt",
+              format: [900, 1500]
+            });
+            doc.addImage(img, "JPEG", 100, 100);
+            const date = new Date();
+            const url = window.URL.createObjectURL;
+            const filename =
+                "OrderStatusReport_" +
+                date.getFullYear() +
+                ("0" + (date.getMonth() + 1)).slice(-2) +
+                ("0" + date.getDate()).slice(-2) +
+                ("0" + date.getHours()).slice(-2) +
+                ".pdf";
+            doc.save(filename)
+            window.URL.revokeObjectURL(url);
+            alert("Export File has downloaded!"); // or you know, something with better UX...
+          })
+          .catch(function(error) {
+            console.error("oops, something went wrong!", error);
+          });
+    },
+  }
 };
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+h3 {
+  margin: 40pt 0 0;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+}
+</style>

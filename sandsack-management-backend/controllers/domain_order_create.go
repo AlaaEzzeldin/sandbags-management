@@ -12,7 +12,7 @@ import (
 // @Description CreateOrder - Unterabschnitt creates the order
 // @Summary CreateOrder - Unterabschnitt creates the order
 // @Accept json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.CreateOrderInput true "CreateOrder"
 // @Success 200 {object} models.Order
 // @Failure 500 {object} models.ErrorResponse
@@ -88,6 +88,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 	if err != nil {
 		log.Println("GetOrder error", err.Error())
 	}
+
 
 	c.JSON(http.StatusOK, updatedOrder)
 

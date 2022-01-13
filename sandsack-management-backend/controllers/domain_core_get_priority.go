@@ -12,7 +12,7 @@ import (
 // @Description GetPriority - array of priorities in system
 // @Summary GetPriority - array of priorities in system
 // @Accept json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Success 200 {array} models.Priority
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
@@ -25,7 +25,7 @@ func (a *App) GetPriority(c *gin.Context) {
 		log.Println("GetPriority error", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrMessage: "something went wrong",
-			ErrCode: http.StatusInternalServerError,
+			ErrCode:    http.StatusInternalServerError,
 		})
 		return
 	}

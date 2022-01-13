@@ -23,6 +23,56 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/core/driver/add": {
+            "post": {
+                "description": "This endpoint adds new driver",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Core"
+                ],
+                "summary": "This endpoint adds new driver",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "name, description",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AddDriverInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/core/equipment": {
             "get": {
                 "description": "GetEquipment - array of equipment and current quantity of it in Mollnhof",
@@ -36,7 +86,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -87,7 +137,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -185,7 +235,7 @@ var doc = `{
         },
         "/core/equipment/return": {
             "patch": {
-                "description": "This endpoint increase the quantity of chosen equipment",
+                "description": "This endpoint increase the quantity of chosen equipment, when it is returned to the station. Only Mollnhof can do it.",
                 "consumes": [
                     "application/json"
                 ],
@@ -199,7 +249,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -239,6 +289,56 @@ var doc = `{
                 }
             }
         },
+        "/core/equipment/update": {
+            "patch": {
+                "description": "This endpoint change quantity of equipment. It is used only by Einsatzleiter",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Core"
+                ],
+                "summary": "This endpoint change quantity of equipment. It is used only by Einsatzleiter",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "id, quantity",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateEquipmentInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/core/priority": {
             "get": {
                 "description": "GetPriority - array of priorities in system",
@@ -252,7 +352,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -358,7 +458,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -411,7 +511,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -466,7 +566,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -522,7 +622,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -573,7 +673,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -627,7 +727,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -683,7 +783,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -706,6 +806,59 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/models.Order"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/edit": {
+            "patch": {
+                "description": "This endpoint edits priority and/or quantity of equipment of the order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "This endpoint edits priority and/or quantity of equipment of the order",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "EditOrder",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.EditOrderInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Order"
                         }
                     },
                     "400": {
@@ -773,7 +926,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -823,7 +976,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -885,7 +1038,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -929,7 +1082,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -1031,7 +1184,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -1060,6 +1213,54 @@ var doc = `{
             }
         },
         "/users/me": {
+            "get": {
+                "description": "GetProfile - get info of the user",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "GetProfile - get info of the user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.User"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            },
             "patch": {
                 "description": "This endpoint enables to change some user profile information",
                 "consumes": [
@@ -1075,7 +1276,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Bearer ",
+                        "description": " ",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -1203,6 +1404,17 @@ var doc = `{
         }
     },
     "definitions": {
+        "models.AddDriverInput": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ChangePasswordInput": {
             "type": "object",
             "properties": {
@@ -1217,9 +1429,6 @@ var doc = `{
         "models.Comment": {
             "type": "object",
             "properties": {
-                "branch_name": {
-                    "type": "string"
-                },
                 "comment_text": {
                     "type": "string"
                 },
@@ -1234,6 +1443,9 @@ var doc = `{
                 },
                 "order_id": {
                     "type": "integer"
+                },
+                "role": {
+                    "type": "string"
                 },
                 "update_date": {
                     "type": "string"
@@ -1296,6 +1508,23 @@ var doc = `{
                 },
                 "phone": {
                     "type": "string"
+                }
+            }
+        },
+        "models.EditOrderInput": {
+            "type": "object",
+            "properties": {
+                "equipments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.OrderEquipment"
+                    }
+                },
+                "order_id": {
+                    "type": "integer"
+                },
+                "priority": {
+                    "type": "integer"
                 }
             }
         },
@@ -1514,11 +1743,25 @@ var doc = `{
                 "access_token": {
                     "type": "string"
                 },
+                "name": {
+                    "type": "string"
+                },
                 "refresh_token": {
                     "type": "string"
                 },
                 "role": {
                     "type": "string"
+                }
+            }
+        },
+        "models.UpdateEquipmentInput": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
                 }
             }
         },
@@ -1637,5 +1880,5 @@ func (s *s) ReadDoc() string {
 }
 
 func init() {
-	swag.Register("swagger", &s{})
+	swag.Register(swag.Name, &s{})
 }

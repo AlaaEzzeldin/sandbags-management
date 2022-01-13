@@ -91,10 +91,29 @@
           ></v-textarea>
         </v-col>
       </v-row>
+      <v-row v-if="getOrder.logs">
+        <v-col cols="12" sm="12">
+          <h3 style="font-weight: bolder; color: black">Bestellverlauf</h3>
+        </v-col>
+      </v-row>
+      <v-row
+          v-for="item in getOrder.logs"
+          :key="item.id"
+          style="color: black"
+      >
+        <v-col cols="3">
+          <b>{{item.create_date}}</b>
+        </v-col>
+        <v-col>
+          <div class="float-right">
+            {{item.description}}
+          </div>
+        </v-col>
+      </v-row>
     </v-card-text>
 
     <!------------------------------------------------- Unterabschnitt ------------------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole() === 3">
+    <v-card-actions v-if="getCurrentUserRole === 'Unterabschnitt'">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -142,7 +161,7 @@
     </v-card-actions>
 
     <!---------------------------------- Einsatzabschnitt  -------------------------------->
-    <v-card-actions v-if="this.getLoggedInUserRole() === 2">
+    <v-card-actions v-if="this.getCurrentUserRole === 'Einsatzabschnitt'">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -189,7 +208,7 @@
     </v-card-actions>
 
     <!----------------------------------  Hauptabschnitt -------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole() === 1">
+    <v-card-actions v-if="getCurrentUserRole === 'Hauptabschnitt'">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -236,7 +255,7 @@
     </v-card-actions>
 
     <!------------------------------------------------- Mollhof ------------------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole() === 4">
+    <v-card-actions v-if="getCurrentUserRole === 'Mollnhof'">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
@@ -283,6 +302,9 @@ export default {
   computed: {
     getOrder() {
       return this.$store.getters.getOrder
+    },
+    getCurrentUserRole(){
+      return this.$store.getters.getCurrentUserRole
     }
   },
   methods: {
@@ -308,19 +330,7 @@ export default {
       this.cardText = cardText;
       this.newStatus = newStatus;
       this.confirmationDialog = true;
-    },
-    // hard coding the users roles
-    getLoggedInUserRole() {
-      if (this.$route.params.userRole === '1') // Hauptabschintt
-        return 1
-      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
-        return 2
-      else if (this.$route.params.userRole === '3') //Unterabschnitt
-        return 3
-      else if (this.$route.params.userRole === '4') // Mollhof
-        return 4
     }
-
   }
 }
 </script>

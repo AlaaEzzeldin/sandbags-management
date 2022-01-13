@@ -1,25 +1,18 @@
 package controllers
 
-import (
-	"github.com/gin-gonic/gin"
-	"log"
-	"net/http"
-	"team2/sandsack-management-backend/models"
-	"team2/sandsack-management-backend/service"
-)
-
 // AddEquipment
 // @Description This endpoint adds new equipment
 // @Summary This endpoint adds new equipment
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.OrderEquipment true "name, quantity"
 // @Success 200 {array} models.OrderEquipment
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Tags Core
 // @Router /core/equipment/add [post]
+/*
 func (a *App) AddEquipment(c *gin.Context) {
 	var input models.OrderEquipment
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -45,3 +38,6 @@ func (a *App) AddEquipment(c *gin.Context) {
 	c.JSON(http.StatusOK, equipments)
 	return
 }
+
+
+ */

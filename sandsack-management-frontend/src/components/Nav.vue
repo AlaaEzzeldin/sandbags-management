@@ -18,7 +18,7 @@
       </v-row>
     </div>
 
-    <v-list rounded>
+    <v-list rounded class="mb-16">
       <v-list-item-group>
         <v-list-item
             v-for="(item, i) in getNavListForLoggedInUserRoll()"
@@ -36,13 +36,19 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
+    <EquipmentQuantityTable/>
   </v-navigation-drawer>
 </template>
 
 <script>
+import EquipmentQuantityTable from '@/components/EquipmentQuantityTable.vue'
 
 export default {
   name: "Navigation",
+
+  components: {
+    EquipmentQuantityTable
+  },
 
   data() {
     return {
@@ -88,48 +94,38 @@ export default {
           icon: 'mdi-format-list-bulleted',
         },
         {
+          title: 'Ausrüstungverwaltung',
+          component: 'ManageEquipmentPage',
+          icon: 'mdi-cog'
+        },
+        {
           title: 'Konto',
           component: 'KontoPage',
           icon: 'mdi-account',
-        },
+        }
       ],
     }
   },
-  computed: {},
-
+  computed:{
+    getCurrentUserRole(){
+      return this.$store.getters.getCurrentUserRole
+    }
+  },
   methods:
       {
         // hard coding for the branch name
         getLoggedInBranchName() {
-          if (this.getLoggedInUserRole() === 1)
-            return "Hauptabschintt-Mitte";
-          else if (this.getLoggedInUserRole() === 2)
-            return "EA 1-Altstadt";
-          else if (this.getLoggedInUserRole() === 3)
-            return "EA 1.1 Altstadt- Ost";
-          else if (this.getLoggedInUserRole() === 4)
-            return "Mollnhof";
+          return this.$store.getters.getCurrentUserRole
+
         },
         getNavListForLoggedInUserRoll() {
-          if (this.getLoggedInUserRole() === 1 || this.getLoggedInUserRole() === 2)
+          if (['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter'].includes(this.getCurrentUserRole))
             return this.navItemsEinsatzabschnittAndHauptabschnitt;
-          else if (this.getLoggedInUserRole() === 3)
+          else if (this.getCurrentUserRole === 'Unterabschnitt')
             return this.navItemsUnterabschintt;
-          else if (this.getLoggedInUserRole() === 4)
+          else if (this.getCurrentUserRole === 'Mollnhof')
             return this.navItemsMollnhof;
         },
-
-        // hard coding the users roles
-        getLoggedInUserRole() {
-          if (this.$route.params.userRole === '1') // Hauptabschintt
-            return 1
-          else if (this.$route.params.userRole === '2') // Einzatsabschnitt
-            return 2
-          else if (this.$route.params.userRole === '3') //Unterabschnitt
-            return 3
-          else if (this.$route.params.userRole === '4') // Mollhof
-            return 4
-        }
       }
 
 }

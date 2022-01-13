@@ -13,7 +13,7 @@ import (
 // @Summary Unterabschnitt confirms that equipment is successfully delivered
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "Bearer "
+// @Param Authorization header string true " "
 // @Param input body models.ConfirmDeliveryInput true "ConfirmDelivery"
 // @Success 200 {array} models.Order
 // @Failure 500 {object} models.ErrorResponse
