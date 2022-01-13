@@ -5,16 +5,8 @@
   >
     <v-card outlined >
       <v-card-title>
-        <v-col cols="2">
-          <v-avatar
-              color="white"
-              size="60">
-            <v-icon color="black" large>mdi-home</v-icon>
-          </v-avatar>
-        </v-col>
-        <v-col cols="10">
-          <h2>{{getLoggedInUser.name}}</h2>
-          <h3>{{getLoggedInUser.roleName}}</h3>
+        <v-col>
+          <h2>Kennwort ändern</h2>
         </v-col>
       </v-card-title>
       <v-card-text>
@@ -23,15 +15,6 @@
             v-model="valid"
             lazy-validation
         >
-<!--          <v-text-field
-              v-model="getLoggedInUser.email"
-              :rules="emailRules"
-              label="E-mail"
-              required
-              filled
-              outlined
-              prepend-icon="mdi-email"
-          ></v-text-field>-->
           <v-text-field
               v-model="getLoggedInUser.name"
               :rules="nameRules"
