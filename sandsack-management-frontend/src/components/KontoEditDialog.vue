@@ -2,6 +2,7 @@
   <v-dialog
       v-model="dialog"
       width="800"
+      persistent
   >
     <v-card outlined >
       <v-card-title>
@@ -80,7 +81,7 @@
                   rounded
                   color="red"
                   dark
-                  @click="dialog = false"
+                  @click="closeDialog"
               >
                 Abrechen
               </v-btn>
@@ -133,7 +134,7 @@ export default {
       ],
     }
   },
-  created: function() {
+  mounted: function() {
     this.phone = this.$store.getters.getLoggedInUser.phone
     this.name = this.$store.getters.getLoggedInUser.name
   },
@@ -151,6 +152,9 @@ export default {
       }
       this.$store.dispatch("updateUserInfo",  data)
       this.$emit("close")
+    },
+    closeDialog(){
+      this.$emit('close')
     }
   }
 }
