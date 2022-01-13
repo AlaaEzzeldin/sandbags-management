@@ -76,7 +76,7 @@
       <v-row >
         <v-col cols="12">
           <v-textarea
-              v-model="newOrder.notesByUnterabschnitt"
+              v-model="newOrder.comment"
               outlined
               filled
               prepend-icon="mdi-message-bulleted"
@@ -128,15 +128,23 @@ export default {
       'Mittle',
       'Hohe',
     ],
-    newOrder: {
-      id:"",
-      status: "anstehend", //this will be deleted when integrating with the backened
-      from: "",
+    order: {
       type: "",
       quantity: "",
       priority: "",
       deliveryAddress: "",
       notesByUnterabschnitt: ""
+    },
+    newOrder:{
+      address_to: "Johann-bergler Strasse 3",
+      comment: "test comment 2",
+      equipments: [
+        {
+          "id": 1,
+          "quantity": 6
+        }
+      ],
+      "priority": 2
     }
 
   }),
@@ -152,7 +160,6 @@ export default {
 
   methods: {
     createOrder() {
-      this.newOrder.from= this.getBranchName
       console.log("new order", this.newOrder)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})
