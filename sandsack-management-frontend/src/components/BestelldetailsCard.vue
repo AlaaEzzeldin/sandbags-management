@@ -123,14 +123,14 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='anstehend'"
+              :disabled="getOrder.status!=='ANSTEHEND'"
               @click="editOrder"
           >
             Bestellung bearbeiten
           </v-btn>
         </v-col>
 
-        <v-col cols="12" sm="6" offset="3" v-if="getOrder.status==='Auf dem Weg'">
+        <v-col cols="12" sm="6" offset="3" v-if="getOrder.status==='AUF DEM WEG'">
           <v-btn
               style="text-transform: capitalize; font-weight: bolder;"
               rounded
@@ -138,7 +138,7 @@
               dark
               block
               outlined
-              @click="changeStatus('Lieferung bestätigen?','geliefert')"
+              @click="changeStatus('Lieferung bestätigen?','GELIEFERT')"
           >
             Lieferung bestätigen
           </v-btn>
@@ -150,8 +150,8 @@
               color="red"
               dark
               block
-              :disabled="getOrder.status!=='anstehend'"
-              @click="changeStatus('Bestellung stornieren?','storniert')"
+              :disabled="getOrder.status!=='ANSTEHEND'"
+              @click="changeStatus('Bestellung stornieren?','STORNIERT')"
           >
             Bestellung stornieren
           </v-btn>
@@ -171,8 +171,8 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='anstehend'"
-              @click="changeStatus('Bestellung weiterleiten an Hauptabschnitt?','weitergeleitet')"
+              :disabled="getOrder.status!=='ANSTEHEND'"
+              @click="changeStatus('Bestellung weiterleiten an Hauptabschnitt?','WEITERGELEITET BEI EINSATZABSCHNITT')"
           >
             Bestellung weiterleiten an Hauptabschnitt
           </v-btn>
@@ -185,7 +185,7 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='anstehend'"
+              :disabled="getOrder.status!=='ANSTEHEND'"
               @click="editOrder"
           >
             Bestellung bearbeiten
@@ -198,8 +198,8 @@
               color="red"
               dark
               block
-              :disabled="getOrder.status!=='anstehend'"
-              @click="changeStatus('Bestellung ablehnen?','abgelehnt')"
+              :disabled="getOrder.status!=='ANSTEHEND'"
+              @click="changeStatus('Bestellung ablehnen?','ABGELEHNT BEI EINSATZABSCHNITT')"
           >
             Bestellung ablehnen
           </v-btn>
@@ -218,8 +218,8 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='weitergeleitet'"
-              @click="changeStatus('akzeptiert?','akzeptiert')"
+              :disabled="getOrder.status!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
+              @click="changeStatus('akzeptiert?','WEITERGELEITET BEI HAUPTABSCHNITT')"
           >
             Bestellung annehmen
           </v-btn>
@@ -232,7 +232,53 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='weitergeleitet'"
+              :disabled="getOrder.status!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
+          >
+            Bestellung bearbeiten
+          </v-btn>
+        </v-col>
+        <v-col cols="12" sm="6" offset="3">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              rounded
+              color="red"
+              dark
+              block
+              :disabled="getOrder.status!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
+              @click="changeStatus('Bestellung ablehnen?','ABGELEHNT BEI HAUPTABSCHNITT')"
+          >
+            Bestellung ablehnen
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-card-actions>
+
+    <!----------------------------------  Einsatzleiter -------------------------------->
+    <v-card-actions v-if="getCurrentUserRole === 'Einsatzleiter'">
+      <v-row>
+        <v-col cols="12" sm="6" offset="3">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              rounded
+              color="green"
+              dark
+              block
+              outlined
+              :disabled="getOrder.status!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
+              @click="changeStatus('akzeptiert?','AKZEPTIERT')"
+          >
+            Bestellung annehmen
+          </v-btn>
+        </v-col>
+        <v-col cols="12" sm="6" offset="3">
+          <v-btn
+              style="text-transform: capitalize; font-weight: bolder;"
+              rounded
+              color="red"
+              dark
+              block
+              outlined
+              :disabled="getOrder.status!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
               @click="editOrder"
           >
             Bestellung bearbeiten
@@ -245,8 +291,8 @@
               color="red"
               dark
               block
-              :disabled="getOrder.status!=='weitergeleitet'"
-              @click="changeStatus('Bestellung ablehnen?','abgelehnt')"
+              :disabled="getOrder.status!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
+              @click="changeStatus('Bestellung ablehnen?','ABGELEHNT BEI EINSATZLEITER')"
           >
             Bestellung ablehnen
           </v-btn>
@@ -265,14 +311,15 @@
               dark
               block
               outlined
-              v-bind:disabled="getOrder.status!=='akzeptiert'"
-              @click="changeStatus('Bestellung senden?','Auf dem Weg')"
+              v-bind:disabled="getOrder.status!=='AKZEPTIERT'"
+              @click="changeStatus('Bestellung senden?','AUF DEM WEG')"
           >
             Bestellung abgesendet
           </v-btn>
         </v-col>
       </v-row>
     </v-card-actions>
+
     <ConfirmationDialog
         :cardText="cardText"
         :newStatus="newStatus"

@@ -51,9 +51,11 @@
                     style="text-transform: capitalize; font-weight: bolder;"
                     @click="editItem(item)"
                     small
-                    :disabled="(item.status!=='anstehend' &&   ['Einsatzabschnitt', 'Unterabschnitt'].includes(getCurrentUserRole) )
-                    || (item.status!=='weitergeleitet' && getCurrentUserRole=== 'Hauptabschnitt') "
-                    class="elevation-0"
+                    :disabled="(item.status!=='ANSTEHEND' &&    getCurrentUserRole=== 'Unterabschnitt')
+                    || (item.status!=='WEITERGELEITET BEI EINSATZABSCHNITT' && getCurrentUserRole=== 'Hauptabschnitt')
+                    || (item.status!=='WEITERGELEITET BEI HAUPTABSCHNITT' && getCurrentUserRole=== 'Einsatzleiter') "
+
+                class="elevation-0"
                     color="primary"
                     rounded
                     icon
