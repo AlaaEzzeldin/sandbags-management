@@ -1,13 +1,22 @@
 export const Mixin = {
     methods: {
         getColor(status) {
-            if (status === 'akzeptiert') return 'blue'
-            if (status === 'geliefert') return 'green'
-            else if (status === 'abgelehnt') return 'red'
-            else if (status === 'storniert') return 'red'
-            else if (status === 'Auf dem Weg') return 'orange'
-            else if (status === 'anstehend') return 'grey'
-            else if (status === 'weitergeleitet') return 'black'
+         if (status === 'ANSTEHEND') return 'grey'
+         else if (status === 'STORNIERT') return 'red'
+
+         else if (status === 'WEITERGELEITET BEI EINSATZABSCHNITT') return 'black'
+         else if (status === 'WEITERGELEITET BEI HAUPTABSCHNITT') return 'black'
+
+         else if (status === 'ABGELEHNT BEI EINSATZABSCHNITT') return 'red'
+         else if (status === 'ABGELEHNT BEI HAUPTABSCHNITT') return 'red'
+         else if (status === 'ABGELEHNT BEI EINSATZLEITER') return 'red'
+
+         else if (status === 'AKZEPTIERT') return 'blue'
+         else if (status === 'AUF DEM WEG') return 'orange'
+         else   if (status === 'GELIEFERT') return 'green'
+
+
+
         }
     }
 };
