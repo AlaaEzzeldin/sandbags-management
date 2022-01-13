@@ -41,7 +41,7 @@
         >
           <h1 style="text-align: center ;color: red">
             <div v-if="item.type ==='Hauptabschnitten'">
-              {{item.general_statistics.total_number_of_orders}}
+              {{ item.general_statistics.total_number_of_orders }}
             </div>
           </h1>
         </v-list-item>
@@ -54,7 +54,7 @@
         >
           <h1 style="color: red">
             <div v-if="item.type ==='Hauptabschnitten'">
-              {{item.general_statistics.total_number_of_accepted_orders}}%
+              {{ item.general_statistics.total_number_of_accepted_orders }}%
             </div>
           </h1>
         </v-list-item>
@@ -67,7 +67,7 @@
         >
           <h1 style="color: red">
             <div v-if="item.type ==='Hauptabschnitten'">
-              {{item.general_statistics.average_processing_time}}
+              {{ item.general_statistics.average_processing_time }}
             </div>
           </h1>
         </v-list-item>
@@ -135,7 +135,8 @@
 <script>
 import jsPDF from "jspdf";
 import domtoimage from "dom-to-image";
-import { GChart } from "vue-google-charts";
+import {GChart} from "vue-google-charts";
+
 export default {
 
   name: 'BestellübersichtPage',
@@ -152,8 +153,8 @@ export default {
             (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)],
       modal: false,
       menu: false,
-      selectedHaupt:'',
-      selectedEinz:'',
+      selectedHaupt: '',
+      selectedEinz: '',
 
       // Array will be automatically processed with visualization.arrayToDataTable function
       /*chartData: [
@@ -171,7 +172,7 @@ export default {
         },
         vAxis: {
           title: "Bestellungen",
-          ticks: [0,10,20,30,40,50,60,70,80,90,100]
+          ticks: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
         },
         chart: {
           title: "order status",
@@ -191,13 +192,13 @@ export default {
     getStatisticschart() {
       return this.$store.getters.getStatisticschart
     },
-    dateRangeText () {
+    dateRangeText() {
       return this.dates.join(' / ')
     },
-    getHauptdata(){
+    getHauptdata() {
       var HauptselectOptions = []
-      for (let i=0; i<this.getStatisticschart.length; i++){
-        if(this.getStatisticschart[i].type === "Hauptabschnitten") {
+      for (let i = 0; i < this.getStatisticschart.length; i++) {
+        if (this.getStatisticschart[i].type === "Hauptabschnitten") {
           console.log('length of chart', this.getStatisticschart[i].statistics_per_hauptabschnitt.length)
           for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
             HauptselectOptions.push(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].name)
@@ -205,39 +206,35 @@ export default {
         }
       }
 
-      console.log('SelectedHaupt is',this.$data.selectedHaupt)
+      console.log('SelectedHaupt is', this.$data.selectedHaupt)
       return HauptselectOptions;
     },
 
-    getEinsatzdata(){
+    getEinsatzdata() {
       var EinsatzselectOptions = []
-      for(let i=0; i<this.getHauptdata.length; i++) {
-        if(this.$data.selectedHaupt == this.getHauptdata[i]) {
-          for(let j=0; j<this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt.length; j++){
+      for (let i = 0; i < this.getHauptdata.length; i++) {
+        if (this.$data.selectedHaupt === this.getHauptdata[i]) {
+          for (let j = 0; j < this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt.length; j++) {
             EinsatzselectOptions.push(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].name)
           }
         }
       }
-      console.log('SelectedEinz is',this.$data.selectedEinz)
+      console.log('SelectedEinz is', this.$data.selectedEinz)
       return EinsatzselectOptions;
     },
 
-    getUnterdata(){
+    getUnterdata() {
       var UnterselectOptions = []
-      UnterselectOptions.push(["Abschnitt","Bestellungen"],['unterabschnitt',20],['unterabschnitt',20])
-      for(let i=0; i<this.getHauptdata.length; i++){
-        for(let j=0; j<this.getEinsatzdata.length; j++){
-          if(this.$data.selectedHaupt == this.getHauptdata[i] &&
-              this.$data.selectedEinz == this.getEinsatzdata[j])
-          {
+      UnterselectOptions.push(["Abschnitt", "Bestellungen"], ['unterabschnitt', 10], ['unterabschnitt', 15])
+      for (let i = 0; i < this.getHauptdata.length; i++) {
+        for (let j = 0; j < this.getEinsatzdata.length; j++) {
+          if (this.$data.selectedHaupt === this.getHauptdata[i] &&
+              this.$data.selectedEinz === this.getEinsatzdata[j]) {
             UnterselectOptions.pop()
             UnterselectOptions.pop()
-            for(let k=0; k<this.getStatisticschart[0].statistics_per_hauptabschnitt[i].
-                statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt.length; k++ ){
-              UnterselectOptions.push([this.getStatisticschart[0].statistics_per_hauptabschnitt[i].
-                  statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].name,
-                parseInt(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].
-                    statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].total_number_of_orders)])
+            for (let k = 0; k < this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt.length; k++) {
+              UnterselectOptions.push([this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].name,
+                parseInt(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].total_number_of_orders)])
             }
 
           }
@@ -257,7 +254,7 @@ export default {
       /** WITH CSS */
       domtoimage
           .toPng(this.$refs.content)
-          .then(function(dataUrl) {
+          .then(function (dataUrl) {
             var img = new Image();
             img.src = dataUrl;
             const doc = new jsPDF({
@@ -279,7 +276,7 @@ export default {
             window.URL.revokeObjectURL(url);
             alert("Export File has downloaded!");
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.error("oops, something went wrong!", error);
           });
     },
@@ -304,14 +301,17 @@ export default {
 h3 {
   margin: 40pt 0 0;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 a {
   color: #D7201F;
 }
