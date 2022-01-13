@@ -13,7 +13,7 @@
         <v-col cols="9">
           <h1 style="color: red;font-weight: bolder;  font-size: x-large" class="justify-center"> Feuerwehr Passau </h1>
           <h1 style="color: black;font-weight: bolder;  font-size: large;" class="justify-center">
-            {{ getLoggedInBranchName() }} </h1>
+            {{ getLoggedInUserName }} </h1>
         </v-col>
       </v-row>
     </div>
@@ -106,17 +106,19 @@ export default {
       ],
     }
   },
+  created() {
+    this.$store.dispatch("getUserInfo")
+  },
   computed:{
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
-    }
+    },
+    getLoggedInUserName() {
+      return this.$store.getters.getLoggedInUser.name
+    },
   },
   methods:
       {
-        // hard coding for the branch name
-        getLoggedInBranchName() {
-          return this.$store.getters.getCurrentUserName
-        },
         getNavListForLoggedInUserRoll() {
           if (['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter'].includes(this.getCurrentUserRole))
             return this.navItemsEinsatzabschnittAndHauptabschnitt;
