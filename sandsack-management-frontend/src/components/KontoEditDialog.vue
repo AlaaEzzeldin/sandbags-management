@@ -14,7 +14,7 @@
         </v-col>
         <v-col cols="10">
           <h2>{{getUser.name}}</h2>
-          <h3>{{getUser.role}}</h3>
+          <h3>{{getUser.branch_name}}</h3>
         </v-col>
       </v-card-title>
       <v-card-text>
