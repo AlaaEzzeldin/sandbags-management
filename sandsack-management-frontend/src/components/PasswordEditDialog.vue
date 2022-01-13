@@ -43,6 +43,7 @@
                   block
                   rounded
                   color="red"
+                  outlined
                   dark
                   @click="closeDialog"
               >
@@ -50,7 +51,6 @@
               </v-btn>
             </v-col>
             <v-col cols="3">
-
               <v-btn
                   style="text-transform: capitalize; font-weight: bolder;"
                   block
@@ -98,10 +98,10 @@ export default {
     },
     submitUpdatedInfo(){
       let data={
-        "name": this.getLoggedInUser.name,
-        "phone": this.getLoggedInUser.phone,
+        "new_password": this.newPassword,
+        "old_password": this.oldPassword,
       }
-      this.$store.dispatch("updateUserInfo",  data)
+      this.$store.dispatch("updatePassword",  data)
       this.$emit("close")
     }
   }

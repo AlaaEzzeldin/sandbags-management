@@ -1,5 +1,6 @@
 //import authAPI from '../../api/auth';
 import AuthService from '../../services/auth.service';
+import equipmentAPI from "../../api/equipment";
 
 
 const state= {
@@ -47,7 +48,16 @@ const getters = {
                    return Promise.reject(error);
                }
            );
-       }
+       },
+     updatePassword({commit}, payload) {
+       AuthService.updatePassword(payload.data)
+         .then(function (response) {
+           commit('UPDATE_PASSWORD', response.data);
+         })
+         .catch(function (error) {
+           console.log(error);
+         });
+     }
    }
         const mutations= {
         loginSuccess(state) {
