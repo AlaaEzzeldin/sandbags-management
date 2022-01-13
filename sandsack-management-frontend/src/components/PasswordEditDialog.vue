@@ -25,33 +25,14 @@
               prepend-icon="mdi-key"
           ></v-text-field>
           <v-text-field
-              v-model="getLoggedInUser.phone"
-              :rules="phoneRules"
-              label="Phone"
-              required
-              filled
-              outlined
-              prepend-icon="mdi-phone"
-          ></v-text-field>
-
-<!--          <v-text-field
-              v-model="getLoggedInUser.password"
+              v-model="newPassword"
               :rules="passwordRules"
-              label="Altes Passwort"
-              prepend-icon="mdi-lock"
+              label="Neues Kennwort"
               required
               filled
               outlined
+              prepend-icon="mdi-key"
           ></v-text-field>
-          <v-text-field
-              v-model="getLoggedInUser.password"
-              :rules="passwordRules"
-              label="Neues Passwort"
-              prepend-icon="mdi-lock"
-              required
-              filled
-              outlined
-          ></v-text-field>-->
         </v-form>
       </v-card-text>
         <v-card-actions>
@@ -65,9 +46,8 @@
                   dark
                   @click="closeDialog"
               >
-                Abrechen
+                Abbrechen
               </v-btn>
-
             </v-col>
             <v-col cols="3">
 
