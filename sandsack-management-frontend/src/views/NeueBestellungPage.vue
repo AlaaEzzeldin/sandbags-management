@@ -8,7 +8,7 @@
       <v-row >
         <v-col cols="12">
           <v-text-field
-              :value="getBranchName"
+              :value="getLoggedInBranchName"
               readonly
               prepend-icon="mdi-account"
               filled
@@ -145,14 +145,14 @@ export default {
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
     },
-    getBranchName() {
-      return this.$store.getters.getCurrentUserRole
+    getLoggedInBranchName() {
+      return this.$store.getters.getCurrentUserName
     },
   },
 
   methods: {
     createOrder() {
-      this.newOrder.from= this.getBranchName
+      this.newOrder.from= this.getLoggedInBranchName
       console.log("new order", this.newOrder)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})

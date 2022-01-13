@@ -51,9 +51,11 @@
                     style="text-transform: capitalize; font-weight: bolder;"
                     @click="editItem(item)"
                     small
-                    :disabled="(item.status!=='anstehend' &&   ['Einsatzabschnitt', 'Unterabschnitt'].includes(getCurrentUserRole) )
-                    || (item.status!=='weitergeleitet' && getCurrentUserRole=== 'Hauptabschnitt') "
-                    class="elevation-0"
+                    :disabled="(item.status!=='ANSTEHEND' &&    getCurrentUserRole=== 'Unterabschnitt')
+                    || (item.status!=='WEITERGELEITET BEI EINSATZABSCHNITT' && getCurrentUserRole=== 'Hauptabschnitt')
+                    || (item.status!=='WEITERGELEITET BEI HAUPTABSCHNITT' && getCurrentUserRole=== 'Einsatzleiter') "
+
+                class="elevation-0"
                     color="primary"
                     rounded
                     icon
@@ -88,10 +90,12 @@
 
 <script>
 
+import {Mixin} from '../mixin/mixin.js'
 
 export default {
   name: 'Bestelltabelle',
   props: ['orders'],
+  mixins: [Mixin],
   components: {},
   data: () => ({
     search: '',
@@ -117,15 +121,7 @@ export default {
     }
   },
   methods: {
-    getColor(status) {
-      if (status === 'akzeptiert') return 'blue'
-      if (status === 'geliefert') return 'green'
-      else if (status === 'abgelehnt') return 'red'
-      else if (status === 'storniert') return 'red'
-      else if (status === 'Auf dem Weg') return 'orange'
-      else if (status === 'anstehend') return 'grey'
-      else if (status === 'weitergeleitet') return 'black'
-    },
+
     editItem(Item) {
       const orderId = Item.id;
       this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
