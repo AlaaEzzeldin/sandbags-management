@@ -39,7 +39,7 @@
               required
               filled
               outlined
-              prepend-icon="mdi-phone"
+              prepend-icon="mdi-account"
           ></v-text-field>
           <v-text-field
               v-model="getLoggedInUser.phone"
