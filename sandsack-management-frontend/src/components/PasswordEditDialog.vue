@@ -16,13 +16,13 @@
             lazy-validation
         >
           <v-text-field
-              v-model="getLoggedInUser.name"
-              :rules="nameRules"
-              label="Name"
+              v-model="oldPassword"
+              :rules="passwordRules"
+              label="Altes Kennwort"
               required
               filled
               outlined
-              prepend-icon="mdi-phone"
+              prepend-icon="mdi-key"
           ></v-text-field>
           <v-text-field
               v-model="getLoggedInUser.phone"
@@ -99,17 +99,6 @@ export default {
   data() {
     return {
       valid: true,
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      phoneRules: [
-        v => !!v || 'Phone is required',
-        v => /\(?\+\(?49\)?[ ()]?([- ()]?\d[- ()]?){10}/.test(v) || 'Phone must be valid',
-      ],
-      nameRules: [
-        v => !!v || 'Name is required',
-      ],
       passwordRules: [
         v => !!v || 'Password is required',
       ],
