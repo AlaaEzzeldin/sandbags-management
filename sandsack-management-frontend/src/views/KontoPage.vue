@@ -96,7 +96,9 @@ export default {
   data: () => ({
     dialog: null
   }),
-
+  created() {
+    this.$store.dispatch("getUserInfo")
+  },
   computed: {
     getLoggedInUser() {
       return this.$store.getters.getLoggedInUser
