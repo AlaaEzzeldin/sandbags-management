@@ -46,7 +46,7 @@
           </v-col>
           <v-col cols="10">
             <h2>{{ getLoggedInUser.name }}</h2>
-            <h3>{{ getLoggedInUser.role }}</h3>
+            <h3>{{ getLoggedInUser.branch_name }}</h3>
           </v-col>
         </v-row>
         <v-row class="pt-2">
@@ -106,12 +106,7 @@ export default {
     getLoggedInUser() {
       return this.$store.getters.getLoggedInUser
     },
-    getCurrentUserRole(){
-      return this.$store.getters.getCurrentUserRole
-    },
-    getLoggedInBranchName() {
-      return this.$store.getters.getCurrentUserName
-    },
+
   },
   methods:
       {
