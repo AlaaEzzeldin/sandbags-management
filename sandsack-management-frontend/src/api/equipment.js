@@ -10,7 +10,9 @@ export default {
     },
 
     update( id, data ){
-        return axios.patch( 'https://localhost:3001/equipment/'+id, data);
+        return axios.patch( 'http://18.193.112.34:8001/core/equipment/return', data, {
+            headers: authHeader()
+        });
     },
 
 }
