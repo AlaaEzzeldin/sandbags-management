@@ -1,14 +1,19 @@
 import axios from 'axios'
+import authHeader from "../services/auth-header";
+//import {BASE_URL} from "../api/config";
 
 export default {
     index( params ){
-        return axios.get( 'http://localhost:3001/users', {
+        return axios.get( 'http://18.193.112.34:8001/users', {
+            headers: authHeader(),
             params: params
         })
     },
 
-    show( id ){
-        return axios.get( 'http://localhost:3001/users/'+id );
+    show() {
+        return axios.get('http://18.193.112.34:8001/users/me', {
+            headers: authHeader(),
+        })
     },
 
     update( id, data ){
