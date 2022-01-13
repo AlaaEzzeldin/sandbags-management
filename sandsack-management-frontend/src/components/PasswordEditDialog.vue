@@ -80,7 +80,7 @@
                   rounded
                   color="red"
                   dark
-                  @click="dialog = false"
+                  @click="closeDialog"
               >
                 Abrechen
               </v-btn>
@@ -139,6 +139,9 @@ export default {
     }
     },
   methods: {
+    closeDialog() {
+      this.$emit('close')
+    },
     submitUpdatedInfo(){
       let data={
         "name": this.getLoggedInUser.name,
