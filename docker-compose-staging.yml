@@ -1,0 +1,37 @@
+version: "3.6"
+services:
+  goservice:
+    build: "./sandsack-management-backend"
+    ports:
+      - "8000"
+    depends_on:
+      - "db"
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=postgres
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+  nginx:
+    build: "./nginx"
+    ports:
+      - "8001:8001"
+    depends_on:
+      - "goservice"
+  frontend:
+    build: "./sandsack-management-frontend"
+    ports:
+      - "80:80"
+
+  db:
+    image: postgres
+    volumes:
+      - database:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+volumes:
+  database:
