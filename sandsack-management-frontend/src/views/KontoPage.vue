@@ -46,20 +46,20 @@
           </v-col>
           <v-col cols="10">
             <h2>{{ getLoggedInUser.name }}</h2>
-            <h3>{{ getLoggedInUser.branch_name }}</h3>
+            <h3>{{ getLoggedInUser.role }}</h3>
           </v-col>
         </v-row>
         <v-row class="pt-2">
-<!--
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon color="black">mdi-map-marker</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>{{ getLoggedInUser.address }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
--->
+          <!--
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="black">mdi-map-marker</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-title>{{ getLoggedInUser.address }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+          -->
           <v-list-item>
             <v-list-item-icon>
               <v-icon color="black">mdi-phone</v-icon>
@@ -106,19 +106,19 @@ export default {
   },
   methods:
       {
-        logout(){
-            this.$store.dispatch('logout').then(
-                () => {
-                  this.$router.push({name: 'LoginPage'})
-                },
-                error => {
-                  this.message =
-                      (error.response && error.response) ||
-                      error.message ||
-                      error.toString();
-                }
-            );
-          }
+        logout() {
+          this.$store.dispatch('logout').then(
+              () => {
+                this.$router.push({name: 'LoginPage'})
+              },
+              error => {
+                this.message =
+                    (error.response && error.response) ||
+                    error.message ||
+                    error.toString();
+              }
+          );
+        }
 
       }
 }

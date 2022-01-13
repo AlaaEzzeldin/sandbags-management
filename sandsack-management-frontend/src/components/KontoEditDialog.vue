@@ -14,7 +14,7 @@
         </v-col>
         <v-col cols="10">
           <h2>{{getLoggedInUser.name}}</h2>
-          <h3>{{getLoggedInUser.roleName}}</h3>
+          <h3>{{getLoggedInUser.role}}</h3>
         </v-col>
       </v-card-title>
       <v-card-text>
@@ -33,7 +33,7 @@
               prepend-icon="mdi-email"
           ></v-text-field>-->
           <v-text-field
-              v-model="getLoggedInUser.name"
+              v-model="name"
               :rules="nameRules"
               label="Name"
               required
@@ -42,7 +42,7 @@
               prepend-icon="mdi-account"
           ></v-text-field>
           <v-text-field
-              v-model="getLoggedInUser.phone"
+              v-model="phone"
               :rules="phoneRules"
               label="Phone"
               required
@@ -108,7 +108,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'KontoEditDialog',
   props: ['dialog'],
@@ -116,6 +115,8 @@ export default {
   data() {
     return {
       valid: true,
+      name: '',
+      phone: '',
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -132,17 +133,20 @@ export default {
       ],
     }
   },
-
+  created: function() {
+    this.phone = this.$store.getters.getLoggedInUser.phone
+    this.name = this.$store.getters.getLoggedInUser.name
+  },
   computed: {
-    getLoggedInUser() {
+    getLoggedInUser(){
       return this.$store.getters.getLoggedInUser
     }
-    },
+  },
   methods: {
     submitUpdatedInfo(){
       let data={
-        "name": this.getLoggedInUser.name,
-        "phone": this.getLoggedInUser.phone,
+        "name": this.name,
+        "phone": this.phone,
       }
       this.$store.dispatch("updateUserInfo",  data)
       this.$emit("close")
