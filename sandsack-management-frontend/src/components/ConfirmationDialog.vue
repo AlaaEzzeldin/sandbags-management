@@ -5,13 +5,13 @@
   >
     <v-card>
       <v-card-title>
-        {{ cardText }}
+        {{ getMessageText() }}
       </v-card-title>
       <v-container>
         <v-textarea
             label="Notizen"
             outlined
-            v-if="hasTextField"
+            v-if="action==='cancel'"
             :error="textFieldError"
             :error-messages="textFieldErrorMessages"
             v-model="textFieldValue"
@@ -55,13 +55,11 @@ export default {
   }),
   props: [
     "dialog",
-    "cardText",
-    'newStatus',
+    'action',
     'orderID',
-    'hasTextField'
   ],
   computed: {
-    getCurrentUserRole(){
+    getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
     },
     getLoggedInUser() {
@@ -74,18 +72,14 @@ export default {
     },
 
     submitNewStatus() {
-      if (this.newStatus === 'abgelehnt') {
-        if(!this.textFieldValue){
+      if (this.action === 'cancel') {
+        if (!this.textFieldValue) {
           this.textFieldError = true;
           this.textFieldErrorMessages = ['Notizen sind verpflichtend!']
-        }
-        else this.submitUpdatedOrder()
+        } else this.submitUpdatedOrder()
       } else {
-        let data = {
-          "status": this.newStatus
-        }
         let id = this.orderID
-        this.$store.dispatch("updateOrder", {id, data})
+        this.$store.dispatch("updateOrder", {id})
         this.closeDialog()
       }
     },
@@ -93,12 +87,46 @@ export default {
       let TextBy = this.getLoggedInUser.name
       let data = {
         "status": this.newStatus,
-        [TextBy] : this.textFieldValue
+        [TextBy]: this.textFieldValue
       }
       let id = this.orderID
       this.$store.dispatch("updateOrder", {id, data})
       this.closeDialog()
+    },
+    getMessageText() {
+      if (this.getCurrentUserRole === 'Unterabschnitt') {
+        if (this.action === 'confirm_delivery')
+          return 'Lieferung bestätigen?'
+        else if (this.action === 'cancel_order')
+          return 'Bestellung stornieren?'
+      }
+
+      else if (this.getCurrentUserRole === 'Einsatzabschnitt') {
+        if (this.action === 'accept')
+          return 'Bestellung weiterleiten an Hauptabschnitt?'
+        else if (this.action === 'cancel')
+          return 'Bestellung ablehnen?'
+      }
+
+      else if (this.getCurrentUserRole === 'Hauptabschnitt') {
+        if (this.action === 'accept')
+          return 'Bestellung weiterleiten an Einsatzleiter?'
+        else if (this.action === 'cancel')
+          return 'Bestellung ablehnen?'
+      }
+      else if (this.getCurrentUserRole === 'Einsatzleiter') {
+        if (this.action === 'accept')
+          return 'akzeptiert'
+        else if (this.action === 'cancel')
+          return 'Bestellung ablehnen?'
+      }
+      else if (this.getCurrentUserRole === 'Mollnhof') {
+        if (this.action === 'dispatch')
+          return 'Bestellung senden?'
+      }
+
     }
+
   }
 }
 </script>

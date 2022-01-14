@@ -138,7 +138,7 @@
               dark
               block
               outlined
-              @click="changeStatus('Lieferung bestätigen?','GELIEFERT')"
+              @click="changeStatus('confirm_delivery')"
           >
             Lieferung bestätigen
           </v-btn>
@@ -151,7 +151,7 @@
               dark
               block
               :disabled="getOrder.status!=='ANSTEHEND'"
-              @click="changeStatus('Bestellung stornieren?','STORNIERT')"
+              @click="changeStatus('cancel_order')"
           >
             Bestellung stornieren
           </v-btn>
@@ -172,7 +172,7 @@
               block
               outlined
               :disabled="getOrder.status!=='ANSTEHEND'"
-              @click="changeStatus('Bestellung weiterleiten an Hauptabschnitt?','WEITERGELEITET BEI EINSATZABSCHNITT')"
+              @click="changeStatus('accept')"
           >
             Bestellung weiterleiten an Hauptabschnitt
           </v-btn>
@@ -199,7 +199,7 @@
               dark
               block
               :disabled="getOrder.status!=='ANSTEHEND'"
-              @click="changeStatus('Bestellung ablehnen?','ABGELEHNT BEI EINSATZABSCHNITT')"
+              @click="changeStatus('cancel')"
           >
             Bestellung ablehnen
           </v-btn>
@@ -219,7 +219,7 @@
               block
               outlined
               :disabled="getOrder.status!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
-              @click="changeStatus('akzeptiert?','WEITERGELEITET BEI HAUPTABSCHNITT')"
+              @click="changeStatus('accept')"
           >
             Bestellung annehmen
           </v-btn>
@@ -245,7 +245,7 @@
               dark
               block
               :disabled="getOrder.status!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
-              @click="changeStatus('Bestellung ablehnen?','ABGELEHNT BEI HAUPTABSCHNITT')"
+              @click="changeStatus('cancel')"
           >
             Bestellung ablehnen
           </v-btn>
@@ -265,7 +265,7 @@
               block
               outlined
               :disabled="getOrder.status!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
-              @click="changeStatus('akzeptiert?','AKZEPTIERT')"
+              @click="changeStatus('accept')"
           >
             Bestellung annehmen
           </v-btn>
@@ -292,7 +292,7 @@
               dark
               block
               :disabled="getOrder.status!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
-              @click="changeStatus('Bestellung ablehnen?','ABGELEHNT BEI EINSATZLEITER')"
+              @click="changeStatus('cancel')"
           >
             Bestellung ablehnen
           </v-btn>
@@ -312,7 +312,7 @@
               block
               outlined
               v-bind:disabled="getOrder.status!=='AKZEPTIERT'"
-              @click="changeStatus('Bestellung senden?','AUF DEM WEG')"
+              @click="changeStatus('dispatch')"
           >
             Bestellung abgesendet
           </v-btn>
@@ -321,11 +321,9 @@
     </v-card-actions>
 
     <ConfirmationDialog
-        :cardText="cardText"
-        :newStatus="newStatus"
+        :action="action"
         :orderID="getOrder.id"
         :dialog="confirmationDialog"
-        :has-text-field="newStatus === 'abgelehnt'"
         @close="confirmationDialog = false"
     />
   </v-card>
@@ -341,8 +339,7 @@ export default {
   mixins: [Mixin],
 
   data: () => ({
-    cardText:'',
-    newStatus:'',
+    action:'',
     confirmationDialog: false,
   }),
 
@@ -366,9 +363,8 @@ export default {
       this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
     },
 
-    changeStatus(cardText, newStatus){
-      this.cardText = cardText;
-      this.newStatus = newStatus;
+    changeStatus(action){
+      this.action = action;
       this.confirmationDialog = true;
     }
   }
