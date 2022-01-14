@@ -151,7 +151,7 @@
               dark
               block
               :disabled="getOrder.status!=='ANSTEHEND'"
-              @click="changeStatus('cancel_order')"
+              @click="changeStatus('cancel')"
           >
             Bestellung stornieren
           </v-btn>
