@@ -142,10 +142,10 @@ export default {
       equipments: [
         {
           id: "1",
-          quantity: ""
+          quantity: "10"
         }
       ],
-      priority: ''
+      priority: '1'
     }
 
   }),
@@ -162,9 +162,10 @@ export default {
   methods: {
     createOrder() {
       console.log("new order", this.newOrder)
-      console.log("type",this.equipments.findIndex(x => x.name === this.selectedEquipmentIndex))
-      console.log("prirotity index", this.priorities.findIndex(x => x === this.selectedPriorityIndex))
-      this.newOrder.priority = this.priorities.findIndex(x => x === this.selectedPriorityIndex)
+      // Priority and equipment needs to be fetched from the drop down select input
+      //console.log("type",this.equipments.findIndex(x => x.name === this.selectedEquipmentIndex))
+     // console.log("prirotity index", this.priorities.findIndex(x => x === this.selectedPriorityIndex))
+     // this.newOrder.priority = this.priorities.findIndex(x => x === this.selectedPriorityIndex)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})
     }
