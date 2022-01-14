@@ -1,4 +1,3 @@
-//import authAPI from '../../api/auth';
 import AuthService from '../../services/auth.service';
 
 
@@ -35,9 +34,6 @@ const actions = {
         AuthService.logout();
         commit('LOGOUT');
     },
-    refreshToken({commit}, accessToken) {
-        commit('REFRESH_TOKEN', accessToken);
-    },
 
 }
 const mutations = {
@@ -53,10 +49,6 @@ const mutations = {
         state.isLoggedIn = false;
         state.user = null;
     },
-    REFRESH_TOKEN(state, accessToken) {
-        state.status.isLoggedIn = true;
-        state.user = {...state.user, accessToken: accessToken};
-    }
 }
 
 export default {
