@@ -55,9 +55,11 @@ const getters = {
         },
         loginFailure(state) {
             state.loggedIn = false;
+            state.user = null;
         },
         logout(state) {
             state.loggedIn = false;
+            state.user = null;
         },
         registerSuccess(state) {
             state.loggedIn = false;
