@@ -42,15 +42,6 @@ const actions = {
                 console.log(error);
             });
     },
-    updateOrder({commit}, payload) {
-        ordersAPI.update(payload.id, payload.data)
-            .then(function (response) {
-                commit('UPDATE_ORDER', response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    },
     editOrder({commit}, payload) {
         ordersAPI.update(payload)
             .then(function (response) {
@@ -60,6 +51,55 @@ const actions = {
                 console.log(error);
             });
     },
+    commentOrder({commit}, payload) {
+        ordersAPI.commentOrder(payload)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+
+    acceptOrder({commit}, id) {
+        ordersAPI.acceptOrder(id)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+
+    cancelOrder({commit}, id) {
+        ordersAPI.cancelOrder(id)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+
+    confirmOrderDelivery({commit}, id) {
+        ordersAPI.confirmOrderDelivery(id)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+    dispatchOrder({commit}, id) {
+        ordersAPI.dispatchOrder(id)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+
 
 }
 
