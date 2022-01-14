@@ -106,26 +106,41 @@ export default {
       ],
     }
   },
-  computed:{
-    getCurrentUserRole(){
-      return this.$store.getters.getCurrentUserRole
-    }
-  },
+  computed: {},
+
   methods:
       {
         // hard coding for the branch name
         getLoggedInBranchName() {
-          return this.$store.getters.getCurrentUserRole
-
+          if (this.getLoggedInUserRole() === 1)
+            return "Hauptabschintt-Mitte";
+          else if (this.getLoggedInUserRole() === 2)
+            return "EA 1-Altstadt";
+          else if (this.getLoggedInUserRole() === 3)
+            return "EA 1.1 Altstadt- Ost";
+          else if (this.getLoggedInUserRole() === 4)
+            return "Mollnhof";
         },
         getNavListForLoggedInUserRoll() {
-          if (['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter'].includes(this.getCurrentUserRole))
+          if (this.getLoggedInUserRole() === 1 || this.getLoggedInUserRole() === 2)
             return this.navItemsEinsatzabschnittAndHauptabschnitt;
-          else if (this.getCurrentUserRole === 'Unterabschnitt')
+          else if (this.getLoggedInUserRole() === 3)
             return this.navItemsUnterabschintt;
-          else if (this.getCurrentUserRole === 'Mollnhof')
+          else if (this.getLoggedInUserRole() === 4)
             return this.navItemsMollnhof;
         },
+
+        // hard coding the users roles
+        getLoggedInUserRole() {
+          if (this.$route.params.userRole === '1') // Hauptabschintt
+            return 1
+          else if (this.$route.params.userRole === '2') // Einzatsabschnitt
+            return 2
+          else if (this.$route.params.userRole === '3') //Unterabschnitt
+            return 3
+          else if (this.$route.params.userRole === '4') // Mollhof
+            return 4
+        }
       }
 
 }

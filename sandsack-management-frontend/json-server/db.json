@@ -6,7 +6,7 @@
       "from": "EA 1.1 Altstadt- Ost",
       "type": "sandsack",
       "priority": "Hohe",
-      "status": "abgelehnt",
+      "status": "akzeptiert",
       "quantity": "319",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByUnterabschnitt": "please process ASAP3",
@@ -64,7 +64,7 @@
       "from": "EA 2.1 Nuemarkt- Nord",
       "type": "sandsack",
       "priority": "hohe",
-      "status": "akzeptiert",
+      "status": "geliefert",
       "quantity": "3",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByEinsatzabschnitt": "please process ASAP"
@@ -106,7 +106,7 @@
       "from": "EA 1.1 Altstadt- Mitte",
       "type": "sandsack",
       "priority": "Hohe",
-      "status": "weitergeleitet",
+      "status": "abgelehnt",
       "quantity": "26",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -116,7 +116,7 @@
       "from": "EA 2.1 Nuemarkt- Nord",
       "type": "sandsack",
       "priority": "hohe",
-      "status": "anstehend",
+      "status": "abgelehnt",
       "quantity": "9",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -125,11 +125,10 @@
       "created_at": "15.11.2021 12:01",
       "from": "EA 3.2 Universität-West",
       "type": "sandsack",
-      "priority": "Mittle",
-      "status": "abgelehnt",
-      "quantity": "12",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau",
-      "notesByEinsatzabschnitt": "this is number 10 test"
+      "priority": "niedrige",
+      "status": "akzeptiert",
+      "quantity": "10",
+      "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
     {
       "id": 11,
@@ -205,17 +204,6 @@
       "notesByUnterabschnitt": "3dee"
     }
   ],
-  "users": [
-    {
-      "address": "Leonhard-Paminger-Str. 20",
-      "email": "info@ffpassau.de223",
-      "phone": "+49 123 45 67 8 901232",
-      "password": "eedd",
-      "id": 0,
-      "name": "Abschnittname",
-      "roleName": "Abschnittrole"
-    }
-  ],
   "equipment": [
     {
       "id": 1,
@@ -237,5 +225,3 @@
     }
   ]
 }
-
-

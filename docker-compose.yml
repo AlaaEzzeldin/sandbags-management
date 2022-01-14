@@ -1,18 +1,11 @@
-version: "3.6"
+version: "3"
 services:
-  goservice:
-    build: "./sandsack-management-backend"
+  client:
+    container_name: sandsack-management-frontend
+    build:
+      context: sandsack-management-frontend
+      dockerfile: Dockerfile
+    stdin_open: true
     ports:
-      - "8000"
-    env_file:
-      - ./.env
-  nginx:
-    build: "./nginx"
-    ports:
-      - "8001:8001"
-    depends_on:
-      - "goservice"
-  frontend:
-    build: "./sandsack-management-frontend"
-    ports:
-      - "80:80"
+      - "8000:80"
+    restart: on-failure

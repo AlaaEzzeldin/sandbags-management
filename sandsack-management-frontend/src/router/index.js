@@ -44,37 +44,37 @@ const routes = [
         component: HomePage,
         children: [
             {
-                path: '/orders-list',
+                path: '/orders-list/:userRole',
                 name: 'BestellungslistePage',
                 component: BestellungslistePage
             },
             {
-                path: '/account',
+                path: '/account/:userRole',
                 name: 'KontoPage',
                 component: KontoPage
             },
             {
-                path: '/new-order',
+                path: '/new-order/:userRole',
                 name: 'NeueBestellungPage',
                 component: NeueBestellungPage
             },
             {
-                path: '/overview',
+                path: '/overview/:userRole',
                 name: 'BestellübersichtPage',
                 component: BestellübersichtPage
             },
             {
-                path: '/order-details/:orderId',
+                path: '/:userRole/order-details/:orderId',
                 name: 'BestelldetailsPage',
                 component: BestelldetailsPage
             },
             {
-                path: '/order-edit/:orderId',
+                path: '/:userRole/order-edit/:orderId',
                 name: 'BestellBearbeitenPage',
                 component: BestellBearbeitenPage
             },
             {
-                path: '/equipment-edit',
+                path: '/:userRole/equipment-edit',
                 name: 'ManageEquipmentPage',
                 component: ManageEquipmentPage
             },

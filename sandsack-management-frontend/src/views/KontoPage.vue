@@ -13,7 +13,6 @@
             color="red"
             dark
             block
-            @click="logout"
         >
           Ausloggen
         </v-btn>
@@ -102,20 +101,53 @@ export default {
   },
   methods:
       {
-        logout(){
-            this.$store.dispatch('logout').then(
-                () => {
-                  this.$router.push({name: 'LoginPage'})
+        // hard coding for the branch name
+        /*        getLoggedInBranchDetails() {
+                  if (this.getLoggedInUserRole() === 1)
+                    return {
+                      name: "Hauptabschnitt-Mitte",
+                      roleName: "Hauptabschnitt",
+                      address: "Leonhard-Paminger-Str. 20",
+                      email: "info@ffpassau.de",
+                      phone: "+49 123 45 67 8 9012"
+                    };
+                  else if (this.getLoggedInUserRole() === 2)
+                    return {
+                      name: "EA 1-Altstadt",
+                      roleName: "Einsatzabschnitt",
+                      address: "Leonhard-Paminger-Str. 21",
+                      email: "ea-altstadt@ffpassau.de",
+                      phone: "+49 123 45 67 8 9013"
+                    };
+                  else if (this.getLoggedInUserRole() === 3)
+                    return {
+                      name: "EA 1.1 Altstadt- Ost",
+                      roleName: "Unterabschnitt",
+                      address: "Leonhard-Paminger-Str. 22",
+                      email: "ea11-altstadt@ffpassau.de",
+                      phone: "+49 123 45 67 8 9014"
+                    };
+                  else if (this.getLoggedInUserRole() === 4)
+                    return {
+                      name: "Mollnhof",
+                      roleName: "Mollnhof",
+                      address: "Leonhard-Paminger-Str. 23",
+                      email: "mollnhof@ffpassau.de",
+                      phone: "+49 123 45 67 8 9015"
+                    };
                 },
-                error => {
-                  this.message =
-                      (error.response && error.response) ||
-                      error.message ||
-                      error.toString();
-                }
-            );
-          }
 
+                // hard coding the users roles
+                getLoggedInUserRole() {
+                  if (this.$route.params.userRole === '1') // Hauptabschintt
+                    return 1
+                  else if (this.$route.params.userRole === '2') // Einzatsabschnitt
+                    return 2
+                  else if (this.$route.params.userRole === '3') //Unterabschnitt
+                    return 3
+                  else if (this.$route.params.userRole === '4') // Mollhof
+                    return 4
+                }*/
       }
 }
 </script>

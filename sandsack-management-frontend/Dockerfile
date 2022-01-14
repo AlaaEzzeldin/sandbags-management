@@ -1,4 +1,4 @@
-FROM node:14.15.3-alpine as develop
+FROM node:10.13.0-alpine as develop
 
 WORKDIR /client
 

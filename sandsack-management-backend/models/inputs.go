@@ -81,3 +81,8 @@ type DispatchOrderInput struct {
 	OrderId int `json:"order_id,required"`
 	DriverId int `json:"driver_id,omitempty"`
 }
+
+type GetStatisticsInput struct {
+	StartDate string `json:"start_date"`
+	EndDate   string `json:"end_date"`
+}
