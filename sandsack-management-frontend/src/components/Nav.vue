@@ -111,7 +111,7 @@ export default {
   },
   computed:{
     getCurrentUserRole(){
-      return this.$store.getters.isLoggedIn.role
+      return this.$store.getters.getCurrentUserRole
     },
     getLoggedInUser() {
       return this.$store.getters.getLoggedInUser
