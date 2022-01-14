@@ -1,10 +1,10 @@
 import axios from 'axios'
-import authHeader from "../services/auth-header";
-import {BASE_URL} from "../api/config";
+//import authHeader from "../services/auth-header";
+//import {BASE_URL} from "../api/config";
 
 export default {
 
-    index(params) {
+/*    index(params) {
         return axios.get(BASE_URL + 'order', {
             headers: authHeader(),
             params: params
@@ -48,5 +48,28 @@ export default {
         return axios.patch(BASE_URL + 'order/edit', data, {
             headers: authHeader()
         })
+    },*/
+
+    index( params ){
+        return axios.get( 'http://localhost:3001/orders', {
+            params: params
+        })
     },
+
+    show( id ){
+        return axios.get( 'http://localhost:3001/orders/'+id );
+    },
+
+    update( id, data ){
+        return axios.patch( 'http://localhost:3001/orders/'+id, data );
+    },
+
+    create( data ){
+        return axios.post( 'http://localhost:3001/orders/', data );
+    },
+
+    delete( id ){
+        return axios.delete( 'http://localhost:3001/orders/' + id )
+    }
+
 }
