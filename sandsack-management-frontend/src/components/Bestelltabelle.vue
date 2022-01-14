@@ -51,7 +51,7 @@
                     style="text-transform: capitalize; font-weight: bolder;"
                     @click="editItem(item)"
                     small
-                    :disabled="(item.status!=='ANSTEHEND' &&    getCurrentUserRole=== 'Unterabschnitt')
+                    :disabled="(item.status!=='ANSTEHEND' && ['Einsatzabschnitt', 'Unterabschnitt'].includes(getCurrentUserRole))
                     || (item.status!=='WEITERGELEITET BEI EINSATZABSCHNITT' && getCurrentUserRole=== 'Hauptabschnitt')
                     || (item.status!=='WEITERGELEITET BEI HAUPTABSCHNITT' && getCurrentUserRole=== 'Einsatzleiter') "
 
