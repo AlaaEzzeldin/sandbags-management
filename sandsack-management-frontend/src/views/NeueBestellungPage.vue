@@ -21,8 +21,9 @@
       <v-row>
         <v-col sm="6">
           <v-select
-              v-model="newOrder.type"
-              :items="types"
+              v-model="selectedEquipmentIndex"
+              :items="equipments"
+              :item-text="equipments.name"
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
@@ -33,7 +34,7 @@
         </v-col>
         <v-col sm="6">
           <v-text-field
-              v-model="newOrder.quantity"
+              v-model="newOrder.equipments[0].quantity"
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
@@ -47,7 +48,7 @@
       <v-row >
         <v-col cols="12">
           <v-text-field
-              v-model="newOrder.deliveryAddress"
+              v-model="newOrder.address_to"
               filled
               outlined
               prepend-icon="mdi-map-marker"
@@ -61,7 +62,7 @@
       <v-row>
         <v-col cols="12">
           <v-select
-              v-model="newOrder.priority"
+              v-model="selectedPriorityIndex"
               :items="priorities"
               :rules="[v => !!v || 'Die Priorität ist erforderlich']"
               label="Priorität"
@@ -117,34 +118,34 @@ export default {
 
 
   data: () => ({
+    selectedEquipmentIndex:'',
+    selectedPriorityIndex: '',
     loggedIn: '',
     priority: '',
     abschnitt: '',
-    types: [
-      'Sandsäcke',
+    equipments: [
+      {
+        id: 0,
+        name: "Sandsäcke",
+        quantity: 0
+      }
     ],
     priorities: [
       'Niedrig',
       'Mittle',
       'Hohe',
     ],
-    order: {
-      type: "",
-      quantity: "",
-      priority: "",
-      deliveryAddress: "",
-      notesByUnterabschnitt: ""
-    },
+
     newOrder:{
-      address_to: "Johann-bergler Strasse 3",
-      comment: "test comment 2",
+      address_to: "",
+      comment: "",
       equipments: [
         {
-          "id": 1,
-          "quantity": 6
+          id: "1",
+          quantity: ""
         }
       ],
-      "priority": 2
+      priority: ''
     }
 
   }),
@@ -161,6 +162,9 @@ export default {
   methods: {
     createOrder() {
       console.log("new order", this.newOrder)
+      console.log("type",this.equipments.findIndex(x => x.name === this.selectedEquipmentIndex))
+      console.log("prirotity index", this.priorities.findIndex(x => x === this.selectedPriorityIndex))
+      this.newOrder.priority = this.priorities.findIndex(x => x === this.selectedPriorityIndex)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})
     }
