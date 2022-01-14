@@ -2,9 +2,9 @@
 import AuthService from '../../services/auth.service';
 
 
-const state= {
+const state = {
     isLoggedIn: !!JSON.parse(localStorage.getItem('access_token')),
-    user :JSON.parse(localStorage.getItem('user'))
+    user: JSON.parse(localStorage.getItem('user'))
 }
 
 const getters = {
@@ -15,59 +15,49 @@ const getters = {
         return state.user.name;
     },
     isLoggedIn(state) {
-        return state.user;
+        return state.isLoggedIn;
     },
 }
-   const actions= {
-       login({commit}, user) {
-           return AuthService.login(user).then(
-               user => {
-                   commit('loginSuccess', user.data);
-                   return Promise.resolve(user);
-               },
-               error => {
-                   commit('loginFailure');
-                   return Promise.reject(error);
-               }
-           );
-       },
-       logout({commit}) {
-           AuthService.logout();
-           commit('logout');
-       },
-       register({commit}, user) {
-           return AuthService.register(user).then(
-               response => {
-                   commit('registerSuccess');
-                   return Promise.resolve(response.data);
-               },
-               error => {
-                   commit('registerFailure');
-                   return Promise.reject(error);
-               }
-           );
-       }
-   }
-        const mutations= {
-        loginSuccess(state, user) {
-            state.loggedIn = true;
-            state.user = user
-        },
-        loginFailure(state) {
-            state.loggedIn = false;
-            state.user = null;
-        },
-        logout(state) {
-            state.loggedIn = false;
-            state.user = null;
-        },
-        registerSuccess(state) {
-            state.loggedIn = false;
-        },
-        registerFailure(state) {
-            state.loggedIn = false;
-        }
+const actions = {
+    login({commit}, user) {
+        return AuthService.login(user).then(
+            user => {
+                commit('LOGIN_SUCCESS', user.data);
+                return Promise.resolve(user);
+            },
+            error => {
+                commit('LOGIN_FAILURE');
+                return Promise.reject(error);
+            }
+        );
+    },
+    logout({commit}) {
+        AuthService.logout();
+        commit('LOGOUT');
+    },
+    refreshToken({commit}, accessToken) {
+        commit('REFRESH_TOKEN', accessToken);
+    },
+
+}
+const mutations = {
+    LOGIN_SUCCESS(state, user) {
+        state.isLoggedIn = true;
+        state.user = user
+    },
+    LOGIN_FAILURE(state) {
+        state.isLoggedIn = false;
+        state.user = null;
+    },
+    LOGOUT(state) {
+        state.isLoggedIn = false;
+        state.user = null;
+    },
+    REFRESH_TOKEN(state, accessToken) {
+        state.status.isLoggedIn = true;
+        state.user = {...state.user, accessToken: accessToken};
     }
+}
 
 export default {
     state,
