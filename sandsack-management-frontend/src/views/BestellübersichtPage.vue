@@ -114,15 +114,7 @@
     <br>
     <v-row>
       <v-col cols="12" offset="9" sm="3">
-        <v-btn
-            block
-            color="red"
-            dark
-            rounded
-            style="text-transform: capitalize; font-weight: bolder;"
-        >
-          <button v-on:click="download">Export pdf</button>
-        </v-btn>
+        <button id="pdf" class='button' v-on:click="download">Export PDF</button>
       </v-col>
     </v-row>
   </div>
@@ -132,7 +124,7 @@
 import jsPDF from "jspdf";
 import domtoimage from "dom-to-image";
 import {GChart} from "vue-google-charts";
-
+import router from "@/router";
 export default {
 
   name: 'BestellübersichtPage',
@@ -143,7 +135,6 @@ export default {
 
   data() {
     return {
-
       dates:
           [(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
             (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)],
@@ -178,14 +169,21 @@ export default {
     getStatisticschart() {
       return this.$store.getters.getStatisticschart
     },
+
     dateRangeText() {
+      if (this.dates[1] < this.dates[0]) {
+        window.alert('Please select a valid date range!!!')
+      } else {
+        router.push({name: 'BestellübersichtPage', query: {date1: this.dates[0], date2: this.dates[1]}})
+      }
+
+
       return this.dates.join(' / ')
     },
     getHauptdata() {
       var HauptselectOptions = []
       for (let i = 0; i < this.getStatisticschart.length; i++) {
         if (this.getStatisticschart[i].type === "Hauptabschnitten") {
-          console.log('length of chart', this.getStatisticschart[i].statistics_per_hauptabschnitt.length)
           for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
             HauptselectOptions.push(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].name)
           }
@@ -234,7 +232,8 @@ export default {
   methods: {
 
     download() {
-      /** WITH CSS */
+      /** To Block the Button */
+      document.getElementById('pdf').style.display = 'none';
       domtoimage
           .toPng(this.$refs.content)
           .then(function (dataUrl) {
@@ -257,7 +256,10 @@ export default {
                 ".pdf";
             doc.save(filename)
             window.URL.revokeObjectURL(url);
-            alert("Export File has downloaded!");
+            /** To Un-Block the Button after download */
+            if (!alert('Export file has downloaded!')) {
+              document.getElementById('pdf').style.display = 'block';
+            }
           })
           .catch(function (error) {
             console.error("oops, something went wrong!", error);
@@ -268,8 +270,17 @@ export default {
 };
 </script>
 
-&lt;!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+
+.button {
+  background-color: #f44336; /* Red */
+  font-size: 20px;
+  padding: 1px 10px;
+  display: inline-block;
+  font-family: auto;
+  border-radius: 100px;
+}
+
 h3 {
   margin: 40pt 0 0;
 }
@@ -287,4 +298,5 @@ li {
 a {
   color: #D7201F;
 }
+
 </style>
