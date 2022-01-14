@@ -51,6 +51,15 @@ const actions = {
                 console.log(error);
             });
     },
+    editOrder({commit}, payload) {
+        ordersAPI.update(payload)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
 
 }
 
