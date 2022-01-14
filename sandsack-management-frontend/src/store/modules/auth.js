@@ -50,8 +50,9 @@ const getters = {
        }
    }
         const mutations= {
-        loginSuccess(state) {
+        loginSuccess(state, user) {
             state.loggedIn = true;
+            state.user = user
         },
         loginFailure(state) {
             state.loggedIn = false;
