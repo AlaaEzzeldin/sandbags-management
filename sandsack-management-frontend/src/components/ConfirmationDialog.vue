@@ -63,7 +63,10 @@ export default {
   computed: {
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
-    }
+    },
+    getLoggedInUser() {
+      return this.$store.getters.getLoggedInUser
+    },
   },
   methods: {
     closeDialog() {
@@ -87,7 +90,7 @@ export default {
       }
     },
     submitUpdatedOrder() {
-      let TextBy = this.getCommentWriter()
+      let TextBy = this.getLoggedInUser.name
       let data = {
         "status": this.newStatus,
         [TextBy] : this.textFieldValue
@@ -95,15 +98,6 @@ export default {
       let id = this.orderID
       this.$store.dispatch("updateOrder", {id, data})
       this.closeDialog()
-    },
-    // hard coding the users roles
-    getCommentWriter() {
-      if (this.getCurrentUserRole=='Hauptabschnitt')
-        return 'notesByHauptabschnitt'
-      else if (this.getCurrentUserRole=='Einsatzabschnitt')
-        return 'notesByEinsatzabschnitt'
-      else if (this.getCurrentUserRole=='Einsatzleiter')
-        return 'notesByEinsatzleiter'
     }
   }
 }
