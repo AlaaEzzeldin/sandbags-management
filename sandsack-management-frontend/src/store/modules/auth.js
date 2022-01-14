@@ -22,8 +22,7 @@ const getters = {
        login({commit}, user) {
            return AuthService.login(user).then(
                user => {
-                   commit('loginSuccess', user);
-                   console.log("user role", user)
+                   commit('loginSuccess', user.data);
                    return Promise.resolve(user);
                },
                error => {
