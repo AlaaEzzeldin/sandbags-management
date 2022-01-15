@@ -5,7 +5,7 @@
         <h1 style="font-weight: bolder;">Bestellübersicht</h1>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col class="pt-15 justify-center align-center" sm="4">
+      <v-col class="pt-15 justify-center align-center" sm="5">
         <v-menu
             v-model="menu"
             :close-on-content-click="false"
@@ -174,7 +174,7 @@ export default {
 
     dateRangeText() {
       if (this.dates[1] < this.dates[0]) {
-        window.alert('Please select a valid date range!!!')
+        window.alert('Bitte wählen Sie einen gültigen Zeitraum aus!')
       } else {
         router.push({name: 'BestellübersichtPage', query: {date1: this.dates[0], date2: this.dates[1]}})
       }
@@ -250,7 +250,7 @@ export default {
             const date = new Date();
             const url = window.URL.createObjectURL;
             const filename =
-                "StatusReport_" +
+                "Statistics-Report_" +
                 date.getFullYear() +
                 ("0" + (date.getMonth() + 1)).slice(-2) +
                 ("0" + date.getDate()).slice(-2) +
@@ -259,12 +259,12 @@ export default {
             doc.save(filename)
             window.URL.revokeObjectURL(url);
             /** To Un-Block the Button after download */
-            if (!alert('Export file has downloaded!')) {
+            if (!alert('Die Datei wird heruntergeladen!')) {
               document.getElementById('pdf').style.display = 'block';
             }
           })
           .catch(function (error) {
-            console.error("oops, something went wrong!", error);
+            console.error("oops, Fehler!", error);
           });
     },
 
