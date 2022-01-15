@@ -24,49 +24,48 @@ const routes = [
         path: '/',
         name: 'LoginPage',
         component: LoginPage,
-        meta: { requiresGuest: true }
+        meta: {requiresGuest: true}
     },
     {
         path: '/auth/sign-up',
         name: 'SignupPage',
-        component: SignupPage
+        component: SignupPage,
+        meta: {requiresGuest: true}
     },
     {
         path: '/auth/recover-password',
         name: 'RecoverPasswordPage',
-        component: RecoverPasswordPage
+        component: RecoverPasswordPage,
+        meta: {requiresGuest: true}
     },
     {
         path: '/auth/recover-password-confirm',
         name: 'RecoverPasswordConfirmPage',
-        component: RecoverPasswordConfirmPage
+        component: RecoverPasswordConfirmPage,
+        meta: {requiresGuest: true}
     },
     {
         path: '/homapage',
         name: 'HomePage',
         component: HomePage,
-        meta: { requiresAuth: true },
+        meta: {requiresAuth: true},
         children: [
-            // signin
             {
                 path: '/orders-list',
                 name: 'BestellungslistePage',
                 component: BestellungslistePage,
-                meta: { requiresAuth: true }
             },
-            // signin
             {
                 path: '/account',
                 name: 'KontoPage',
                 component: KontoPage,
-                meta: { requiresAuth: true }
-
             },
             // unterabschnit only
             {
                 path: '/new-order',
                 name: 'NeueBestellungPage',
-                component: NeueBestellungPage
+                component: NeueBestellungPage,
+
             },
             // einsatz/ haupt and leiter
             {
@@ -74,20 +73,17 @@ const routes = [
                 name: 'BestellübersichtPage',
                 component: BestellübersichtPage
             },
-            //signed in
             {
                 path: '/order-details/:orderId',
                 name: 'BestelldetailsPage',
                 component: BestelldetailsPage,
-                meta: { requiresAuth: true }
 
             },
-            //signed in
+            // all exept for mollnhof
             {
                 path: '/order-edit/:orderId',
                 name: 'BestellBearbeitenPage',
                 component: BestellBearbeitenPage,
-                meta: { requiresAuth: true }
             },
             // mollnhof
             {
@@ -108,27 +104,51 @@ const router = new VueRouter({
     routes
 })
 
+function hasPermissionsNeeded(to) {
+    let userRole = auth.state.user.role
+    let ToPage = to.name
+
+    if (['Mollnhof'].includes(userRole) &&
+        ['ManageEquipmentPage'].includes(ToPage)) // only mollnhof
+        return true
+    else if (['Unterabschnitt'].includes(userRole) &&
+        ['NeueBestellungPage'].includes(ToPage)) // only Unterabschnitt
+        return true
+    else if (['Einsatzabschnitt', 'Hauptabschnitt', 'Einsatzleiter'].includes(userRole) &&
+        ['BestellübersichtPage'].includes(ToPage)) // only Einsatzabschnitt, Hauptabschnitt, Einsatzleiter
+        return true
+    else if (['Unterabschnitt', 'Einsatzabschnitt', 'Hauptabschnitt', 'Einsatzleiter'].includes(userRole) &&
+        ['BestellBearbeitenPage'].includes(ToPage)) // all except for mollnhof
+        return true
+    else if (['BestellungslistePage', 'KontoPage', 'BestelldetailsPage'].includes(ToPage)) // all users
+        return true
+    else return false
+}
+
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (!auth.state.isLoggedIn) {
+        if (!auth.state.isLoggedIn) { // unsigned-in user tries to access auhtenticated route
             next({
                 path: '/',
-                query: { redirect: to.fullPath }
+                query: {redirect: to.fullPath}
             })
         } else {
-            next()
+            if (!hasPermissionsNeeded(to)) { //the user has no access to this page so will be redireted to homepage
+                console.log("you don't have access to this page")
+                next('/orders-list');
+            } else {
+                next();
+            }
         }
     } else if (to.matched.some(record => record.meta.requiresGuest)) {
-        if (auth.state.isLoggedIn) { //already singed in ant is trying to relogin-> redirect to homepage
+        if (auth.state.isLoggedIn) { // already singed in and is trying to re-login-> redirect to homepage
             next({
                 path: '/orders-list',
             })
-        }
-        else
+        } else
             next()
-    }
-    else
-        next() // make sure to always call next()!
+    } else
+        next()
 })
 
 export default router
