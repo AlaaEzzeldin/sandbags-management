@@ -125,6 +125,7 @@ import jsPDF from "jspdf";
 import domtoimage from "dom-to-image";
 import {GChart} from "vue-google-charts";
 import router from "@/router";
+
 export default {
 
   name: 'BestellübersichtPage',
@@ -135,6 +136,7 @@ export default {
 
   data() {
     return {
+
       dates:
           [(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
             (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)],
@@ -274,15 +276,25 @@ export default {
 
 .button {
   background-color: #f44336; /* Red */
-  font-size: 20px;
-  padding: 1px 10px;
-  display: inline-block;
-  font-family: auto;
-  border-radius: 100px;
+  font-size: medium;
+  font-weight: bolder;
+  padding: 6px 15px;
+  display: flex;
+  flex: 1 0 auto;
+  border-radius: 50px;
+  color: rgb(255 255 255);
+  letter-spacing: 0.0892857143em;
+  text-indent: 0.0892857143em;
+  text-transform: capitalize;
+  justify-content: inherit;
+  line-height: normal;
+  position: relative;
+  transition: inherit;
+  transition-property: opacity;
 }
 
 h3 {
-  margin: 40pt 0 0;
+  margin: 50pt 0 0;
 }
 
 ul {
