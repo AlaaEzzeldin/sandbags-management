@@ -2,7 +2,7 @@ import AuthService from '../../services/auth.service';
 
 
 const state = {
-    isLoggedIn: !!JSON.parse(localStorage.getItem('access_token')),
+    isLoggedIn: !!JSON.parse(localStorage.getItem('user')),
     user: JSON.parse(localStorage.getItem('user'))
 }
 
