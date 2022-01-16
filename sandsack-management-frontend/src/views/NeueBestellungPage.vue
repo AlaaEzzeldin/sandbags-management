@@ -37,9 +37,10 @@
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
-              :rules="[v => !!v || 'Die Menge ist erforderlich']"
+              :rules="[v => (!!v && v <= getCurrentEquipmentQuantity)|| 'Die Menge ist nicht correct']"
               prepend-icon="mdi-pound"
               label="Anzahl"
+              :hint="'Die Restmenge ist '+getCurrentEquipmentQuantity.toString()"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -134,7 +135,6 @@ export default {
       deliveryAddress: "",
       notesByUnterabschnitt: ""
     }
-
   }),
 
   computed:{
@@ -146,6 +146,12 @@ export default {
     },
     getEquipment() {
       return this.$store.getters.getEquipment
+    },
+    getCurrentEquipmentQuantity() {
+      if (this.newOrder.type) {
+        return this.$store.getters.getEquipmentByType(this.newOrder.type).quantity;
+      }
+      return 0;
     },
     getPriorities() {
       return this.$store.getters.getPriorities
