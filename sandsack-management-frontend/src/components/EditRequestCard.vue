@@ -122,13 +122,12 @@
               style="text-transform: capitalize; font-weight: bolder;"
               rounded
               color="red"
-              dark
               block
               outlined
               @click="submitUpdatedOrder"
-
+              :disabled="(getOrder.quantity > this.getCurrentEquipmentQuantity) || !getOrder.deliveryAddress"
           >
-            speichern
+            Speichern
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
