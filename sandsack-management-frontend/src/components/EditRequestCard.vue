@@ -57,7 +57,6 @@
           <v-select
               v-model="getOrder.priority"
               :items="getPriorities.map(x => x.name)"
-              :label="getOrder.priority"
               outlined
           ></v-select>
         </v-col>
