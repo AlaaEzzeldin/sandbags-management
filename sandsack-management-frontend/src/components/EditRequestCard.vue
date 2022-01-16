@@ -56,7 +56,7 @@
         <v-col cols="12" sm="3">
           <v-select
               v-model="getOrder.priority"
-              :items="priorities"
+              :items="getPriorities.map(x => x.name)"
               :label="getOrder.priority"
               outlined
           ></v-select>
@@ -154,16 +154,9 @@ import {Mixin} from '../mixin/mixin.js'
 export default {
   name: 'EditRequestCard',
   mixins: [Mixin],
-  data: () => ({
-    priorities: [
-      'Niedrig',
-      'Mittle',
-      'Hohe',
-    ],
-
-  }),
   created() {
-    this.$store.dispatch("loadOrder", this.$route.params.orderId)
+    this.$store.dispatch("loadOrder", this.$route.params.orderId);
+    this.$store.dispatch("loadPriorities");
   },
   computed: {
     getOrder() {
@@ -171,6 +164,9 @@ export default {
     },
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
+    },
+    getPriorities() {
+      return this.$store.getters.getPriorities
     },
   },
   methods: {
