@@ -104,10 +104,10 @@
       "id": 8,
       "created_at": "13.11.2021 12:01",
       "from": "EA 1.1 Altstadt- Mitte",
-      "type": "sandsack",
+      "type": "Sandsack",
       "priority": "HIGH",
       "status": "ANSTEHEND",
-      "quantity": "26",
+      "quantity": "260",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
     {

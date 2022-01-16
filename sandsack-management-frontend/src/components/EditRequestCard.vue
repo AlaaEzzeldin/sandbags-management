@@ -31,11 +31,12 @@
                 <h3 style="font-weight: bolder; color: black">Typ:</h3>
               </v-col>
               <v-col cols="12" sm="3">
-                <v-text-field
+                <v-select
                     disabled
                     :value="getOrder.type"
+                    :items="getEquipment.map(a => a.name)"
                     outlined
-                ></v-text-field>
+                ></v-select>
               </v-col>
             </v-row>
       <v-row no-gutters>
@@ -46,6 +47,8 @@
           <v-text-field
               v-model="getOrder.quantity"
               outlined
+              :rules="[v => (!!v && v <= getCurrentEquipmentQuantity)|| 'Die Menge ist nicht correct']"
+              :hint="'Die Restmenge ist '+getCurrentEquipmentQuantity.toString()"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -154,6 +157,7 @@ export default {
   name: 'EditRequestCard',
   mixins: [Mixin],
   created() {
+    this.$store.dispatch("loadEquipment");
     this.$store.dispatch("loadOrder", this.$route.params.orderId);
     this.$store.dispatch("loadPriorities");
   },
@@ -166,6 +170,16 @@ export default {
     },
     getPriorities() {
       return this.$store.getters.getPriorities
+    },
+    getEquipment() {
+      return this.$store.getters.getEquipment
+    },
+    getCurrentEquipmentQuantity() {
+      if (this.getOrder.type) {
+        console.log(this.getOrder.type)
+        return this.$store.getters.getEquipmentByType(this.getOrder.type).quantity;
+      }
+      return 0;
     },
   },
   methods: {
