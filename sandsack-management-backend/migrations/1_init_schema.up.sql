@@ -39,7 +39,7 @@ CREATE TABLE "equipment" (
                              "id" serial PRIMARY KEY,
                              "name" varchar not null,
                              "quantity" integer not null,
-                             "measure" varchar null,
+                             "measure" varchar not null,
                              "create_date" timestamptz not null default now(),
                              "update_date" timestamptz not null default now()
 );
