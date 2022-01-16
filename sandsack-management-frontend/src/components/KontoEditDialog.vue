@@ -150,7 +150,17 @@ export default {
         "name": this.name,
         "phone": this.phone,
       }
-      this.$store.dispatch("updateUserInfo",  data)
+      this.$store.dispatch("updateUserInfo",  data).then(
+          () => {
+            this.$store.dispatch("getUserInfo")
+          },
+          error => {
+            this.message =
+                (error.response && error.response) ||
+                error.message ||
+                error.toString();
+          }
+      );
       this.$emit("close")
     },
     closeDialog(){
