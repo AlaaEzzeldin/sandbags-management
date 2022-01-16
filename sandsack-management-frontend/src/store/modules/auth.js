@@ -1,6 +1,5 @@
 //import authAPI from '../../api/auth';
 import AuthService from '../../services/auth.service';
-import equipmentAPI from "../../api/equipment";
 
 
 const state= {
