@@ -22,7 +22,7 @@
         <v-col sm="6">
           <v-select
               v-model="newOrder.type"
-              :items="types"
+              :items="getEquipment.map(a => a.name)"
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
@@ -62,7 +62,7 @@
         <v-col cols="12">
           <v-select
               v-model="newOrder.priority"
-              :items="priorities"
+              :items="getPriorities.map(x => x.name)"
               :rules="[v => !!v || 'Die Priorität ist erforderlich']"
               label="Priorität"
               prepend-icon="mdi-alert"
@@ -115,19 +115,15 @@
 export default {
   name: 'BestelldetailsPage',
 
+  created() {
+    this.$store.dispatch("loadEquipment");
+    this.$store.dispatch("loadPriorities");
+  },
 
   data: () => ({
     loggedIn: '',
     priority: '',
     abschnitt: '',
-    types: [
-      'Sandsäcke',
-    ],
-    priorities: [
-      'Niedrig',
-      'Mittle',
-      'Hohe',
-    ],
     newOrder: {
       id:"",
       status: "anstehend", //this will be deleted when integrating with the backened
@@ -147,12 +143,18 @@ export default {
     },
     getLoggedInUserName() {
       return this.$store.getters.getLoggedInUser.name
-    }
+    },
+    getEquipment() {
+      return this.$store.getters.getEquipment
+    },
+    getPriorities() {
+      return this.$store.getters.getPriorities
+    },
   },
 
   methods: {
     createOrder() {
-      this.newOrder.from= this.getLoggedInBranchName
+      this.newOrder.from= this.getLoggedInUserName
       console.log("new order", this.newOrder)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})
