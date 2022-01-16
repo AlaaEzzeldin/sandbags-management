@@ -62,8 +62,12 @@ insert into priority(id, level, name) values
                                           (1, 1, 'HIGH'), (2, 2, 'MIDDLE'), (3, 3, 'LOW');
 
 
-insert into equipment(id, name, quantity) values
-    (1, 'Sandsack', 100000);
+insert into equipment(id, name, quantity, measure) values
+    (1, 'Sandsack', 100000, "Paletten"),
+    (2, 'Spaten', 1000, "Stück"),
+    (3, 'Bindfaden', 2000, "Meter"),
+    (4, 'Wasserschlauch', 2000, "Meter");
+
 
 
 insert into driver(id, name, description) values

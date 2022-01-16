@@ -445,6 +445,43 @@ var doc = `{
                 }
             }
         },
+        "/create_user/": {
+            "post": {
+                "description": "This endpoint is implemented to register new user by Einsatzleiter and get a new token pair",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Create a new user (branch) in the system",
+                "parameters": [
+                    {
+                        "description": "User registration model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User has been created"
+                    },
+                    "400": {
+                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
+                    },
+                    "401": {
+                        "description": "Permission to create the user is not given"
+                    }
+                }
+            }
+        },
         "/email_verification": {
             "post": {
                 "description": "SendVerifyEmail - admin sends email to user for him to verify",
@@ -872,43 +909,6 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/models.ErrorResponse"
                         }
-                    }
-                }
-            }
-        },
-        "/user/": {
-            "post": {
-                "description": "This endpoint is implemented to register new user by Einsatzleiter and get a new token pair",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin"
-                ],
-                "summary": "Create a new user (branch) in the system",
-                "parameters": [
-                    {
-                        "description": "User registration model",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.CreateUser"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "User has been created"
-                    },
-                    "400": {
-                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
-                    },
-                    "401": {
-                        "description": "Permission to create the user is not given"
                     }
                 }
             }
@@ -1658,6 +1658,9 @@ var doc = `{
                 "id": {
                     "type": "integer"
                 },
+                "measure": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -1880,5 +1883,5 @@ func (s *s) ReadDoc() string {
 }
 
 func init() {
-	swag.Register(swag.Name, &s{})
+	swag.Register("swagger", &s{})
 }
