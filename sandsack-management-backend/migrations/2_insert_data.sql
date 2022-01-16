@@ -63,10 +63,10 @@ insert into priority(id, level, name) values
 
 
 insert into equipment(id, name, quantity, measure) values
-    (1, 'Sandsack', 100000, "Paletten"),
-    (2, 'Spaten', 1000, "Stück"),
-    (3, 'Bindfaden', 2000, "Meter"),
-    (4, 'Wasserschlauch', 2000, "Meter");
+    (1, 'Sandsack', 100000, 'Paletten'),
+    (2, 'Spaten', 1000, 'Stück'),
+    (3, 'Bindfaden', 2000, 'Meter'),
+    (4, 'Wasserschlauch', 2000, 'Meter');
 
 
 
