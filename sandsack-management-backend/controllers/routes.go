@@ -19,7 +19,7 @@ const defaultPort = ":8000"
 func (a *App) RunAllRoutes() {
 	var port = defaultPort
 
-	r := gin.Default()
+	r := gin.New()
 	r.Use(middleware.CORSMiddleware())
 	f, err := os.Create("gin.log")
 
