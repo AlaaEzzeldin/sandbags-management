@@ -37,7 +37,7 @@
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
-              :rules="[v => (!!v && v <= getCurrentEquipmentQuantity)|| 'Die Menge ist nicht correct']"
+              :rules="[v => (!!v && v <= getCurrentEquipmentQuantity && v > 0)|| 'Die Menge ist nicht correct']"
               prepend-icon="mdi-pound"
               label="Anzahl"
               :hint="'Die Restmenge ist '+getCurrentEquipmentQuantity.toString()"
@@ -94,12 +94,18 @@
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
+              style="text-transform: capitalize; font-weight: bolder;color: white"
               block
               rounded
               color="red"
-              dark
               @click="createOrder"
+              :disabled="!(
+                  newOrder.type &&
+                  newOrder.priority &&
+                  newOrder.deliveryAddress &&
+                  newOrder.quantity > 0 &&
+                  newOrder.quantity <= getCurrentEquipmentQuantity
+              )"
           >
             Bestellen
           </v-btn>
