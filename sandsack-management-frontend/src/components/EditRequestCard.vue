@@ -47,7 +47,7 @@
           <v-text-field
               v-model="getOrder.quantity"
               outlined
-              :rules="[v => (!!v && v <= getCurrentEquipmentQuantity)|| 'Die Menge ist nicht correct']"
+              :rules="[v => (!!v && v <= getCurrentEquipmentQuantity && v > 0)|| 'Die Menge ist nicht correct']"
               :hint="'Die Restmenge ist '+getCurrentEquipmentQuantity.toString()"
           ></v-text-field>
         </v-col>
@@ -71,6 +71,7 @@
         <v-col cols="12" sm="3">
           <v-text-field
               v-model="getOrder.deliveryAddress"
+              :rules="[v => !!v || 'Die Adresse ist erforderlich']"
               outlined
           ></v-text-field>
         </v-col>
@@ -125,7 +126,10 @@
               block
               outlined
               @click="submitUpdatedOrder"
-              :disabled="(getOrder.quantity > this.getCurrentEquipmentQuantity) || !getOrder.deliveryAddress"
+              :disabled="
+              (getOrder.quantity > this.getCurrentEquipmentQuantity) ||
+               getOrder.quantity <= 0 ||
+              !getOrder.deliveryAddress"
           >
             Speichern
           </v-btn>
