@@ -47,8 +47,8 @@
           <v-text-field
               v-model="getOrder.quantity"
               outlined
-              :rules="[v => (!!v && v <= getCurrentEquipmentQuantity && v > 0)|| 'Die Menge ist nicht correct']"
-              :hint="'Die Restmenge ist '+getCurrentEquipmentQuantity.toString()"
+              :rules="[v => (!!v && v <= getCurrentEquipment.quantity && v > 0)|| 'Die Menge ist nicht correct']"
+              :hint="'Die Restmenge ist '+getCurrentEquipment.quantity.toString() + ' ' + getCurrentEquipment.measure"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -127,7 +127,7 @@
               outlined
               @click="submitUpdatedOrder"
               :disabled="
-              (getOrder.quantity > this.getCurrentEquipmentQuantity) ||
+              (getOrder.quantity > this.getCurrentEquipment.quantity) ||
                getOrder.quantity <= 0 ||
               !getOrder.deliveryAddress"
           >
@@ -177,11 +177,16 @@ export default {
     getEquipment() {
       return this.$store.getters.getEquipment
     },
-    getCurrentEquipmentQuantity() {
+    getCurrentEquipment() {
       if (this.getOrder.equipments[0].name) {
-        return this.$store.getters.getEquipmentByType(this.getOrder.equipments[0].name).quantity;
+        return this.$store.getters.getEquipmentByType(this.getOrder.equipments[0].name);
       }
-      return 0;
+      return {
+        "id": 0,
+        "measure": "",
+        "quantity": 0,
+        "name": ""
+      };
     },
   },
   methods: {
