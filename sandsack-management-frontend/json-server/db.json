@@ -401,14 +401,13 @@
   ],
   "users": [
     {
-      "id": 18,
-      "status": "anstehend",
-      "from": "EA 1.1 Altstadt- Ost",
-      "type": "Sandsäcke",
-      "quantity": "94032",
-      "priority": "Hohe",
-      "deliveryAddress": "kirchenplatz 1",
-      "notesByUnterabschnitt": ""
+      "address": "Leonhard-Paminger-Str. 20",
+      "email": "info@ffpassau.de223",
+      "phone": "+49 123 45 67 8 901232",
+      "password": "eedd",
+      "id": 0,
+      "name": "Abschnittname",
+      "roleName": "Abschnittrole"
     }
   ],
   "equipment": [
