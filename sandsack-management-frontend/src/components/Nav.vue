@@ -4,6 +4,7 @@
       width="350"
       app
       class="logo pa-0 ma-0"
+      v-if="isLoggedIn"
   >
     <div>
       <v-row class="pt-10 pb-10 pl-5">
