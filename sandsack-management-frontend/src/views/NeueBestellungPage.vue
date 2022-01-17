@@ -8,7 +8,7 @@
       <v-row >
         <v-col cols="12">
           <v-text-field
-              :value="getLoggedInBranchName"
+              :value="getLoggedInUserName"
               readonly
               prepend-icon="mdi-account"
               filled
@@ -145,9 +145,9 @@ export default {
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
     },
-    getLoggedInBranchName() {
-      return this.$store.getters.getCurrentUserName
-    },
+    getLoggedInUserName() {
+      return this.$store.getters.getLoggedInUser.name
+    }
   },
 
   methods: {
