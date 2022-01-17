@@ -33,7 +33,7 @@
               <v-col cols="12" sm="3">
                 <v-select
                     disabled
-                    :value="getOrder.type"
+                    :value="getOrder.equipments[0].name"
                     :items="getEquipment.map(a => a.name)"
                     outlined
                 ></v-select>
@@ -178,9 +178,8 @@ export default {
       return this.$store.getters.getEquipment
     },
     getCurrentEquipmentQuantity() {
-      if (this.getOrder.type) {
-        console.log(this.getOrder.type)
-        return this.$store.getters.getEquipmentByType(this.getOrder.type).quantity;
+      if (this.getOrder.equipments[0].name) {
+        return this.$store.getters.getEquipmentByType(this.getOrder.equipments[0].name).quantity;
       }
       return 0;
     },
