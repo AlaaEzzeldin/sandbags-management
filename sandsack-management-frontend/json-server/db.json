@@ -4,11 +4,6 @@
       "id": 0,
       "created_at": "24.12.2021 12:01",
       "from": "EA 1.1 Altstadt- Ost",
-<<<<<<< HEAD
-      "type": "sandsack",
-      "priority": "Hohe",
-      "status": "akzeptiert",
-=======
       "equipments": [
         {
           "id": 1,
@@ -19,7 +14,6 @@
       ],
       "priority": "HIGH",
       "status": "ABGELEHNT BEI EINSATZABSCHNITT",
->>>>>>> development
       "quantity": "319",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByUnterabschnitt": "please process ASAP3",
@@ -96,11 +90,6 @@
       "id": 4,
       "created_at": "14.11.2021 12:01",
       "from": "EA 2.1 Nuemarkt- Nord",
-<<<<<<< HEAD
-      "type": "sandsack",
-      "priority": "hohe",
-      "status": "geliefert",
-=======
       "equipments": [
         {
           "id": 1,
@@ -111,7 +100,6 @@
       ],
       "priority": "HIGH",
       "status": "ABGELEHNT BEI HAUPTABSCHNITT",
->>>>>>> development
       "quantity": "3",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByEinsatzabschnitt": "please process ASAP"
@@ -172,11 +160,6 @@
       "id": 8,
       "created_at": "13.11.2021 12:01",
       "from": "EA 1.1 Altstadt- Mitte",
-<<<<<<< HEAD
-      "type": "sandsack",
-      "priority": "Hohe",
-      "status": "abgelehnt",
-=======
       "equipments": [
         {
           "id": 1,
@@ -187,7 +170,6 @@
       ],
       "priority": "HIGH",
       "status": "ANSTEHEND",
->>>>>>> development
       "quantity": "26",
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
@@ -195,12 +177,6 @@
       "id": 9,
       "created_at": "14.11.2021 12:01",
       "from": "EA 2.1 Nuemarkt- Nord",
-<<<<<<< HEAD
-      "type": "sandsack",
-      "priority": "hohe",
-      "status": "abgelehnt",
-      "quantity": "9",
-=======
       "equipments": [
         {
           "id": 1,
@@ -212,20 +188,12 @@
       "priority": "HIGH",
       "status": "ANSTEHEND",
       "quantity": "93455",
->>>>>>> development
       "deliveryAddress": "Nikolastraße 4 494032 Passau"
     },
     {
       "id": 10,
       "created_at": "15.11.2021 12:01",
       "from": "EA 3.2 Universität-West",
-<<<<<<< HEAD
-      "type": "sandsack",
-      "priority": "niedrige",
-      "status": "akzeptiert",
-      "quantity": "10",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau"
-=======
       "equipments": [
         {
           "id": 1,
@@ -239,7 +207,6 @@
       "quantity": "12",
       "deliveryAddress": "Nikolastraße 4 494032 Passau",
       "notesByEinsatzabschnitt": "this is number 10 test"
->>>>>>> development
     },
     {
       "id": 11,
@@ -363,8 +330,6 @@
       "deliveryAddress": "3",
       "notesByUnterabschnitt": "3dee"
     },
-<<<<<<< HEAD
-=======
     {
       "id": 18,
       "status": "ANSTEHEND",
@@ -435,7 +400,6 @@
     }
   ],
   "users": [
->>>>>>> development
     {
       "id": 18,
       "status": "anstehend",
@@ -575,8 +539,4 @@
       ]
     }
   ]
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> development
