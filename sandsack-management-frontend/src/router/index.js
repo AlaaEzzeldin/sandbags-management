@@ -45,7 +45,7 @@ const routes = [
         meta: {requiresGuest: true}
     },
     {
-        path: '/homapage',
+        path: '/homepage',
         name: 'HomePage',
         component: HomePage,
         meta: {requiresAuth: true},
@@ -106,21 +106,21 @@ const router = new VueRouter({
 
 function hasPermissionsNeeded(to) {
     let userRole = auth.state.user.role
-    let ToPage = to.name
+    let toPage = to.name
 
     if (['Mollnhof'].includes(userRole) &&
-        ['ManageEquipmentPage'].includes(ToPage)) // only mollnhof
+        ['ManageEquipmentPage'].includes(toPage)) // only Mollnhof
         return true
     else if (['Unterabschnitt'].includes(userRole) &&
-        ['NeueBestellungPage'].includes(ToPage)) // only Unterabschnitt
+        ['NeueBestellungPage'].includes(toPage)) // only Unterabschnitt
         return true
     else if (['Einsatzabschnitt', 'Hauptabschnitt', 'Einsatzleiter'].includes(userRole) &&
-        ['BestellübersichtPage'].includes(ToPage)) // only Einsatzabschnitt, Hauptabschnitt, Einsatzleiter
+        ['BestellübersichtPage'].includes(toPage)) // only Einsatzabschnitt, Hauptabschnitt, Einsatzleiter
         return true
     else if (['Unterabschnitt', 'Einsatzabschnitt', 'Hauptabschnitt', 'Einsatzleiter'].includes(userRole) &&
-        ['BestellBearbeitenPage'].includes(ToPage)) // all except for mollnhof
+        ['BestellBearbeitenPage'].includes(toPage)) // all except for Mollnhof
         return true
-    else if (['BestellungslistePage', 'KontoPage', 'BestelldetailsPage'].includes(ToPage)) // all users
+    else if (['BestellungslistePage', 'KontoPage', 'BestelldetailsPage'].includes(toPage)) // all users
         return true
     else return false
 }
@@ -133,8 +133,8 @@ router.beforeEach((to, from, next) => {
                 query: {redirect: to.fullPath}
             })
         } else {
-            if (!hasPermissionsNeeded(to)) { //the user has no access to this page so will be redireted to homepage
-                console.log("you don't have access to this page")
+            if (!hasPermissionsNeeded(to)) { //the user has no access to this page so will be redirected to homepage
+                alert("you don't have access to this page")
                 next('/orders-list');
             } else {
                 next();
