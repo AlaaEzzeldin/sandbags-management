@@ -37,10 +37,10 @@
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
-              :rules="[v => (!!v && v <= getCurrentEquipmentQuantity && v > 0)|| 'Die Menge ist nicht correct']"
+              :rules="[v => (!!v && v <= getCurrentEquipment.quantity && v > 0)|| 'Die Menge ist nicht correct']"
               prepend-icon="mdi-pound"
               label="Anzahl"
-              :hint="'Die Restmenge ist '+getCurrentEquipmentQuantity.toString()"
+              :hint="'Die Restmenge ist '+getCurrentEquipment.quantity.toString() + ' ' + getCurrentEquipment.measure"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -104,7 +104,7 @@
                   newOrder.priority &&
                   newOrder.deliveryAddress &&
                   newOrder.quantity > 0 &&
-                  newOrder.quantity <= getCurrentEquipmentQuantity
+                  newOrder.quantity <= getCurrentEquipment.quantity
               )"
           >
             Bestellen
@@ -154,11 +154,16 @@ export default {
     getEquipment() {
       return this.$store.getters.getEquipment
     },
-    getCurrentEquipmentQuantity() {
+    getCurrentEquipment() {
       if (this.chosenEquipmentType) {
-        return this.$store.getters.getEquipmentByType(this.chosenEquipmentType).quantity;
+        return this.$store.getters.getEquipmentByType(this.chosenEquipmentType);
       }
-      return 0;
+      return {
+        "id": 0,
+        "measure": "",
+        "quantity": 0,
+        "name": ""
+      };
     },
     getPriorities() {
       return this.$store.getters.getPriorities
@@ -168,7 +173,7 @@ export default {
   methods: {
     createOrder() {
       this.newOrder.from= this.getLoggedInUserName
-      this.newOrder.equipments = [this.$store.getters.getEquipmentByType(this.chosenEquipmentType)]
+      this.newOrder.equipments = [this.getCurrentEquipment]
       console.log("new order", this.newOrder)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})
