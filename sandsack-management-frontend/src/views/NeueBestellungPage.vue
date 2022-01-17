@@ -123,11 +123,6 @@
 export default {
   name: 'BestelldetailsPage',
 
-  created() {
-    this.$store.dispatch("loadEquipment");
-    this.$store.dispatch("loadPriorities");
-  },
-
   data: () => ({
     selectedEquipmentIndex:'',
     selectedPriorityIndex: '',
@@ -135,17 +130,20 @@ export default {
     priority: '',
     abschnitt: '',
     chosenEquipmentType: '',
-    newOrder:{
-      address_to: "",
-      comment: "",
-      equipments: [
-        {
-          id: "1",
-          quantity: "10"
-        }
-      ],
-      priority: '1'
-    }
+    newOrder:
+{
+  "address_to": "string",
+    "comment": "string",
+    "equipments": [
+  {
+    "id": 2,
+    "measure": "Stück",
+    "name": "Spaten",
+    "quantity": 1000
+  }
+],
+    "priority": 1
+}
   }),
 
   computed:{
@@ -180,8 +178,8 @@ export default {
       console.log("new order", this.newOrder)
       // Priority and equipment needs to be fetched from the drop down select input
       //console.log("type",this.equipments.findIndex(x => x.name === this.selectedEquipmentIndex))
-     // console.log("prirotity index", this.priorities.findIndex(x => x === this.selectedPriorityIndex))
-     // this.newOrder.priority = this.priorities.findIndex(x => x === this.selectedPriorityIndex)
+      // console.log("prirotity index", this.priorities.findIndex(x => x === this.selectedPriorityIndex))
+      // this.newOrder.priority = this.priorities.findIndex(x => x === this.selectedPriorityIndex)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})
     }
