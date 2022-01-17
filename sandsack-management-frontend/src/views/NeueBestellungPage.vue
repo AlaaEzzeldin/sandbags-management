@@ -8,7 +8,7 @@
       <v-row >
         <v-col cols="12">
           <v-text-field
-              :value="getBranchName"
+              :value="getLoggedInUserName"
               readonly
               prepend-icon="mdi-account"
               filled
@@ -21,9 +21,8 @@
       <v-row>
         <v-col sm="6">
           <v-select
-              v-model="selectedEquipmentIndex"
-              :items="equipments"
-              :item-text="equipments.name"
+              v-model="chosenEquipmentType"
+              :items="getEquipment.map(a => a.name)"
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
@@ -34,13 +33,14 @@
         </v-col>
         <v-col sm="6">
           <v-text-field
-              v-model="newOrder.equipments[0].quantity"
+              v-model="newOrder.quantity"
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
-              :rules="[v => !!v || 'Die Menge ist erforderlich']"
+              :rules="[v => (!!v && v <= getCurrentEquipment.quantity && v > 0)|| 'Die Menge ist nicht correct']"
               prepend-icon="mdi-pound"
               label="Anzahl"
+              :hint="'Die Restmenge ist '+getCurrentEquipment.quantity.toString() + ' ' + getCurrentEquipment.measure"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -62,8 +62,8 @@
       <v-row>
         <v-col cols="12">
           <v-select
-              v-model="selectedPriorityIndex"
-              :items="priorities"
+              v-model="newOrder.priority"
+              :items="getPriorities.map(x => x.name)"
               :rules="[v => !!v || 'Die Priorität ist erforderlich']"
               label="Priorität"
               prepend-icon="mdi-alert"
@@ -94,12 +94,19 @@
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
+              style="text-transform: capitalize; font-weight: bolder;color: white"
               block
               rounded
               color="red"
               dark
               @click="createOrder"
+              :disabled="!(
+                  chosenEquipmentType &&
+                  newOrder.priority &&
+                  newOrder.deliveryAddress &&
+                  newOrder.quantity > 0 &&
+                  newOrder.quantity <= getCurrentEquipment.quantity
+              )"
           >
             Bestellen
           </v-btn>
@@ -116,6 +123,10 @@
 export default {
   name: 'BestelldetailsPage',
 
+  created() {
+    this.$store.dispatch("loadEquipment");
+    this.$store.dispatch("loadPriorities");
+  },
 
   data: () => ({
     selectedEquipmentIndex:'',
@@ -123,19 +134,7 @@ export default {
     loggedIn: '',
     priority: '',
     abschnitt: '',
-    equipments: [
-      {
-        id: 0,
-        name: "Sandsäcke",
-        quantity: 0
-      }
-    ],
-    priorities: [
-      'Niedrig',
-      'Mittle',
-      'Hohe',
-    ],
-
+    chosenEquipmentType: '',
     newOrder:{
       address_to: "",
       comment: "",
@@ -147,20 +146,37 @@ export default {
       ],
       priority: '1'
     }
-
   }),
 
   computed:{
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
     },
-    getBranchName() {
-      return this.$store.getters.getCurrentUserRole
+    getLoggedInUserName() {
+      return this.$store.getters.getLoggedInUser.name
+    },
+    getEquipment() {
+      return this.$store.getters.getEquipment
+    },
+    getCurrentEquipment() {
+      if (this.chosenEquipmentType) {
+        return this.$store.getters.getEquipmentByType(this.chosenEquipmentType);
+      }
+      return {
+        "id": 0,
+        "measure": "",
+        "quantity": 0,
+        "name": ""
+      };
+    },
+    getPriorities() {
+      return this.$store.getters.getPriorities
     },
   },
 
   methods: {
     createOrder() {
+      this.newOrder.equipments = [this.getCurrentEquipment]
       console.log("new order", this.newOrder)
       // Priority and equipment needs to be fetched from the drop down select input
       //console.log("type",this.equipments.findIndex(x => x.name === this.selectedEquipmentIndex))
