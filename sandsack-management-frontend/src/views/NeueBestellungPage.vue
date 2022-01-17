@@ -21,7 +21,7 @@
       <v-row>
         <v-col sm="6">
           <v-select
-              v-model="newOrder.type"
+              v-model="chosenEquipmentType"
               :items="getEquipment.map(a => a.name)"
               filled
               outlined
@@ -100,7 +100,7 @@
               color="red"
               @click="createOrder"
               :disabled="!(
-                  newOrder.type &&
+                  chosenEquipmentType &&
                   newOrder.priority &&
                   newOrder.deliveryAddress &&
                   newOrder.quantity > 0 &&
@@ -131,11 +131,12 @@ export default {
     loggedIn: '',
     priority: '',
     abschnitt: '',
+    chosenEquipmentType: '',
     newOrder: {
       id:"",
       status: "anstehend", //this will be deleted when integrating with the backened
       from: "",
-      type: "",
+      equipments: [],
       quantity: "",
       priority: "",
       deliveryAddress: "",
@@ -154,8 +155,8 @@ export default {
       return this.$store.getters.getEquipment
     },
     getCurrentEquipmentQuantity() {
-      if (this.newOrder.type) {
-        return this.$store.getters.getEquipmentByType(this.newOrder.type).quantity;
+      if (this.chosenEquipmentType) {
+        return this.$store.getters.getEquipmentByType(this.chosenEquipmentType).quantity;
       }
       return 0;
     },
@@ -167,6 +168,7 @@ export default {
   methods: {
     createOrder() {
       this.newOrder.from= this.getLoggedInUserName
+      this.newOrder.equipments = [this.$store.getters.getEquipmentByType(this.chosenEquipmentType)]
       console.log("new order", this.newOrder)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})
