@@ -21,9 +21,7 @@ export default {
   components: {
     Navigation
   },
-  created() {
-    this.$store.dispatch("loadLoggedIn", '0')
-  },
+
 
 };
 </script>

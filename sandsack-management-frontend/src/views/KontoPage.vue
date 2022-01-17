@@ -1,6 +1,6 @@
 <!-- TODO: Add link to login page on Ausloggen button after authentication feature has been merged -->
 <template>
-  <div v-if="getLoggedInUser">
+  <div v-if="isLoggedIn">
     <v-row no-gutters>
       <v-col sm="3" class="pt-13 justify-center align-center">
         <h1 style="font-weight: bolder;">Konto</h1>
@@ -46,18 +46,20 @@
           </v-col>
           <v-col cols="10">
             <h2>{{ getLoggedInUser.name }}</h2>
-            <h3>{{ getLoggedInUser.roleName }}</h3>
+            <h3>{{ getLoggedInUser.branch_name }}</h3>
           </v-col>
         </v-row>
         <v-row class="pt-2">
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon color="black">mdi-map-marker</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>{{ getLoggedInUser.address }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+          <!--
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="black">mdi-map-marker</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-title>{{ getLoggedInUser.address }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+          -->
           <v-list-item>
             <v-list-item-icon>
               <v-icon color="black">mdi-phone</v-icon>
@@ -77,7 +79,8 @@
         </v-row>
       </v-card>
     </v-row>
-    <konto-edit-dialog :dialog="dialog"
+    <konto-edit-dialog
+        v-if="dialog" :dialog="dialog"
                        @close="dialog=false"
     ></konto-edit-dialog>
   </div>
@@ -94,27 +97,30 @@ export default {
   data: () => ({
     dialog: null
   }),
-
   computed: {
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn
+    },
     getLoggedInUser() {
       return this.$store.getters.getLoggedInUser
-    }
+    },
+
   },
   methods:
       {
-        logout(){
-            this.$store.dispatch('logout').then(
-                () => {
-                  this.$router.push({name: 'LoginPage'})
-                },
-                error => {
-                  this.message =
-                      (error.response && error.response) ||
-                      error.message ||
-                      error.toString();
-                }
-            );
-          }
+        logout() {
+          this.$store.dispatch('logout').then(
+              () => {
+                this.$router.push({name: 'LoginPage'})
+              },
+              error => {
+                this.message =
+                    (error.response && error.response) ||
+                    error.message ||
+                    error.toString();
+              }
+          );
+        }
 
       }
 }
