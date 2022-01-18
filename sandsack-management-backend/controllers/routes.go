@@ -19,7 +19,7 @@ const defaultPort = ":8000"
 func (a *App) RunAllRoutes() {
 	var port = defaultPort
 
-	r := gin.Default()
+	r := gin.New()
 	r.Use(middleware.CORSMiddleware())
 	f, err := os.Create("gin.log")
 
@@ -59,7 +59,7 @@ func (a *App) RunAllRoutes() {
 	users := auth.Group("users")
 	users.GET("/", a.GetUserList)
 	users.POST("/logout", a.Logout)
-	users.PATCH("/change_password", a.ChangePassword)
+	users.POST("/change_password", a.ChangePassword)
 	users.GET("/me", a.GetProfile)
 	users.PATCH("/me", a.PatchProfile)
 
@@ -69,7 +69,6 @@ func (a *App) RunAllRoutes() {
 	order.GET("/", a.ListOrder)
 	order.POST("/cancel", a.DeclineOrder)
 	order.POST("/accept", a.AcceptOrder)
-	order.POST("/dispatch", a.DispatchOrder)
 	order.POST("/comment", a.CommentOrder)
 	order.PATCH("/edit", a.EditOrder)
 	order.PATCH("/upgrade", func(context *gin.Context) {

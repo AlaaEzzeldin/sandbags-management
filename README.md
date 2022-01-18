@@ -22,10 +22,10 @@ The repo follows feature flow
 
 ### Run
 
-The application is divided into frontend and backend apps that are put into Docker containers.
+The application is divided into frontend and backend apps that are put into Docker containers. 
 
-Each app has its own `Dockerfile` that are orchestrated through `docker-compose.yml`. Furthermore, postgreSQL database runs own container.
+Each app has its own ```Dockerfile``` that are orchestrated through ```docker-compose.yml```. Furthermore, postgreSQL database runs own container.
 
-To build and run the project, do `docker-compose up --build`. It will build and start corresponding apps in separate containers.
+To build and run the project, do ```docker-compose up --build```. It will build and start corresponding apps in separate containers. 
 
-Frontend app runs on port `:80` and backend is accessible on port `:8001`
+Frontend app runs on port ```:80```and backend is accessible on port ```:8001```

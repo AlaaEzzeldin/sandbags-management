@@ -15,7 +15,7 @@
             <v-row>
               <v-col>
                 <v-text-field
-                    v-model="email"
+                    v-model="user.email"
                     :rules="emailRules"
                     label="E-mail"
                     required
@@ -30,7 +30,7 @@
             <v-row>
               <v-col>
                 <v-text-field
-                    v-model="password"
+                    v-model="user.password"
                     :rules="passwordRules"
                     label="Password"
                     required
@@ -59,13 +59,12 @@
             <v-row no-gutters>
               <v-col>
                 <v-btn
-                    style="text-transform: capitalize; font-weight: bolder;"
+                    :disabled="!valid"
+                    style="text-transform: capitalize; font-weight: bolder; color: white"
                     color="red"
-                    dark
                     block
                     class="mr-4"
-                    @click="validate"
-                    :to="`/orders-list/`+getUserRole()"
+                    @click="submit"
                 >
                   Einloggen
                 </v-btn>
@@ -103,14 +102,16 @@ export default {
   name: 'LoginPage',
   components: {AuthFailureDialog},
   data: () => ({
+    user: {
+      email: '',
+      password: '',
+    },
     valid: true,
     checkbox: false,
-    email: '',
     emailRules: [
       v => !!v || 'E-mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
     ],
-    password: '',
     passwordRules: [
       v => !!v || 'Password is required',
     ],
@@ -136,20 +137,11 @@ export default {
             if (this.message.data.err_code === 404)
               this.messageToDisplay = 'Der von Ihnen angegebene Benutzername und das Passwort sind nicht korrekt, bitte versuchen Sie es erneut!'
             else this.messageToDisplay = 'Etwas ist schief gelaufen. Bitte versuchen Sie es erneut!'
-            this.authFailureDialog = true
+            this.authFailureDialog=true
           }
-      )
-    },
-    getUserRole() {
-      if (this.email === 'haupt@gmail.com')
-        return 1
-      else if (this.email === 'einsatz@gmail.com')
-        return 2
-      else if (this.email === 'unter@gmail.com')
-        return 3
-      else if (this.email === 'mollnhof@gmail.com')
-        return 4
+      );
     }
+
   }
 
 }
