@@ -13,7 +13,7 @@
       </v-chip>
     </v-card-title>
 
-    <v-card-text class="pt-16 ">
+    <v-card-text class="pt-16 " >
 
       <v-row>
         <v-col cols="12" sm="2">
@@ -363,6 +363,8 @@ export default {
   }),
 
   created() {
+    this.$store.dispatch("loadPriorities");
+    this.$store.dispatch("loadEquipment");
     this.$store.dispatch("loadOrder", this.$route.params.orderId)
   },
   computed: {

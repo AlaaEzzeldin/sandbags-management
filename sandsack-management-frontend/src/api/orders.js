@@ -25,10 +25,11 @@ export default {
     },
 
     acceptOrder(id) {
-        return axios.post(BASE_URL + 'order/accept?id=' + id, {
+        return axios.post(BASE_URL + 'order/accept?id=', id, {
             headers: authHeader(),
         });
     },
+
     cancelOrder(id) {
         return axios.post(BASE_URL + 'order/cancel?id=' + id, {
             headers: authHeader(),
