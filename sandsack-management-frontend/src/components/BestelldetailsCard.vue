@@ -28,7 +28,7 @@
           <h3 style="font-weight: bolder; color: black">Typ:</h3>
         </v-col>
         <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{ getOrder.equipments[0].name }}</h3>
+          <h3 style="font-weight: bolder; color: black">sandsäcke</h3>
         </v-col>
       </v-row>
       <v-row>

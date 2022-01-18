@@ -2,34 +2,22 @@
   <div>
     <v-row no-gutters>
       <v-col class="pt-13 justify-center align-center">
-        <h1 style="font-weight: bolder;">Ausrüstung Zurückgeben</h1>
+        <h1 style="font-weight: bolder;">Restliche Ausrüstung Bearbeiten</h1>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
         <v-select
-            :items="getEquipment.map(item => item.name)"
+            :items="getEquipment.map(item => item.type)"
             @change="setCurrentType"
             label="Ausrüstungtyp"
             outlined
         ></v-select>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <h3>Aktueller Betrag:</h3>
-      </v-col>
-      <v-col>
-        {{getCurrentEquipment.quantity}}
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <h3>Zurückgeben:</h3>
-      </v-col>
       <v-col>
         <v-text-field
-            :value="0"
+            style="max-width: 50px;"
+            :value="getCurrentEquipment.amount"
             v-model="newAmount"
             outlined
         ></v-text-field>
@@ -71,7 +59,7 @@ export default {
       return 0;
     },
     getBtnDisabled() {
-      return !this.currentType || (parseInt(this.newAmount) === 0)
+      return !this.currentType || (parseInt(this.newAmount) === parseInt(this.getCurrentEquipment.amount))
     }
   },
 
@@ -82,13 +70,14 @@ export default {
       let amount = this.newAmount;
       let data = {
         "id": id,
-        "quantity": parseInt(amount),
-        "name": type
+        "amount": amount,
+        "type": type
       }
       this.$store.dispatch("updateEquipment", {id, data} );
     },
     setCurrentType(e) {
       this.currentType = e;
+      this.newAmount = this.getCurrentEquipment.amount;
     }
   }
 }

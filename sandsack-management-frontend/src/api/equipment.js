@@ -1,19 +1,13 @@
 import axios from 'axios'
-import authHeader from "../services/auth-header";
-import {BASE_URL} from "./config";
-
 export default {
     index( params ){
-        return axios.get( BASE_URL +'core/equipment', {
-            headers: authHeader(),
+        return axios.get( 'http://localhost:3001/equipment', {
             params: params
         })
     },
 
     update( id, data ){
-        return axios.patch( BASE_URL + 'core/equipment/return', data, {
-            headers: authHeader()
-        });
+        return axios.patch( 'http://localhost:3001/equipment/'+id, data);
     },
 
 }
