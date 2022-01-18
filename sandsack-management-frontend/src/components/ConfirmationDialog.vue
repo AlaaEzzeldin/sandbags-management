@@ -93,7 +93,7 @@ export default {
     },
 
     changeOrderStatus() {
-      let id = this.orderID.toString()
+      let id = this.orderID
       if (this.action === 'accept')
         this.$store.dispatch("acceptOrder", id)
       else if (this.action === 'cancel')

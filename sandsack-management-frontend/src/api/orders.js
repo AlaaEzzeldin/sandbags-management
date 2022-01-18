@@ -24,23 +24,23 @@ export default {
         });
     },
 
-    acceptOrder() {
-        return axios.post(BASE_URL + 'order/accept?id=10' , {
+    acceptOrder(id) {
+        return axios.post(BASE_URL + 'order/accept?id=' + id, {
             headers: authHeader(),
         });
     },
     cancelOrder(id) {
         return axios.post(BASE_URL + 'order/cancel?id=' + id, {
             headers: authHeader(),
-        });
+        })
     },
     confirmOrderDelivery(id) {
-        return axios.post(BASE_URL + 'order/delivery/confirm/?id=' + id, {
+        return axios.post(BASE_URL + 'order/delivery/confirm?id=' + id, {
             headers: authHeader(),
         });
     },
     dispatchOrder(id) {
-        return axios.post(BASE_URL + 'order/dispatch/?id=' + id, {
+        return axios.post(BASE_URL + 'order/dispatch?id=' + id, {
             headers: authHeader(),
         });
     },
