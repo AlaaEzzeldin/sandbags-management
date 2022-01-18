@@ -136,7 +136,7 @@ export default {
             this.message = (error.response && error.response) || error.message || error.toString();
             if (this.message.data.err_code === 404)
               this.messageToDisplay = 'Der von Ihnen angegebene Benutzername und das Passwort sind nicht korrekt, bitte versuchen Sie es erneut!'
-            else this.messageToDisplay = 'Etwas ist schief gelaufen. Bitte versuche es erneut!'
+            else this.messageToDisplay = 'Etwas ist schief gelaufen. Bitte versuchen Sie es erneut!'
             this.authFailureDialog=true
           }
       );
