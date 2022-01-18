@@ -5,7 +5,7 @@
     </v-card-title>
 
     <v-card-text class="pt-16 ">
-      <v-row >
+      <v-row>
         <v-col cols="12">
           <v-text-field
               :value="getLoggedInUserName"
@@ -33,7 +33,7 @@
         </v-col>
         <v-col sm="6">
           <v-text-field
-              v-model="newOrder.quantity"
+              v-model="orderQuantity"
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
@@ -45,7 +45,7 @@
         </v-col>
       </v-row>
 
-      <v-row >
+      <v-row>
         <v-col cols="12">
           <v-text-field
               v-model="newOrder.address_to"
@@ -62,7 +62,7 @@
       <v-row>
         <v-col cols="12">
           <v-select
-              v-model="newOrder.priority"
+              v-model="selectedPriority"
               :items="getPriorities.map(x => x.name)"
               :rules="[v => !!v || 'Die Priorität ist erforderlich']"
               label="Priorität"
@@ -74,7 +74,7 @@
         </v-col>
       </v-row>
 
-      <v-row >
+      <v-row>
         <v-col cols="12">
           <v-textarea
               v-model="newOrder.comment"
@@ -98,14 +98,13 @@
               block
               rounded
               color="red"
-              dark
               @click="createOrder"
               :disabled="!(
                   chosenEquipmentType &&
-                  newOrder.priority &&
-                  newOrder.deliveryAddress &&
-                  newOrder.quantity > 0 &&
-                  newOrder.quantity <= getCurrentEquipment.quantity
+                  selectedPriority &&
+                  newOrder.address_to &&
+                  orderQuantity > 0 &&
+                  orderQuantity <= getCurrentEquipment.quantity
               )"
           >
             Bestellen
@@ -124,30 +123,27 @@ export default {
   name: 'BestelldetailsPage',
 
   data: () => ({
-    selectedEquipmentIndex:'',
-    selectedPriorityIndex: '',
-    loggedIn: '',
-    priority: '',
-    abschnitt: '',
+    selectedPriority: '',
     chosenEquipmentType: '',
+    orderQuantity: '',
     newOrder:
-{
-  "address_to": "string",
-    "comment": "string",
-    "equipments": [
-  {
-    "id": 2,
-    "measure": "Stück",
-    "name": "Spaten",
-    "quantity": 1000
-  }
-],
-    "priority": 1
-}
+        {
+          "address_to": "",
+          "comment": "",
+          "equipments": [
+            {
+              "id": 0,
+              "measure": "",
+              "name": "",
+              "quantity": 0
+            }
+          ],
+          "priority": 0
+        }
   }),
 
-  computed:{
-    getCurrentUserRole(){
+  computed: {
+    getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
     },
     getLoggedInUserName() {
@@ -175,11 +171,9 @@ export default {
   methods: {
     createOrder() {
       this.newOrder.equipments = [this.getCurrentEquipment]
+      this.newOrder.priority = this.getPriorities.find(item => item.name === this.selectedPriority).id
+
       console.log("new order", this.newOrder)
-      // Priority and equipment needs to be fetched from the drop down select input
-      //console.log("type",this.equipments.findIndex(x => x.name === this.selectedEquipmentIndex))
-      // console.log("prirotity index", this.priorities.findIndex(x => x === this.selectedPriorityIndex))
-      // this.newOrder.priority = this.priorities.findIndex(x => x === this.selectedPriorityIndex)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})
     }

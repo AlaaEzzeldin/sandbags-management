@@ -58,8 +58,8 @@ export default {
     this.$store.dispatch("loadOrders")
   },
 
-  computed:{
-    getCurrentUserRole(){
+  computed: {
+    getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
     },
     getOrders() {

@@ -4,31 +4,22 @@ import {BASE_URL} from "../api/config";
 
 export default {
 
-/*   index(params) {
-        return axios.get(BASE_URL + 'order', {
+    index(params) {
+        return axios.get(BASE_URL + 'order/', {
             headers: authHeader(),
             params: params
         })
     },
 
     show(id) {
-        return axios.get(BASE_URL + 'order'+ id, {
+        return axios.get(BASE_URL + 'order/?id=' + id, {
             headers: authHeader(),
         })
-     },*/
-    index( params ){
-        return axios.get( 'http://localhost:3001/orders', {
-            params: params
-        })
-    },
-
-    show( id ){
-        return axios.get( 'http://localhost:3001/orders/'+id );
     },
 
 
     create(data) {
-        return axios.post(BASE_URL + 'order', data, {
+        return axios.post(BASE_URL + 'order/', data, {
             headers: authHeader(),
         });
     },
@@ -39,17 +30,17 @@ export default {
         });
     },
     cancelOrder(id) {
-        return axios.post(BASE_URL + 'order/cancel'+ id, {
+        return axios.post(BASE_URL + 'order/cancel' + id, {
             headers: authHeader(),
         });
     },
     confirmOrderDelivery(id) {
-        return axios.post(BASE_URL + 'order/delivery/confirm'+ id, {
+        return axios.post(BASE_URL + 'order/delivery/confirm' + id, {
             headers: authHeader(),
         });
     },
     dispatchOrder(id) {
-        return axios.post(BASE_URL + 'order/dispatch'+ id, {
+        return axios.post(BASE_URL + 'order/dispatch' + id, {
             headers: authHeader(),
         });
     },
@@ -63,27 +54,4 @@ export default {
             headers: authHeader()
         })
     }
-/*
-    index( params ){
-        return axios.get( 'http://localhost:3001/orders', {
-            params: params
-        })
-    },
-
-    show( id ){
-        return axios.get( 'http://localhost:3001/orders/'+id );
-    },
-
-    update( id, data ){
-        return axios.patch( 'http://localhost:3001/orders/'+id, data );
-    },
-
-    create( data ){
-        return axios.post( 'http://localhost:3001/orders/', data );
-    },
-
-    delete( id ){
-        return axios.delete( 'http://localhost:3001/orders/' + id )
-    }*/
-
 }
