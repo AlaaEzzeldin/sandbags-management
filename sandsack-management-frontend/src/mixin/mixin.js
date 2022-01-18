@@ -18,7 +18,7 @@ export const Mixin = {
             },
 
             format_time(s) {
-                return new Date(s).toLocaleString()
+                return new Date(s).toLocaleString('en-GB', { timeZone: 'UTC' })
             }
         }
     }
