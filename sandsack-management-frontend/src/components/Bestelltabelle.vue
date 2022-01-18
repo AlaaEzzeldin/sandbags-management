@@ -27,16 +27,6 @@
         </v-toolbar>
       </template>
 
-      <!---------------------------------------- TIME ----------------------------------->
-      <template v-slot:item.priority_id="{ item }">
-        {{getPriorityByID(item.priority_id).name}}
-      </template>
-
-      <!---------------------------------------- TIME ----------------------------------->
-      <template v-slot:item.create_date="{ item }">
-        {{format_time(item.create_date)}}
-      </template>
-
       <!----------------------------------------STATUS CHIP----------------------------------->
       <template v-slot:item.status="{ item }">
         <v-chip
@@ -115,10 +105,10 @@ export default {
         align: 'start',
         value: 'id',
       },
-      {text: 'Zeit', value: 'create_date'},
-      {text: 'Von', value: 'name'},
-      {text: 'Priorität', value: 'priority_id', sortable: false},
-      {text: 'Status', value: 'status_name', align: 'center'},
+      {text: 'Zeit', value: 'created_at'},
+      {text: 'Von', value: 'from'},
+      {text: 'Priorität', value: 'priority', sortable: false},
+      {text: 'Status', value: 'status', align: 'center'},
       {text: 'Aktionen', value: 'actions', sortable: false, align: 'center'},
     ],
     options: {
@@ -128,9 +118,6 @@ export default {
   computed: {
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
-    },
-    getPriorityByID(){
-      return this.$store.getters.getPriorityByID
     }
   },
   methods: {
