@@ -7,9 +7,9 @@
       <h1 style="font-weight: bolder; ">Bestellung bearbeiten # {{ getOrder.id }} </h1>
       <v-chip
           class="ml-5"
-          :color="getColor(getOrder.status)" outlined
+          :color="getColor(getOrder.status_name)" outlined
           dark>
-        {{ getOrder.status }}
+        {{ getOrder.status_name }}
       </v-chip>
     </v-card-title>
 

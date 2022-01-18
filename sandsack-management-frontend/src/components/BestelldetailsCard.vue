@@ -142,14 +142,14 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='ANSTEHEND'"
+              :disabled="getOrder.status_name!=='ANSTEHEND'"
               @click="editOrder"
           >
             Bestellung bearbeiten
           </v-btn>
         </v-col>
 
-        <v-col cols="12" sm="6" offset="3" v-if="getOrder.status==='AUF DEM WEG'">
+        <v-col cols="12" sm="6" offset="3" v-if="getOrder.status_name==='AUF DEM WEG'">
           <v-btn
               style="text-transform: capitalize; font-weight: bolder;"
               rounded
@@ -169,7 +169,7 @@
               color="red"
               dark
               block
-              :disabled="getOrder.status!=='ANSTEHEND'"
+              :disabled="getOrder.status_name!=='ANSTEHEND'"
               @click="changeStatus('cancel')"
           >
             Bestellung stornieren
@@ -190,7 +190,7 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='ANSTEHEND'"
+              :disabled="getOrder.status_name!=='ANSTEHEND'"
               @click="changeStatus('accept')"
           >
             Bestellung weiterleiten an Hauptabschnitt
@@ -204,7 +204,7 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='ANSTEHEND'"
+              :disabled="getOrder.status_name!=='ANSTEHEND'"
               @click="editOrder"
           >
             Bestellung bearbeiten
@@ -217,7 +217,7 @@
               color="red"
               dark
               block
-              :disabled="getOrder.status!=='ANSTEHEND'"
+              :disabled="getOrder.status_name!=='ANSTEHEND'"
               @click="changeStatus('cancel')"
           >
             Bestellung ablehnen
@@ -237,7 +237,7 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
+              :disabled="getOrder.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
               @click="changeStatus('accept')"
           >
             Bestellung annehmen
@@ -251,7 +251,7 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
+              :disabled="getOrder.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
           >
             Bestellung bearbeiten
           </v-btn>
@@ -263,7 +263,7 @@
               color="red"
               dark
               block
-              :disabled="getOrder.status!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
+              :disabled="getOrder.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
               @click="changeStatus('cancel')"
           >
             Bestellung ablehnen
@@ -283,7 +283,7 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
+              :disabled="getOrder.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
               @click="changeStatus('accept')"
           >
             Bestellung annehmen
@@ -297,7 +297,7 @@
               dark
               block
               outlined
-              :disabled="getOrder.status!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
+              :disabled="getOrder.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
               @click="editOrder"
           >
             Bestellung bearbeiten
@@ -310,7 +310,7 @@
               color="red"
               dark
               block
-              :disabled="getOrder.status!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
+              :disabled="getOrder.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
               @click="changeStatus('cancel')"
           >
             Bestellung ablehnen
@@ -330,7 +330,7 @@
               dark
               block
               outlined
-              v-bind:disabled="getOrder.status!=='AKZEPTIERT'"
+              v-bind:disabled="getOrder.status_name!=='AKZEPTIERT'"
               @click="changeStatus('dispatch')"
           >
             Bestellung abgesendet

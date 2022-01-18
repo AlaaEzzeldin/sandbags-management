@@ -38,14 +38,14 @@
       </template>
 
       <!----------------------------------------STATUS CHIP----------------------------------->
-      <template v-slot:item.status="{ item }">
+      <template v-slot:item.status_name="{ item }">
         <v-chip
             small
-            :color="getColor(item.status)"
+            :color="getColor(item.status_name)"
             dark
             outlined
         >
-          {{ item.status }}
+          {{ item.status_name }}
         </v-chip>
       </template>
 
@@ -61,9 +61,9 @@
                     style="text-transform: capitalize; font-weight: bolder;"
                     @click="editItem(item)"
                     small
-                    :disabled="(item.status!=='ANSTEHEND' && ['Einsatzabschnitt', 'Unterabschnitt'].includes(getCurrentUserRole))
-                    || (item.status!=='WEITERGELEITET BEI EINSATZABSCHNITT' && getCurrentUserRole=== 'Hauptabschnitt')
-                    || (item.status!=='WEITERGELEITET BEI HAUPTABSCHNITT' && getCurrentUserRole=== 'Einsatzleiter') "
+                    :disabled="(item.status_name!=='ANSTEHEND' && ['Einsatzabschnitt', 'Unterabschnitt'].includes(getCurrentUserRole))
+                    || (item.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT' && getCurrentUserRole=== 'Hauptabschnitt')
+                    || (item.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT' && getCurrentUserRole=== 'Einsatzleiter') "
 
                     class="elevation-0"
                     color="primary"
