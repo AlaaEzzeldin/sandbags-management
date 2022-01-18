@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="0" class="pt-10" v-if="getOrder">
+  <v-card elevation="0" class="pt-10" v-if="getOrder && getPriorityByID">
     <v-card-title class="pt-10">
       <v-btn icon @click="goBack">
         <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>

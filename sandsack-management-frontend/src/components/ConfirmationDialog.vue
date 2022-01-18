@@ -11,7 +11,7 @@
         <v-textarea
             label="Notizen"
             outlined
-            v-if="action==='cancel'"
+            v-if="action==='cancel' && getCurrentUserRole!=='Unterabschnitt'"
             :error="textFieldError"
             :error-messages="textFieldErrorMessages"
             v-model="textFieldValue"
@@ -93,7 +93,7 @@ export default {
     },
 
     changeOrderStatus() {
-      let id = this.orderID
+      let id = this.orderID.toString()
       if (this.action === 'accept')
         this.$store.dispatch("acceptOrder", id)
       else if (this.action === 'cancel')
