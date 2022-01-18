@@ -62,7 +62,10 @@ func (a *App) PatchProfile(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, "The profile data has been changed successfully")
+	user, err := service.GetUserByID(a.DB, claims.Id)
+	user.Password = ""
+
+	c.JSON(http.StatusOK, user)
 	return
 }
 
