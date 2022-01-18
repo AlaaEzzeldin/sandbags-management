@@ -4,18 +4,27 @@ import {BASE_URL} from "../api/config";
 
 export default {
 
-   index(params) {
+/*   index(params) {
         return axios.get(BASE_URL + 'order', {
             headers: authHeader(),
             params: params
         })
     },
 
-      show(id) {
+    show(id) {
         return axios.get(BASE_URL + 'order'+ id, {
             headers: authHeader(),
         })
-     },
+     },*/
+    index( params ){
+        return axios.get( 'http://localhost:3001/orders', {
+            params: params
+        })
+    },
+
+    show( id ){
+        return axios.get( 'http://localhost:3001/orders/'+id );
+    },
 
 
     create(data) {
