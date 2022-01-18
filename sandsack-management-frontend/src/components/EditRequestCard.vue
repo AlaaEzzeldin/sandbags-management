@@ -127,6 +127,8 @@ export default {
   }),
   created() {
     this.$store.dispatch("loadOrder", this.$route.params.orderId);
+    this.$store.dispatch("loadEquipment");
+    this.$store.dispatch("loadPriorities");
   },
 
   computed: {
@@ -162,6 +164,8 @@ export default {
       this.$router.go(-1)
     },
     submitUpdatedOrder() {
+      console.log("order ", this.getOrder)
+      this.initializePriority()
       let data = {
         "equipments": [
           {

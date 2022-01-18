@@ -141,6 +141,10 @@ export default {
           "priority": 0
         }
   }),
+  created() {
+    this.$store.dispatch("loadEquipment");
+    this.$store.dispatch("loadPriorities");
+  },
 
   computed: {
     getCurrentUserRole() {
@@ -170,7 +174,13 @@ export default {
 
   methods: {
     createOrder() {
-      this.newOrder.equipments = [this.getCurrentEquipment]
+      this.newOrder.equipments =
+          [
+            {
+              "id": this.getEquipment.find(a => a.name === this.chosenEquipmentType).id,
+              "quantity": parseInt(this.orderQuantity)
+            }
+          ]
       this.newOrder.priority = this.getPriorities.find(item => item.name === this.selectedPriority).id
 
       console.log("new order", this.newOrder)
