@@ -25,13 +25,13 @@ export default {
     },
 
     acceptOrder(id) {
-        return axios.post(BASE_URL + 'order/accept?id=', id, {
+        return axios.post(BASE_URL + 'order/accept?id=' + id, {}, {
             headers: authHeader(),
         });
     },
 
     cancelOrder(id) {
-        return axios.post(BASE_URL + 'order/cancel?id=' + id, {
+        return axios.post(BASE_URL + 'order/cancel?id=' + id, {}, {
             headers: authHeader(),
         })
     },
@@ -41,7 +41,7 @@ export default {
         });
     },
     dispatchOrder(id) {
-        return axios.post(BASE_URL + 'order/dispatch?id=' + id, {
+        return axios.post(BASE_URL + 'order/dispatch?id=' + id, {}, {
             headers: authHeader(),
         });
     },
