@@ -1,6 +1,6 @@
 <template>
 
-    <EditRequestCard></EditRequestCard>
+    <EditRequestCard v-if="getOrder" :editedOrder="getOrder"></EditRequestCard>
 
 
 </template>
@@ -16,6 +16,17 @@ export default {
   data: () => ({
 
   }),
+
+  created() {
+    this.$store.dispatch("loadOrder", this.$route.params.orderId);
+    this.$store.dispatch("loadEquipment")
+    this.$store.dispatch("loadPriorities")
+  },
+  computed: {
+    getOrder() {
+      return this.$store.getters.getOrder
+    },
+  }
 
 }
 </script>
