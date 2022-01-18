@@ -105,7 +105,9 @@ const actions = {
 
 const mutations = {
     SET_ORDERS(state, orders) {
-        state.orders = orders;
+        if(orders)
+            state.orders = orders;
+        else state.orders= []
     },
     SET_ORDER(state, order) {
         state.order = order;

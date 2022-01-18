@@ -1,5 +1,5 @@
 <template>
-  <v-card class="elevation-0 rounded-lg" outlined>
+  <v-card class="elevation-0 rounded-lg" outlined v-if="orders">
     <v-data-table
         :headers="headers"
         :items="orders"
