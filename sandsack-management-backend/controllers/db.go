@@ -13,10 +13,10 @@ type App struct {
 }
 
 //var (
-//	Server = os.Getenv("DATABASE_HOST")
-//	Port = os.Getenv("DATABASE_PORT")
+//	Server   = os.Getenv("DATABASE_HOST")
+//	Port     = os.Getenv("DATABASE_PORT")
 //	Database = os.Getenv("DATABASE_NAME")
-//	User = os.Getenv("DATABASE_USER")
+//	User     = os.Getenv("DATABASE_USER")
 //	Password = os.Getenv("DATABASE_PASSWORD")
 //)
 

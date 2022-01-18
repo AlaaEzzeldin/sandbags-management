@@ -54,7 +54,8 @@ func (a *App) AcceptOrder(c *gin.Context) {
 
 	flag := 0
 	for _, i := range permissions {
-		if i == models.DictPermissionName["CAN ACCEPT"] {
+		// CAN ACCEPT
+		if i == 5 {
 			flag = 1
 			break
 		}

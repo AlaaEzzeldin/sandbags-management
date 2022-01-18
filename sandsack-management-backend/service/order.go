@@ -199,11 +199,12 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 			return errors.New("einsatzleiter kann nicht weiterleiten")
 		}
 	} else if user.BranchId == models.DictBranchName["Mollnhof"] {
-		/*if order.StatusId == models.DictStatusName["AKZEPTIERT"] {
+		if order.StatusId == models.DictStatusName["AKZEPTIERT"] {
 			statusId = models.DictStatusName["AUF DEM WEG"]
-		 */
-		return errors.New("mollnhof kann nicht weiterleiten")
 
+		} else {
+			return errors.New("mollnhof kann nicht weiterleiten")
+		}
 	} else {
 		return errors.New("something went wrong")
 	}
@@ -419,53 +420,4 @@ func AddDriver(db *gorm.DB, name, description string) error {
 
 func UpdateEquipment(db *gorm.DB, equipmentId int, quantity int) error {
 	return repo_order.UpdateEquipment(db, equipmentId, quantity)
-}
-
-func DispatchOrder(db *gorm.DB, userId, orderId, driverId int) error {
-	user, _ := GetUserByID(db, userId)
-	order, _ := GetOrder(db, userId, orderId)
-
-	var statusId int
-
-	if user.BranchId == models.DictBranchName["Mollnhof"] {
-		if order.StatusId == models.DictStatusName["AKZEPTIERT"] {
-			statusId = models.DictStatusName["AUF DEM WEG"]
-		}
-	} else {
-		return errors.New("something went wrong")
-	}
-
-	if err := repo_order.UpdateOrderStatus(db, orderId, statusId); err != nil {
-		return err
-	}
-
-
-	children, err := GetChildren(db, userId)
-
-	for _, child := range *children {
-		err = repo_order.DeleteUserOrderPermission(db, child.Id, order.Id)
-		if err != nil {
-			return err
-		}
-	}
-
-	if err := repo_order.SetDriverToOrder(db, orderId, driverId); err != nil {
-		return err
-	}
-
-	logs := []models.Log{
-		{
-			OrderId:      orderId,
-			ActionTypeId: models.DictActionTypeName["ASSIGNED"],
-			UpdatedBy:    userId,
-			Description:  user.Name + " dispatched order " + order.Name + " and assigned it to the driver",
-		},
-	}
-
-	err = repo_order.InsertLogs(db, logs)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
