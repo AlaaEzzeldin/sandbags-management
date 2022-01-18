@@ -109,6 +109,8 @@ export default {
   },
   created() {
     this.$store.dispatch("getUserInfo")
+    this.$store.dispatch("loadEquipment");
+    this.$store.dispatch("loadPriorities");
   },
   computed:{
     getCurrentUserRole(){

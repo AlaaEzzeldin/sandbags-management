@@ -160,9 +160,7 @@ export default {
   name: 'EditRequestCard',
   mixins: [Mixin],
   created() {
-    this.$store.dispatch("loadEquipment");
     this.$store.dispatch("loadOrder", this.$route.params.orderId);
-    this.$store.dispatch("loadPriorities");
   },
   computed: {
     getOrder() {
