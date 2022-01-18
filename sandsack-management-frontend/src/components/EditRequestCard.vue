@@ -76,42 +76,6 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <!--      <v-row no-gutters v-if="getOrder.notesByUnterabschnitt">
-              <v-col cols="12" sm="12">
-                <h3 style="font-weight: bolder; color: black">Anmerkungen des Anforderers:</h3>
-              </v-col>
-              <v-col cols="12" sm="12">
-                <v-textarea
-                    class="mt-3"
-                    v-model="getOrder.notesByUnterabschnitt"
-                    outlined
-                    :disabled="getCurrentUserRole!=='Unterabschnitt'"
-                ></v-textarea>
-              </v-col>
-            </v-row>
-            <v-row v-if="getOrder.notesByEinsatzabschnitt">
-              <v-col cols="12" sm="12">
-                <h3 style="font-weight: bolder; color: black">Notizen aus dem Einsatzabschnitt</h3>
-              </v-col>
-              <v-col cols="12" sm="12">
-                <v-textarea
-                    outlined
-                    v-model="getOrder.notesByEinsatzabschnitt"
-                ></v-textarea>
-              </v-col>
-            </v-row>
-            <v-row v-if="getOrder.notesByHauptabschnitt">
-              <v-col cols="12" sm="12">
-                <h3 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt</h3>
-              </v-col>
-              <v-col cols="12" sm="12">
-                <v-textarea
-                    outlined
-                    v-model="getOrder.notesByHauptabschnitt"
-                ></v-textarea>
-              </v-col>
-            </v-row>-->
-
     </v-card-text>
 
     <!------------------------------------------------- Actions ------------------------------------------->
