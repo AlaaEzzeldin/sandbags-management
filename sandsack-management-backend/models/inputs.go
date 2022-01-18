@@ -1,15 +1,15 @@
 package models
 
 type CreateUser struct {
-	Name string `json:"name,required"`
-	Email string `json:"email,required" validate:"email" structs:"email,omitempty"`
-	Phone string `json:"phone"`
+	Name     string `json:"name,required"`
+	Email    string `json:"email,required" validate:"email" structs:"email,omitempty"`
+	Phone    string `json:"phone"`
 	Password string `json:"password"`
-	ParentId int `json:"parent_id"`
+	ParentId int    `json:"parent_id"`
 }
 
 type Logout struct {
-	Token 	string `json:"token,required"`
+	Token string `json:"token,required"`
 }
 
 type ChangePasswordInput struct {
@@ -22,7 +22,7 @@ type SendVerifyEmail struct {
 }
 
 type VerifyEmailInput struct {
-	Otp string `json:"otp"`
+	Otp      string `json:"otp"`
 	Password string `json:"password"`
 }
 
@@ -44,16 +44,15 @@ type CreateOrderInput struct {
 	AddressTo  string           `json:"address_to,required"`
 	Priority   int              `json:"priority,required"`
 	Equipments []OrderEquipment `json:"equipments,required"`
-	Comment   string       `json:"comment,omitempty"`
+	Comment    string           `json:"comment,omitempty"`
 }
-
 
 type AcceptOrderInput struct {
 	OrderId int `json:"order_id"`
 }
 
 type CommentInput struct {
-	OrderId int `json:"order_id"`
+	OrderId int    `json:"order_id"`
 	Comment string `json:"comment"`
 }
 
@@ -62,17 +61,22 @@ type ConfirmDeliveryInput struct {
 }
 
 type EditOrderInput struct {
-	OrderId int `json:"order_id"`
+	OrderId    int              `json:"order_id"`
 	Equipments []OrderEquipment `json:"equipments,omitempty"`
-	Priority int `json:"priority,omitempty"`
+	Priority   int              `json:"priority,omitempty"`
 }
 
 type AddDriverInput struct {
-	Name string `json:"name,required"`
+	Name        string `json:"name,required"`
 	Description string `json:"description,omitempty"`
 }
 
 type UpdateEquipmentInput struct {
-	Id int `json:"id"`
+	Id       int `json:"id"`
 	Quantity int `json:"quantity"`
+}
+
+type DispatchOrderInput struct {
+	OrderId  int `json:"order_id,required"`
+	DriverId int `json:"driver_id,omitempty"`
 }
