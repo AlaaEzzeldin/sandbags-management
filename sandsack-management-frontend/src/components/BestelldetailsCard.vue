@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="0" class="pt-10">
+  <v-card elevation="0" class="pt-10" v-if="getOrder">
     <v-card-title class="pt-10">
       <v-btn icon @click="goBack">
         <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>
@@ -7,9 +7,9 @@
       <h1 style="font-weight: bolder; ">Bestellung # {{ getOrder.id }}</h1>
       <v-chip
           class="ml-5"
-          :color="getColor(getOrder.status)" outlined
+          :color="getColor(getOrder.status_name)" outlined
           dark>
-        {{ getOrder.status }}
+        {{ getOrder.status_name }}
       </v-chip>
     </v-card-title>
 
@@ -19,15 +19,15 @@
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Von:</h3>
         </v-col>
-        <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{ getOrder.from }}</h3>
+        <v-col cols="12" sm="4">
+          <h3 style="font-weight: bolder; color: black">{{ getOrder.name }}</h3>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Typ:</h3>
         </v-col>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="4">
           <h3 style="font-weight: bolder; color: black">{{ getOrder.equipments[0].name }}</h3>
         </v-col>
       </v-row>
@@ -35,39 +35,42 @@
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Anzahl:</h3>
         </v-col>
-        <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{ getOrder.quantity }}</h3>
+        <v-col cols="12" sm="4">
+          <h3 style="font-weight: bolder; color: black">{{ getOrder.equipments[0].quantity }}</h3>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Priorität:</h3>
         </v-col>
-        <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{ getOrder.priority }}</h3>
+        <v-col cols="12" sm="4">
+          <h3 style="font-weight: bolder; color: black">{{ getPriorityByID(getOrder.priority_id).name }}</h3>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="2">
           <h3 style="font-weight: bolder; color: black">Lieferadresse:</h3>
         </v-col>
-        <v-col cols="12" sm="3">
-          <h3 style="font-weight: bolder; color: black">{{ getOrder.deliveryAddress }}</h3>
+        <v-col cols="12" sm="4">
+          <h3 style="font-weight: bolder; color: black">{{ getOrder.address_to }}</h3>
         </v-col>
       </v-row>
-      <v-row v-if="getOrder.notesByUnterabschnitt">
+
+
+      <!------------------------------------------------ comment -------------------------------->
+      <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Unterabschnitt')">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Anmerkungen des Anforderers:</h3>
         </v-col>
         <v-col cols="12" sm="12">
           <v-textarea
               readonly
-              :value="getOrder.notesByUnterabschnitt"
+              :value="getOrder.comments.find(comment=> comment.role === 'Unterabschnitt').comment_text"
               outlined
           ></v-textarea>
         </v-col>
       </v-row>
-      <v-row v-if="getOrder.notesByEinsatzabschnitt">
+      <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Einsatzabschnitt')">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Notizen aus dem Einsatzabschnitt</h3>
         </v-col>
@@ -75,11 +78,11 @@
           <v-textarea
               readonly
               outlined
-              :value="getOrder.notesByEinsatzabschnitt"
+              :value="getOrder.comments.find(comment=> comment.role === 'Einsatzabschnitt').comment_text"
           ></v-textarea>
         </v-col>
       </v-row>
-      <v-row v-if="getOrder.notesByHauptabschnitt">
+      <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Hauptabschnitt')">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt</h3>
         </v-col>
@@ -87,10 +90,26 @@
           <v-textarea
               readonly
               outlined
-              :value="getOrder.notesByHauptabschnitt"
+              :value="getOrder.comments.find(comment=> comment.role === 'Hauptabschnitt').comment_text"
           ></v-textarea>
         </v-col>
       </v-row>
+      <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Einsatzleiter')">
+        <v-col cols="12" sm="12">
+          <h3 style="font-weight: bolder; color: black">Notizen aus dem Einsatzleiter</h3>
+        </v-col>
+        <v-col cols="12" sm="12">
+          <v-textarea
+              readonly
+              outlined
+              :value="getOrder.comments.find(comment=> comment.role === 'Einsatzleiter').comment_text"
+          ></v-textarea>
+        </v-col>
+      </v-row>
+
+
+      <!------------------------------------------------ logs -------------------------------->
+
       <v-row v-if="getOrder.logs">
         <v-col cols="12" sm="12">
           <h3 style="font-weight: bolder; color: black">Bestellverlauf</h3>
@@ -101,12 +120,12 @@
           :key="item.id"
           style="color: black"
       >
-        <v-col cols="3">
-          <b>{{item.create_date}}</b>
+        <v-col cols="4">
+          <b>{{ format_time(item.create_date) }}</b>
         </v-col>
         <v-col>
           <div class="float-right">
-            {{item.description}}
+            {{ item.description }}
           </div>
         </v-col>
       </v-row>
@@ -339,7 +358,7 @@ export default {
   mixins: [Mixin],
 
   data: () => ({
-    action:'',
+    action: '',
     confirmationDialog: false,
   }),
 
@@ -350,7 +369,10 @@ export default {
     getOrder() {
       return this.$store.getters.getOrder
     },
-    getCurrentUserRole(){
+    getPriorityByID() {
+      return this.$store.getters.getPriorityByID
+    },
+    getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
     }
   },
@@ -363,7 +385,7 @@ export default {
       this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
     },
 
-    changeStatus(action){
+    changeStatus(action) {
       this.action = action;
       this.confirmationDialog = true;
     }

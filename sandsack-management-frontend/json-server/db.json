@@ -4,7 +4,7 @@
       "id": 6,
       "user_id": 18,
       "name": "EA 1.2 Altstadt-Mitte",
-      "address_to": "string",
+      "address_to": "Johann-bergler-strasse 10",
       "address_from": "Mollnhof",
       "status_id": 1,
       "status_name": "ANSTEHEND",
@@ -13,7 +13,7 @@
       "update_date": "2022-01-17T21:46:11.031584Z",
       "comments": [
         {
-          "comment_text": "string",
+          "comment_text": "test to comment by unterabschnit ",
           "name": "EA 1.2 Altstadt-Mitte (LZ Ilzstadt)",
           "role": "Unterabschnitt",
           "create_date": "2022-01-17T21:46:11.033985Z",
@@ -39,7 +39,7 @@
       "id": 1,
       "user_id": 18,
       "name": "EA 1.2 Altstadt-Mitte ",
-      "address_to": "string",
+      "address_to": "Johann-bergler-strasse 10",
       "address_from": "Mollnhof",
       "status_id": 1,
       "status_name": "ANSTEHEND",
@@ -48,7 +48,7 @@
       "update_date": "2022-01-17T21:46:11.031584Z",
       "comments": [
         {
-          "comment_text": "string",
+          "comment_text": "test to comment by unterabschnit ",
           "name": "EA 1.2 Altstadt-Mitte (LZ Ilzstadt)",
           "role": "Unterabschnitt",
           "create_date": "2022-01-17T21:46:11.033985Z",
