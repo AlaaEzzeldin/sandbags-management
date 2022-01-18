@@ -51,43 +51,43 @@ const routes = [
         meta: {requiresAuth: true},
         children: [
             {
-                path: '/orders-list',
+                path: '/orders-list/:userRole',
                 name: 'BestellungslistePage',
                 component: BestellungslistePage,
             },
             {
-                path: '/account',
+                path: '/account/:userRole',
                 name: 'KontoPage',
                 component: KontoPage,
             },
             // unterabschnit only
             {
-                path: '/new-order',
+                path: '/new-order/:userRole',
                 name: 'NeueBestellungPage',
                 component: NeueBestellungPage,
 
             },
             // einsatz/ haupt and leiter
             {
-                path: '/overview',
+                path: '/overview/:userRole',
                 name: 'BestellübersichtPage',
                 component: BestellübersichtPage
             },
             {
-                path: '/order-details/:orderId',
+                path: '/:userRole/order-details/:orderId',
                 name: 'BestelldetailsPage',
                 component: BestelldetailsPage,
 
             },
             // all exept for mollnhof
             {
-                path: '/order-edit/:orderId',
+                path: '/:userRole/order-edit/:orderId',
                 name: 'BestellBearbeitenPage',
                 component: BestellBearbeitenPage,
             },
             // mollnhof
             {
-                path: '/equipment-edit',
+                path: '/:userRole/equipment-edit',
                 name: 'ManageEquipmentPage',
                 component: ManageEquipmentPage
             },
