@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="0" class="pt-10">
+  <v-card elevation="0" class="pt-10" v-if="getOrder && getPriorities && getEquipment">
     <v-card-title class="pt-10">
       <v-btn icon @click="goBack">
         <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>
@@ -58,7 +58,7 @@
         </v-col>
         <v-col cols="12" sm="3">
           <v-select
-              v-model="getOrder.priority"
+              v-model="selectedPriority"
               :items="getPriorities.map(x => x.name)"
               outlined
           ></v-select>
@@ -70,9 +70,9 @@
         </v-col>
         <v-col cols="12" sm="3">
           <v-text-field
-              v-model="getOrder.deliveryAddress"
-              :rules="[v => !!v || 'Die Adresse ist erforderlich']"
+              v-model="getOrder.address_to"
               outlined
+              disabled
           ></v-text-field>
         </v-col>
       </v-row>
@@ -128,8 +128,7 @@
               @click="submitUpdatedOrder"
               :disabled="
               (getOrder.quantity > this.getCurrentEquipment.quantity) ||
-               getOrder.quantity <= 0 ||
-              !getOrder.deliveryAddress"
+               getOrder.quantity <= 0 "
           >
             Speichern
           </v-btn>
@@ -159,9 +158,13 @@ import {Mixin} from '../mixin/mixin.js'
 export default {
   name: 'EditRequestCard',
   mixins: [Mixin],
+  data: () => ({
+    selectedPriority: ''
+  }),
   created() {
     this.$store.dispatch("loadOrder", this.$route.params.orderId);
   },
+
   computed: {
     getOrder() {
       return this.$store.getters.getOrder
@@ -188,6 +191,9 @@ export default {
     },
   },
   methods: {
+    initializePriority(){
+      this.selectedPriority= this.getPriorities.find(item => item.level === this.getOrder.priority_id).name
+    },
     goBack() {
       this.$router.go(-1)
     },
@@ -195,14 +201,15 @@ export default {
       let data = {
         "equipments": [
           {
-            "id": 1,
-            "quantity": this.getOrder.equipments[0].quantity
+            "id": this.getOrder.equipments[0].id,
+            "quantity": parseInt(this.getOrder.equipments[0].quantity)
           }
         ],
         "order_id": this.getOrder.id,
-        "priority": this.priorities.findIndex(x => x === this.selectedPriority)
+        "priority": this.getPriorities.find(item => item.name === this.selectedPriority).id
       }
-      this.$store.dispatch("editOrder", {data})
+      console.log("edited order", data)
+      this.$store.dispatch("editOrder", data)
       this.gotToOrderDetails()
     },
     gotToOrderDetails(){

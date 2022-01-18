@@ -43,7 +43,7 @@ const actions = {
             });
     },
     editOrder({commit}, payload) {
-        ordersAPI.update(payload)
+        ordersAPI.editOrder(payload)
             .then(function (response) {
                 commit('UPDATE_ORDER', response.data);
             })
