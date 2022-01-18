@@ -1,21 +1,17 @@
 <template>
   <v-dialog
       v-model="dialog"
-      width="800"
+      width="500"
   >
     <v-card class="rounded-lg" outlined>
       <v-card-title>
-        <h2 style="color: red"> Ops!</h2>
-        <v-spacer></v-spacer>
-        <v-btn icon @click.stop="closeDialog">
-          <v-icon color="black ">mdi-close</v-icon>
-        </v-btn>
+        <v-icon color="black" class="mr-2">mdi-alert-circle-outline</v-icon>
+        Ein Fehler ist aufgetreten
       </v-card-title>
       <v-divider></v-divider>
 
-      <v-card-text class="mt-5">
-
-          <h2>  {{message}}</h2>
+      <v-card-text class="mt-5 black--text">
+          {{message}}
       </v-card-text>
       <v-card-actions>
         <v-spacer/>
