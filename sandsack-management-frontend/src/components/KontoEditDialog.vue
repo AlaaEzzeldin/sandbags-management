@@ -2,6 +2,7 @@
   <v-dialog
       v-model="dialog"
       width="800"
+      persistent
   >
     <v-card outlined >
       <v-card-title>
@@ -13,8 +14,8 @@
           </v-avatar>
         </v-col>
         <v-col cols="10">
-          <h2>{{getLoggedInUser.name}}</h2>
-          <h3>{{getLoggedInUser.roleName}}</h3>
+          <h2>{{getUser.name}}</h2>
+          <h3>{{getUser.branch_name}}</h3>
         </v-col>
       </v-card-title>
       <v-card-text>
@@ -23,7 +24,7 @@
             v-model="valid"
             lazy-validation
         >
-          <v-text-field
+<!--          <v-text-field
               v-model="getLoggedInUser.email"
               :rules="emailRules"
               label="E-mail"
@@ -31,9 +32,18 @@
               filled
               outlined
               prepend-icon="mdi-email"
+          ></v-text-field>-->
+          <v-text-field
+              v-model="name"
+              :rules="nameRules"
+              label="Name"
+              required
+              filled
+              outlined
+              prepend-icon="mdi-account"
           ></v-text-field>
           <v-text-field
-              v-model="getLoggedInUser.phone"
+              v-model="phone"
               :rules="phoneRules"
               label="Phone"
               required
@@ -41,7 +51,8 @@
               outlined
               prepend-icon="mdi-phone"
           ></v-text-field>
-          <v-text-field
+
+<!--          <v-text-field
               v-model="getLoggedInUser.password"
               :rules="passwordRules"
               label="Altes Passwort"
@@ -58,7 +69,7 @@
               required
               filled
               outlined
-          ></v-text-field>
+          ></v-text-field>-->
         </v-form>
       </v-card-text>
         <v-card-actions>
@@ -70,7 +81,7 @@
                   rounded
                   color="red"
                   dark
-                  @click="dialog = false"
+                  @click="closeDialog"
               >
                 Abrechen
               </v-btn>
@@ -98,7 +109,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'KontoEditDialog',
   props: ['dialog'],
@@ -106,6 +116,8 @@ export default {
   data() {
     return {
       valid: true,
+      name: '',
+      phone: '',
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -114,76 +126,46 @@ export default {
         v => !!v || 'Phone is required',
         v => /\(?\+\(?49\)?[ ()]?([- ()]?\d[- ()]?){10}/.test(v) || 'Phone must be valid',
       ],
+      nameRules: [
+        v => !!v || 'Name is required',
+      ],
       passwordRules: [
         v => !!v || 'Password is required',
       ],
     }
   },
-
+  mounted: function() {
+    this.phone = this.$store.getters.getLoggedInUser.phone
+    this.name = this.$store.getters.getLoggedInUser.name
+  },
   computed: {
-    getLoggedInUser() {
+    getUser(){
       return this.$store.getters.getLoggedInUser
-    }
     },
+
+  },
   methods: {
     submitUpdatedInfo(){
       let data={
-        "address": this.getLoggedInUser.address,
-        "email": this.getLoggedInUser.email,
-        "phone": this.getLoggedInUser.phone,
-        "password": this.getLoggedInUser.password,
+        "name": this.name,
+        "phone": this.phone,
       }
-      let id= this.getLoggedInUser.id
-      this.$store.dispatch("updateUserInfo",  {id, data} )
+      this.$store.dispatch("updateUserInfo",  data).then(
+          () => {
+            this.$store.dispatch("getUserInfo")
+          },
+          error => {
+            this.message =
+                (error.response && error.response) ||
+                error.message ||
+                error.toString();
+          }
+      );
       this.$emit("close")
     },
-/*    // hard coding for the branch name
-    getLoggedInBranchDetails() {
-      if (this.getLoggedInUserRole() === 1)
-        return {
-          name: "Hauptabschnitt-Mitte",
-          roleName: "Hauptabschnitt",
-          address: "Leonhard-Paminger-Str. 20",
-          email: "info@ffpassau.de",
-          phone: "+49 123 45 67 8 9012"
-        };
-      else if (this.getLoggedInUserRole() === 2)
-        return {
-          name: "EA 1-Altstadt",
-          roleName: "Einsatzabschnitt",
-          address: "Leonhard-Paminger-Str. 21",
-          email: "ea-altstadt@ffpassau.de",
-          phone: "+49 123 45 67 8 9013"
-        };
-      else if (this.getLoggedInUserRole() === 3)
-        return {
-          name: "EA 1.1 Altstadt- Ost",
-          roleName: "Unterabschnitt",
-          address: "Leonhard-Paminger-Str. 22",
-          email: "ea11-altstadt@ffpassau.de",
-          phone: "+49 123 45 67 8 9014"
-        };
-      else if (this.getLoggedInUserRole() === 4)
-        return {
-          name: "Mollnhof",
-          roleName: "Mollnhof",
-          address: "Leonhard-Paminger-Str. 23",
-          email: "mollnhof@ffpassau.de",
-          phone: "+49 123 45 67 8 9015"
-        };
-    },
-
-    // hard coding the users roles
-    getLoggedInUserRole() {
-      if (this.$route.params.userRole === '1') // Hauptabschintt
-        return 1
-      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
-        return 2
-      else if (this.$route.params.userRole === '3') //Unterabschnitt
-        return 3
-      else if (this.$route.params.userRole === '4') // Mollhof
-        return 4
-    }*/
+    closeDialog(){
+      this.$emit('close')
+    }
   }
 }
 </script>

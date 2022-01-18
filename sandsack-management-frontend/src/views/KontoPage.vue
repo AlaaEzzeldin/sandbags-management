@@ -13,6 +13,7 @@
             color="red"
             dark
             block
+            @click="logout"
         >
           Ausloggen
         </v-btn>
@@ -44,19 +45,21 @@
             </v-avatar>
           </v-col>
           <v-col cols="10">
-            <h2>{{ getLoggedInBranchName }}</h2>
-            <h3>{{ getCurrentUserRole }}</h3>
+            <h2>{{ getLoggedInUser.name }}</h2>
+            <h3>{{ getLoggedInUser.branch_name }}</h3>
           </v-col>
         </v-row>
         <v-row class="pt-2">
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon color="black">mdi-map-marker</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>{{ getLoggedInUser.address }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+          <!--
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="black">mdi-map-marker</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-title>{{ getLoggedInUser.address }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+          -->
           <v-list-item>
             <v-list-item-icon>
               <v-icon color="black">mdi-phone</v-icon>
@@ -76,7 +79,8 @@
         </v-row>
       </v-card>
     </v-row>
-    <konto-edit-dialog :dialog="dialog"
+    <konto-edit-dialog
+        v-if="dialog" :dialog="dialog"
                        @close="dialog=false"
     ></konto-edit-dialog>
   </div>
@@ -93,7 +97,6 @@ export default {
   data: () => ({
     dialog: null
   }),
-
   computed: {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn
@@ -101,62 +104,24 @@ export default {
     getLoggedInUser() {
       return this.$store.getters.getLoggedInUser
     },
-    getCurrentUserRole(){
-      return this.$store.getters.getCurrentUserRole
-    },
-    getLoggedInBranchName() {
-      return this.$store.getters.getCurrentUserName
-    },
+
   },
   methods:
       {
-        // hard coding for the branch name
-        /*        getLoggedInBranchDetails() {
-                  if (this.getLoggedInUserRole() === 1)
-                    return {
-                      name: "Hauptabschnitt-Mitte",
-                      roleName: "Hauptabschnitt",
-                      address: "Leonhard-Paminger-Str. 20",
-                      email: "info@ffpassau.de",
-                      phone: "+49 123 45 67 8 9012"
-                    };
-                  else if (this.getLoggedInUserRole() === 2)
-                    return {
-                      name: "EA 1-Altstadt",
-                      roleName: "Einsatzabschnitt",
-                      address: "Leonhard-Paminger-Str. 21",
-                      email: "ea-altstadt@ffpassau.de",
-                      phone: "+49 123 45 67 8 9013"
-                    };
-                  else if (this.getLoggedInUserRole() === 3)
-                    return {
-                      name: "EA 1.1 Altstadt- Ost",
-                      roleName: "Unterabschnitt",
-                      address: "Leonhard-Paminger-Str. 22",
-                      email: "ea11-altstadt@ffpassau.de",
-                      phone: "+49 123 45 67 8 9014"
-                    };
-                  else if (this.getLoggedInUserRole() === 4)
-                    return {
-                      name: "Mollnhof",
-                      roleName: "Mollnhof",
-                      address: "Leonhard-Paminger-Str. 23",
-                      email: "mollnhof@ffpassau.de",
-                      phone: "+49 123 45 67 8 9015"
-                    };
-                },
+        logout() {
+          this.$store.dispatch('logout').then(
+              () => {
+                this.$router.push({name: 'LoginPage'})
+              },
+              error => {
+                this.message =
+                    (error.response && error.response) ||
+                    error.message ||
+                    error.toString();
+              }
+          );
+        }
 
-                // hard coding the users roles
-                getLoggedInUserRole() {
-                  if (this.$route.params.userRole === '1') // Hauptabschintt
-                    return 1
-                  else if (this.$route.params.userRole === '2') // Einzatsabschnitt
-                    return 2
-                  else if (this.$route.params.userRole === '3') //Unterabschnitt
-                    return 3
-                  else if (this.$route.params.userRole === '4') // Mollhof
-                    return 4
-                }*/
       }
 }
 </script>

@@ -31,11 +31,12 @@
                 <h3 style="font-weight: bolder; color: black">Typ:</h3>
               </v-col>
               <v-col cols="12" sm="3">
-                <v-text-field
+                <v-select
                     disabled
-                    :value="getOrder.type"
+                    :value="getOrder.equipments[0].name"
+                    :items="getEquipment.map(a => a.name)"
                     outlined
-                ></v-text-field>
+                ></v-select>
               </v-col>
             </v-row>
       <v-row no-gutters>
@@ -46,6 +47,8 @@
           <v-text-field
               v-model="getOrder.quantity"
               outlined
+              :rules="[v => (!!v && v <= getCurrentEquipment.quantity && v > 0)|| 'Die Menge ist nicht correct']"
+              :hint="'Die Restmenge ist '+getCurrentEquipment.quantity.toString() + ' ' + getCurrentEquipment.measure"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -56,8 +59,7 @@
         <v-col cols="12" sm="3">
           <v-select
               v-model="getOrder.priority"
-              :items="priorities"
-              :label="getOrder.priority"
+              :items="getPriorities.map(x => x.name)"
               outlined
           ></v-select>
         </v-col>
@@ -69,6 +71,7 @@
         <v-col cols="12" sm="3">
           <v-text-field
               v-model="getOrder.deliveryAddress"
+              :rules="[v => !!v || 'Die Adresse ist erforderlich']"
               outlined
           ></v-text-field>
         </v-col>
@@ -82,7 +85,7 @@
               class="mt-3"
               v-model="getOrder.notesByUnterabschnitt"
               outlined
-              :disabled="getLoggedInUserRole()!==3"
+              :disabled="getCurrentUserRole!=='Unterabschnitt'"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -113,20 +116,22 @@
     </v-card-text>
 
     <!------------------------------------------------- Actions ------------------------------------------->
-    <v-card-actions v-if="getLoggedInUserRole()===1   || getLoggedInUserRole()===2 ||getLoggedInUserRole()===3 ">
+    <v-card-actions v-if="['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter', 'Unterabschnitt'].includes(getCurrentUserRole)">
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
               style="text-transform: capitalize; font-weight: bolder;"
               rounded
               color="red"
-              dark
               block
               outlined
               @click="submitUpdatedOrder"
-
+              :disabled="
+              (getOrder.quantity > this.getCurrentEquipment.quantity) ||
+               getOrder.quantity <= 0 ||
+              !getOrder.deliveryAddress"
           >
-            speichern
+            Speichern
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" offset="3">
@@ -154,22 +159,35 @@ import {Mixin} from '../mixin/mixin.js'
 export default {
   name: 'EditRequestCard',
   mixins: [Mixin],
-  data: () => ({
-    priorities: [
-      'Niedrig',
-      'Mittle',
-      'Hohe',
-    ],
-
-  }),
   created() {
-    this.$store.dispatch("loadOrder", this.$route.params.orderId)
+    this.$store.dispatch("loadEquipment");
+    this.$store.dispatch("loadOrder", this.$route.params.orderId);
+    this.$store.dispatch("loadPriorities");
   },
   computed: {
     getOrder() {
       return this.$store.getters.getOrder
     },
-
+    getCurrentUserRole(){
+      return this.$store.getters.getCurrentUserRole
+    },
+    getPriorities() {
+      return this.$store.getters.getPriorities
+    },
+    getEquipment() {
+      return this.$store.getters.getEquipment
+    },
+    getCurrentEquipment() {
+      if (this.getOrder.equipments[0].name) {
+        return this.$store.getters.getEquipmentByType(this.getOrder.equipments[0].name);
+      }
+      return {
+        "id": 0,
+        "measure": "",
+        "quantity": 0,
+        "name": ""
+      };
+    },
   },
   methods: {
     goBack() {
@@ -191,17 +209,6 @@ export default {
     gotToOrderDetails(){
       const orderId = this.getOrder.id;
       this.$router.push({name: 'BestelldetailsPage', params: {orderId}})
-    },
-    // hard coding the users roles
-    getLoggedInUserRole() {
-      if (this.$route.params.userRole === '1') // Hauptabschintt
-        return 1
-      else if (this.$route.params.userRole === '2') // Einzatsabschnitt
-        return 2
-      else if (this.$route.params.userRole === '3') //Unterabschnitt
-        return 3
-      else if (this.$route.params.userRole === '4') // Mollhof
-        return 4
     }
 
   }
