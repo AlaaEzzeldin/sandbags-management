@@ -21,11 +21,11 @@ type App struct {
 //)
 
 var (
-	Server   = "localhost"
+	Server   = "ls-f219193e8a5ca88cde62a0adc5375d7587a2b8eb.c0uxyt5nyufx.eu-central-1.rds.amazonaws.com"
 	Port     = "5432"
-	Database = "feuerwehr"
-	User     = "postgres"
-	Password = "qwerty"
+	Database = "dbfeuerwehr"
+	User     = "dbmasteruser"
+	Password = "6CgB7rEAvXKaZkQtqu6|wjq}w{_<LH{0\n\n\n"
 )
 
 func (a *App) Init() {

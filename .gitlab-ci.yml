@@ -1,0 +1,34 @@
+image: tmaier/docker-compose:latest
+
+services:
+  - docker:dind
+
+before_script:
+  - docker info
+  - docker-compose --version
+
+#staging:
+#  stage: test
+##  tags:
+##    - docker
+#  script:
+#    - docker-compose -f docker-compose-staging.yml build
+#  only:
+#    - development
+
+deployment:
+  stage: deploy
+  environment:
+    name: master-production-deployment
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - echo "Deploy to prod server"
+    - ssh-add <(echo "$PRIVATE_KEY" | base64 -d)
+    - rm -rf .git
+    - ssh -o StrictHostKeyChecking=no ubuntu@18.193.112.34 "cd /home/ubuntu/team2; git reset --hard; sudo docker-compose down; git pull origin development; sudo docker-compose up -d;exit"
+  only:
+    - development
