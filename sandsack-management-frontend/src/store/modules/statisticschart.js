@@ -6,8 +6,6 @@ const state = {
 
 const getters = {
     getStatisticschart(state) {
-
-        console.log(state.statisticschart);
         return state.statisticschart;
     },
 
@@ -20,8 +18,8 @@ const mutations = {
 };
 
 const actions = {
-    loadStatisticschart({commit}) {
-        statisticschartAPI.index()
+    loadStatisticschart({commit}, params) {
+        statisticschartAPI.index(params)
             .then(function (response) {
                 commit('SET_STATISTICSCHART', response.data);
             })

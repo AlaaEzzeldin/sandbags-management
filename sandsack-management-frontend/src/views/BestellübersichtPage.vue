@@ -138,7 +138,7 @@ export default {
     return {
 
       dates: [new Date(new Date().setDate(new Date().getDate() - 7)).toISOString().slice(0, 10),
-        new Date(new Date().setDate(new Date().getDate() - 7)).toISOString().slice(0, 10)],
+        new Date(new Date().setDate(new Date().getDate())).toISOString().slice(0, 10)],
 
       modal: false,
       menu: false,
@@ -172,15 +172,13 @@ export default {
         window.alert('Bitte wählen Sie einen gültigen Zeitraum aus!')
         return ('Gültiges Datum auswählen')
       } else if ((typeof (this.dates[1]) !== "undefined")) {
-        this.dateRangeText
+        this.loadStatsByDates(this.dates[0], this.dates[1]);
+      } else {
+        this.loadStatsByDates(this.dates[0], this.dates[0]);
       }
       return this.dates.join(' / ')
     },
 
-    dateRangeText() {
-      router.push({name: 'BestellübersichtPage', query: {date1: this.dates[0], date2: this.dates[1]}})
-      return this.$store.dispatch("loadStatisticschart")
-    },
     getHauptdata() {
       var HauptselectOptions = []
       for (let i = 0; i < this.getStatisticschart.length; i++) {
@@ -265,7 +263,10 @@ export default {
             console.error("oops, Fehler!", error);
           });
     },
-
+    loadStatsByDates(date_from, date_to) {
+      router.push({name: 'BestellübersichtPage', query: {date1: date_from, date2: date_to}})
+      this.$store.dispatch("loadStatisticschart", {'date_from': date_from, 'date_to': date_to})
+    },
   }
 };
 </script>
