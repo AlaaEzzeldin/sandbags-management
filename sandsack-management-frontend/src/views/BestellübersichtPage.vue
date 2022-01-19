@@ -16,7 +16,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                v-model="dateRangeText"
+                v-model="dateSelected"
                 filled
                 label="Tage"
                 prepend-icon="mdi-calendar"
@@ -137,9 +137,9 @@ export default {
   data() {
     return {
 
-      dates:
-          [(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-            (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)],
+      dates: [new Date(new Date().setDate(new Date().getDate() - 7)).toISOString().slice(0, 10),
+        new Date(new Date().setDate(new Date().getDate() - 7)).toISOString().slice(0, 10)],
+
       modal: false,
       menu: false,
       selectedHaupt: '',
@@ -162,25 +162,24 @@ export default {
       },
     };
   },
-  created() {
-    this.$store.dispatch("loadStatisticschart")
-  },
-
 
   computed: {
     getStatisticschart() {
       return this.$store.getters.getStatisticschart
     },
-
-    dateRangeText() {
+    dateSelected() {
       if (this.dates[1] < this.dates[0]) {
         window.alert('Bitte wählen Sie einen gültigen Zeitraum aus!')
-      } else {
-        router.push({name: 'BestellübersichtPage', query: {date1: this.dates[0], date2: this.dates[1]}})
+        return ('Gültiges Datum auswählen')
+      } else if ((typeof (this.dates[1]) !== "undefined")) {
+        this.dateRangeText
       }
-
-
       return this.dates.join(' / ')
+    },
+
+    dateRangeText() {
+      router.push({name: 'BestellübersichtPage', query: {date1: this.dates[0], date2: this.dates[1]}})
+      return this.$store.dispatch("loadStatisticschart")
     },
     getHauptdata() {
       var HauptselectOptions = []
@@ -208,13 +207,13 @@ export default {
 
     getUnterdata() {
       var UnterselectOptions = []
-      UnterselectOptions.push(["Abschnitt", "Bestellungen"], ['unterabschnitt', 10], ['unterabschnitt', 15])
+      UnterselectOptions.push(["Abschnitt", "Bestellungen"], ['unterabschnitt', 10], ['unterabschnitt', 15]) //Delete the hardcoded values while integrating
       for (let i = 0; i < this.getHauptdata.length; i++) {
         for (let j = 0; j < this.getEinsatzdata.length; j++) {
           if (this.$data.selectedHaupt === this.getHauptdata[i] &&
               this.$data.selectedEinz === this.getEinsatzdata[j]) {
-            UnterselectOptions.pop()
-            UnterselectOptions.pop()
+            UnterselectOptions.pop() // Delete this during integrtation
+            UnterselectOptions.pop() // Delete this during integrtation
             for (let k = 0; k < this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt.length; k++) {
               UnterselectOptions.push([this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].name,
                 parseInt(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].total_number_of_orders)])
@@ -232,7 +231,6 @@ export default {
     msg: String
   },
   methods: {
-
     download() {
       /** To Block the Button */
       document.getElementById('pdf').style.display = 'none';
