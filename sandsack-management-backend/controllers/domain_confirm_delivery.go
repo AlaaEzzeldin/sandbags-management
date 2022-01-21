@@ -40,6 +40,25 @@ func (a *App) ConfirmDelivery(c *gin.Context) {
 		return
 	}
 
+	permissions, err := service.GetUserOrderPermissions(a.DB, claims.Id, input.OrderId)
+
+	flag := 0
+	for _, i := range permissions {
+		if i == models.DictPermissionName["CAN CONFIRM DELIVERY"] {
+			flag = 1
+			break
+		}
+	}
+
+	if flag == 0 {
+		log.Println("No access for this action error")
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			ErrCode:    http.StatusBadRequest,
+			ErrMessage: "no access",
+		})
+		return
+	}
+
 	if err := service.ConfirmDelivery(a.DB, claims.Id, input.OrderId); err != nil {
 		log.Println("ConfirmDelivery error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{

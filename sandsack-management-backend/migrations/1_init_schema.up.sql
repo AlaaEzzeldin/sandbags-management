@@ -22,6 +22,7 @@ CREATE TABLE "order" (
                          "status_id" integer not null,
                          "priority_id" integer not null,
                          "assigned_to" integer,
+                         "driver_id" integer,
                          "create_date" timestamptz not null default now(),
                          "update_date" timestamptz not null default now()
 );
@@ -39,6 +40,7 @@ CREATE TABLE "equipment" (
                              "id" serial PRIMARY KEY,
                              "name" varchar not null,
                              "quantity" integer not null,
+                             "measure" varchar not null,
                              "create_date" timestamptz not null default now(),
                              "update_date" timestamptz not null default now()
 );
@@ -133,7 +135,7 @@ CREATE TABLE "otp" (
 
 ALTER TABLE "order" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
 
-ALTER TABLE "order" ADD FOREIGN KEY ("status_id") REFERENCES "status" ("id");
+--ALTER TABLE "order" ADD FOREIGN KEY ("status_id") REFERENCES "status" ("id");
 
 ALTER TABLE "order_equipment" ADD FOREIGN KEY ("order_id") REFERENCES "order" ("id");
 

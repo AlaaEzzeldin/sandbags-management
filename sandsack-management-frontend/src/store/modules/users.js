@@ -11,8 +11,8 @@ const getters = {
 }
 
 const actions = {
-    loadLoggedIn({commit}, id) {
-        usersAPI.show(id)
+    getUserInfo({commit}) {
+        usersAPI.show()
             .then(function (response) {
                 commit('SET_LOGGED_IN_USER', response.data);
             })
@@ -21,7 +21,7 @@ const actions = {
             });
     },
     updateUserInfo({commit}, payload) {
-        usersAPI.update(payload.id, payload.data)
+        usersAPI.update( payload)
             .then(function (response) {
                 commit('SET_LOGGED_IN_USER', response.data);
             })

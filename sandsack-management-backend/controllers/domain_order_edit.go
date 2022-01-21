@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"strconv"
 	"team2/sandsack-management-backend/models"
 	repo_order "team2/sandsack-management-backend/repository/order"
 	"team2/sandsack-management-backend/service"
@@ -33,6 +34,7 @@ func (a *App) EditOrder(c *gin.Context) {
 		})
 		return
 	}
+	log.Println("Input in editOrder", input)
 	claims, _ := GetClaims(c)
 	user, _ := service.GetUserByID(a.DB, claims.Id)
 	order, _ := service.GetOrder(a.DB, user.Id, input.OrderId)
@@ -55,7 +57,7 @@ func (a *App) EditOrder(c *gin.Context) {
 		log := models.Log{
 			OrderId: input.OrderId,
 			ActionTypeId: models.DictActionTypeName["EDITED"],
-			Description: user.Name + " edited quantity of equipment of the order " + order.Name,
+			Description: user.Name + " edited quantity of equipment of the order " + order.Name + " #" + strconv.Itoa(order.Id),
 			UpdatedBy: user.Id,
 		}
 
@@ -76,7 +78,7 @@ func (a *App) EditOrder(c *gin.Context) {
 		log := models.Log{
 			OrderId: input.OrderId,
 			ActionTypeId: models.DictActionTypeName["EDITED"],
-			Description: user.Name + " edited priority of the order " + order.Name,
+			Description: user.Name + " edited priority of the order " + order.Name + " #" + strconv.Itoa(order.Id),
 			UpdatedBy: user.Id,
 		}
 

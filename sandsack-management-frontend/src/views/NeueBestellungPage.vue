@@ -8,7 +8,7 @@
       <v-row >
         <v-col cols="12">
           <v-text-field
-              :value="getLoggedInBranchName"
+              :value="getLoggedInUserName"
               readonly
               prepend-icon="mdi-account"
               filled
@@ -21,8 +21,8 @@
       <v-row>
         <v-col sm="6">
           <v-select
-              v-model="newOrder.type"
-              :items="types"
+              v-model="chosenEquipmentType"
+              :items="getEquipment.map(a => a.name)"
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
@@ -37,9 +37,10 @@
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
-              :rules="[v => !!v || 'Die Menge ist erforderlich']"
+              :rules="[v => (!!v && v <= getCurrentEquipment.quantity && v > 0)|| 'Die Menge ist nicht correct']"
               prepend-icon="mdi-pound"
               label="Anzahl"
+              :hint="'Die Restmenge ist '+getCurrentEquipment.quantity.toString() + ' ' + getCurrentEquipment.measure"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -62,7 +63,7 @@
         <v-col cols="12">
           <v-select
               v-model="newOrder.priority"
-              :items="priorities"
+              :items="getPriorities.map(x => x.name)"
               :rules="[v => !!v || 'Die Priorität ist erforderlich']"
               label="Priorität"
               prepend-icon="mdi-alert"
@@ -93,12 +94,18 @@
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
+              style="text-transform: capitalize; font-weight: bolder;color: white"
               block
               rounded
               color="red"
-              dark
               @click="createOrder"
+              :disabled="!(
+                  chosenEquipmentType &&
+                  newOrder.priority &&
+                  newOrder.deliveryAddress &&
+                  newOrder.quantity > 0 &&
+                  newOrder.quantity <= getCurrentEquipment.quantity
+              )"
           >
             Bestellen
           </v-btn>
@@ -115,44 +122,58 @@
 export default {
   name: 'BestelldetailsPage',
 
+  created() {
+    this.$store.dispatch("loadEquipment");
+    this.$store.dispatch("loadPriorities");
+  },
 
   data: () => ({
     loggedIn: '',
     priority: '',
     abschnitt: '',
-    types: [
-      'Sandsäcke',
-    ],
-    priorities: [
-      'Niedrig',
-      'Mittle',
-      'Hohe',
-    ],
+    chosenEquipmentType: '',
     newOrder: {
       id:"",
       status: "anstehend", //this will be deleted when integrating with the backened
       from: "",
-      type: "",
+      equipments: [],
       quantity: "",
       priority: "",
       deliveryAddress: "",
       notesByUnterabschnitt: ""
     }
-
   }),
 
   computed:{
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
     },
-    getLoggedInBranchName() {
-      return this.$store.getters.getCurrentUserName
+    getLoggedInUserName() {
+      return this.$store.getters.getLoggedInUser.name
+    },
+    getEquipment() {
+      return this.$store.getters.getEquipment
+    },
+    getCurrentEquipment() {
+      if (this.chosenEquipmentType) {
+        return this.$store.getters.getEquipmentByType(this.chosenEquipmentType);
+      }
+      return {
+        "id": 0,
+        "measure": "",
+        "quantity": 0,
+        "name": ""
+      };
+    },
+    getPriorities() {
+      return this.$store.getters.getPriorities
     },
   },
 
   methods: {
     createOrder() {
-      this.newOrder.from= this.getLoggedInBranchName
+      this.newOrder.from= this.getLoggedInUserName
+      this.newOrder.equipments = [this.getCurrentEquipment]
       console.log("new order", this.newOrder)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})

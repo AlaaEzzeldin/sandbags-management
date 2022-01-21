@@ -1,4 +1,5 @@
 <template style="background-color: white">
+<<<<<<< HEAD
   <div>
     <v-navigation-drawer
         :permanent="$vuetify.breakpoint.mdAndUp"
@@ -12,7 +13,7 @@
         class="hidden-lg-and-up"
         style="padding-left: 0;"
         @click.stop="drawer = !drawer">
-      <h3>Feuerwehr Passau ({{ getLoggedInBranchName() }})</h3>
+      <h3>Feuerwehr Passau ({{ getLoggedInUser.name }})</h3>
     </v-toolbar>
     <v-row class="pt-10 pb-10 hidden-md-and-down">
       <v-col cols="3">
@@ -20,13 +21,13 @@
       </v-col>
       <v-col cols="9">
         <h1 style="color: red;font-weight: bolder;  font-size: x-large; white-space: nowrap;"> Feuerwehr Passau </h1>
-        <h1 style="color: black;font-weight: bolder;  font-size: large;">{{ getLoggedInBranchName() }}</h1>
+        <h1 style="color: black;font-weight: bolder;  font-size: large;">{{ getLoggedInUser.name }}</h1>
       </v-col>
     </v-row>
 
       <v-list class="mb-16 mt-16">
           <v-list-item
-              v-for="(item, i) in getNavListForLoggedInUserRoll()"
+              v-for="(item, i) in getNavListForLoggedInUserRoll"
               :key="i"
               link
               :to="{name:item.component}"
@@ -51,10 +52,9 @@
         style="width: 350px; padding-left: 0;"
         @click.stop="drawer = !drawer">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      <h3>Feuerwehr Passau ({{ getLoggedInBranchName() }})</h3>
+      <h3>Feuerwehr Passau ({{ getLoggedInUser.name }})</h3>
     </v-toolbar>
   </div>
-
 </template>
 
 <script>
@@ -124,26 +124,30 @@ export default {
       ],
     }
   },
+  created() {
+    this.$store.dispatch("getUserInfo")
+  },
   computed:{
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
+    },
+    getLoggedInUser() {
+      return this.$store.getters.getLoggedInUser
+    },
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn
+    },
+    getNavListForLoggedInUserRoll() {
+      if (['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter'].includes(this.getCurrentUserRole))
+        return this.navItemsEinsatzabschnittAndHauptabschnitt;
+      else if (this.getCurrentUserRole === 'Unterabschnitt')
+        return this.navItemsUnterabschintt;
+      else if (this.getCurrentUserRole === 'Mollnhof')
+        return this.navItemsMollnhof;
+      else return null
     }
   },
-  methods:
-      {
-        // hard coding for the branch name
-        getLoggedInBranchName() {
-          return this.$store.getters.getCurrentUserName
-        },
-        getNavListForLoggedInUserRoll() {
-          if (['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter'].includes(this.getCurrentUserRole))
-            return this.navItemsEinsatzabschnittAndHauptabschnitt;
-          else if (this.getCurrentUserRole === 'Unterabschnitt')
-            return this.navItemsUnterabschintt;
-          else if (this.getCurrentUserRole === 'Mollnhof')
-            return this.navItemsMollnhof;
-        },
-      }
+
 
 }
 </script>

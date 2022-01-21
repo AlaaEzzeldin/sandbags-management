@@ -7,8 +7,9 @@
 
 export default {
   name: 'HomagePage',
-  created() {
-    this.$store.dispatch("loadLoggedIn", '0')
+
+  components: {
+    Navigation
   },
 
 };
