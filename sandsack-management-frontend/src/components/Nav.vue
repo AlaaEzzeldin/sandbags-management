@@ -2,30 +2,27 @@
   <div>
     <v-navigation-drawer
         :permanent="$vuetify.breakpoint.mdAndUp"
-        absolute
         left
-        style="min-width: 350px;"
+        app
         v-model="drawer"
+        width="350"
     >
-      <v-toolbar
-          flat
-          class="hidden-lg-and-up"
-          style="width: 350px; padding-left: 0;"
-          @click.stop="drawer = !drawer">
-        <h3>Feuerwehr Passau ({{ getLoggedInBranchName() }})</h3>
-      </v-toolbar>
-      <div class="hidden-md-and-down">
-        <v-row class="pt-10 pb-10 pl-5">
-          <v-col cols="3">
-            <img class="mr-10" src="@/assets/images/logo.png" height="60"/>
-          </v-col>
-          <v-col cols="9">
-            <h1 style="color: red;font-weight: bolder;  font-size: x-large" class="justify-center"> Feuerwehr Passau </h1>
-            <h1 style="color: black;font-weight: bolder;  font-size: large;" class="justify-center">
-              {{ getLoggedInBranchName() }} </h1>
-          </v-col>
-        </v-row>
-      </div>
+    <v-toolbar
+        flat
+        class="hidden-lg-and-up"
+        style="padding-left: 0;"
+        @click.stop="drawer = !drawer">
+      <h3>Feuerwehr Passau ({{ getLoggedInBranchName() }})</h3>
+    </v-toolbar>
+    <v-row class="pt-10 pb-10 hidden-md-and-down">
+      <v-col cols="3">
+        <img src="@/assets/images/logo.png" height="60"/>
+      </v-col>
+      <v-col cols="9">
+        <h1 style="color: red;font-weight: bolder;  font-size: x-large; white-space: nowrap;"> Feuerwehr Passau </h1>
+        <h1 style="color: black;font-weight: bolder;  font-size: large;">{{ getLoggedInBranchName() }}</h1>
+      </v-col>
+    </v-row>
 
       <v-list class="mb-16 mt-16">
           <v-list-item
