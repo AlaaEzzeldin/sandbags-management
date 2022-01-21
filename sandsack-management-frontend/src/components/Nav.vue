@@ -1,5 +1,4 @@
 <template style="background-color: white">
-<<<<<<< HEAD
   <div>
     <v-navigation-drawer
         :permanent="$vuetify.breakpoint.mdAndUp"

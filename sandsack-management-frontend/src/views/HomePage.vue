@@ -8,9 +8,5 @@
 export default {
   name: 'HomagePage',
 
-  components: {
-    Navigation
-  },
-
 };
 </script>
