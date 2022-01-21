@@ -623,7 +623,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: ListOrder - user can decline order
+      description: ListOrder - listing all orders
       parameters:
       - description: ' '
         in: header
@@ -654,7 +654,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
-      summary: ListOrder - user can decline order
+      summary: ListOrder - listing all orders
       tags:
       - Order
     post:

@@ -537,14 +537,14 @@ var doc = `{
         },
         "/order/": {
             "get": {
-                "description": "ListOrder - user can decline order",
+                "description": "ListOrder - listing all orders",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Order"
                 ],
-                "summary": "ListOrder - user can decline order",
+                "summary": "ListOrder - listing all orders",
                 "parameters": [
                     {
                         "type": "string",

@@ -59,7 +59,7 @@ func (a *App) RunAllRoutes() {
 	users := auth.Group("users")
 	users.GET("/", a.GetUserList)
 	users.POST("/logout", a.Logout)
-	users.POST("/change_password", a.ChangePassword)
+	users.PATCH("/change_password", a.ChangePassword)
 	users.GET("/me", a.GetProfile)
 	users.PATCH("/me", a.PatchProfile)
 
