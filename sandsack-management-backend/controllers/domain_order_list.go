@@ -10,8 +10,8 @@ import (
 )
 
 // ListOrder
-// @Description ListOrder - user can decline order
-// @Summary ListOrder - user can decline order
+// @Description ListOrder - listing all orders
+// @Summary ListOrder - listing all orders
 // @Accept json
 // @Param Authorization header string true " "
 // @Param id path string true "Id of the order"

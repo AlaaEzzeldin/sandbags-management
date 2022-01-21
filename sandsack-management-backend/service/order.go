@@ -34,6 +34,7 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 		models.DictPermissionName["CAN EDIT"],
 		models.DictPermissionName["CAN DECLINE"],
 		models.DictPermissionName["CAN COMMENT"],
+		models.DictPermissionName["CAN CONFIRM DELIVERY"],
 	}
 	if err := repo_order.InsertUserOrderPermissions(a, order.UserId, order.Id, userOrderPermissions); err != nil {
 		log.Println("InsertUserOrderPermissions error", err.Error())
@@ -65,7 +66,7 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 			OrderId:      order.Id,
 			ActionTypeId: models.DictActionTypeName["CREATED"],
 			UpdatedBy:    order.UserId,
-			Description:  userName + " hat die Bestellung '" +  newOrder.Name + " #" + strconv.Itoa(newOrder.Id) + "' erstellt",
+			Description:  userName + " hat die Bestellung '" +  newOrder.Name + "' erstellt",
 		},
 	}
 
@@ -91,7 +92,7 @@ func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 		Id:          simpleOrder.Id,
 		UserId:      simpleOrder.UserId,
 		StatusId:    simpleOrder.StatusId,
-		Name:        simpleOrder.Name,
+		Name:        simpleOrder.Name + " #" + strconv.Itoa(simpleOrder.Id),
 		AddressFrom: simpleOrder.AddressFrom,
 		AddressTo:   simpleOrder.AddressTo,
 		StatusName:  simpleOrder.StatusName,
@@ -182,7 +183,8 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 		}
 	} else if user.BranchId == models.DictBranchName["Hauptabschnitt"] {
 		if order.StatusId == models.DictStatusName["WEITERGELEITET BEI EINSATZABSCHNITT"] ||
-			order.StatusId == models.DictStatusName["ABGELEHNT BEI HAUPTABSCHNITT"] {
+			order.StatusId == models.DictStatusName["ABGELEHNT BEI HAUPTABSCHNITT"] ||
+			order.StatusId == models.DictStatusName["ANSTEHEND"] {
 
 			statusId = models.DictStatusName["WEITERGELEITET BEI HAUPTABSCHNITT"]
 
@@ -199,12 +201,11 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 			return errors.New("einsatzleiter kann nicht weiterleiten")
 		}
 	} else if user.BranchId == models.DictBranchName["Mollnhof"] {
-		if order.StatusId == models.DictStatusName["AKZEPTIERT"] {
+		/*if order.StatusId == models.DictStatusName["AKZEPTIERT"] {
 			statusId = models.DictStatusName["AUF DEM WEG"]
+		 */
+		return errors.New("mollnhof kann nicht weiterleiten")
 
-		} else {
-			return errors.New("mollnhof kann nicht weiterleiten")
-		}
 	} else {
 		return errors.New("something went wrong")
 	}
@@ -255,7 +256,7 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 			OrderId:      orderId,
 			ActionTypeId: models.DictActionTypeName["ACCEPTED"],
 			UpdatedBy:    userId,
-			Description:  user.Name + " accepted order " + order.Name,
+			Description:  user.Name + " accepted order " + order.Name + " #" + strconv.Itoa(orderId),
 		},
 	}
 
@@ -297,7 +298,8 @@ func DeclineOrder(db *gorm.DB, userId, orderId int) error {
 		}
 	} else if user.BranchId == models.DictBranchName["Hauptabschnitt"] {
 		if order.StatusId == models.DictStatusName["WEITERGELEITET BEI EINSATZABSCHNITT"] ||
-			order.StatusId == models.DictStatusName["WEITERGELEITET BEI HAUPTABSCHNITT"] {
+			order.StatusId == models.DictStatusName["WEITERGELEITET BEI HAUPTABSCHNITT"] ||
+			order.StatusId == models.DictStatusName["ANSTEHEND"] {
 
 			statusId = models.DictStatusName["ABGELEHNT BEI HAUPTABSCHNITT"]
 		} else {
@@ -339,7 +341,7 @@ func DeclineOrder(db *gorm.DB, userId, orderId int) error {
 			OrderId:      orderId,
 			ActionTypeId: models.DictActionTypeName["DECLINED"],
 			UpdatedBy:    userId,
-			Description:  user.Name + " declined order " + order.Name,
+			Description:  user.Name + " declined order " + order.Name + " #" + strconv.Itoa(orderId),
 		},
 	}
 
@@ -390,8 +392,12 @@ func AddEquipment(db *gorm.DB, name string, quantity int) error {
 }
 
 func ConfirmDelivery(db *gorm.DB, userId int, orderId int) error {
+	order, err := GetOrder(db, userId, orderId)
+	if order.StatusId != models.DictStatusName["AUF DEM WEG"] {
+		return errors.New("You cannot confirm delivery")
+	}
 	statusId := models.DictStatusName["GELIEFERT"]
-	err := repo_order.ConfirmDelivery(db, userId, orderId, statusId)
+	err = repo_order.ConfirmDelivery(db, userId, orderId, statusId)
 	if err != nil {
 		return err
 	}
@@ -420,4 +426,95 @@ func AddDriver(db *gorm.DB, name, description string) error {
 
 func UpdateEquipment(db *gorm.DB, equipmentId int, quantity int) error {
 	return repo_order.UpdateEquipment(db, equipmentId, quantity)
+}
+
+func DispatchOrder(db *gorm.DB, userId, orderId, driverId int) error {
+	user, _ := GetUserByID(db, userId)
+	order, _ := GetOrder(db, userId, orderId)
+
+	var statusId int
+
+	if user.BranchId == models.DictBranchName["Mollnhof"] {
+		if order.StatusId == models.DictStatusName["AKZEPTIERT"] {
+			statusId = models.DictStatusName["AUF DEM WEG"]
+		}
+	} else {
+		return errors.New("something went wrong")
+	}
+
+	if err := repo_order.UpdateOrderStatus(db, orderId, statusId); err != nil {
+		return err
+	}
+
+	for _, equip := range order.Equipments {
+		equipment, _ := repo_order.GetEquipmentById(db, equip.EquipmentId)
+		quantity := equipment.Quantity - equip.Quantity
+		_ = repo_order.UpdateEquipment(db, equip.EquipmentId, quantity)
+	}
+
+
+	children, err := GetChildren(db, userId)
+
+	for _, child := range *children {
+		err = repo_order.DeleteUserOrderPermission(db, child.Id, order.Id)
+		if err != nil {
+			return err
+		}
+	}
+
+	if err := repo_order.SetDriverToOrder(db, orderId, driverId); err != nil {
+		return err
+	}
+
+	logs := []models.Log{
+		{
+			OrderId:      orderId,
+			ActionTypeId: models.DictActionTypeName["ASSIGNED"],
+			UpdatedBy:    userId,
+			Description:  user.Name + " dispatched order " + order.Name + " and assigned it to the driver",
+		},
+	}
+
+	err = repo_order.InsertLogs(db, logs)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+
+func GetAllOrders(a *gorm.DB, startDate, endDate string) (orderList []models.Order, err error) {
+	simpleOrderList, err := repo_order.GetAllSimpleOrderList(a, startDate, endDate)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, row := range simpleOrderList {
+		comments := repo_order.GetComments(a, row.Id)
+		equipments := repo_order.GetEquipments(a, row.Id)
+		logs := repo_order.GetLogs(a, row.Id)
+		//permissions := repo_order.GetPermissions(a, userId, row.Id)
+
+		order := models.Order{
+			Id:          row.Id,
+			UserId:      row.UserId,
+			StatusId:    row.StatusId,
+			Name:        row.Name,
+			AddressFrom: row.AddressFrom,
+			AddressTo:   row.AddressTo,
+			StatusName:  row.StatusName,
+			PriorityId:  row.PriorityId,
+			Comments:    comments,
+			Logs:        logs,
+			Equipments:  equipments,
+			CreateDate: row.CreateDate,
+			UpdateDate: row.UpdateDate,
+			//Permissions: permissions,
+		}
+
+		orderList = append(orderList, order)
+	}
+
+	return orderList, nil
 }

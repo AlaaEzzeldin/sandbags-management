@@ -61,6 +61,17 @@ type ConfirmDeliveryInput struct {
 	OrderId int `json:"order_id"`
 }
 
+
+type DispatchOrderInput struct {
+	OrderId int `json:"order_id,required"`
+	DriverId int `json:"driver_id,omitempty"`
+}
+
+type GetStatisticsInput struct {
+	StartDate string `json:"start_date,omitempty"`
+	EndDate   string `json:"end_date,omitempty"`
+}
+
 type EditOrderInput struct {
 	OrderId int `json:"order_id"`
 	Equipments []OrderEquipment `json:"equipments,omitempty"`
@@ -75,4 +86,9 @@ type AddDriverInput struct {
 type UpdateEquipmentInput struct {
 	Id int `json:"id"`
 	Quantity int `json:"quantity"`
+}
+
+type GetAllOrders struct {
+	StartDate string `json:"start_date"`
+	EndDate string `json:"end_date"`
 }
