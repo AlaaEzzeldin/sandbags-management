@@ -68,6 +68,13 @@ definitions:
       phone:
         type: string
     type: object
+  models.DispatchOrderInput:
+    properties:
+      driver_id:
+        type: integer
+      order_id:
+        type: integer
+    type: object
   models.EditOrderInput:
     properties:
       equipments:
@@ -84,6 +91,13 @@ definitions:
       err_code:
         type: integer
       err_message:
+        type: string
+    type: object
+  models.GetStatisticsInput:
+    properties:
+      end_date:
+        type: string
+      start_date:
         type: string
     type: object
   models.Log:
@@ -137,6 +151,8 @@ definitions:
         items:
           $ref: '#/definitions/models.OrderEquipment'
         type: array
+      estimated_time:
+        type: integer
       id:
         type: integer
       logs:
@@ -559,31 +575,6 @@ paths:
       summary: This endpoint adds new priority
       tags:
       - Core
-  /create_user/:
-    post:
-      consumes:
-      - application/json
-      description: This endpoint is implemented to register new user by Einsatzleiter
-        and get a new token pair
-      parameters:
-      - description: User registration model
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/models.CreateUser'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: User has been created
-        "400":
-          description: Bad request (e.g. parameter in body is not given or incorrect)
-        "401":
-          description: Permission to create the user is not given
-      summary: Create a new user (branch) in the system
-      tags:
-      - Admin
   /email_verification:
     post:
       consumes:
@@ -835,6 +826,45 @@ paths:
       summary: Unterabschnitt confirms that equipment is successfully delivered
       tags:
       - Order
+  /order/dispatch:
+    post:
+      consumes:
+      - application/json
+      description: DispatchOrder - Mollnhof can dispatch the order and assign it to
+        the driver
+      parameters:
+      - description: ' '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: DispatchOrder
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.DispatchOrderInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: DispatchOrder - Mollnhof can dispatch the order and assign it to the
+        driver
+      tags:
+      - Order
   /order/edit:
     patch:
       consumes:
@@ -871,6 +901,63 @@ paths:
       summary: This endpoint edits priority and/or quantity of equipment of the order
       tags:
       - Order
+  /order/stats:
+    get:
+      consumes:
+      - application/json
+      description: Gets list of stats of orders
+      parameters:
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: GetStats Input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.GetStatisticsInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - Order
+  /user/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint is implemented to register new user by Einsatzleiter
+        and get a new token pair
+      parameters:
+      - description: User registration model
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User has been created
+        "400":
+          description: Bad request (e.g. parameter in body is not given or incorrect)
+        "401":
+          description: Permission to create the user is not given
+      summary: Create a new user (branch) in the system
+      tags:
+      - Admin
   /users/:
     get:
       consumes:
