@@ -67,5 +67,5 @@ func (a *App) DeclineOrder(c *gin.Context) {
 	order, err := service.GetOrder(a.DB, claims.Id, orderId)
 
 	c.JSON(http.StatusOK, order)
-
+	return
 }

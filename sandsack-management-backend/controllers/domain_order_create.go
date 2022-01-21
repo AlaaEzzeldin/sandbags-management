@@ -52,6 +52,8 @@ func (a *App) CreateOrder(c *gin.Context) {
 		return
 	}
 	log.Println("User branch", user.BranchId)
+
+	//if !(user.BranchId == models.DictBranchName["Unterabschnitt"] || user.BranchId == models.DictBranchName["Einsatzabschnitt"])  {
 	if user.BranchId != models.DictBranchName["Unterabschnitt"] {
 		log.Println("It's not Unterabschnitt")
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
@@ -62,7 +64,10 @@ func (a *App) CreateOrder(c *gin.Context) {
 	}
 
 	var comments []models.Comment
-	comments = append(comments, models.Comment{CommentText: input.Comment})
+	if len(input.Comment) > 0 {
+		comments = append(comments, models.Comment{CommentText: input.Comment})
+	}
+
 
 	order := &models.Order{
 		Name:        user.Name,
