@@ -1,13 +1,20 @@
 <template style="background-color: white">
   <div>
     <v-navigation-drawer
-        :permanent="$vuetify.breakpoint.smAndUp"
+        :permanent="$vuetify.breakpoint.mdAndUp"
         absolute
         left
         style="min-width: 350px;"
         v-model="drawer"
     >
-      <div class="hidden-sm-and-down">
+      <v-toolbar
+          flat
+          class="hidden-lg-and-up"
+          style="width: 350px; padding-left: 0;"
+          @click.stop="drawer = !drawer">
+        <h3>Feuerwehr Passau ({{ getLoggedInBranchName() }})</h3>
+      </v-toolbar>
+      <div class="hidden-md-and-down">
         <v-row class="pt-10 pb-10 pl-5">
           <v-col cols="3">
             <img class="mr-10" src="@/assets/images/logo.png" height="60"/>
@@ -42,15 +49,15 @@
       <EquipmentQuantityTable/>
     </v-navigation-drawer>
     <v-toolbar
-         absolute
-         right
-         flat
-         class="hidden-sm-and-up"
-         @click.stop="drawer = !drawer">
+        flat
+        class="hidden-md-and-up"
+        style="width: 350px; padding-left: 0;"
+        @click.stop="drawer = !drawer">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <h3>Feuerwehr Passau ({{ getLoggedInBranchName() }})</h3>
     </v-toolbar>
   </div>
+
 </template>
 
 <script>
