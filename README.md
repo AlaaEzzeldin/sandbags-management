@@ -24,7 +24,8 @@ The repo follows feature flow
 
 The application is divided into frontend and backend apps that are put into Docker containers. 
 
-Each app has its own ```Dockerfile``` that are orchestrated through ```docker-compose.yml```. Furthermore, postgreSQL database runs own container.
+Each app has its own ```Dockerfile``` 
+that are orchestrated through ```docker-compose.yml```. However, PostgreSQL database is managed by AWS Managed database.
 
 To build and run the project, do ```docker-compose up --build```. It will build and start corresponding apps in separate containers. 
 

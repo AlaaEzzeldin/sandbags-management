@@ -22,15 +22,15 @@ import (
 // @Failure 401 {object} models.ErrorResponse
 // @Tags Authentication
 // @Router /users/login [post]
-func (a *App) Login(c *gin.Context){
+func (a *App) Login(c *gin.Context) {
 	var input models.Login
 
 	// check whether the structure of request is correct
-	if err := c.ShouldBindJSON(&input); err != nil{
+	if err := c.ShouldBindJSON(&input); err != nil {
 		log.Println("Registration error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrCode:    http.StatusBadRequest,
+			ErrMessage: "Ungültige Anfrage",
 		})
 		return
 	}
@@ -39,10 +39,10 @@ func (a *App) Login(c *gin.Context){
 
 	exists := service.CheckUserExists(a.DB, email)
 	if !exists {
-		log.Println("CheckUserExists error: user does not exist")
+		log.Println("Fehler: CheckUserExists: dieser Benutzer gibt es nicht")
 		c.JSON(http.StatusNotFound, models.ErrorResponse{
-			ErrCode: http.StatusNotFound,
-			ErrMessage: "user not found",
+			ErrCode:    http.StatusNotFound,
+			ErrMessage: "Benutzer kann nicht gefunden werden",
 		})
 		return
 	}
@@ -50,18 +50,17 @@ func (a *App) Login(c *gin.Context){
 	user, err := service.GetUserByEmail(a.DB, email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusInternalServerError,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
-
 	// if email is not verified, user cannot be logged in
 	if !user.IsEmailVerified {
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
-			ErrCode: http.StatusUnauthorized,
-			ErrMessage: "should verify email",
+			ErrCode:    http.StatusUnauthorized,
+			ErrMessage: "Email muss bestätigt werden",
 		})
 		return
 	}
@@ -69,8 +68,8 @@ func (a *App) Login(c *gin.Context){
 	// if user is not activated, not possible to log in
 	if !user.IsActivated {
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
-			ErrCode: http.StatusUnauthorized,
-			ErrMessage: "user is deactivated",
+			ErrCode:    http.StatusUnauthorized,
+			ErrMessage: "Dieser Benutzer wurde deaktiviert",
 		})
 		return
 	}
@@ -78,20 +77,19 @@ func (a *App) Login(c *gin.Context){
 	// check password is correct
 	ok := functions.CheckPasswordHash(input.Password, user.Password)
 	if !ok {
-		log.Println("CheckPasswordHash error")
+		log.Println("Fehler: CheckPasswordHash")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
-			ErrMessage: "wrong password",
+			ErrCode:    http.StatusBadRequest,
+			ErrMessage: "Ungültiges Passwort",
 		})
 		return
 	}
 
-
 	tokens, err := middleware.GenerateTokens(a.DB, email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusInternalServerError,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
@@ -100,10 +98,10 @@ func (a *App) Login(c *gin.Context){
 	// if we do not have token in database, then put it in
 	if len(user.Token) == 0 {
 		if err := service.UpdateUserToken(a.DB, email, tokens["refresh_token"]); err != nil {
-			log.Println("UpdateUserToken error", err.Error())
+			log.Println("Fehler: UpdateUserToken", err.Error())
 			c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-				ErrCode: http.StatusInternalServerError,
-				ErrMessage: "something went wrong",
+				ErrCode:    http.StatusInternalServerError,
+				ErrMessage: "Da ist etwas schief gelaufen",
 			})
 			return
 		}
@@ -119,7 +117,7 @@ func (a *App) Login(c *gin.Context){
 		RefreshToken: tokens["refresh_token"],
 		AccessToken:  tokens["access_token"],
 		Role:         user.BranchName,
-		Name: user.Name,
+		Name:         user.Name,
 	})
 	return
 }

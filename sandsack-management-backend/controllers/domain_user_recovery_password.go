@@ -24,21 +24,21 @@ func (a *App) RecoveryPassword(c *gin.Context) {
 	var input models.RecoveryPasswordInput
 
 	// check whether the structure of request is correct
-	if err := c.ShouldBindJSON(&input); err != nil{
-		log.Println("SendVerifyEmail error: ", err.Error())
+	if err := c.ShouldBindJSON(&input); err != nil {
+		log.Println("Fehler: SendVerifyEmail: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrCode:    http.StatusBadRequest,
+			ErrMessage: "Ungültige Anfrage",
 		})
 		return
 	}
 
 	_, err := service.GetOTP(a.DB, input.OTP, "recovery")
 	if err != nil {
-		log.Println("GetOTP error: ", err.Error())
+		log.Println("Fehler: GetOTP: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusInternalServerError,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
@@ -46,18 +46,18 @@ func (a *App) RecoveryPassword(c *gin.Context) {
 	if len(input.Password) < 6 {
 		log.Println("Wrong otp")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
-			ErrMessage: "password should be longer 6 symbols",
+			ErrCode:    http.StatusBadRequest,
+			ErrMessage: "Passwort muss mindestens 6 Symbolen lang sein",
 		})
 		return
 	}
 
-	user , err := service.GetUserByOTP(a.DB, input.OTP, "recovery")
+	user, err := service.GetUserByOTP(a.DB, input.OTP, "recovery")
 	if err != nil {
 		log.Println("GetUserByOTP error:", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusInternalServerError,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
@@ -67,21 +67,21 @@ func (a *App) RecoveryPassword(c *gin.Context) {
 	if err := service.UpdatePassword(a.DB, user.Email, hashedPassword); err != nil {
 		log.Println("UpdatePassword error:", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusInternalServerError,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	if err := service.DeleteOTP(a.DB, user.Id, "recovery"); err != nil {
-		log.Println("DeleteOTP error:", err.Error())
+		log.Println("Fehler: DeleteOTP:", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusBadRequest,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, "The new password has been set")
+	c.JSON(http.StatusOK, "Neues Passwort wurde hinterlegt")
 	return
 }

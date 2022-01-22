@@ -23,20 +23,20 @@ import (
 func (a *App) AddDriver(c *gin.Context) {
 	var input models.AddDriverInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("AddDriver error: ", err.Error())
+		log.Println("Fehler: AddDriver: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
 		})
 		return
 	}
 
 	claims, err := GetClaims(c)
 	if err != nil {
-		log.Println("GetClaims error: ", err.Error())
+		log.Println("Fehler: GetClaims: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
@@ -44,17 +44,17 @@ func (a *App) AddDriver(c *gin.Context) {
 	if claims.Role != "Einsatzleiter" {
 		log.Println("Role is not Einsatzleiter")
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
-			ErrCode: http.StatusForbidden,
-			ErrMessage: "you do not have such permissions",
+			ErrCode:    http.StatusForbidden,
+			ErrMessage: "Das ist Ihnen nicht erlaubt",
 		})
 		return
 	}
 
 	if err := service.AddDriver(a.DB, input.Name, input.Description); err != nil {
-		log.Println("AddDriver error:", err.Error())
+		log.Println("Fehler: AddDriver:", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusInternalServerError,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

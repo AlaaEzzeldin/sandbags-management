@@ -26,39 +26,39 @@ func (a *App) SendVerifyEmail(c *gin.Context) {
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("SendVerifyEmail error: ", err.Error())
+		log.Println("Fehler: SendVerifyEmail: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
 		})
 		return
 	}
 
 	user, err := service.GetUserByEmail(a.DB, input.Email)
 	if err != nil {
-		log.Println("GetUserByEmail error: ", err.Error())
+		log.Println("Fehler: GetUserByEmail: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	otp, err := service.GenerateAndSaveOTP(a.DB, user.Id, "verification")
 	if err != nil {
-		log.Println("GenerateAndSaveOTP error: ", err.Error())
+		log.Println("Fehler: GenerateAndSaveOTP: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	if err := functions.SendEmail(a.DB, user.Email, otp, "verification"); err != nil {
-		log.Println("SendEmail error: ", err.Error())
+		log.Println("Fehler: SendEmail: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

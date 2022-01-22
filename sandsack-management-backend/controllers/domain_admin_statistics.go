@@ -24,39 +24,39 @@ func (a *App) GetStatistics(c *gin.Context) {
 	var input models.GetStatisticsInput
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("GetStatistics error: ", err.Error())
+		log.Println("Fehler: GetStatistics: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
 		})
 		return
 	}
 
 	unterabschnittStats, err := service.GetUnterabschnittStatistics(a.DB, input.StartDate, input.EndDate)
 	if err != nil {
-		log.Println("GetStatistics error: ", err.Error())
+		log.Println("Fehler: GetStatistics: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 	einsatzabschnittStats, err := service.GetEinsatzabschnittStatistics(a.DB, input.StartDate, input.EndDate)
 	if err != nil {
-		log.Println("GetStatistics error: ", err.Error())
+		log.Println("Fehler: GetStatistics: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	hauptabschnittStats, err := service.GetHauptabschnittStatistics(a.DB, input.StartDate, input.EndDate)
 	if err != nil {
-		log.Println("GetStatistics error: ", err.Error())
+		log.Println("Fehler: GetStatistics: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
