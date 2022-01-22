@@ -37,11 +37,11 @@ const actions = {
     updatePassword({commit}, payload) {
         return AuthService.updatePassword(payload).then(
           data => {
-              commit('UPDATE_PASSWORD_SUCCESS', data);
+              console.log(commit);
               return Promise.resolve(data);
           },
           error => {
-              commit('UPDATE_PASSWORD_FAILURE');
+              console.log(commit);
               return Promise.reject(error);
           }
         );

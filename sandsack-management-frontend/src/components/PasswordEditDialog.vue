@@ -95,9 +95,6 @@ export default {
       return this.$store.getters.getLoggedInUser
     },
     showAlert() {
-      console.log("valid", this.valid);
-      console.log("error", this.error);
-
       return !!this.error;
     }
   },
