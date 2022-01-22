@@ -23,11 +23,11 @@ import (
 func (a *App) AdminAllOrders(c *gin.Context) {
 	var input models.GetAllOrders
 	// check whether the structure of request is correct
-	if err := c.ShouldBindJSON(&input); err != nil{
-		log.Println("EditOrder error: ", err.Error())
+	if err := c.ShouldBindJSON(&input); err != nil {
+		log.Println("Fehler: EditOrder: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode: http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrCode:    http.StatusBadRequest,
+			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
 		})
 		return
 	}
@@ -40,8 +40,8 @@ func (a *App) AdminAllOrders(c *gin.Context) {
 	if claims.Role != "Einsatzleiter" {
 		log.Println("Role is not Einsatzleiter")
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
-			ErrCode: http.StatusForbidden,
-			ErrMessage: "Sie sind nicht der Einsatzleiter",
+			ErrCode:    http.StatusForbidden,
+			ErrMessage: "Sie sind nicht den Einsatzleiter",
 		})
 		return
 	}
@@ -50,8 +50,8 @@ func (a *App) AdminAllOrders(c *gin.Context) {
 	if err != nil {
 		log.Println("GetAllOrders error", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusInternalServerError,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

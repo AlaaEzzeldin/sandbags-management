@@ -26,10 +26,10 @@ func (a *App) SendRecoveryPassword(c *gin.Context) {
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("SendRecoveryPassword error: ", err.Error())
+		log.Println("Fehler: SendRecoveryPassword: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage",
 		})
 		return
 	}
@@ -46,19 +46,19 @@ func (a *App) SendRecoveryPassword(c *gin.Context) {
 
 	otp, err := service.GenerateAndSaveOTP(a.DB, user.Id, "recovery")
 	if err != nil {
-		log.Println("GenerateAndSaveOTP error: ", err.Error())
+		log.Println("Fehler: GenerateAndSaveOTP: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	if err := functions.SendEmail(a.DB, user.Email, otp, "recovery"); err != nil {
-		log.Println("SendEmail error: ", err.Error())
+		log.Println("Fehler: SendEmail: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

@@ -22,10 +22,10 @@ import (
 func (a *App) GetEquipment(c *gin.Context) {
 	equipment, err := service.GetEquipment(a.DB)
 	if err != nil {
-		log.Println("GetEquipment error", err.Error())
+		log.Println("Fehler: GetEquipment", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

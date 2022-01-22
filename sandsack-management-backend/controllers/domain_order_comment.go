@@ -28,20 +28,20 @@ func (a *App) CommentOrder(c *gin.Context) {
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("CommentOrder error: ", err.Error())
+		log.Println("Fehler: CommentOrder: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage",
 		})
 		return
 	}
 
 	claims, err := GetClaims(c)
 	if err != nil {
-		log.Println("GetClaims error", err.Error())
+		log.Println("Fehler: GetClaims", err.Error())
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
 			ErrCode:    http.StatusUnauthorized,
-			ErrMessage: "no access",
+			ErrMessage: "Access Token ist ungültig",
 		})
 		return
 	}
@@ -57,10 +57,10 @@ func (a *App) CommentOrder(c *gin.Context) {
 	}
 
 	if flag == 0 {
-		log.Println("No access for this action error")
+		log.Println("Fehler: Kein Zugang: ")
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
 			ErrCode:    http.StatusForbidden,
-			ErrMessage: "no access",
+			ErrMessage: "Kein Zugang",
 		})
 		return
 	}
@@ -69,7 +69,7 @@ func (a *App) CommentOrder(c *gin.Context) {
 		log.Println("Length of comments is 0", len(input.Comment))
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "there should be comments",
+			ErrMessage: "Es muss den Kommentartext hinzugefügt sein",
 		})
 		return
 	}
@@ -88,7 +88,7 @@ func (a *App) CommentOrder(c *gin.Context) {
 			OrderId:      input.OrderId,
 			ActionTypeId: models.DictActionTypeName["COMMENTED"],
 			UpdatedBy:    claims.Id,
-			Description:  user.Name + " commented order " + order.Name + " #" + strconv.Itoa(order.Id),
+			Description:  user.Name + " hat die Bestellung " + order.Name + "kommentiert #" + strconv.Itoa(order.Id),
 		},
 	}
 

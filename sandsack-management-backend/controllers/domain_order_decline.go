@@ -25,10 +25,10 @@ func (a *App) DeclineOrder(c *gin.Context) {
 	id := c.Query("id")
 	orderId, err := strconv.Atoi(id)
 	if err != nil {
-		log.Println("Error in parsing", err.Error())
+		log.Println("Fehler beim Parsen", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect input",
+			ErrMessage: "Ungültiges Eingabeformat",
 		})
 		return
 	}
@@ -47,16 +47,16 @@ func (a *App) DeclineOrder(c *gin.Context) {
 
 	if flag == 0 {
 		log.Println("No access for this action error")
-		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "no access",
+		c.JSON(http.StatusForbidden, models.ErrorResponse{
+			ErrCode:    http.StatusForbidden,
+			ErrMessage: "Kein Zugang",
 		})
 		return
 	}
 
 	err = service.DeclineOrder(a.DB, claims.Id, orderId)
 	if err != nil {
-		log.Println("DeclineOrder error", err.Error())
+		log.Println("Fehler: DeclineOrder:", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: err.Error(),

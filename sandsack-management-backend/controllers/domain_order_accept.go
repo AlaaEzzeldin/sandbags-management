@@ -24,30 +24,30 @@ import (
 func (a *App) AcceptOrder(c *gin.Context) {
 	orderId, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
-		log.Println("Error in parsing", err.Error())
+		log.Println("Fehler beim Parsen", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect input",
+			ErrMessage: "Ungültiges Eingabeformat",
 		})
 		return
 	}
 
 	claims, err := GetClaims(c)
 	if err != nil {
-		log.Println("AcceptOrder error: ", err.Error())
+		log.Println("Fehler: AcceptOrder: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage",
 		})
 		return
 	}
 
 	permissions, err := service.GetUserOrderPermissions(a.DB, claims.Id, orderId)
 	if err != nil {
-		log.Println("AcceptOrder error: ", err.Error())
+		log.Println("Fehler: AcceptOrder Permissions: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage",
 		})
 		return
 	}
@@ -62,20 +62,20 @@ func (a *App) AcceptOrder(c *gin.Context) {
 	}
 
 	if flag != 1 {
-		log.Println("User cannot view this order")
-		c.JSON(http.StatusNotFound, models.ErrorResponse{
-			ErrCode:    http.StatusNotFound,
-			ErrMessage: "you cannot view this order",
+		log.Println("Dieser Benutzer kann diese Bestellung nicht ansehen")
+		c.JSON(http.StatusForbidden, models.ErrorResponse{
+			ErrCode:    http.StatusForbidden,
+			ErrMessage: "Sie können diese Bestellung nicht ansehen",
 		})
 		return
 	}
 
 	err = service.AcceptOrder(a.DB, claims.Id, orderId)
 	if err != nil {
-		log.Println("AcceptOrder error", err.Error())
+		log.Println("Fehler: AcceptOrder:", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

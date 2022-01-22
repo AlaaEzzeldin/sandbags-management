@@ -83,20 +83,20 @@ func (a *App) PatchProfile(c *gin.Context) {
 func (a *App) GetProfile(c *gin.Context) {
 	claims, err := GetClaims(c)
 	if err != nil {
-		log.Println("GetClaims error:", err.Error())
+		log.Println("Fehler: GetClaims:", err.Error())
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
 			ErrCode:    http.StatusForbidden,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Access Token ist ungültig",
 		})
 		return
 	}
 
 	user, err := service.GetUserByEmail(a.DB, claims.Email)
 	if err != nil {
-		log.Println("GetUserByID error:", err.Error())
+		log.Println("Fehler: GetUserByID:", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

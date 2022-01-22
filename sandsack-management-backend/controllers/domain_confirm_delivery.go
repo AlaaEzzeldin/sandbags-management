@@ -23,10 +23,10 @@ import (
 func (a *App) ConfirmDelivery(c *gin.Context) {
 	var input models.ConfirmDeliveryInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("ConfirmDelivery error: ", err.Error())
+		log.Println("Fehler: ConfirmDelivery: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
 		})
 		return
 	}
@@ -35,7 +35,7 @@ func (a *App) ConfirmDelivery(c *gin.Context) {
 	if claims.Role != "Unterabschnitt" {
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
 			ErrCode:    http.StatusForbidden,
-			ErrMessage: "only Unterabschnitt can confirm delivery",
+			ErrMessage: "Nur der Unterabschnitt darf die Zustellung bestätigen",
 		})
 		return
 	}
@@ -51,29 +51,29 @@ func (a *App) ConfirmDelivery(c *gin.Context) {
 	}
 
 	if flag == 0 {
-		log.Println("No access for this action error")
+		log.Println("Fehler: Kein Zugang")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "no access",
+			ErrMessage: "Kein Zugang",
 		})
 		return
 	}
 
 	if err := service.ConfirmDelivery(a.DB, claims.Id, input.OrderId); err != nil {
-		log.Println("ConfirmDelivery error: ", err.Error())
+		log.Println("Fehler: ConfirmDelivery: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	order, err := service.GetOrder(a.DB, claims.Id, input.OrderId)
 	if err != nil {
-		log.Println("GetOrder error: ", err.Error())
+		log.Println("Fehler: GetOrder: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
