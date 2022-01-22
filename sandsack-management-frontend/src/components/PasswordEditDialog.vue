@@ -56,8 +56,8 @@
                   block
                   rounded
                   color="red"
-                  dark
                   @click="submitUpdatedInfo"
+                  :disabled="!(newPassword && oldPassword)"
               >
                 Speichern
               </v-btn>
@@ -101,7 +101,7 @@ export default {
         "new_password": this.newPassword,
         "old_password": this.oldPassword,
       }
-      this.$store.dispatch("updatePassword",  data)
+      this.$store.dispatch("updatePassword",  data);
       this.newPassword = '';
       this.oldPassword = '';
       this.$emit("close")
