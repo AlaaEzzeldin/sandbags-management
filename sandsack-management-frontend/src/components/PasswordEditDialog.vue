@@ -12,6 +12,7 @@
       <v-card-text>
         <v-alert
             type="error"
+            outlined
             :v-if="showAlert"
         >
           {{error}}
@@ -115,6 +116,7 @@ export default {
           () => {
             this.newPassword = '';
             this.oldPassword = '';
+            this.error = '';
             this.$emit("close")
           },
           error => {
