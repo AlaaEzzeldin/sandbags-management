@@ -59,12 +59,12 @@
             </v-col>
             <v-col cols="3">
               <v-btn
-                  style="text-transform: capitalize; font-weight: bolder;"
+                  style="text-transform: capitalize; font-weight: bolder; color: white"
                   block
                   rounded
                   color="red"
                   @click="submitUpdatedInfo"
-                  :disabled="!(newPassword && oldPassword)"
+                  :disabled="!(newPassword && oldPassword) && (newPassword === oldPassword)"
               >
                 Speichern
               </v-btn>
@@ -105,6 +105,10 @@ export default {
   },
   methods: {
     closeDialog() {
+      this.valid = true;
+      this.newPassword = '';
+      this.oldPassword = '';
+      this.error = '';
       this.$emit('close')
     },
     submitUpdatedInfo(){
@@ -114,10 +118,7 @@ export default {
       }
       this.$store.dispatch("updatePassword",  data).then(
           () => {
-            this.newPassword = '';
-            this.oldPassword = '';
-            this.error = '';
-            this.$emit("close")
+            this.closeDialog();
           },
           error => {
             this.valid = false;
