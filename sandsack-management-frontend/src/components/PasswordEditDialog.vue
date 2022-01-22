@@ -13,7 +13,7 @@
         <v-alert
             type="error"
             outlined
-            :v-if="showAlert"
+            :value="showAlert"
         >
           {{error}}
         </v-alert>
@@ -24,7 +24,6 @@
         >
           <v-text-field
               v-model="oldPassword"
-              :rules="passwordRules"
               label="Altes Kennwort"
               required
               filled
@@ -33,7 +32,6 @@
           ></v-text-field>
           <v-text-field
               v-model="newPassword"
-              :rules="passwordRules"
               label="Neues Kennwort"
               required
               filled
@@ -89,9 +87,6 @@ export default {
       oldPassword: "",
       newPassword: "",
       error: "",
-      passwordRules: [
-        v => !!v || 'Password is required',
-      ],
     }
   },
 
@@ -100,7 +95,10 @@ export default {
       return this.$store.getters.getLoggedInUser
     },
     showAlert() {
-      return !this.valid && this.error;
+      console.log("valid", this.valid);
+      console.log("error", this.error);
+
+      return !!this.error;
     }
   },
   methods: {
