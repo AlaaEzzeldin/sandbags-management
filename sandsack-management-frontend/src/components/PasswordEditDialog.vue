@@ -10,6 +10,12 @@
         </v-col>
       </v-card-title>
       <v-card-text>
+        <v-alert
+            type="error"
+            :v-if="showAlert"
+        >
+          {{error}}
+        </v-alert>
         <v-form
             ref="form"
             v-model="valid"
@@ -81,6 +87,7 @@ export default {
       valid: true,
       oldPassword: "",
       newPassword: "",
+      error: "",
       passwordRules: [
         v => !!v || 'Password is required',
       ],
@@ -90,8 +97,11 @@ export default {
   computed: {
     getLoggedInUser() {
       return this.$store.getters.getLoggedInUser
-    }
     },
+    showAlert() {
+      return !this.valid && this.error;
+    }
+  },
   methods: {
     closeDialog() {
       this.$emit('close')
@@ -101,10 +111,17 @@ export default {
         "new_password": this.newPassword,
         "old_password": this.oldPassword,
       }
-      this.$store.dispatch("updatePassword",  data);
-      this.newPassword = '';
-      this.oldPassword = '';
-      this.$emit("close")
+      this.$store.dispatch("updatePassword",  data).then(
+          () => {
+            this.newPassword = '';
+            this.oldPassword = '';
+            this.$emit("close")
+          },
+          error => {
+            this.valid = false;
+            this.error = error.response.data.err_message;
+          }
+      );
     }
   }
 }

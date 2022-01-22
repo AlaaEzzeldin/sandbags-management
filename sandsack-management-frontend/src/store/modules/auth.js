@@ -35,13 +35,16 @@ const actions = {
         commit('LOGOUT');
     },
     updatePassword({commit}, payload) {
-      AuthService.updatePassword(payload)
-        .then(function (response) {
-          commit('UPDATE_PASSWORD', response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+        return AuthService.updatePassword(payload).then(
+          data => {
+              commit('UPDATE_PASSWORD_SUCCESS', data);
+              return Promise.resolve(data);
+          },
+          error => {
+              commit('UPDATE_PASSWORD_FAILURE');
+              return Promise.reject(error);
+          }
+        );
     }
 }
 

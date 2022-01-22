@@ -23,7 +23,6 @@ class AuthService {
     }
 
     updatePassword(data) {
-      console.log(data);
         return axios
           .patch(BASE_URL + 'users/change_password', data, {
               headers: authHeader(),
