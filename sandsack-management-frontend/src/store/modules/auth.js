@@ -49,7 +49,7 @@ const getters = {
            );
        },
      updatePassword({commit}, payload) {
-       AuthService.updatePassword(payload.data)
+       AuthService.updatePassword(payload)
          .then(function (response) {
            commit('UPDATE_PASSWORD', response.data);
          })

@@ -102,6 +102,8 @@ export default {
         "old_password": this.oldPassword,
       }
       this.$store.dispatch("updatePassword",  data)
+      this.newPassword = '';
+      this.oldPassword = '';
       this.$emit("close")
     }
   }
