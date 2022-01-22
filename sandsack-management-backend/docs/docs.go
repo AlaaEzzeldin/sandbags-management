@@ -500,14 +500,14 @@ var doc = `{
         },
         "/order/": {
             "get": {
-                "description": "ListOrder - user can decline order",
+                "description": "ListOrder - listing all orders",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Order"
                 ],
-                "summary": "ListOrder - user can decline order",
+                "summary": "ListOrder - listing all orders",
                 "parameters": [
                     {
                         "type": "string",
@@ -823,6 +823,62 @@ var doc = `{
                 }
             }
         },
+        "/order/dispatch": {
+            "post": {
+                "description": "DispatchOrder - Mollnhof can dispatch the order and assign it to the driver",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "DispatchOrder - Mollnhof can dispatch the order and assign it to the driver",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "DispatchOrder",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.DispatchOrderInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Order"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/order/edit": {
             "patch": {
                 "description": "This endpoint edits priority and/or quantity of equipment of the order",
@@ -860,6 +916,55 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/models.Order"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/stats": {
+            "get": {
+                "description": "Gets list of stats of orders",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "GetStats Input",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.GetStatisticsInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
                     },
                     "400": {
                         "description": "Bad Request",
@@ -1511,6 +1616,17 @@ var doc = `{
                 }
             }
         },
+        "models.DispatchOrderInput": {
+            "type": "object",
+            "properties": {
+                "driver_id": {
+                    "type": "integer"
+                },
+                "order_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.EditOrderInput": {
             "type": "object",
             "properties": {
@@ -1535,6 +1651,17 @@ var doc = `{
                     "type": "integer"
                 },
                 "err_message": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.GetStatisticsInput": {
+            "type": "object",
+            "properties": {
+                "end_date": {
+                    "type": "string"
+                },
+                "start_date": {
                     "type": "string"
                 }
             }
@@ -1617,6 +1744,9 @@ var doc = `{
                         "$ref": "#/definitions/models.OrderEquipment"
                     }
                 },
+                "estimated_time": {
+                    "type": "integer"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -1657,6 +1787,9 @@ var doc = `{
             "properties": {
                 "id": {
                     "type": "integer"
+                },
+                "measure": {
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"

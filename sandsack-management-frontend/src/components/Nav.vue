@@ -4,6 +4,7 @@
       width="350"
       app
       class="logo pa-0 ma-0"
+      v-if="isLoggedIn"
   >
     <div>
       <v-row class="pt-10 pb-10 pl-5">
@@ -13,7 +14,7 @@
         <v-col cols="9">
           <h1 style="color: red;font-weight: bolder;  font-size: x-large" class="justify-center"> Feuerwehr Passau </h1>
           <h1 style="color: black;font-weight: bolder;  font-size: large;" class="justify-center">
-            {{ getLoggedInUserName }} </h1>
+            {{ getLoggedInUser.name }} </h1>
         </v-col>
       </v-row>
     </div>
@@ -21,7 +22,7 @@
     <v-list rounded class="mb-16">
       <v-list-item-group>
         <v-list-item
-            v-for="(item, i) in getNavListForLoggedInUserRoll()"
+            v-for="(item, i) in getNavListForLoggedInUserRoll"
             :key="i"
             link
             :to="{name:item.component}"
@@ -113,21 +114,23 @@ export default {
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
     },
-    getLoggedInUserName() {
-      return this.$store.getters.getLoggedInUser.name
+    getLoggedInUser() {
+      return this.$store.getters.getLoggedInUser
     },
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn
+    },
+    getNavListForLoggedInUserRoll() {
+      if (['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter'].includes(this.getCurrentUserRole))
+        return this.navItemsEinsatzabschnittAndHauptabschnitt;
+      else if (this.getCurrentUserRole === 'Unterabschnitt')
+        return this.navItemsUnterabschintt;
+      else if (this.getCurrentUserRole === 'Mollnhof')
+        return this.navItemsMollnhof;
+      else return null
+    }
   },
-  methods:
-      {
-        getNavListForLoggedInUserRoll() {
-          if (['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter'].includes(this.getCurrentUserRole))
-            return this.navItemsEinsatzabschnittAndHauptabschnitt;
-          else if (this.getCurrentUserRole === 'Unterabschnitt')
-            return this.navItemsUnterabschintt;
-          else if (this.getCurrentUserRole === 'Mollnhof')
-            return this.navItemsMollnhof;
-        },
-      }
+
 
 }
 </script>

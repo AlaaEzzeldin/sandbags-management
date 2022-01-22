@@ -19,7 +19,7 @@ const defaultPort = ":8000"
 func (a *App) RunAllRoutes() {
 	var port = defaultPort
 
-	r := gin.Default()
+	r := gin.New()
 	r.Use(middleware.CORSMiddleware())
 	f, err := os.Create("gin.log")
 
@@ -51,6 +51,7 @@ func (a *App) RunAllRoutes() {
 	admin.Use(a.AuthorizeAdmin())
 	admin.POST("/create_user", a.CreateUser)
 	admin.POST("/email_verification", a.SendVerifyEmail)
+	admin.GET("/orders", a.AdminAllOrders)
 
 	// Authentication and user profile endpoints
 	auth := r.Group("/")
@@ -59,8 +60,8 @@ func (a *App) RunAllRoutes() {
 	users := auth.Group("users")
 	users.GET("/", a.GetUserList)
 	users.POST("/logout", a.Logout)
-	users.POST("/change_password", a.ChangePassword)
 	users.GET("/me", a.GetProfile)
+	users.PATCH("/change_password", a.ChangePassword)
 	users.PATCH("/me", a.PatchProfile)
 
 	// order
@@ -69,8 +70,10 @@ func (a *App) RunAllRoutes() {
 	order.GET("/", a.ListOrder)
 	order.POST("/cancel", a.DeclineOrder)
 	order.POST("/accept", a.AcceptOrder)
+	order.POST("/dispatch", a.DispatchOrder)
 	order.POST("/comment", a.CommentOrder)
 	order.PATCH("/edit", a.EditOrder)
+	order.GET("/stats", a.GetStatistics)
 	order.PATCH("/upgrade", func(context *gin.Context) {
 		context.JSON(http.StatusNoContent, gin.H{
 			"message": "in development",
@@ -87,6 +90,7 @@ func (a *App) RunAllRoutes() {
 	core.POST("/priority/add", a.AddPriority)
 	core.POST("/equipment/add", a.AddEquipment)
 	core.POST("/driver/add", a.AddDriver)
+
 
 	_ = r.Run(port)
 }
