@@ -7,6 +7,9 @@ const state = {
 const getters = {
   getPriorities(state) {
     return state.priorities;
+  },
+  getPriorityByID: state => id => {
+    return state.priorities.find(item => item.id === id);
   }
 }
 
@@ -19,7 +22,7 @@ const actions = {
       .catch(function (error) {
         console.log(error);
       });
-  }
+  },
 }
 
 const mutations = {

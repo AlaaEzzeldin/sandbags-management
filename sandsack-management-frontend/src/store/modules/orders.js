@@ -42,8 +42,17 @@ const actions = {
                 console.log(error);
             });
     },
-    updateOrder({commit}, payload) {
-        ordersAPI.update(payload.id, payload.data)
+    editOrder({commit}, payload) {
+        ordersAPI.editOrder(payload)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+    commentOrder({commit}, payload) {
+        ordersAPI.commentOrder(payload)
             .then(function (response) {
                 commit('UPDATE_ORDER', response.data);
             })
@@ -52,17 +61,59 @@ const actions = {
             });
     },
 
+    acceptOrder({commit}, id) {
+        ordersAPI.acceptOrder(id)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+
+    cancelOrder({commit}, id) {
+        ordersAPI.cancelOrder(id)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+
+    confirmOrderDelivery({commit}, id) {
+        ordersAPI.confirmOrderDelivery(id)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+    dispatchOrder({commit}, id) {
+        ordersAPI.dispatchOrder(id)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+
+
 }
 
 const mutations = {
     SET_ORDERS(state, orders) {
-        state.orders = orders;
+        if(orders)
+            state.orders = orders;
+        else state.orders= []
     },
     SET_ORDER(state, order) {
         state.order = order;
     },
     ADD_ORDER(state, order) {
-        state.orders.push(order);
+        state.orders.unshift(order);
     },
     UPDATE_ORDER(state, updatedOrder) {
         const index = state.orders.findIndex(order => {

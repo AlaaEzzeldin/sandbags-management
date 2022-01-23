@@ -1,24 +1,58 @@
 import axios from 'axios'
+import authHeader from "../services/auth-header";
+import {BASE_URL} from "../api/config";
+
 export default {
-    index( params ){
-        return axios.get( 'http://localhost:3001/orders', {
+
+    index(params) {
+        return axios.get(BASE_URL + 'order/', {
+            headers: authHeader(),
             params: params
         })
     },
 
-    show( id ){
-        return axios.get( 'http://localhost:3001/orders/'+id );
+    show(id) {
+        return axios.get(BASE_URL + 'order/?id=' + id, {
+            headers: authHeader(),
+        })
     },
 
-    update( id, data ){
-        return axios.patch( 'http://localhost:3001/orders/'+id, data );
+
+    create(data) {
+        return axios.post(BASE_URL + 'order/', data, {
+            headers: authHeader(),
+        });
     },
 
-    create( data ){
-        return axios.post( 'http://localhost:3001/orders/', data );
+    acceptOrder(id) {
+        return axios.post(BASE_URL + 'order/accept?id=' + id, {}, {
+            headers: authHeader(),
+        });
     },
 
-    delete( id ){
-        return axios.delete( 'http://localhost:3001/orders/' + id )
+    cancelOrder(id) {
+        return axios.post(BASE_URL + 'order/cancel?id=' + id, {}, {
+            headers: authHeader(),
+        })
+    },
+    confirmOrderDelivery(id) {
+        return axios.post(BASE_URL + 'order/delivery/confirm?id=' + id, {}, {
+            headers: authHeader(),
+        });
+    },
+    dispatchOrder(id) {
+        return axios.post(BASE_URL + 'order/dispatch?id=' + id, {}, {
+            headers: authHeader(),
+        });
+    },
+    commentOrder(data) {
+        return axios.post(BASE_URL + 'order/comment', data, {
+            headers: authHeader(),
+        });
+    },
+    editOrder(data) {
+        return axios.patch(BASE_URL + 'order/edit', data, {
+            headers: authHeader()
+        })
     }
 }
