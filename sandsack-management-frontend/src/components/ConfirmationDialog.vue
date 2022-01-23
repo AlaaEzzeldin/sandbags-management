@@ -123,7 +123,7 @@ export default {
           return 'Bestellung ablehnen?'
       } else if (this.getCurrentUserRole === 'Einsatzleiter') {
         if (this.action === 'accept')
-          return 'akzeptiert'
+          return 'Bestellung akzeptieren?'
         else if (this.action === 'cancel')
           return 'Bestellung ablehnen?'
       } else if (this.getCurrentUserRole === 'Mollnhof') {
