@@ -72,16 +72,20 @@ export default {
     },
 
     submitNewStatus() {
-      if (this.action === 'cancel') { // in case of cancel send a comment
-        if (!this.textFieldValue) {
+      if (this.action === 'cancel' && this.getCurrentUserRole !== 'Unterabschnitt') { // in case of cancel send a comment
+        if (this.textFieldValue.length === 0) {
           this.textFieldError = true;
           this.textFieldErrorMessages = ['Notizen sind verpflichtend!']
-        } else this.commentOrder()
+        } else {
+          this.commentOrder()
+          this.changeOrderStatus()
+          this.closeDialog()
+        }
+      } else // else dispatch directly the new status
+      {
+        this.changeOrderStatus()
+        this.closeDialog()
       }
-      // else dispatch directly the new status
-      this.changeOrderStatus()
-      this.closeDialog()
-
     },
     commentOrder() {
       let data = {
