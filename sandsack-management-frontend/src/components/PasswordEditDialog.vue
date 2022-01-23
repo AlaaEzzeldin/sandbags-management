@@ -40,6 +40,16 @@
               outlined
               prepend-icon="mdi-key"
           ></v-text-field>
+          <v-text-field
+              v-model="repeatPassword"
+              type="password"
+              :rules="[v => v === newPassword]"
+              label="Neues Kennwort wiederholen"
+              required
+              filled
+              outlined
+              prepend-icon="mdi-key"
+          ></v-text-field>
         </v-form>
       </v-card-text>
         <v-card-actions>
@@ -64,7 +74,10 @@
                   rounded
                   color="red"
                   @click="submitUpdatedInfo"
-                  :disabled="!(newPassword && oldPassword) && (newPassword === oldPassword)"
+                  :disabled="
+                  !(newPassword && oldPassword) ||
+                  (newPassword === oldPassword) ||
+                  (newPassword !== repeatPassword)"
               >
                 Speichern
               </v-btn>
@@ -88,6 +101,7 @@ export default {
       valid: true,
       oldPassword: "",
       newPassword: "",
+      repeatPassword: "",
       error: "",
     }
   },
@@ -105,6 +119,7 @@ export default {
       this.valid = true;
       this.newPassword = '';
       this.oldPassword = '';
+      this.repeatPassword = '';
       this.error = '';
       this.$emit('close')
     },
