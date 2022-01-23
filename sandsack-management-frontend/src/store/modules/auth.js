@@ -34,8 +34,20 @@ const actions = {
         AuthService.logout();
         commit('LOGOUT');
     },
-
+    updatePassword({commit}, payload) {
+        return AuthService.updatePassword(payload).then(
+          data => {
+              console.log(commit);
+              return Promise.resolve(data);
+          },
+          error => {
+              console.log(commit);
+              return Promise.reject(error);
+          }
+        );
+    }
 }
+
 const mutations = {
     LOGIN_SUCCESS(state, user) {
         state.isLoggedIn = true;

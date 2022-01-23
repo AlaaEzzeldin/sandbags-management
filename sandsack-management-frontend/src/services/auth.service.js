@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {BASE_URL} from "../api/config";
+import authHeader from "./auth-header";
 
 class AuthService {
     login(user) {
@@ -19,6 +20,13 @@ class AuthService {
 
     logout() {
         localStorage.removeItem('user');
+    }
+
+    updatePassword(data) {
+        return axios
+          .patch(BASE_URL + 'users/change_password', data, {
+              headers: authHeader(),
+          })
     }
 
     /*register(user) {
