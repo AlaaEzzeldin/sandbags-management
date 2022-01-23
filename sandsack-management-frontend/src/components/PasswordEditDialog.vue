@@ -24,6 +24,7 @@
         >
           <v-text-field
               v-model="oldPassword"
+              type="password"
               label="Altes Kennwort"
               required
               filled
@@ -32,6 +33,7 @@
           ></v-text-field>
           <v-text-field
               v-model="newPassword"
+              type="password"
               label="Neues Kennwort"
               required
               filled
