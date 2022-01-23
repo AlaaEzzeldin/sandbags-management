@@ -58,55 +58,56 @@
 
 
       <!------------------------------------------------ comment -------------------------------->
-      <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Unterabschnitt')">
-        <v-col cols="12" sm="12">
-          <h3 style="font-weight: bolder; color: black">Anmerkungen des Anforderers:</h3>
-        </v-col>
-        <v-col cols="12" sm="12">
-          <v-textarea
-              readonly
-              :value="getOrder.comments.find(comment=> comment.role === 'Unterabschnitt').comment_text"
-              outlined
-          ></v-textarea>
-        </v-col>
-      </v-row>
-      <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Einsatzabschnitt')">
-        <v-col cols="12" sm="12">
-          <h3 style="font-weight: bolder; color: black">Notizen aus dem Einsatzabschnitt</h3>
-        </v-col>
-        <v-col cols="12" sm="12">
-          <v-textarea
-              readonly
-              outlined
-              :value="getOrder.comments.find(comment=> comment.role === 'Einsatzabschnitt').comment_text"
-          ></v-textarea>
-        </v-col>
-      </v-row>
-      <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Hauptabschnitt')">
-        <v-col cols="12" sm="12">
-          <h3 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt</h3>
-        </v-col>
-        <v-col cols="12" sm="12">
-          <v-textarea
-              readonly
-              outlined
-              :value="getOrder.comments.find(comment=> comment.role === 'Hauptabschnitt').comment_text"
-          ></v-textarea>
-        </v-col>
-      </v-row>
-      <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Einsatzleiter')">
-        <v-col cols="12" sm="12">
-          <h3 style="font-weight: bolder; color: black">Notizen aus dem Einsatzleiter</h3>
-        </v-col>
-        <v-col cols="12" sm="12">
-          <v-textarea
-              readonly
-              outlined
-              :value="getOrder.comments.find(comment=> comment.role === 'Einsatzleiter').comment_text"
-          ></v-textarea>
-        </v-col>
-      </v-row>
-
+      <div v-if="getOrder.comments">
+        <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Unterabschnitt')">
+          <v-col cols="12" sm="12">
+            <h3 style="font-weight: bolder; color: black">Anmerkungen des Anforderers:</h3>
+          </v-col>
+          <v-col cols="12" sm="12">
+            <v-textarea
+                readonly
+                :value="getOrder.comments.find(comment=> comment.role === 'Unterabschnitt').comment_text"
+                outlined
+            ></v-textarea>
+          </v-col>
+        </v-row>
+        <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Einsatzabschnitt')">
+          <v-col cols="12" sm="12">
+            <h3 style="font-weight: bolder; color: black">Notizen aus dem Einsatzabschnitt</h3>
+          </v-col>
+          <v-col cols="12" sm="12">
+            <v-textarea
+                readonly
+                outlined
+                :value="getOrder.comments.find(comment=> comment.role === 'Einsatzabschnitt').comment_text"
+            ></v-textarea>
+          </v-col>
+        </v-row>
+        <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Hauptabschnitt')">
+          <v-col cols="12" sm="12">
+            <h3 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt</h3>
+          </v-col>
+          <v-col cols="12" sm="12">
+            <v-textarea
+                readonly
+                outlined
+                :value="getOrder.comments.find(comment=> comment.role === 'Hauptabschnitt').comment_text"
+            ></v-textarea>
+          </v-col>
+        </v-row>
+        <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Einsatzleiter')">
+          <v-col cols="12" sm="12">
+            <h3 style="font-weight: bolder; color: black">Notizen aus dem Einsatzleiter</h3>
+          </v-col>
+          <v-col cols="12" sm="12">
+            <v-textarea
+                readonly
+                outlined
+                :value="getOrder.comments.find(comment=> comment.role === 'Einsatzleiter').comment_text"
+            ></v-textarea>
+          </v-col>
+        </v-row>
+      </div>
 
       <!------------------------------------------------ logs -------------------------------->
 
