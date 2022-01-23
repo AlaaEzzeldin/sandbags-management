@@ -113,7 +113,7 @@ const mutations = {
         state.order = order;
     },
     ADD_ORDER(state, order) {
-        state.orders.push(order);
+        state.orders.unshift(order);
     },
     UPDATE_ORDER(state, updatedOrder) {
         const index = state.orders.findIndex(order => {
