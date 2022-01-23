@@ -251,6 +251,7 @@
               dark
               block
               outlined
+              @click="editOrder"
               :disabled="getOrder.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
           >
             Bestellung bearbeiten
