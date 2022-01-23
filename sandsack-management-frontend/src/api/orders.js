@@ -36,12 +36,12 @@ export default {
         })
     },
     confirmOrderDelivery(id) {
-        return axios.post(BASE_URL + 'order/delivery/confirm', {order_id: id}, {
+        return axios.post(BASE_URL + 'order/delivery/confirm?id=' + id, {}, {
             headers: authHeader(),
         });
     },
     dispatchOrder(id) {
-        return axios.post(BASE_URL + 'order/dispatch', {order_id: id}, {
+        return axios.post(BASE_URL + 'order/dispatch?id=' + id, {}, {
             headers: authHeader(),
         });
     },
