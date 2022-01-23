@@ -22,7 +22,7 @@
                     filled
                     outlined
                     prepend-icon="mdi-email"
-                    type="password"
+
                 ></v-text-field>
               </v-col>
             </v-row>
