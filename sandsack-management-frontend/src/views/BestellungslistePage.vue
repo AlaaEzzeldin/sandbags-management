@@ -64,8 +64,10 @@ export default {
     },
     getOrders() {
       return this.$store.getters.getOrders
+    },
+    getPriorityByID(){
+      return this.$store.getters.getPriorityByID
     }
-
   },
 
   methods: {
@@ -77,7 +79,7 @@ export default {
               order.id,
               order.create_date,
               order.address_from,
-              order.priority_id,
+              this.getPriorityByID(order.priority_id).name,
               order.status_name,
               order.address_to
             ]
@@ -97,7 +99,7 @@ export default {
               [
                 order.id,
                 order.address_from,
-                order.priority_id,
+                this.getPriorityByID(order.priority_id).name,
                 order.address_to,
                 order.equipments[0].quantity
               ]
