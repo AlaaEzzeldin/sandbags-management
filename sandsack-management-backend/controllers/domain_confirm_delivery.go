@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"strconv"
 	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/service"
 )
@@ -14,16 +15,17 @@ import (
 // @Accept json
 // @Produce json
 // @Param Authorization header string true " "
-// @Param input body models.ConfirmDeliveryInput true "ConfirmDelivery"
+// @Param id path string true "id of the order"
 // @Success 200 {array} models.Order
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Tags Order
 // @Router /order/delivery/confirm/ [post]
 func (a *App) ConfirmDelivery(c *gin.Context) {
-	var input models.ConfirmDeliveryInput
-	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("Fehler: ConfirmDelivery: ", err.Error())
+	id := c.Query("id")
+	orderId, err := strconv.Atoi(id)
+	if err != nil {
+		log.Println("Fehler beim Parsen", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
@@ -40,7 +42,7 @@ func (a *App) ConfirmDelivery(c *gin.Context) {
 		return
 	}
 
-	permissions, err := service.GetUserOrderPermissions(a.DB, claims.Id, input.OrderId)
+	permissions, err := service.GetUserOrderPermissions(a.DB, claims.Id, orderId)
 
 	flag := 0
 	for _, i := range permissions {
@@ -59,8 +61,8 @@ func (a *App) ConfirmDelivery(c *gin.Context) {
 		return
 	}
 
-	if err := service.ConfirmDelivery(a.DB, claims.Id, input.OrderId); err != nil {
-		log.Println("Fehler: ConfirmDelivery: ", err.Error())
+	if err := service.ConfirmDelivery(a.DB, claims.Id, orderId); err != nil {
+		log.Println("ConfirmDelivery Fehler: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "Da ist etwas schief gelaufen",
@@ -68,7 +70,7 @@ func (a *App) ConfirmDelivery(c *gin.Context) {
 		return
 	}
 
-	order, err := service.GetOrder(a.DB, claims.Id, input.OrderId)
+	order, err := service.GetOrder(a.DB, claims.Id, orderId)
 	if err != nil {
 		log.Println("Fehler: GetOrder: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{

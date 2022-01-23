@@ -23,6 +23,63 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admin/orders/": {
+            "get": {
+                "description": "AdminAllOrders - list of all orders",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "AdminAllOrders - list of all orders",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Id of the order",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Order"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/core/driver/add": {
             "post": {
                 "description": "This endpoint adds new driver",
@@ -445,6 +502,43 @@ var doc = `{
                 }
             }
         },
+        "/create_user/": {
+            "post": {
+                "description": "This endpoint is implemented to register new user by Einsatzleiter and get a new token pair",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Create a new user (branch) in the system",
+                "parameters": [
+                    {
+                        "description": "User registration model",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User has been created"
+                    },
+                    "400": {
+                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
+                    },
+                    "401": {
+                        "description": "Permission to create the user is not given"
+                    }
+                }
+            }
+        },
         "/email_verification": {
             "post": {
                 "description": "SendVerifyEmail - admin sends email to user for him to verify",
@@ -744,7 +838,10 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Order"
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
@@ -789,13 +886,11 @@ var doc = `{
                         "required": true
                     },
                     {
-                        "description": "ConfirmDelivery",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.ConfirmDeliveryInput"
-                        }
+                        "type": "string",
+                        "description": "id of the order",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -842,13 +937,11 @@ var doc = `{
                         "required": true
                     },
                     {
-                        "description": "DispatchOrder",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.DispatchOrderInput"
-                        }
+                        "type": "string",
+                        "description": "id of the order",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -977,43 +1070,6 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/models.ErrorResponse"
                         }
-                    }
-                }
-            }
-        },
-        "/user/": {
-            "post": {
-                "description": "This endpoint is implemented to register new user by Einsatzleiter and get a new token pair",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin"
-                ],
-                "summary": "Create a new user (branch) in the system",
-                "parameters": [
-                    {
-                        "description": "User registration model",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.CreateUser"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "User has been created"
-                    },
-                    "400": {
-                        "description": "Bad request (e.g. parameter in body is not given or incorrect)"
-                    },
-                    "401": {
-                        "description": "Permission to create the user is not given"
                     }
                 }
             }
@@ -1568,14 +1624,6 @@ var doc = `{
                 }
             }
         },
-        "models.ConfirmDeliveryInput": {
-            "type": "object",
-            "properties": {
-                "order_id": {
-                    "type": "integer"
-                }
-            }
-        },
         "models.CreateOrderInput": {
             "type": "object",
             "properties": {
@@ -1613,17 +1661,6 @@ var doc = `{
                 },
                 "phone": {
                     "type": "string"
-                }
-            }
-        },
-        "models.DispatchOrderInput": {
-            "type": "object",
-            "properties": {
-                "driver_id": {
-                    "type": "integer"
-                },
-                "order_id": {
-                    "type": "integer"
                 }
             }
         },
@@ -1743,9 +1780,6 @@ var doc = `{
                     "items": {
                         "$ref": "#/definitions/models.OrderEquipment"
                     }
-                },
-                "estimated_time": {
-                    "type": "integer"
                 },
                 "id": {
                     "type": "integer"
