@@ -26,7 +26,7 @@
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
-              prepend-icon="mdi-home"
+              prepend-icon="mdi-cogs"
               label="Was möchten Sie bestellen?"
               :rules="[v => !!v || 'Bitte geben Sie ein, was genau Sie bestellen möchten?']"
           ></v-select>
