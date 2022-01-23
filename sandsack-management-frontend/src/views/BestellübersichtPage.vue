@@ -41,7 +41,7 @@
       </v-col>
       <v-col>
         <h1 style="color: red">94%</h1>
-        <h3>Bestellungen bestatigt</h3>
+        <h3>Bestellungen bestätigt</h3>
       </v-col>
       <v-col>
         <h1 style="color: red">5</h1>
