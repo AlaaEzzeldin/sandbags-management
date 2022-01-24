@@ -82,6 +82,7 @@
       </v-col>
       <v-col cols="6">
         <v-select
+            v-if="this.getCurrentUserRole==='Einsatzleiter'"
             v-model="selectedHaupt"
             :items="getHauptdata"
             filled
@@ -93,8 +94,21 @@
             single-line
         ></v-select>
         <v-select
+            v-if="this.getCurrentUserRole==='Einsatzleiter'"
             v-model="selectedEinz"
             :items="getEinsatzdata"
+            filled
+            item-text="state"
+            label="Einsatzabschnitt"
+            outlined
+            persistent-hint
+            return-object
+            single-line
+        ></v-select>
+        <v-select
+            v-if="this.getCurrentUserRole==='Hauptabschnitt'"
+            v-model="selectedEinzforHaupt"
+            :items="getEinsatzforHaupt"
             filled
             item-text="state"
             label="Einsatzabschnitt"
@@ -107,7 +121,22 @@
     </v-row>
     <div ref="content">
       <GChart
+          v-if="this.getCurrentUserRole==='Einsatzleiter'"
           :data="getUnterdata"
+          :options="chartOptions"
+          type="ColumnChart"/>
+    </div>
+    <div ref="content">
+      <GChart
+          v-if="this.getCurrentUserRole==='Hauptabschnitt'"
+          :data="getUnterforhaupt"
+          :options="chartOptions"
+          type="ColumnChart"/>
+    </div>
+    <div ref="content">
+      <GChart
+          v-if="this.getCurrentUserRole==='Einsatzabschnitt'"
+          :data="getUnterforEinz"
           :options="chartOptions"
           type="ColumnChart"/>
     </div>
@@ -144,6 +173,7 @@ export default {
       menu: false,
       selectedHaupt: '',
       selectedEinz: '',
+      selectedEinzforHaupt: '',
 
       chartOptions: {
         hAxis: {
@@ -203,6 +233,20 @@ export default {
       return EinsatzselectOptions;
     },
 
+    getEinsatzforHaupt() {
+      var EinsatzforHaupt = []
+      for (let i = 0; i < this.getStatisticschart.length; i++) {
+        for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
+          for (let k = 0; k < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
+            EinsatzforHaupt.push(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].name)
+          }
+          //console.log(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].name)
+
+        }
+      }
+      return EinsatzforHaupt;
+    },
+
     getUnterdata() {
       var UnterselectOptions = []
       UnterselectOptions.push(["Abschnitt", "Bestellungen"], ['unterabschnitt', 10], ['unterabschnitt', 15]) //Delete the hardcoded values while integrating
@@ -222,6 +266,46 @@ export default {
 
       }
       return UnterselectOptions;
+    },
+    getUnterforhaupt() {
+      var UnterforHaupt = []
+      UnterforHaupt.push(["Abschnitt", "Bestellungen"], ['unterabschnitt', 10], ['unterabschnitt', 15]) //Delete the hardcoded values while integrating
+      for (let i = 0; i < this.getStatisticschart.length; i++) {
+        for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
+          for (let k = 0; k < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
+            if (this.$data.selectedEinzforHaupt === this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].name) {
+              UnterforHaupt.pop() // Delete this during integrtation
+              UnterforHaupt.pop() // Delete this during integrtation
+              for (let l = 0; l < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt.length; l++) {
+                UnterforHaupt.push([this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].name,
+                  parseInt(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].total_number_of_orders)])
+              }
+            }
+          }
+        }
+      }
+      return UnterforHaupt
+    },
+
+    getUnterforEinz() {
+      var UnterforEinz = []
+      UnterforEinz.push(["Abschnitt", "Bestellungen"])
+
+      for (let i = 0; i < this.getStatisticschart.length; i++) {
+        for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
+          for (let k = 0; k < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
+            for (let l = 0; l < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt.length; l++) {
+              UnterforEinz.push([this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].name,
+                parseInt(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].total_number_of_orders)])
+            }
+          }
+        }
+      }
+      return UnterforEinz
+    },
+
+    getCurrentUserRole() {
+      return this.$store.getters.getCurrentUserRole
     }
   },
 
