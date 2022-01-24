@@ -15,7 +15,7 @@
 
     <v-card-text class="pt-16" >
       <v-row>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="4">
           <h2 style="font-weight: bolder; color: black">Von:</h2>
         </v-col>
         <v-col cols="12" sm="7">
@@ -23,7 +23,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="4">
           <h2 style="font-weight: bolder; color: black">Typ:</h2>
         </v-col>
         <v-col cols="12" sm="7">
@@ -31,7 +31,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="4">
           <h2 style="font-weight: bolder; color: black">Anzahl:</h2>
         </v-col>
         <v-col cols="12" sm="7">
@@ -39,7 +39,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="4">
           <h2 style="font-weight: bolder; color: black">Priorität:</h2>
         </v-col>
         <v-col cols="12" sm="7">
@@ -47,7 +47,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="4">
           <h2 style="font-weight: bolder; color: black">Lieferadresse:</h2>
         </v-col>
         <v-col cols="12" sm="7">
