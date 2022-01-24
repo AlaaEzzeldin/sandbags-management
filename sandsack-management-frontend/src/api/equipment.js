@@ -8,8 +8,7 @@ export default {
     },
 
     update( id, data ){
-        return api.patch( 'core/equipment/return', data, {
-        });
+        return api.patch( 'core/equipment/return', data);
     },
 
 }

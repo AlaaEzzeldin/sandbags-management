@@ -8,13 +8,11 @@ export default {
     },
 
     show() {
-        return api.get('users/me', {
-        })
+        return api.get('users/me')
     },
 
     update(data) {
-        return api.patch('users/me', data, {
-        })
+        return api.patch('users/me', data)
     }
 
 }
