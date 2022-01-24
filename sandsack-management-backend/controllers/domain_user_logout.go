@@ -26,20 +26,20 @@ func (a *App) Logout(c *gin.Context) {
 		log.Println("Logout error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "The provided refresh token is not valid or not provided",
+			ErrMessage: "Refresh Token ist ungültig oder nicht angegeben",
 		})
 		return
 	}
 
 	if err := service.RevokeToken(a.DB, refresh.Token); err != nil {
-		log.Println("Logout error: ", err.Error())
+		log.Println("Fehler: Logout: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "Something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
-	c.JSON(http.StatusNoContent, "Logged out successfully")
+	c.JSON(http.StatusNoContent, "Erfolgreich ausgeloggt")
 	return
 }

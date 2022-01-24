@@ -37,11 +37,6 @@ definitions:
       order_id:
         type: integer
     type: object
-  models.ConfirmDeliveryInput:
-    properties:
-      order_id:
-        type: integer
-    type: object
   models.CreateOrderInput:
     properties:
       address_to:
@@ -84,6 +79,13 @@ definitions:
       err_code:
         type: integer
       err_message:
+        type: string
+    type: object
+  models.GetStatisticsInput:
+    properties:
+      end_date:
+        type: string
+      start_date:
         type: string
     type: object
   models.Log:
@@ -164,6 +166,8 @@ definitions:
     properties:
       id:
         type: integer
+      measure:
+        type: string
       name:
         type: string
       quantity:
@@ -275,6 +279,44 @@ definitions:
 info:
   contact: {}
 paths:
+  /admin/orders/:
+    get:
+      consumes:
+      - application/json
+      description: AdminAllOrders - list of all orders
+      parameters:
+      - description: ' '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Id of the order
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: AdminAllOrders - list of all orders
+      tags:
+      - Order
   /core/driver/add:
     post:
       consumes:
@@ -557,6 +599,31 @@ paths:
       summary: This endpoint adds new priority
       tags:
       - Core
+  /create_user/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint is implemented to register new user by Einsatzleiter
+        and get a new token pair
+      parameters:
+      - description: User registration model
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User has been created
+        "400":
+          description: Bad request (e.g. parameter in body is not given or incorrect)
+        "401":
+          description: Permission to create the user is not given
+      summary: Create a new user (branch) in the system
+      tags:
+      - Admin
   /email_verification:
     post:
       consumes:
@@ -596,7 +663,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: ListOrder - user can decline order
+      description: ListOrder - listing all orders
       parameters:
       - description: ' '
         in: header
@@ -627,7 +694,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
-      summary: ListOrder - user can decline order
+      summary: ListOrder - listing all orders
       tags:
       - Order
     post:
@@ -755,7 +822,9 @@ paths:
       - application/json
       responses:
         "200":
-          description: ""
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
         "400":
           description: Bad Request
           schema:
@@ -782,12 +851,11 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: ConfirmDelivery
-        in: body
-        name: input
+      - description: id of the order
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/models.ConfirmDeliveryInput'
+        type: string
       produces:
       - application/json
       responses:
@@ -806,6 +874,44 @@ paths:
           schema:
             $ref: '#/definitions/models.ErrorResponse'
       summary: Unterabschnitt confirms that equipment is successfully delivered
+      tags:
+      - Order
+  /order/dispatch:
+    post:
+      consumes:
+      - application/json
+      description: DispatchOrder - Mollnhof can dispatch the order and assign it to
+        the driver
+      parameters:
+      - description: ' '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id of the order
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: DispatchOrder - Mollnhof can dispatch the order and assign it to the
+        driver
       tags:
       - Order
   /order/edit:
@@ -844,31 +950,38 @@ paths:
       summary: This endpoint edits priority and/or quantity of equipment of the order
       tags:
       - Order
-  /user/:
-    post:
+  /order/stats:
+    get:
       consumes:
       - application/json
-      description: This endpoint is implemented to register new user by Einsatzleiter
-        and get a new token pair
+      description: Gets list of stats of orders
       parameters:
-      - description: User registration model
+      - description: 'Bearer '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: GetStats Input
         in: body
         name: input
         required: true
         schema:
-          $ref: '#/definitions/models.CreateUser'
+          $ref: '#/definitions/models.GetStatisticsInput'
       produces:
       - application/json
       responses:
-        "201":
-          description: User has been created
+        "200":
+          description: ""
         "400":
-          description: Bad request (e.g. parameter in body is not given or incorrect)
-        "401":
-          description: Permission to create the user is not given
-      summary: Create a new user (branch) in the system
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
       tags:
-      - Admin
+      - Order
   /users/:
     get:
       consumes:

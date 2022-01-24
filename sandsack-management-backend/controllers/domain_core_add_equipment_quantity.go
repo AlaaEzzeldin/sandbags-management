@@ -24,30 +24,30 @@ func (a *App) AddEquipmentQuantity(c *gin.Context) {
 	// TODO: controller name to be clarified with Nastya
 	var input models.OrderEquipment
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("AddEquipmentQuantity error: ", err.Error())
+		log.Println("Fehler: AddEquipmentQuantity: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
 		})
 		return
 	}
 
 	claims, err := GetClaims(c)
 	if claims.Role != "Mollnhof" {
-		log.Println("Other users cannot add quantity of returned equipment")
+		log.Println("Nur Mollnhof darf die Anzahl der zurückgegebenen Ausrüstung aktualisieren")
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
 			ErrCode:    http.StatusForbidden,
-			ErrMessage: "other users cannot add quantity of returned equipment",
+			ErrMessage: "Nur Mollnhof darf die Anzahl der zurückgegebenen Ausrüstung aktualisieren",
 		})
 		return
 	}
 
 	err = service.AddEquipmentQuantity(a.DB, input.EquipmentId, input.Quantity)
 	if err != nil {
-		log.Println("AddEquipmentQuantity error", err.Error())
+		log.Println("Fehler: AddEquipmentQuantity", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

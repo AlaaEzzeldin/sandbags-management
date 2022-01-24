@@ -4,7 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"strconv"
 	"team2/sandsack-management-backend/models"
+	repo_order "team2/sandsack-management-backend/repository/order"
 	"team2/sandsack-management-backend/service"
 )
 
@@ -15,7 +17,7 @@ import (
 // @Produce json
 // @Param Authorization header string true " "
 // @Param input body models.CommentInput true "Comment input"
-// @Success 200
+// @Success 200 {object} models.Order
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
@@ -26,20 +28,20 @@ func (a *App) CommentOrder(c *gin.Context) {
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("CommentOrder error: ", err.Error())
+		log.Println("Fehler: CommentOrder: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage",
 		})
 		return
 	}
 
 	claims, err := GetClaims(c)
 	if err != nil {
-		log.Println("GetClaims error", err.Error())
+		log.Println("Fehler: GetClaims", err.Error())
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
 			ErrCode:    http.StatusUnauthorized,
-			ErrMessage: "no access",
+			ErrMessage: "Access Token ist ungültig",
 		})
 		return
 	}
@@ -55,10 +57,10 @@ func (a *App) CommentOrder(c *gin.Context) {
 	}
 
 	if flag == 0 {
-		log.Println("No access for this action error")
+		log.Println("Fehler: Kein Zugang: ")
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
 			ErrCode:    http.StatusForbidden,
-			ErrMessage: "no access",
+			ErrMessage: "Kein Zugang",
 		})
 		return
 	}
@@ -67,18 +69,32 @@ func (a *App) CommentOrder(c *gin.Context) {
 		log.Println("Length of comments is 0", len(input.Comment))
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "there should be comments",
+			ErrMessage: "Es muss den Kommentartext hinzugefügt sein",
 		})
 		return
 	}
 
 	var comments []models.Comment
 	comments = append(comments, models.Comment{CommentText: input.Comment})
+	log.Println("Length of comment list", len(comments))
 
 	if err := service.InsertComments(a.DB, claims.Id, input.OrderId, comments); err != nil {
 		return
 	}
+	user, err := service.GetUserByID(a.DB, claims.Id)
+	order, err := service.GetOrder(a.DB, claims.Id, input.OrderId)
+	logs := []models.Log{
+		{
+			OrderId:      input.OrderId,
+			ActionTypeId: models.DictActionTypeName["COMMENTED"],
+			UpdatedBy:    claims.Id,
+			Description:  user.Name + " hat die Bestellung " + order.Name + "kommentiert #" + strconv.Itoa(order.Id),
+		},
+	}
 
-	c.JSON(http.StatusOK, nil)
+	err = repo_order.InsertLogs(a.DB, logs)
+
+	order, err = service.GetOrder(a.DB, claims.Id, input.OrderId)
+	c.JSON(http.StatusOK, order)
 	return
 }

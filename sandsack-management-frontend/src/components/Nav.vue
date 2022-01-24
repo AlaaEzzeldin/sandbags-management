@@ -4,6 +4,7 @@
       width="350"
       app
       class="logo pa-0 ma-0"
+      v-if="isLoggedIn"
   >
     <div>
       <v-row class="pt-10 pb-10 pl-5">
@@ -108,6 +109,8 @@ export default {
   },
   created() {
     this.$store.dispatch("getUserInfo")
+    this.$store.dispatch("loadEquipment");
+    this.$store.dispatch("loadPriorities");
   },
   computed:{
     getCurrentUserRole(){

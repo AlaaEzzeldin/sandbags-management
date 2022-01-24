@@ -23,15 +23,29 @@
             style="text-transform: capitalize; font-weight: bolder;"
             rounded
             color="orange"
-            @click="dialog=true"
+            @click="dialogKonto=true"
             dark
             block
         >
-          Bearbeiten
+          Konto bearbeiten
+        </v-btn>
+      </v-col>
+      <v-col cols="2" class="pt-15">
+        <v-btn
+            style="text-transform: capitalize; font-weight: bolder;"
+            rounded
+            @click="dialogPassword=true"
+            block
+            outlined
+        >
+          Kennwort ändern
         </v-btn>
       </v-col>
       <v-col sm="2" class=" pl-3 pt-15">
         <KontoEditDialog/>
+      </v-col>
+      <v-col sm="2" class=" pl-3 pt-15">
+        <PasswordEditDialog/>
       </v-col>
     </v-row>
     <v-row no-gutters>
@@ -79,23 +93,27 @@
         </v-row>
       </v-card>
     </v-row>
-    <konto-edit-dialog
-        v-if="dialog" :dialog="dialog"
-                       @close="dialog=false"
+    <konto-edit-dialog :dialog="dialogKonto"
+                       @close="dialogKonto=false"
     ></konto-edit-dialog>
+    <password-edit-dialog :dialog="dialogPassword"
+                       @close="dialogPassword=false"
+    ></password-edit-dialog>
   </div>
 </template>
 
 <script>
 
 import KontoEditDialog from "../components/KontoEditDialog";
+import PasswordEditDialog from "../components/PasswordEditDialog";
 
 export default {
   name: 'KontoPage',
 
-  components: {KontoEditDialog},
+  components: {KontoEditDialog, PasswordEditDialog},
   data: () => ({
-    dialog: null
+    dialogKonto: null,
+    dialogPassword: null
   }),
   computed: {
     isLoggedIn() {

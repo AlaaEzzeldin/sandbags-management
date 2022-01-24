@@ -26,30 +26,30 @@ func (a *App) VerifyEmail(c *gin.Context) {
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("SendVerifyEmail error: ", err.Error())
+		log.Println("Fehler: SendVerifyEmail: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage",
 		})
 		return
 	}
 
 	user, err := service.GetUserByOTP(a.DB, input.Otp, "verification")
 	if err != nil {
-		log.Println("GetUserByOTP error: ", err.Error())
+		log.Println("Fehler: GetUserByOTP: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	otp, err := service.GetOTP(a.DB, input.Otp, "verification")
 	if err != nil {
-		log.Println("GetOTP error: ", err.Error())
+		log.Println("Fehler: GetOTP: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
@@ -58,15 +58,15 @@ func (a *App) VerifyEmail(c *gin.Context) {
 		log.Println("Wrong otp")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "wrong otp",
+			ErrMessage: "OTP ist ungültig",
 		})
 		return
 	}
 	if len(input.Password) < 6 {
-		log.Println("Wrong otp")
+		log.Println("Wrong password")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "password should be longer 6 symbols",
+			ErrMessage: "Passwort muss mindestens 6 Symbolen lang sein",
 		})
 		return
 	}
@@ -83,28 +83,28 @@ func (a *App) VerifyEmail(c *gin.Context) {
 	}
 
 	if err := service.UpdateUserActivity(a.DB, user.Email, true); err != nil {
-		log.Println("UpdateUserActivity error:", err.Error())
+		log.Println("Fehler: UpdateUserActivity:", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	if err := service.VerifyUserEmail(a.DB, user.Email, true); err != nil {
-		log.Println("VerifyUserEmail error:", err.Error())
+		log.Println("Fehler: VerifyUserEmail:", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	if err := service.DeleteOTP(a.DB, user.Id, "verification"); err != nil {
-		log.Println("DeleteOTP error:", err.Error())
+		log.Println("Fehler: DeleteOTP:", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

@@ -24,20 +24,20 @@ func (a *App) CreateEquipment(c *gin.Context) {
 	var input models.OrderEquipment
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("CreateEquipment error: ", err.Error())
+		log.Println("Fehler: CreateEquipment: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
 		})
 		return
 	}
 
 	equipments, err := service.CreateEquipment(a.DB, input.Name, input.Quantity)
 	if err != nil {
-		log.Println("CreateEquipment error: ", err.Error())
+		log.Println("Fehler: CreateEquipment: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

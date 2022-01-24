@@ -1,208 +1,74 @@
 {
   "orders": [
     {
-      "id": 0,
-      "created_at": "24.12.2021 12:01",
-      "from": "EA 1.1 Altstadt- Ost",
-      "type": "sandsack",
-      "priority": "Hohe",
-      "status": "ABGELEHNT BEI EINSATZABSCHNITT",
-      "quantity": "319",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau",
-      "notesByUnterabschnitt": "please process ASAP3",
-      "notesByEinsatzabschnitt": "test this notes 2",
-      "notesByHauptabschnitt": "declined there is no enough sandbags",
+      "id": 6,
+      "user_id": 18,
+      "name": "EA 1.2 Altstadt-Mitte",
+      "address_to": "Johann-bergler-strasse 10",
+      "address_from": "Mollnhof",
+      "status_id": 1,
+      "status_name": "ANSTEHEND",
+      "priority_id": 1,
+      "create_date": "2022-01-17T21:46:11.029684Z",
+      "update_date": "2022-01-17T21:46:11.031584Z",
+      "comments": [
+        {
+          "comment_text": "test to comment by unterabschnit ",
+          "name": "EA 1.2 Altstadt-Mitte (LZ Ilzstadt)",
+          "role": "Unterabschnitt",
+          "create_date": "2022-01-17T21:46:11.033985Z",
+          "update_date": "2022-01-17T21:46:11.033985Z"
+        }
+      ],
       "logs": [
-        "the request has been created by the unterabschnitt bla bla",
-        "the request has been edited by the unterabschnitt bla bla",
-        "the request has been commented by the Einsatstazabschnitt bla bla",
-        "the request has been commented and declined by the Hauptabschnitt bla bla"
+        {
+          "description": "EA 1.2 Altstadt-Mitte  hat die Bestellung 'EA 1.2 Altstadt-Mitte' erstellt",
+          "create_date": "2022-01-17T21:46:11.049166Z",
+          "update_date": "2022-01-17T21:46:11.049166Z"
+        }
+      ],
+      "equipments": [
+        {
+          "id": 2,
+          "name": "Spaten",
+          "quantity": 1000
+        }
       ]
     },
     {
       "id": 1,
-      "created_at": "11.11.2021 12:01",
-      "from": "EA 1.1 Altstadt- Ost",
-      "type": "sandsack",
-      "priority": "hohe",
-      "status": "ABGELEHNT BEI EINSATZABSCHNITT",
-      "quantity": "5",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau",
-      "notesByUnterabschnitt": "please process ASAP",
+      "user_id": 18,
+      "name": "EA 1.2 Altstadt-Mitte ",
+      "address_to": "Johann-bergler-strasse 10",
+      "address_from": "Mollnhof",
+      "status_id": 1,
+      "status_name": "ANSTEHEND",
+      "priority_id": 2,
+      "create_date": "2022-01-17T21:46:11.029684Z",
+      "update_date": "2022-01-17T21:46:11.031584Z",
+      "comments": [
+        {
+          "comment_text": "test to comment by unterabschnit ",
+          "name": "EA 1.2 Altstadt-Mitte (LZ Ilzstadt)",
+          "role": "Unterabschnitt",
+          "create_date": "2022-01-17T21:46:11.033985Z",
+          "update_date": "2022-01-17T21:46:11.033985Z"
+        }
+      ],
       "logs": [
-        "the request has been created by the unterabschnitt bla bla",
-        "the request has been edited by the unterabschnitt bla bla",
-        "the request has been edited and accepted  by the Einsatstazabschnitt bla bla",
-        "the request has been accepted by the Hauptabschnitt bla bla"
+        {
+          "description": "EA 1.2 Altstadt-Mitte (LZ Ilzstadt) hat die Bestellung 'EA 1.2 Altstadt-Mitte (LZ Ilzstadt) #6' erstellt",
+          "create_date": "2022-01-17T21:46:11.049166Z",
+          "update_date": "2022-01-17T21:46:11.049166Z"
+        }
+      ],
+      "equipments": [
+        {
+          "id": 2,
+          "name": "Spaten",
+          "quantity": 900
+        }
       ]
-    },
-    {
-      "id": 2,
-      "created_at": "12.11.2021 12:01",
-      "from": "EA 1.1 Altstadt- West",
-      "type": "sandsack",
-      "priority": "Mittle",
-      "status": "ABGELEHNT BEI EINSATZABSCHNITT",
-      "quantity": "20",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau",
-      "notesByUnterabschnitt": "please process ASAP"
-    },
-    {
-      "id": 3,
-      "created_at": "13.11.2021 12:01",
-      "from": "EA 1.1 Altstadt- Mitte",
-      "type": "sandsack",
-      "priority": "mittel",
-      "status": "ABGELEHNT BEI EINSATZLEITER",
-      "quantity": "7",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau",
-      "notesByEinsatzabschnitt": "please process ASAP"
-    },
-    {
-      "id": 4,
-      "created_at": "14.11.2021 12:01",
-      "from": "EA 2.1 Nuemarkt- Nord",
-      "type": "sandsack",
-      "priority": "hohe",
-      "status": "ABGELEHNT BEI HAUPTABSCHNITT",
-      "quantity": "3",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau",
-      "notesByEinsatzabschnitt": "please process ASAP"
-    },
-    {
-      "id": 5,
-      "created_at": "15.11.2021 12:01",
-      "from": "EA 3.2 Universität-West",
-      "type": "sandsack",
-      "priority": "Mittle",
-      "status": "GELIEFERT",
-      "quantity": "9",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau",
-      "notesByEinsatzabschnitt": "There is no need for it, we don not have enough bags"
-    },
-    {
-      "id": 6,
-      "created_at": "11.11.2021 12:01",
-      "from": "EA 1.1 Altstadt- Ost",
-      "type": "sandsack",
-      "priority": "Mittle",
-      "status": "ABGELEHNT BEI EINSATZABSCHNITT",
-      "quantity": "12",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau"
-    },
-    {
-      "id": 7,
-      "created_at": "12.11.2021 12:01",
-      "from": "EA 1.1 Altstadt- West",
-      "type": "sandsack",
-      "priority": "niedrige",
-      "status": "STORNIERT",
-      "quantity": "20",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau"
-    },
-    {
-      "id": 8,
-      "created_at": "13.11.2021 12:01",
-      "from": "EA 1.1 Altstadt- Mitte",
-      "type": "sandsack",
-      "priority": "Hohe",
-      "status": "ANSTEHEND",
-      "quantity": "26",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau"
-    },
-    {
-      "id": 9,
-      "created_at": "14.11.2021 12:01",
-      "from": "EA 2.1 Nuemarkt- Nord",
-      "type": "sandsack",
-      "priority": "hohe",
-      "status": "ANSTEHEND",
-      "quantity": "9",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau"
-    },
-    {
-      "id": 10,
-      "created_at": "15.11.2021 12:01",
-      "from": "EA 3.2 Universität-West",
-      "type": "sandsack",
-      "priority": "Mittle",
-      "status": "ANSTEHEND",
-      "quantity": "12",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau",
-      "notesByEinsatzabschnitt": "this is number 10 test"
-    },
-    {
-      "id": 11,
-      "created_at": "12.11.2021 12:01",
-      "from": "EA 1.1 Altstadt- West",
-      "type": "sandsack",
-      "priority": "niedrige",
-      "status": "ANSTEHEND",
-      "quantity": "14",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau",
-      "notesByHauptabschnitt": "notes by haupt"
-    },
-    {
-      "id": 12,
-      "created_at": "13.11.2021 12:01",
-      "from": "EA 1.1 Altstadt- Mitte",
-      "type": "sandsack",
-      "priority": "mittel",
-      "status": "ANSTEHEND",
-      "quantity": "20",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau"
-    },
-    {
-      "id": 13,
-      "created_at": "14.11.2021 12:01",
-      "from": "EA 2.1 Nuemarkt- Nord",
-      "type": "sandsack",
-      "priority": "hohe",
-      "status": "ANSTEHEND",
-      "quantity": "17",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau"
-    },
-    {
-      "id": 14,
-      "created_at": "15.11.2021 12:01",
-      "from": "EA 3.2 Universität-West",
-      "type": "sandsack",
-      "priority": "niedrige",
-      "status": "ANSTEHEND",
-      "quantity": "12",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau"
-    },
-    {
-      "id": 15,
-      "created_at": "12.11.2021 12:01",
-      "from": "EA 1.1 Altstadt- West",
-      "type": "sandsack",
-      "priority": "niedrige",
-      "status": "ANSTEHEND",
-      "quantity": "12",
-      "deliveryAddress": "Nikolastraße 4 494032 Passau"
-    },
-    {
-      "id": 16,
-      "created_at": "16.11.2021 12:01",
-      "status": "ANSTEHEND",
-      "from": "EA 1.1 Altstadt- Ost",
-      "type": "Sandsäcke",
-      "quantity": "12",
-      "priority": "Niedrig",
-      "deliveryAddress": "passau",
-      "notesByUnterabschnitt": "test"
-    },
-    {
-      "id": 17,
-      "created_at": "17.11.2021 12:01",
-      "status": "ANSTEHEND",
-      "from": "EA 1.1 Altstadt- Ost",
-      "type": "Sandsäcke",
-      "quantity": "3",
-      "priority": "Hohe",
-      "deliveryAddress": "3",
-      "notesByUnterabschnitt": "3dee"
     }
   ],
   "users": [
@@ -219,21 +85,18 @@
   "equipment": [
     {
       "id": 1,
-      "type": "Sandsäck",
-      "amount": 100,
-      "measure": "Paletten"
+      "name": "Sandsäck",
+      "quantity": 100
     },
     {
       "id": 2,
-      "type": "Wasser",
-      "amount": "30",
-      "measure": "Litre"
+      "name": "Wasser",
+      "quantity": 30
     },
     {
       "id": 3,
-      "type": "Sand",
-      "amount": 150,
-      "measure": "Litre"
+      "name": "Sand",
+      "quantity": 150
     }
   ]
 }

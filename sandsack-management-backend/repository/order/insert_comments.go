@@ -7,13 +7,23 @@ import (
 )
 
 func InsertComments(a *gorm.DB, userId, orderId int, comments []models.Comment) error {
-	for _, row := range comments {
+	if len(comments) == 1 {
 		query := `insert into public.comment(order_id, comment_text, user_id) values(?,?,?);`
-		err := a.Exec(query, orderId, row.CommentText, userId).Error
+		err := a.Exec(query, orderId, comments[0].CommentText, userId).Error
 		if err != nil {
 			log.Println("InsertComments error", err.Error())
 			return err
 		}
+		return nil
+	} else {
+		for _, row := range comments {
+			query := `insert into public.comment(order_id, comment_text, user_id) values(?,?,?);`
+			err := a.Exec(query, orderId, row.CommentText, userId).Error
+			if err != nil {
+				log.Println("InsertComments error", err.Error())
+				return err
+			}
+		}
+		return nil
 	}
-	return nil
 }

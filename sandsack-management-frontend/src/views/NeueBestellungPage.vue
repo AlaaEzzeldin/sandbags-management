@@ -5,7 +5,7 @@
     </v-card-title>
 
     <v-card-text class="pt-16 ">
-      <v-row >
+      <v-row>
         <v-col cols="12">
           <v-text-field
               :value="getLoggedInUserName"
@@ -21,8 +21,8 @@
       <v-row>
         <v-col sm="6">
           <v-select
-              v-model="newOrder.type"
-              :items="types"
+              v-model="chosenEquipmentType"
+              :items="getEquipment.map(a => a.name)"
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
@@ -33,21 +33,22 @@
         </v-col>
         <v-col sm="6">
           <v-text-field
-              v-model="newOrder.quantity"
+              v-model="orderQuantity"
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
-              :rules="[v => !!v || 'Die Menge ist erforderlich']"
+              :rules="[v => (!!v && v <= getCurrentEquipment.quantity && v > 0)|| 'Die Menge ist nicht correct']"
               prepend-icon="mdi-pound"
               label="Anzahl"
+              :hint="'Die Restmenge ist '+getCurrentEquipment.quantity.toString() + ' ' + getCurrentEquipment.measure"
           ></v-text-field>
         </v-col>
       </v-row>
 
-      <v-row >
+      <v-row>
         <v-col cols="12">
           <v-text-field
-              v-model="newOrder.deliveryAddress"
+              v-model="newOrder.address_to"
               filled
               outlined
               prepend-icon="mdi-map-marker"
@@ -61,8 +62,8 @@
       <v-row>
         <v-col cols="12">
           <v-select
-              v-model="newOrder.priority"
-              :items="priorities"
+              v-model="selectedPriority"
+              :items="getPriorities.map(x => x.name)"
               :rules="[v => !!v || 'Die Priorität ist erforderlich']"
               label="Priorität"
               prepend-icon="mdi-alert"
@@ -73,10 +74,10 @@
         </v-col>
       </v-row>
 
-      <v-row >
+      <v-row>
         <v-col cols="12">
           <v-textarea
-              v-model="newOrder.notesByUnterabschnitt"
+              v-model="newOrder.comment"
               outlined
               filled
               prepend-icon="mdi-message-bulleted"
@@ -93,12 +94,18 @@
       <v-row>
         <v-col cols="12" sm="6" offset="3">
           <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
+              style="text-transform: capitalize; font-weight: bolder;color: white"
               block
               rounded
               color="red"
-              dark
               @click="createOrder"
+              :disabled="!(
+                  chosenEquipmentType &&
+                  selectedPriority &&
+                  newOrder.address_to &&
+                  orderQuantity > 0 &&
+                  orderQuantity <= getCurrentEquipment.quantity
+              )"
           >
             Bestellen
           </v-btn>
@@ -115,44 +122,67 @@
 export default {
   name: 'BestelldetailsPage',
 
-
   data: () => ({
-    loggedIn: '',
-    priority: '',
-    abschnitt: '',
-    types: [
-      'Sandsäcke',
-    ],
-    priorities: [
-      'Niedrig',
-      'Mittle',
-      'Hohe',
-    ],
-    newOrder: {
-      id:"",
-      status: "anstehend", //this will be deleted when integrating with the backened
-      from: "",
-      type: "",
-      quantity: "",
-      priority: "",
-      deliveryAddress: "",
-      notesByUnterabschnitt: ""
-    }
-
+    selectedPriority: '',
+    chosenEquipmentType: '',
+    orderQuantity: '',
+    newOrder:
+        {
+          "address_to": "",
+          "comment": "",
+          "equipments": [
+            {
+              "id": 0,
+              "measure": "",
+              "name": "",
+              "quantity": 0
+            }
+          ],
+          "priority": 0
+        }
   }),
+  created() {
+    this.$store.dispatch("loadEquipment");
+    this.$store.dispatch("loadPriorities");
+  },
 
-  computed:{
-    getCurrentUserRole(){
+  computed: {
+    getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
     },
     getLoggedInUserName() {
       return this.$store.getters.getLoggedInUser.name
-    }
+    },
+    getEquipment() {
+      return this.$store.getters.getEquipment
+    },
+    getCurrentEquipment() {
+      if (this.chosenEquipmentType) {
+        return this.$store.getters.getEquipmentByType(this.chosenEquipmentType);
+      }
+      return {
+        "id": 0,
+        "measure": "",
+        "quantity": 0,
+        "name": ""
+      };
+    },
+    getPriorities() {
+      return this.$store.getters.getPriorities
+    },
   },
 
   methods: {
     createOrder() {
-      this.newOrder.from= this.getLoggedInBranchName
+      this.newOrder.equipments =
+          [
+            {
+              "id": this.getEquipment.find(a => a.name === this.chosenEquipmentType).id,
+              "quantity": parseInt(this.orderQuantity)
+            }
+          ]
+      this.newOrder.priority = this.getPriorities.find(item => item.name === this.selectedPriority).id
+
       console.log("new order", this.newOrder)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})
