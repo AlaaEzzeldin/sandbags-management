@@ -43,6 +43,7 @@
 
 <script>
 import EquipmentQuantityTable from '@/components/EquipmentQuantityTable.vue'
+import EventBus from "../common/EventBus";
 
 export default {
   name: "Navigation",
@@ -108,12 +109,26 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("getUserInfo")
+    this.$store.dispatch("getUserInfo").then(
+        response => {
+          console.log(response)
+        },
+        error => {
+          this.content =
+              (error.response && error.response.data && error.response.data.message) ||
+              error.message ||
+              error.toString();
+
+          if (error.response && error.response.status === 403) {
+            EventBus.dispatch("logout");
+          }
+        }
+    );
     this.$store.dispatch("loadEquipment");
     this.$store.dispatch("loadPriorities");
   },
-  computed:{
-    getCurrentUserRole(){
+  computed: {
+    getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
     },
     getLoggedInUser() {
@@ -123,7 +138,7 @@ export default {
       return this.$store.getters.isLoggedIn
     },
     getNavListForLoggedInUserRoll() {
-      if (['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter'].includes(this.getCurrentUserRole))
+      if (['Einsatzabschnitt', 'Hauptabschnitt', 'Einsatzleiter'].includes(this.getCurrentUserRole))
         return this.navItemsEinsatzabschnittAndHauptabschnitt;
       else if (this.getCurrentUserRole === 'Unterabschnitt')
         return this.navItemsUnterabschintt;

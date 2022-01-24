@@ -12,7 +12,7 @@ class AuthService {
                 if (response.data.access_token) {
                     TokenService.setUser(response.data);
                 }
-                return response.data;
+                return response;
             });
     }
 
