@@ -110,7 +110,7 @@
 
       <!------------------------------------------------ logs -------------------------------->
 
-      <v-row v-if="getOrder.logs">
+      <v-row v-if="getOrder.logs" class="mt-10">
         <v-col cols="12" sm="12">
           <h2 style="font-weight: bolder; color: black">Bestellverlauf</h2>
         </v-col>
