@@ -34,7 +34,9 @@ const actions = {
         AuthService.logout();
         commit('LOGOUT');
     },
-
+    refreshToken({ commit }, accessToken) {
+        commit('REFRESH_TOKEN', accessToken);
+    }
 }
 const mutations = {
     LOGIN_SUCCESS(state, user) {
@@ -49,6 +51,10 @@ const mutations = {
         state.isLoggedIn = false;
         state.user = null;
     },
+    REFRESH_TOKEN(state, accessToken) {
+        state.isLoggedIn = true;
+        state.user = { ...state.user, accessToken: accessToken };
+    }
 }
 
 export default {
