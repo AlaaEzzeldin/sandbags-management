@@ -476,9 +476,9 @@ func DispatchOrder(db *gorm.DB, userId, orderId, driverId int) error {
 		}
 	}
 
-	if err := repo_order.SetDriverToOrder(db, orderId, driverId); err != nil {
-		return err
-	}
+	// if err := repo_order.SetDriverToOrder(db, orderId, driverId); err != nil {
+	//	 return err
+	// }
 
 	logs := []models.Log{
 		{

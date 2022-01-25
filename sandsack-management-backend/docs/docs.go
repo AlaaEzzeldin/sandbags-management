@@ -1046,13 +1046,18 @@ var doc = `{
                         "required": true
                     },
                     {
-                        "description": "GetStats Input",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.GetStatisticsInput"
-                        }
+                        "type": "string",
+                        "description": "start date",
+                        "name": "start_date",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "end date",
+                        "name": "end_date",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1688,17 +1693,6 @@ var doc = `{
                     "type": "integer"
                 },
                 "err_message": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.GetStatisticsInput": {
-            "type": "object",
-            "properties": {
-                "end_date": {
-                    "type": "string"
-                },
-                "start_date": {
                     "type": "string"
                 }
             }
