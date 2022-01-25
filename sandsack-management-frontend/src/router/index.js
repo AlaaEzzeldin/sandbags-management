@@ -15,6 +15,7 @@ import RecoverPasswordConfirmPage from "../views/RecoverPasswordConfirmPage";
 import HomePage from "../views/HomePage";
 import BestellBearbeitenPage from "../views/BestellBearbeitenPage";
 import ManageEquipmentPage from "../views/ManageEquipmentPage";
+import HelpPage from "../views/HelpPage";
 
 Vue.use(VueRouter)
 
@@ -43,6 +44,11 @@ const routes = [
         name: 'RecoverPasswordConfirmPage',
         component: RecoverPasswordConfirmPage,
         meta: {requiresGuest: true}
+    },
+    {
+        path: '/help',
+        name: 'HelpPage',
+        component: HelpPage,
     },
     {
         path: '/homepage',
