@@ -55,7 +55,7 @@ export default {
     return {
       navItemsUnterabschintt: [
         {
-          title: 'Bestellungliste',
+          title: 'Bestellungsliste',
           component: 'BestellungslistePage',
           icon: 'mdi-format-list-bulleted',
         },

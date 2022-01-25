@@ -17,9 +17,9 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                v-model="dateRangeText"
-                label="Tage"
+                v-model="dateSelected"
                 filled
+                label="Tage"
                 prepend-icon="mdi-calendar"
                 readonly
                 v-bind="attrs"
@@ -36,100 +36,165 @@
     </v-row>
     <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px">
       <v-col>
-        <h1 style="color: red">35</h1>
-        <h3>Bestellungen</h3>
+        <v-list-item
+            v-for="(item, i) in getStatisticschart"
+            :key="i"
+        >
+          <h1 style="text-align: center ;color: red">
+            <div v-if="item.type ==='Hauptabschnitten'">
+              {{ item.general_statistics.total_number_of_orders }}
+            </div>
+          </h1>
+        </v-list-item>
+        <h3 style="text-align: left">Bestellungen</h3>
       </v-col>
       <v-col>
-        <h1 style="color: red">94%</h1>
-        <h3>Bestellungen bestatigt</h3>
+        <v-list-item
+            v-for="(item, i) in getStatisticschart"
+            :key="i"
+        >
+          <h1 style="color: red">
+            <div v-if="item.type ==='Hauptabschnitten'">
+              {{ item.general_statistics.total_number_of_accepted_orders }}%
+            </div>
+          </h1>
+        </v-list-item>
+        <h3 style="text-align: left">Bestellungen bestatigt</h3>
       </v-col>
       <v-col>
-        <h1 style="color: red">5</h1>
-        <h3>Bestellungen/Uhr</h3>
+        <v-list-item
+            v-for="(item, i) in getStatisticschart"
+            :key="i"
+        >
+          <h1 style="color: red">
+            <div v-if="item.type ==='Hauptabschnitten'">
+              {{ item.general_statistics.average_processing_time }}
+            </div>
+          </h1>
+        </v-list-item>
+        <h3 style="text-align: left">Bestellungen/Uhr</h3>
       </v-col>
     </v-row>
-
     <v-row>
       <v-col cols="6">
         <h2>
           Bestellungen
         </h2>
       </v-col>
-      <v-col cols="6">
+<!--      <v-col cols="6">
         <v-select
-            v-model="select"
-            :items="selectOptions"
-            item-text="state"
-            label="Beim Abschnitt"
+            v-if="this.getCurrentUserRole==='Einsatzleiter'"
+            v-model="selectedHaupt"
+            :items="getHauptdata"
             filled
+            item-text="state"
+            label="Hauptabschnitt"
             outlined
             persistent-hint
             return-object
             single-line
         ></v-select>
-      </v-col>
+        <v-select
+            v-if="this.getCurrentUserRole==='Einsatzleiter'"
+            v-model="selectedEinz"
+            :items="getEinsatzdata"
+            filled
+            item-text="state"
+            label="Einsatzabschnitt"
+            outlined
+            persistent-hint
+            return-object
+            single-line
+        ></v-select>
+        <v-select
+            v-if="this.getCurrentUserRole==='Hauptabschnitt'"
+            v-model="selectedEinzforHaupt"
+            :items="getEinsatzforHaupt"
+            filled
+            item-text="state"
+            label="Einsatzabschnitt"
+            outlined
+            persistent-hint
+            return-object
+            single-line
+        ></v-select>
+      </v-col>-->
     </v-row>
-
     <div ref="content">
-      <GChart type="ColumnChart" :data="chartData" :options="chartOptions"/>
+      <GChart
+          v-if="this.getCurrentUserRole==='Einsatzleiter'"
+          :data="getUnterdata"
+          :options="chartOptions"
+          type="ColumnChart"/>
+    </div>
+    <div ref="content">
+      <GChart
+          v-if="this.getCurrentUserRole==='Hauptabschnitt'"
+          :data="getUnterforhaupt"
+          :options="chartOptions"
+          type="ColumnChart"/>
+    </div>
+    <div ref="content">
+      <GChart
+          v-if="this.getCurrentUserRole==='Einsatzabschnitt'"
+          :data="getUnterforEinz"
+          :options="chartOptions"
+          type="ColumnChart"/>
     </div>
     <br>
-
+    <v-spacer></v-spacer>
     <v-row>
-      <v-col cols="12" sm="3" offset="9">
-        <v-btn
-            align="right"
-            style="text-transform: capitalize; font-weight: bolder;"
-            block
-            rounded
-            color="red"
-            dark
-        >
-          <button  @click="download">Export pdf</button>
-        </v-btn>
-      </v-col>
+    <v-col cols="12" sm="6" offset-sm="3" class="mt-10">
+      <v-btn
+          id="pdf"
+          style="text-transform: capitalize; font-weight: bolder;"
+          rounded
+          @click="download"
+          block
+          color="red"
+          outlined
+      >
+        pdf exportieren
+      </v-btn>
+    </v-col>
     </v-row>
+
+
   </div>
 </template>
 
 <script>
 import jsPDF from "jspdf";
 import domtoimage from "dom-to-image";
-import { GChart } from "vue-google-charts";
+import {GChart} from "vue-google-charts";
+
 export default {
-  name: "App",
+
+  name: 'BestellübersichtPage',
+
   components: {
     GChart,
   },
+
   data() {
     return {
 
-      dates:
-          [(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-            (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)],
+      dates: [new Date(new Date().setDate(new Date().getDate() - 7)).toISOString().slice(0, 10),
+        new Date(new Date().setDate(new Date().getDate())).toISOString().slice(0, 10)],
+
       modal: false,
       menu: false,
+      selectedHaupt: '',
+      selectedEinz: '',
+      selectedEinzforHaupt: '',
 
-      // Array will be automatically processed with visualization.arrayToDataTable function
-      chartData: [
-        ["Abschnitt", "Bestellungen"],
-        ["EA 1.1 Altstadt - Ost", 5],
-        ["EA 1.2 Altstadt - Mitte", 12],
-        ["EA 1.3 Altstadt - West", 9],
-        ["EA 2.1 Neumarkt - Nord", 25],
-      ],
-
-      selectOptions: [
-        { state: 'Beim Abschnitt',},
-        { state: 'Beim Tag',},
-      ],
       chartOptions: {
         hAxis: {
           title: "Abschnitt",
         },
         vAxis: {
           title: "Bestellungen",
-          ticks: [0,5,10,15,20,25,30]
+          ticks: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
         },
         chart: {
           title: "order status",
@@ -140,21 +205,130 @@ export default {
       },
     };
   },
+
   computed: {
-    dateRangeText () {
+    getStatisticschart() {
+      return this.$store.getters.getStatisticschart
+    },
+    dateSelected() {
+      if (this.dates[1] < this.dates[0]) {
+        window.alert('Bitte wählen Sie einen gültigen Zeitraum aus!')
+        return ('Gültiges Datum auswählen')
+      } else if ((typeof (this.dates[1]) !== "undefined")) {
+        this.loadStatsByDates(this.dates[0], this.dates[1]);
+      } else {
+        this.loadStatsByDates(this.dates[0], this.dates[0]);
+      }
       return this.dates.join(' / ')
     },
-  },
-  props: {
-    msg: String
+
+    getHauptdata() {
+      var HauptselectOptions = []
+      for (let i = 0; i < this.getStatisticschart.length; i++) {
+        if (this.getStatisticschart[i].type === "Hauptabschnitten") {
+          for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
+            HauptselectOptions.push(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].name)
+          }
+        }
+      }
+      return HauptselectOptions;
+    },
+
+    getEinsatzdata() {
+      var EinsatzselectOptions = []
+      for (let i = 0; i < this.getHauptdata.length; i++) {
+        if (this.$data.selectedHaupt === this.getHauptdata[i]) {
+          for (let j = 0; j < this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt.length; j++) {
+            EinsatzselectOptions.push(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].name)
+          }
+        }
+      }
+      return EinsatzselectOptions;
+    },
+
+    getEinsatzforHaupt() {
+      var EinsatzforHaupt = []
+      for (let i = 0; i < this.getStatisticschart.length; i++) {
+        for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
+          for (let k = 0; k < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
+            EinsatzforHaupt.push(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].name)
+          }
+          //console.log(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].name)
+
+        }
+      }
+      return EinsatzforHaupt;
+    },
+
+    getUnterdata() {
+      var UnterselectOptions = []
+      UnterselectOptions.push(["Abschnitt", "Bestellungen"], ['unterabschnitt', 10], ['unterabschnitt', 15]) //Delete the hardcoded values while integrating
+      for (let i = 0; i < this.getHauptdata.length; i++) {
+        for (let j = 0; j < this.getEinsatzdata.length; j++) {
+          if (this.$data.selectedHaupt === this.getHauptdata[i] &&
+              this.$data.selectedEinz === this.getEinsatzdata[j]) {
+            UnterselectOptions.pop() // Delete this during integrtation
+            UnterselectOptions.pop() // Delete this during integrtation
+            for (let k = 0; k < this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt.length; k++) {
+              UnterselectOptions.push([this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].name,
+                parseInt(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].total_number_of_orders)])
+            }
+
+          }
+        }
+
+      }
+      return UnterselectOptions;
+    },
+    getUnterforhaupt() {
+      var UnterforHaupt = []
+      UnterforHaupt.push(["Abschnitt", "Bestellungen"], ['unterabschnitt', 10], ['unterabschnitt', 15]) //Delete the hardcoded values while integrating
+      for (let i = 0; i < this.getStatisticschart.length; i++) {
+        for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
+          for (let k = 0; k < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
+            if (this.$data.selectedEinzforHaupt === this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].name) {
+              UnterforHaupt.pop() // Delete this during integrtation
+              UnterforHaupt.pop() // Delete this during integrtation
+              for (let l = 0; l < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt.length; l++) {
+                UnterforHaupt.push([this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].name,
+                  parseInt(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].total_number_of_orders)])
+              }
+            }
+          }
+        }
+      }
+      return UnterforHaupt
+    },
+
+    getUnterforEinz() {
+      var UnterforEinz = []
+      UnterforEinz.push(["Abschnitt", "Bestellungen"])
+
+      for (let i = 0; i < this.getStatisticschart.length; i++) {
+        for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
+          for (let k = 0; k < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
+            for (let l = 0; l < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt.length; l++) {
+              UnterforEinz.push([this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].name,
+                parseInt(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].total_number_of_orders)])
+            }
+          }
+        }
+      }
+      return UnterforEinz
+    },
+
+    getCurrentUserRole() {
+      return this.$store.getters.getCurrentUserRole
+    }
+
   },
   methods: {
-
     download() {
-      /** WITH CSS */
+      /** To Block the Button */
+      document.getElementById('pdf').style.display = 'none';
       domtoimage
           .toPng(this.$refs.content)
-          .then(function(dataUrl) {
+          .then(function (dataUrl) {
             var img = new Image();
             img.src = dataUrl;
             const doc = new jsPDF({
@@ -166,7 +340,7 @@ export default {
             const date = new Date();
             const url = window.URL.createObjectURL;
             const filename =
-                "OrderStatusReport_" +
+                "Statistics-Report_" +
                 date.getFullYear() +
                 ("0" + (date.getMonth() + 1)).slice(-2) +
                 ("0" + date.getDate()).slice(-2) +
@@ -174,30 +348,39 @@ export default {
                 ".pdf";
             doc.save(filename)
             window.URL.revokeObjectURL(url);
-            alert("Export File has downloaded!"); // or you know, something with better UX...
+            /** To Un-Block the Button after download */
+            if (!alert('Die Datei wird heruntergeladen!')) {
+              document.getElementById('pdf').style.display = 'block';
+            }
           })
-          .catch(function(error) {
-            console.error("oops, something went wrong!", error);
+          .catch(function (error) {
+            console.error("oops, Fehler!", error);
           });
+    },
+    loadStatsByDates(date_from, date_to) {
+      console.log("dates",date_from, date_to )
+      //router.push({name: 'BestellübersichtPage', query: {date1: date_from, date2: date_to}})
+     // this.$store.dispatch("loadStatisticschart", {'date_from': date_from, 'date_to': date_to})
     },
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40pt 0 0;
-}
+<style>
+
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 a {
   color: #42b983;
+  color: #D7201F;
 }
 </style>

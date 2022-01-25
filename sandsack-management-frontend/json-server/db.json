@@ -98,5 +98,116 @@
       "name": "Sand",
       "quantity": 150
     }
+  ],
+  "statisticschart": [
+    {
+      "type": "Hauptabschnitten",
+      "general_statistics": {
+        "total_number_of_orders": "100",
+        "total_number_of_accepted_orders": "70",
+        "average_processing_time": "3 mins"
+      },
+      "statistics_per_hauptabschnitt": [
+        {
+          "name": "Hauptabschnitte_1",
+          "total_number_of_orders": "60",
+          "total_number_of_accepted_orders": "40",
+          "statistics_per_Einsatzabschnitt": [
+            {
+              "name": "Einsatzabschnitte_1",
+              "total_number_of_orders": "40",
+              "total_number_of_accepted_orders": "17",
+              "statistics_per_unterabschnitt": [
+                {
+                  "name": "unterabschnitte_1",
+                  "total_number_of_orders": "23",
+                  "total_number_of_accepted_orders": "10"
+                },
+                {
+                  "name": "unterabschnitte_2",
+                  "total_number_of_orders": "17",
+                  "total_number_of_accepted_orders": "7"
+                }
+              ]
+            },
+            {
+              "name": "Einsatzabschnitte_2",
+              "total_number_of_orders": "20",
+              "total_number_of_accepted_orders": "13",
+              "statistics_per_unterabschnitt": [
+                {
+                  "name": "unterabschnitte_3",
+                  "total_number_of_orders": "13",
+                  "total_number_of_accepted_orders": "6"
+                },
+                {
+                  "name": "unterabschnitte_4",
+                  "total_number_of_orders": "7",
+                  "total_number_of_accepted_orders": "7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Hauptabschnitte_2",
+          "total_number_of_orders": "40",
+          "total_number_of_accepted_orders": "30",
+          "statistics_per_Einsatzabschnitt": [
+            {
+              "name": "Einsatzabschnitte_3",
+              "total_number_of_orders": "25",
+              "total_number_of_accepted_orders": "20",
+              "statistics_per_unterabschnitt": [
+                {
+                  "name": "unterabschnitte_5",
+                  "total_number_of_orders": "15",
+                  "total_number_of_accepted_orders": "12"
+                },
+                {
+                  "name": "unterabschnitte_6",
+                  "total_number_of_orders": "10",
+                  "total_number_of_accepted_orders": "8"
+                }
+              ]
+            },
+            {
+              "name": "Einsatzabschnitte_4",
+              "total_number_of_orders": "10",
+              "total_number_of_accepted_orders": "8",
+              "statistics_per_unterabschnitt": [
+                {
+                  "name": "unterabschnitte_7",
+                  "total_number_of_orders": "8",
+                  "total_number_of_accepted_orders": "7"
+                },
+                {
+                  "name": "unterabschnitte_8",
+                  "total_number_of_orders": "2",
+                  "total_number_of_accepted_orders": "1"
+                }
+              ]
+            },
+            {
+              "name": "Einsatzabschnitte_5",
+              "total_number_of_orders": "5",
+              "total_number_of_accepted_orders": "2",
+              "statistics_per_unterabschnitt": [
+                {
+                  "name": "unterabschnitte_9",
+                  "total_number_of_orders": "3",
+                  "total_number_of_accepted_orders": "1"
+                },
+                {
+                  "name": "unterabschnitte_10",
+                  "total_number_of_orders": "2",
+                  "total_number_of_accepted_orders": "1"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   ]
 }
