@@ -15,6 +15,9 @@
             block
             @click="exportAllOrders"
         >
+          <v-icon left>
+            mdi-file-export
+          </v-icon>
           Exportieren
         </v-btn>
         <v-btn
@@ -27,6 +30,9 @@
             :disabled="!IsWaitingForDispatchOrders"
             @click="lieferscheinDruecken"
         >
+          <v-icon left>
+            mdi-file-export
+          </v-icon>
           Lieferschein drücken
         </v-btn>
       </v-col>
