@@ -46,11 +46,6 @@ const routes = [
         meta: {requiresGuest: true}
     },
     {
-        path: '/help',
-        name: 'HelpPage',
-        component: HelpPage,
-    },
-    {
         path: '/homepage',
         name: 'HomePage',
         component: HomePage,
@@ -97,6 +92,12 @@ const routes = [
                 name: 'ManageEquipmentPage',
                 component: ManageEquipmentPage
             },
+            // all
+            {
+                path: '/help',
+                name: 'HelpPage',
+                component: HelpPage,
+            },
         ]
     },
 
@@ -126,7 +127,7 @@ function hasPermissionsNeeded(to) {
     else if (['Unterabschnitt', 'Einsatzabschnitt', 'Hauptabschnitt', 'Einsatzleiter'].includes(userRole) &&
         ['BestellBearbeitenPage'].includes(toPage)) // all except for Mollnhof
         return true
-    else if (['BestellungslistePage', 'KontoPage', 'BestelldetailsPage'].includes(toPage)) // all users
+    else if (['BestellungslistePage', 'KontoPage', 'BestelldetailsPage', 'HelpPage'].includes(toPage)) // all users
         return true
     else return false
 }
