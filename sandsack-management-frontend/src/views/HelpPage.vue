@@ -17,7 +17,7 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <p v-for="answer in item.answer" :key="answer"> {{answer}}</p>
-            <v-img v-if="item.image" :src="item.image"/>
+            <v-img v-if="item.image" :src="item.image" max-height="500" contain/>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+
 export default {
   name: "HelpPage",
   methods: {
@@ -42,6 +43,11 @@ export default {
       {
         question: "Wie kann man das Passwort ändern?",
         answer: ["Benutzen Sie die 'Konto' Seite, dann 'Passwort ändern' wählen."]
+      },
+      {
+        question: "Welche Rollen gibt es in der System?",
+        answer: ["Unterabschnitt, Einsatzabschnitt, Hauptabschnitt, Einsatzleiter, Mollnhof."],
+        image: require('@/assets/images/Rollen.png')
       },
       {
         question: "Wie hoch ist die Mindestbestellmenge?",
@@ -91,15 +97,7 @@ export default {
       },
       {
         question: "Im Falle eines Systemausfalls oder wenn Sie Hilfe benötigen, rufen Sie den Systemadministrator an?",
-        answer: ["Im Falle eines Systemfehlers wird eine leere Seite mit zusätzlichen Dialogen eingeblendet, wie z. B. 1) Wen soll ich kontaktieren? 2) Welche Nummern müssen verwendet werden? 3) Wie ist die Situation zu behandeln?"]
-      },
-      {
-        question: "Im Falle eines 404-Fehlers?",
-        answer: ["Im Falle eines Systemfehlers wird eine leere Seite mit zusätzlichen Dialogen eingeblendet, wie z. B. 1) Wen soll ich kontaktieren? 2) Welche Nummern müssen verwendet werden? 3) Wie ist die Situation zu behandeln?"]
-      },
-      {
-        question: "Wie funktioniert der Systemfluss in der Anwendung?",
-        answer: ["Der Systemfluss hängt von den Benutzerrollen ab, wie sie das System nutzen. Hängt hauptsächlich von der, 1) Registrierung 2) Anmeldung 3) Bestellung Liste 4) Bestellungen & Status 5) Erstellter Bericht"]
+        answer: ["ktieren? 2) Welche Nummern müssen verwendet werden? 3) Wie ist die Situation zu behandeln?"]
       },
     ]
   })
