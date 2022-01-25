@@ -69,6 +69,11 @@ export default {
           component: 'KontoPage',
           icon: 'mdi-account',
         },
+        {
+          title: 'Hilfe',
+          component: 'HelpPage',
+          icon: 'mdi-help-circle-outline',
+        },
       ],
       navItemsEinsatzabschnittAndHauptabschnitt: [
 
@@ -87,6 +92,11 @@ export default {
           component: 'KontoPage',
           icon: 'mdi-account',
         },
+        {
+          title: 'Hilfe',
+          component: 'HelpPage',
+          icon: 'mdi-help-circle-outline',
+        },
       ],
       navItemsMollnhof: [
         {
@@ -103,7 +113,12 @@ export default {
           title: 'Konto',
           component: 'KontoPage',
           icon: 'mdi-account',
-        }
+        },
+        {
+          title: 'Hilfe',
+          component: 'HelpPage',
+          icon: 'mdi-help-circle-outline',
+        },
       ],
     }
   },
