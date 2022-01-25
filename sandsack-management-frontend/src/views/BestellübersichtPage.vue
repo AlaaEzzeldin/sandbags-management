@@ -58,27 +58,13 @@
         </h2>
       </v-col>
     </v-row>
-    <!--    <div ref="content">
+        <div ref="content">
           <GChart
               v-if="this.getCurrentUserRole==='Einsatzleiter'"
-              :data="getUnterdata"
+              :data="getStatisticsForCurrentRole"
               :options="chartOptions"
               type="ColumnChart"/>
         </div>
-        <div ref="content">
-          <GChart
-              v-if="this.getCurrentUserRole==='Hauptabschnitt'"
-              :data="getUnterforhaupt"
-              :options="chartOptions"
-              type="ColumnChart"/>
-        </div>
-        <div ref="content">
-          <GChart
-              v-if="this.getCurrentUserRole==='Einsatzabschnitt'"
-              :data="getUnterforEinz"
-              :options="chartOptions"
-              type="ColumnChart"/>
-        </div>-->
     <br>
     <v-spacer></v-spacer>
     <v-row>
@@ -104,14 +90,14 @@
 <script>
 import jsPDF from "jspdf";
 import domtoimage from "dom-to-image";
-//import {GChart} from "vue-google-charts";
+import {GChart} from "vue-google-charts";
 
 export default {
 
   name: 'BestellübersichtPage',
 
   components: {
-    // GChart,
+     GChart,
   },
 
   data() {
@@ -169,19 +155,29 @@ export default {
   },
   methods: {
     getGeneralStatisticsForCurrentRole() {
-      if(this.getStatistics.length!==0){
+      if(this.getStatistics){
         console.log('statitics',this.getStatistics)
         if (this.getCurrentUserRole === 'Einsatzabschnitt')
           return this.getStatistics.find(data => data.type === "Unterabschnitten")
         else if (this.getCurrentUserRole === 'Hauptabschnitt')
           return this.getStatistics.find(data => data.type === 'Einsatzabschnitten')
-        else if (this.getCurrentUserRole === 'Einsatzleiter'){
-          console.log("by role",this.getStatistics.find(data => data.type === 'Hauptabschnitten'))
+        else if (this.getCurrentUserRole === 'Einsatzleiter')
           return this.getStatistics.find(data => data.type === 'Hauptabschnitten')
         }
-        else return null
-      }
       else return null
+    },
+    getStatisticsForCurrentRole() {
+      if(this.getStatistics.length!==0) {
+        console.log('statitics', this.getStatistics)
+        if (this.getCurrentUserRole === 'Einsatzabschnitt')
+          return this.getStatistics.find(data => data.type === "Unterabschnitten").statistics_per_unterabschnitt
+        else if (this.getCurrentUserRole === 'Hauptabschnitt')
+          return this.getStatistics.find(data => data.type === 'Einsatzabschnitten').statistics_per_Einsatzabschnitt
+        else if (this.getCurrentUserRole === 'Einsatzleiter') {
+          console.log("by role", this.getStatistics.find(data => data.type === 'Hauptabschnitten'))
+          return this.getStatistics.find(data => data.type === 'Hauptabschnitten').statistics_per_hauptabschnitt
+        } else return null
+      }
     },
     download() {
       /** To Block the Button */
