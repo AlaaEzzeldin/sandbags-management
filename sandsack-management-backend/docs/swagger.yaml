@@ -81,13 +81,6 @@ definitions:
       err_message:
         type: string
     type: object
-  models.GetStatisticsInput:
-    properties:
-      end_date:
-        type: string
-      start_date:
-        type: string
-    type: object
   models.Log:
     properties:
       action_type_id:
@@ -961,12 +954,16 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: GetStats Input
-        in: body
-        name: input
+      - description: start date
+        in: path
+        name: start_date
         required: true
-        schema:
-          $ref: '#/definitions/models.GetStatisticsInput'
+        type: string
+      - description: end date
+        in: path
+        name: end_date
+        required: true
+        type: string
       produces:
       - application/json
       responses:

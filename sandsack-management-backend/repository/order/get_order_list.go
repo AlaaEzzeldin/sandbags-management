@@ -57,3 +57,34 @@ func GetAllSimpleOrderList(a *gorm.DB, startDate, endDate string) ([]models.Simp
 	}
 	return simpleOrderList, nil
 }
+
+func GetSimpleOrderListHauptabschnitt(a *gorm.DB, userId int) ([]models.SimpleOrder, error) {
+	query := `select 	o.id, 
+						o.name, 
+						o.user_id, 
+						o.address_to, 
+						o.address_from, 
+						o.status_id,
+						s.name as status_name, 
+						o.priority_id, 
+						o.create_date,
+						o.update_date 
+				from public.order o, public.status s 
+				where o.status_id = s.id
+				and o.user_id in (select u.id from "user" u, hierarchy h
+				where h.user2_id = u.id
+				and h.user1_id in (select u.id
+								   from "user" u, hierarchy h
+								   where h.user1_id = ?
+									 and h.user2_id = u.id))
+				order by o.update_date DESC;`
+
+	var simpleOrderList []models.SimpleOrder
+
+	if err := a.Raw(query, userId).Scan(&simpleOrderList).Error; err != nil {
+		log.Println("GetSimpleOrderListHauptabschnitt err", err.Error())
+		return nil, err
+	}
+	return simpleOrderList, nil
+
+}

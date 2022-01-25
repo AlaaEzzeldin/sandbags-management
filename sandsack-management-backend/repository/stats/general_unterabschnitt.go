@@ -32,15 +32,14 @@ type TotalNumberPerAbschnitt struct {
 }
 
 func TotalNumberAcceptedUnterabschnitt(db *gorm.DB, startDate, endDate string) int {
-	query := `select count(o.id), b.name
-			from "user" u, "order" o, "log" l, "action_type" at, branch b
-			where u.id = l.updated_by
-			  and l.order_id = o.id
-			  and l.action_type_id = at.id
-			  and (at.name = 'CONFIRMED DELIVERY')
-			  and b.id = u.branch_id
-			  and b.name = 'Unterabschnitt'
-			group by b.name;`
+	query := `
+			select u.name as name, count(o.id), b.name as branch_name
+			from "user" u, "order" o, branch b
+			where u.id = o.user_id
+			and o.status_id = (select id from status where name = 'GELIEFERT')
+			and b.id = u.branch_id
+			and b.name = 'Unterabschnitt'
+			group by u.name, b.name;`
 	var totalNumber TotalNumber
 
 	if err := db.Raw(query).Scan(&totalNumber).Error; err != nil {
@@ -86,15 +85,14 @@ func StatisticsPerUnterabschnitt(db *gorm.DB, startDate, endDate string) []model
 		var stat models.StatisticsPerAbschnitt
 		stat.Name = row.Name
 		stat.TotalNumberOfOrders = strconv.Itoa(row.Count)
-		query := `select u.name name, count(o.id), b.name
-				from "user" u, "order" o, "log" l, "action_type" at, branch b
-				where u.id = l.updated_by
-				  and l.order_id = o.id
-				  and l.action_type_id = at.id
-				  and (at.name = 'CONFIRMED DELIVERY')
-				  and b.id = u.branch_id
-				  and b.name = 'Unterabschnitt'
-					and u.id = ?
+		query := `
+				select u.name as name, count(o.id), b.name as branch_name
+				from "user" u, "order" o, branch b
+				where u.id = o.user_id
+				and o.status_id = (select id from status where name = 'GELIEFERT')
+				and b.id = u.branch_id
+				and b.name = 'Unterabschnitt'
+				and u.id = ?
 				group by u.name, b.name;`
 		var totalNumber TotalNumber
 		err := db.Raw(query, row.UserId).Scan(&totalNumber).Error

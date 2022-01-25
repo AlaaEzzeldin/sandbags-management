@@ -65,8 +65,8 @@ func (a *App) RunAllRoutes() {
 
 	// order
 	order := auth.Group("order")
-	order.POST("/", a.CreateOrder)
-	order.GET("/", a.ListOrder)
+	order.POST("", a.CreateOrder)
+	order.GET("", a.ListOrder)
 	order.POST("/cancel", a.DeclineOrder)
 	order.POST("/accept", a.AcceptOrder)
 	order.POST("/dispatch", a.DispatchOrder)
