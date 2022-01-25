@@ -168,6 +168,8 @@ definitions:
     type: object
   models.PatchProfileInput:
     properties:
+      email:
+        type: string
       name:
         type: string
       phone:
