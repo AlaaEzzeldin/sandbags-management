@@ -70,10 +70,6 @@ export default {
         image: require('@/assets/images/Flow.png')
       },
       {
-        question: "Erläutern Sie die Bearbeitung von Aufträgen?",
-        answer: ["Die Bearbeitung der Bestellung hängt von der Priorität ab, die Hohe, Niedrige, Mittlere ist. Unter Berücksichtigung der Priorität wird jeder Betrag der Bestellung erfolgreich verarbeitet."]
-      },
-      {
         question: "Welche grundlegenden Anforderungen sind bei der Erstellung eines Auftrags zu beachten?",
         answer: ["Alle Bestellungen müssen mit genauer Straße, Adresse und Postleitzahl aufgegeben werden, damit sie rechtzeitig ankommen. Dadurch werden Verzögerungen bei der Bestellung und Nachbearbeitungszeiten vermieden."]
       },
@@ -83,7 +79,7 @@ export default {
       },
       {
         question: "Wie kann ich eine zusätzliche Menge an Taschen zurückgeben?",
-        answer: ["Die zusätzliche Menge wird im System angezeigt, am Ende oder in verschiedenen Zeitintervallen werden zusätzliche Säcke an verschiedenen Orten abgeholt."]
+        answer: ["Die Ausrüstung wird beim Mollnhof zurückgegeben. Mollnhof kann 'Ausrüstungverwaltung' dafür benutzen."]
       },
       {
         question: "Wie funktionieren die PDF-Exportiern auf Basis von Rollen?",
