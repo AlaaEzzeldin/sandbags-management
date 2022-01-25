@@ -1,6 +1,5 @@
 package models
 
-
 var DictStatus = map[int]string{
 	1:  "ANSTEHEND",
 	2:  "STORNIERT",
@@ -27,19 +26,19 @@ var DictStatusName = map[string]int{
 	"GELIEFERT":                           10,
 }
 
-var DictPriority = map[int]string {
-	1: "HIGH",
-	2: "MIDDLE",
-	3: "LOW",
+var DictPriority = map[int]string{
+	1: "HOCH",
+	2: "MITTEL",
+	3: "NIEDGRIG",
 }
 
 var DictPriorityName = map[string]int{
-	"HIGH":   1,
-	"MIDDLE": 2,
-	"LOW":    3,
+	"HOCH":    1,
+	"MITTEL":  2,
+	"NIEDRIG": 3,
 }
 
-var DictActionType = map[int]string {
+var DictActionType = map[int]string{
 	1: "CREATED",
 	2: "EDITED",
 	3: "COMMENTED",
@@ -50,16 +49,16 @@ var DictActionType = map[int]string {
 }
 
 var DictActionTypeName = map[string]int{
-	"CREATED":   1,
-	"EDITED":    2,
-	"COMMENTED": 3,
-	"ACCEPTED":  4,
-	"DECLINED":  5,
-	"ASSIGNED":  6,
+	"CREATED":            1,
+	"EDITED":             2,
+	"COMMENTED":          3,
+	"ACCEPTED":           4,
+	"DECLINED":           5,
+	"ASSIGNED":           6,
 	"CONFIRMED DELIVERY": 7,
 }
 
-var DictPermission = map[int]string {
+var DictPermission = map[int]string{
 	1: "CAN VIEW",
 	2: "CAN CONFIRM DELIVERY",
 	3: "CAN EDIT",
@@ -79,7 +78,7 @@ var DictPermissionName = map[string]int{
 	"CAN ASSIGN TO":        7,
 }
 
-var DictBranch = map[int]string {
+var DictBranch = map[int]string{
 	1: "Mollnhof",
 	2: "Einsatzleiter",
 	3: "Hauptabschnitt",
