@@ -57,8 +57,9 @@ export default {
     },
 
     showStatistics(data) {
-        return axios.get(BASE_URL + 'order/stats' ,data , {
+        return axios.get(BASE_URL + 'order/stats', {
             headers: authHeader(),
+            params: data
         })
     },
 }
