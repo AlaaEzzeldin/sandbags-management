@@ -50,18 +50,6 @@ export default {
         image: require('@/assets/images/Rollen.png')
       },
       {
-        question: "Wie hoch ist die Mindestbestellmenge?",
-        answer: ["Es gibt keine Mindestbestellmenge, jede Bestellung kann je nach Anfrage aufgegeben werden, die dann priorisiert und bearbeitet wird."]
-      },
-      {
-        question: "Wie hoch ist die Höchstzahl der Bestellungen?",
-        answer: ["Sie können nicht mehr als Restmenge bestellen."]
-      },
-      {
-        question: "Wie bearbeite ich einen Auftrag basierend auf einer Rolle?",
-        answer: ["Die Bearbeitung einer Bestellung hängt von der Benutzerrolle ab, die im System arbeitet. Nicht jeder im System hat das Recht, die eingegangenen Bestellungen zu bearbeiten."]
-      },
-      {
         question: "Was its der Ablauf einer Bestellung? Welchen Status kann eine Bestellung haben?",
         answer: ["Der Ablauf einer Bestellung ist: ",
             "1. Unterabschnitt macht eine neue Bestellung -> Bestellung hat Status 'ANSTEHEND'.",
@@ -74,6 +62,18 @@ export default {
             "8. Unterabschnitt bestätigt die Lieferung -> Bestellung hat Status 'GELIEFERT'."
         ],
         image: require('@/assets/images/Flow.png')
+      },
+      {
+        question: "Wie hoch ist die Mindestbestellmenge?",
+        answer: ["Es gibt keine Mindestbestellmenge, jede Bestellung kann je nach Anfrage aufgegeben werden, die dann priorisiert und bearbeitet wird."]
+      },
+      {
+        question: "Wie hoch ist die Höchstzahl der Bestellungen?",
+        answer: ["Sie können nicht mehr als Restmenge bestellen."]
+      },
+      {
+        question: "Wie bearbeite ich einen Auftrag basierend auf einer Rolle?",
+        answer: ["Die Bearbeitung einer Bestellung hängt von der Benutzerrolle ab, die im System arbeitet. Nicht jeder im System hat das Recht, die eingegangenen Bestellungen zu bearbeiten."]
       },
       {
         question: "Welche grundlegenden Anforderungen sind bei der Erstellung eines Auftrags zu beachten?",
