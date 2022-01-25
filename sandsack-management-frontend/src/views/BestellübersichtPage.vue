@@ -34,16 +34,22 @@
         </v-menu>
       </v-col>
     </v-row>
-    <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px">
+    <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px" v-if="getStatistics">
       <v-col>
-        <v-list-item
-            v-for="(item, i) in getGeneralStatisticsForCurrentRole"
-            :key="i"
-        >
-          <h1 style="color: red">{{ item.general_statistics.average_processing_time }}</h1>
-        </v-list-item>
+        <h1 style="color: red">{{ getGeneralStatisticsForCurrentRole().general_statistics.total_number_of_orders }}</h1>
+        <h3 style="text-align: left">Bestellungen</h3>
+      </v-col>
+
+      <v-col>
+        <h1 style="color: red">{{getGeneralStatisticsForCurrentRole().general_statistics.total_number_of_accepted_orders}}</h1>
+        <h3 style="text-align: left">Bestellungen bestätigt</h3>
+      </v-col>
+
+      <v-col>
+        <h1 style="color: red">{{ getGeneralStatisticsForCurrentRole().general_statistics.average_processing_time }}</h1>
         <h3 style="text-align: left">Bestellungen/Uhr</h3>
       </v-col>
+
     </v-row>
     <v-row>
       <v-col cols="6">
@@ -137,6 +143,9 @@ export default {
       },
     };
   },
+  created(){
+    this.loadStatsByDates(this.dates[0], this.dates[1])
+  },
 
   computed: {
     getStatistics() {
@@ -154,116 +163,24 @@ export default {
       return this.dates.join(' / ')
     },
 
-    getHauptdata() {
-      var HauptselectOptions = []
-      for (let i = 0; i < this.getStatistics.length; i++) {
-        if (this.getStatistics[i].type === "Hauptabschnitten") {
-          for (let j = 0; j < this.getStatistics[i].statistics_per_hauptabschnitt.length; j++) {
-            HauptselectOptions.push(this.getStatistics[i].statistics_per_hauptabschnitt[j].name)
-          }
-        }
-      }
-      return HauptselectOptions;
-    },
-
-    getEinsatzdata() {
-      var EinsatzselectOptions = []
-      for (let i = 0; i < this.getHauptdata.length; i++) {
-        if (this.$data.selectedHaupt === this.getHauptdata[i]) {
-          for (let j = 0; j < this.getStatistics[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt.length; j++) {
-            EinsatzselectOptions.push(this.getStatistics[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].name)
-          }
-        }
-      }
-      return EinsatzselectOptions;
-    },
-
-    getEinsatzforHaupt() {
-      var EinsatzforHaupt = []
-      for (let i = 0; i < this.getStatistics.length; i++) {
-        for (let j = 0; j < this.getStatistics[i].statistics_per_hauptabschnitt.length; j++) {
-          for (let k = 0; k < this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
-            EinsatzforHaupt.push(this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].name)
-          }
-          //console.log(this.getStatistics[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].name)
-
-        }
-      }
-      return EinsatzforHaupt;
-    },
-
-    getUnterdata() {
-      var UnterselectOptions = []
-      UnterselectOptions.push(["Abschnitt", "Bestellungen"], ['unterabschnitt', 10], ['unterabschnitt', 15]) //Delete the hardcoded values while integrating
-      for (let i = 0; i < this.getHauptdata.length; i++) {
-        for (let j = 0; j < this.getEinsatzdata.length; j++) {
-          if (this.$data.selectedHaupt === this.getHauptdata[i] &&
-              this.$data.selectedEinz === this.getEinsatzdata[j]) {
-            UnterselectOptions.pop() // Delete this during integrtation
-            UnterselectOptions.pop() // Delete this during integrtation
-            for (let k = 0; k < this.getStatistics[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt.length; k++) {
-              UnterselectOptions.push([this.getStatistics[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].name,
-                parseInt(this.getStatistics[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].total_number_of_orders)])
-            }
-
-          }
-        }
-
-      }
-      return UnterselectOptions;
-    },
-    getUnterforhaupt() {
-      var UnterforHaupt = []
-      UnterforHaupt.push(["Abschnitt", "Bestellungen"], ['unterabschnitt', 10], ['unterabschnitt', 15]) //Delete the hardcoded values while integrating
-      for (let i = 0; i < this.getStatistics.length; i++) {
-        for (let j = 0; j < this.getStatistics[i].statistics_per_hauptabschnitt.length; j++) {
-          for (let k = 0; k < this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
-            if (this.$data.selectedEinzforHaupt === this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].name) {
-              UnterforHaupt.pop() // Delete this during integrtation
-              UnterforHaupt.pop() // Delete this during integrtation
-              for (let l = 0; l < this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt.length; l++) {
-                UnterforHaupt.push([this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].name,
-                  parseInt(this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].total_number_of_orders)])
-              }
-            }
-          }
-        }
-      }
-      return UnterforHaupt
-    },
-
-    getUnterforEinz() {
-      var UnterforEinz = []
-      UnterforEinz.push(["Abschnitt", "Bestellungen"])
-
-      for (let i = 0; i < this.getStatistics.length; i++) {
-        for (let j = 0; j < this.getStatistics[i].statistics_per_hauptabschnitt.length; j++) {
-          for (let k = 0; k < this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
-            for (let l = 0; l < this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt.length; l++) {
-              UnterforEinz.push([this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].name,
-                parseInt(this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].total_number_of_orders)])
-            }
-          }
-        }
-      }
-      return UnterforEinz
-    },
-
-
     getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
     },
-    getGeneralStatisticsForCurrentRole() {
-      if (this.getCurrentUserRole === 'Einsatzabschnitt')
-        return this.getStatistics.find(data => data.type === 'Unterabschnitten')
-      else if (this.getCurrentUserRole === 'Hauptabschnitt')
-        return this.getStatistics.find(data => data.type === 'Einsatzabschnitten')
-      else if (this.getCurrentUserRole === 'Einsatzleiter')
-        return this.getStatistics.find(data => data.type === 'Hauptabschnitten')
-      else return null
-    },
   },
   methods: {
+    getGeneralStatisticsForCurrentRole() {
+      if(this.getStatistics){
+        console.log(this.getStatistics)
+        if (this.getCurrentUserRole === 'Einsatzabschnitt')
+          return this.getStatistics.find(data => data.type === 'Unterabschnitten')
+        else if (this.getCurrentUserRole === 'Hauptabschnitt')
+          return this.getStatistics.find(data => data.type === 'Einsatzabschnitten')
+        else if (this.getCurrentUserRole === 'Einsatzleiter')
+          return this.getStatistics.find(data => data.type === 'Hauptabschnitten')
+        else return null
+      }
+      else return null
+    },
     download() {
       /** To Block the Button */
       document.getElementById('pdf').style.display = 'none';
