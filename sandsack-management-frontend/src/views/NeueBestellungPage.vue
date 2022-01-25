@@ -26,7 +26,7 @@
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
-              prepend-icon="mdi-cogs"
+              prepend-icon="mdi-format-list-bulleted"
               label="Was möchten Sie bestellen?"
               :rules="[v => !!v || 'Bitte geben Sie ein, was genau Sie bestellen möchten?']"
           ></v-select>
@@ -54,7 +54,7 @@
               prepend-icon="mdi-map-marker"
               :rules="[v => !!v || 'Die Adresse ist erforderlich']"
               :menu-props="{ top: true, offsetY: true }"
-              label="wohin liefern wir?"
+              label="Wohin liefern wir?"
           ></v-text-field>
         </v-col>
       </v-row>
