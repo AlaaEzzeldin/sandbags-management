@@ -72,7 +72,7 @@ export default {
       return this.$store.getters.getEquipmentByType('Sandsack');
     },
     getBtnDisabled() {
-      return (parseInt(this.newAmount) === 0)
+      return (parseInt(this.newAmount) === 0) || this.newAmount.length===0
     }
   },
 
