@@ -34,20 +34,20 @@
         </v-menu>
       </v-col>
     </v-row>
-    <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px" v-if="getStatistics">
-      <v-col>
-        <h1 style="color: red">{{ getGeneralStatisticsForCurrentRole().general_statistics.total_number_of_orders }}</h1>
-        <h3 style="text-align: left">Bestellungen</h3>
+    <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px" v-if="getGeneralStatisticsForCurrentRole()">
+      <v-col cols="4">
+        <h1 style="text-align: center; color: red">{{ getGeneralStatisticsForCurrentRole().general_statistics.total_number_of_orders }}</h1>
+        <h3 style="text-align: center">Bestellungen</h3>
       </v-col>
 
-      <v-col>
-        <h1 style="color: red">{{getGeneralStatisticsForCurrentRole().general_statistics.total_number_of_accepted_orders}}</h1>
-        <h3 style="text-align: left">Bestellungen bestätigt</h3>
+      <v-col cols="4">
+        <h1 style="text-align: center;color: red">{{getGeneralStatisticsForCurrentRole().general_statistics.total_number_of_accepted_orders}}</h1>
+        <h3 style="text-align: center;">Bestellungen bestätigt</h3>
       </v-col>
 
-      <v-col>
-        <h1 style="color: red">{{ getGeneralStatisticsForCurrentRole().general_statistics.average_processing_time }}</h1>
-        <h3 style="text-align: left">Bestellungen/Uhr</h3>
+      <v-col cols="4">
+        <h1 style="text-align: center;color: red">{{ getGeneralStatisticsForCurrentRole().general_statistics.average_processing_time }}</h1>
+        <h3 style="text-align: center">Bestellungen/Uhr</h3>
       </v-col>
 
     </v-row>
@@ -149,7 +149,7 @@ export default {
 
   computed: {
     getStatistics() {
-      return this.$store.getters.getStatistics
+      return this.$store.getters.getStatistics.statistics
     },
     dateSelected() {
       if (this.dates[1] < this.dates[0]) {
@@ -169,14 +169,16 @@ export default {
   },
   methods: {
     getGeneralStatisticsForCurrentRole() {
-      if(this.getStatistics){
-        console.log(this.getStatistics)
+      if(this.getStatistics.length!==0){
+        console.log('statitics',this.getStatistics)
         if (this.getCurrentUserRole === 'Einsatzabschnitt')
-          return this.getStatistics.find(data => data.type === 'Unterabschnitten')
+          return this.getStatistics.find(data => data.type === "Unterabschnitten")
         else if (this.getCurrentUserRole === 'Hauptabschnitt')
           return this.getStatistics.find(data => data.type === 'Einsatzabschnitten')
-        else if (this.getCurrentUserRole === 'Einsatzleiter')
+        else if (this.getCurrentUserRole === 'Einsatzleiter'){
+          console.log("by role",this.getStatistics.find(data => data.type === 'Hauptabschnitten'))
           return this.getStatistics.find(data => data.type === 'Hauptabschnitten')
+        }
         else return null
       }
       else return null
