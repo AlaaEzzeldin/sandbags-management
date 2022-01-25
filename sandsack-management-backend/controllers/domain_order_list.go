@@ -2,7 +2,10 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
+	"strconv"
+	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/service"
 )
 
@@ -19,14 +22,14 @@ import (
 // @Tags Order
 // @Router /order/ [get]
 func (a *App) ListOrder(c *gin.Context) {
-	/*id := c.Query("id")
+	id := c.Query("id")
 
 	claims, err := GetClaims(c)
 	if err != nil {
 		return
 	}
 
-	if len(id) == 0 {
+	if len(id) == 0 || id == "1" {
 		orders, err := service.GetOrderList(a.DB, claims.Id)
 		if err != nil {
 			return
@@ -55,7 +58,7 @@ func (a *App) ListOrder(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, order)
 	return
-	*/
+	/*
 
 	claims, err := GetClaims(c)
 	if err != nil {
@@ -67,4 +70,6 @@ func (a *App) ListOrder(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, orders)
 	return
+
+	 */
 }
