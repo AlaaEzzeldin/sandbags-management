@@ -16,9 +16,9 @@
     <v-card-text class="pt-16 ">
       <v-row no-gutters>
         <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Von:</h3>
+          <h2 style="font-weight: bolder; color: black">Von:</h2>
         </v-col>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="8">
           <v-text-field
               disabled
               :value="editedOrder.name"
@@ -28,9 +28,9 @@
       </v-row>
       <v-row no-gutters>
         <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Typ:</h3>
+          <h2 style="font-weight: bolder; color: black">Typ:</h2>
         </v-col>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="8">
           <v-select
               disabled
               :value="editedOrder.equipments[0].name"
@@ -41,9 +41,9 @@
       </v-row>
       <v-row no-gutters>
         <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Anzahl:</h3>
+          <h2 style="font-weight: bolder; color: black">Anzahl:</h2>
         </v-col>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="8">
           <v-text-field
               v-model="editedOrder.equipments[0].quantity"
               outlined
@@ -54,9 +54,9 @@
       </v-row>
       <v-row no-gutters>
         <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Priorität:</h3>
+          <h2 style="font-weight: bolder; color: black">Priorität:</h2>
         </v-col>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="8">
           <v-select
               v-model="selectedPriority"
               :items="getPriorities.map(x => x.name)"
@@ -66,9 +66,9 @@
       </v-row>
       <v-row no-gutters>
         <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Lieferadresse:</h3>
+          <h2 style="font-weight: bolder; color: black">Lieferadresse:</h2>
         </v-col>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="8">
           <v-text-field
               v-model="editedOrder.address_to"
               outlined

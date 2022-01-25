@@ -107,9 +107,23 @@ func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 }
 
 func GetOrderList(a *gorm.DB, userId int) (orderList []models.Order, err error) {
-	simpleOrderList, err := repo_order.GetSimpleOrderList(a, userId)
-	if err != nil {
-		return nil, err
+	var simpleOrderList []models.SimpleOrder
+	user, _ := GetUserByID(a, userId)
+	if user.BranchId == models.DictBranchName["Mollnhof"] {
+		simpleOrderList, err = repo_order.GetAllSimpleOrderList(a, "", "")
+		if err != nil {
+			return nil, err
+		}
+	} else if user.BranchId == models.DictBranchName["Hauptabschnitt"] {
+		simpleOrderList, err = repo_order.GetSimpleOrderListHauptabschnitt(a, userId)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		simpleOrderList, err = repo_order.GetSimpleOrderList(a, userId)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	for _, row := range simpleOrderList {
@@ -462,9 +476,9 @@ func DispatchOrder(db *gorm.DB, userId, orderId, driverId int) error {
 		}
 	}
 
-	if err := repo_order.SetDriverToOrder(db, orderId, driverId); err != nil {
-		return err
-	}
+	// if err := repo_order.SetDriverToOrder(db, orderId, driverId); err != nil {
+	//	 return err
+	// }
 
 	logs := []models.Log{
 		{

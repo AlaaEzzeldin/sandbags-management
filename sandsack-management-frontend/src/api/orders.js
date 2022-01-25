@@ -5,7 +5,7 @@ import {BASE_URL} from "../api/config";
 export default {
 
     index(params) {
-        return axios.get(BASE_URL + 'order', {
+        return axios.get(BASE_URL + 'order/list', {
             headers: authHeader(),
             params: params
         })

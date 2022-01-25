@@ -14,7 +14,8 @@ import (
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer "
-// @Param input body models.GetStatisticsInput true "GetStats Input"
+// @Param start_date path string true "start date"
+// @Param end_date path string true "end date"
 // @Success 200
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
@@ -22,15 +23,9 @@ import (
 // @Router /order/stats [get]
 func (a *App) GetStatistics(c *gin.Context) {
 	var input models.GetStatisticsInput
-	// check whether the structure of request is correct
-	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("Fehler: GetStatistics: ", err.Error())
-		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
-		})
-		return
-	}
+	input.StartDate = c.Query("start_date")
+	input.EndDate = c.Query("end_date")
+
 
 	unterabschnittStats, err := service.GetUnterabschnittStatistics(a.DB, input.StartDate, input.EndDate)
 	if err != nil {

@@ -9,9 +9,17 @@
           <v-card-subtitle class=" ml-10 pl-3">
             <h1 style="color: red;font-weight: bolder;  font-size: x-large"> Feuerwehr Passau </h1>
           </v-card-subtitle>
-
-          <v-form ref="form" v-model="valid" class=" ma-10 pa-3">
-
+          <v-form ref="form" v-model="valid" class=" pa-3">
+            <v-row>
+              <v-col>
+                <v-alert
+                    outlined
+                    text
+                    type="info"
+                >Wenden Sie sich an den Systemadministrator, um Ihren Benutzernamen und Ihr Passwort zu erfahren
+                </v-alert>
+              </v-col>
+            </v-row>
             <v-row>
               <v-col>
                 <v-text-field
@@ -41,21 +49,6 @@
               </v-col>
             </v-row>
 
-            <v-row align-content="center" justify="center">
-              <v-col class="text-left" cols="6">
-                <v-checkbox
-                    v-model="checkbox"
-                    :label="`Angemeldet bleiben`"
-                    class="justify-center align-center mt-0"
-                ></v-checkbox>
-              </v-col>
-              <v-col class="text-right" cols="6">
-                <v-btn text link :to="{name: links.recoverPasswordPage}" small>
-                  <u>Passwort vergessen?</u>
-                </v-btn>
-              </v-col>
-            </v-row>
-
             <v-row no-gutters>
               <v-col>
                 <v-btn
@@ -67,17 +60,6 @@
                     @click="submit"
                 >
                   Einloggen
-                </v-btn>
-              </v-col>
-            </v-row>
-
-            <v-row class="text-right">
-              <v-col>
-                Sie haben noch kein Konto?
-                <v-btn text link :to="{name: links.signupPage}"
-                       small
-                >
-                  <u>Registrieren</u>
                 </v-btn>
               </v-col>
             </v-row>

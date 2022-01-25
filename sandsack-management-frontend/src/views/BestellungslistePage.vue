@@ -15,6 +15,9 @@
             block
             @click="exportAllOrders"
         >
+          <v-icon left>
+            mdi-file-export
+          </v-icon>
           Exportieren
         </v-btn>
         <v-btn
@@ -24,8 +27,12 @@
             color="primary"
             dark
             block
+            :disabled="!IsWaitingForDispatchOrders"
             @click="lieferscheinDruecken"
         >
+          <v-icon left>
+            mdi-file-export
+          </v-icon>
           Lieferschein drücken
         </v-btn>
       </v-col>
@@ -67,6 +74,9 @@ export default {
     },
     getPriorityByID(){
       return this.$store.getters.getPriorityByID
+    },
+    IsWaitingForDispatchOrders(){
+      return this.getOrders.find(order=> order.status_name==='AKZEPTIERT')
     }
   },
 
