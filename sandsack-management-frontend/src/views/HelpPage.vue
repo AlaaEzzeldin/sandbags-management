@@ -83,11 +83,11 @@ export default {
       },
       {
         question: "Wie funktionieren die PDF-Exportiern auf Basis von Rollen?",
-        answer: ["Pdf exportieren funktioniert für die verschiedenen im System genannten Rollen wie Hauptabschnitt, Einsatzabschnitt etc. Sie können die komplette Bestellliste einfach herunterladen."]
+        answer: ["Hauptabschnitt, Einsatzabschnitt und Einsatzleite können die komplette Bestellliste in Bestellungsliste mit 'Exportieren' Taste herunterladen."]
       },
       {
         question: "Wie funktioniert der Lieferschein?",
-        answer: ["Lieferschein arbeitet für die verschiedenen Rollen, wie im System erwähnt, wie z.B. Mollhof, Sie können ein pdf erstellen, das mit id, zeit, von, prioritat, status gedruckt werden kann."]
+        answer: ["Mollnhof kann den Lieferschein in Bestellungsliste mit 'Lieferschein drücken' Taste herunterladen. Dann kann der Lieferschein am Fahrer gegeben werden."]
       },
       {
         question: "Im Falle eines Systemausfalls oder wenn Sie Hilfe benötigen, rufen Sie den Systemadministrator an?",
