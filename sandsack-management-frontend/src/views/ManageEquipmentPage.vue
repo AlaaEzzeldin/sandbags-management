@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="getEquipment.length!==0">
     <v-row no-gutters>
       <v-col class="pt-13 justify-center align-center">
         <h1 style="font-weight: bolder;">Ausrüstung Zurückgeben</h1>
@@ -8,9 +8,9 @@
     <v-row>
       <v-col>
         <v-select
+            :label="getEquipment.find(item=>item.name==='Sandsack').name"
             :items="getEquipment.map(item => item.name)"
             @change="setCurrentType"
-            label="Ausrüstungtyp"
             outlined
         ></v-select>
       </v-col>
@@ -57,9 +57,10 @@ export default {
   }),
 
   created() {
-    this.$store.dispatch("loadEquipment");
+    this.$store.dispatch("loadEquipment")
+    if(this.getEquipment.length!==0)
+      this.currentType= this.getEquipment.find(item=>item.name==='Sandsack')
   },
-
   computed: {
     getEquipment() {
       return this.$store.getters.getEquipment;
@@ -68,17 +69,17 @@ export default {
       if (this.currentType) {
         return this.$store.getters.getEquipmentByType(this.currentType);
       }
-      return 0;
+      return this.$store.getters.getEquipmentByType('Sandsack');
     },
     getBtnDisabled() {
-      return !this.currentType || (parseInt(this.newAmount) === 0)
+      return (parseInt(this.newAmount) === 0)
     }
   },
 
   methods: {
     updateEquipment() {
       let id = this.getCurrentEquipment.id;
-      let type = this.currentType;
+      let type = this.currentType? this.currentType: 'Sandsack' ;
       let amount = this.newAmount;
       let data = {
         "id": id,
