@@ -8,8 +8,8 @@ import (
 )
 
 type TotalNumber struct {
-	Count int `gorm:"column:count"`
-	Name string `gorm:"column:name"`
+	Count int    `gorm:"column:count"`
+	Name  string `gorm:"column:name"`
 }
 
 func TotalNumberUnterabschnitt(db *gorm.DB, startDate, endDate string) int {
@@ -26,9 +26,9 @@ func TotalNumberUnterabschnitt(db *gorm.DB, startDate, endDate string) int {
 }
 
 type TotalNumberPerAbschnitt struct {
-	Count int `gorm:"column:count"`
-	UserId int `gorm:"column:user_id"`
-	Name string `gorm:"column:name"`
+	Count  int    `gorm:"column:count"`
+	UserId int    `gorm:"column:user_id"`
+	Name   string `gorm:"column:name"`
 }
 
 func TotalNumberAcceptedUnterabschnitt(db *gorm.DB, startDate, endDate string) int {
@@ -57,12 +57,11 @@ func GeneralStatisticsUnterabschnitt(db *gorm.DB, startDate, endDate string) mod
 	totalNumberAccepted := strconv.Itoa(TotalNumberAcceptedUnterabschnitt(db, startDate, endDate))
 	averageProcessingTime := "10 mins"
 	return models.GeneralStatistics{
-		TotalNumberOfOrders: totalNumber,
+		TotalNumberOfOrders:         totalNumber,
 		TotalNumberOfAcceptedOrders: totalNumberAccepted,
-		AverageProcessingTime: averageProcessingTime,
+		AverageProcessingTime:       averageProcessingTime,
 	}
 }
-
 
 func CreatedOrderNumber(db *gorm.DB, startDate, endDate string) []TotalNumberPerAbschnitt {
 	query := `select u.id as user_id, u.name, count(o.id)
