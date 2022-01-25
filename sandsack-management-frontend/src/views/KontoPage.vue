@@ -58,6 +58,9 @@
             block
             @click="logout"
         >
+          <v-icon left>
+            mdi-logout
+          </v-icon>
           Ausloggen
         </v-btn>
       </v-col>
@@ -71,6 +74,9 @@
             dark
             block
         >
+          <v-icon left>
+            mdi-pencil
+          </v-icon>
           Konto bearbeiten
         </v-btn>
       </v-col>
@@ -82,6 +88,9 @@
             block
             outlined
         >
+          <v-icon left>
+            mdi-account-key
+          </v-icon>
           Kennwort ändern
         </v-btn>
       </v-col>
