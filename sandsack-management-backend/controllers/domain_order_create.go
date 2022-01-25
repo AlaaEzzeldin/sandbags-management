@@ -24,45 +24,49 @@ func (a *App) CreateOrder(c *gin.Context) {
 	var input models.CreateOrderInput
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("CreateOrder error: ", err.Error())
+		log.Println("Fehler: CreateOrder: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage",
 		})
 		return
 	}
 
 	claims, err := GetClaims(c)
 	if err != nil {
-		log.Println("GetClaims error: ", err.Error())
-		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+		log.Println("Fehler: GetClaims: ", err.Error())
+		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
+			ErrCode:    http.StatusUnauthorized,
+			ErrMessage: "Access Token ist ungültig",
 		})
 		return
 	}
 
 	user, err := service.GetUserByEmail(a.DB, claims.Email)
 	if err != nil {
-		log.Println("GetUserByEmail error: ", err.Error())
+		log.Println("Fehler: GetUserByEmail: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 	log.Println("User branch", user.BranchId)
+
+	//if !(user.BranchId == models.DictBranchName["Unterabschnitt"] || user.BranchId == models.DictBranchName["Einsatzabschnitt"])  {
 	if user.BranchId != models.DictBranchName["Unterabschnitt"] {
 		log.Println("It's not Unterabschnitt")
-		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
-			ErrCode:    http.StatusUnauthorized,
-			ErrMessage: "you are not allowed to create order",
+		c.JSON(http.StatusConflict, models.ErrorResponse{
+			ErrCode:    http.StatusConflict,
+			ErrMessage: "Sie können keine Bestellung anlegen",
 		})
 		return
 	}
 
 	var comments []models.Comment
-	comments = append(comments, models.Comment{CommentText: input.Comment})
+	if len(input.Comment) > 0 {
+		comments = append(comments, models.Comment{CommentText: input.Comment})
+	}
 
 	order := &models.Order{
 		Name:        user.Name,
@@ -70,25 +74,24 @@ func (a *App) CreateOrder(c *gin.Context) {
 		AddressTo:   input.AddressTo,
 		AddressFrom: "Mollnhof",
 		StatusId:    models.DictStatusName["ANSTEHEND"],
-		PriorityId:  models.DictPriorityName["HIGH"],
+		PriorityId:  models.DictPriorityName["HOCH"],
 		Comments:    comments,
 		Equipments:  input.Equipments,
 	}
 
 	if err := service.CreateOrder(a.DB, user.Name, order); err != nil {
-		log.Println("CreateOrder error: ", err.Error())
+		log.Println("Fehler: CreateOrder: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	updatedOrder, err := service.GetOrder(a.DB, user.Id, order.Id)
 	if err != nil {
-		log.Println("GetOrder error", err.Error())
+		log.Println("Fehler: GetOrder", err.Error())
 	}
-
 
 	c.JSON(http.StatusOK, updatedOrder)
 

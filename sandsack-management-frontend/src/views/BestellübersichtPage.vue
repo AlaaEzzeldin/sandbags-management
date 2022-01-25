@@ -1,18 +1,19 @@
 <template>
   <div ref="content">
     <v-row>
-      <v-col class="pt-13 justify-center align-center" sm="3">
+      <v-col sm="3" class="pt-13 justify-center align-center">
         <h1 style="font-weight: bolder;">Bestellübersicht</h1>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col class="pt-15 justify-center align-center" sm="5">
+
+      <v-col sm="4" class="pt-15 justify-center align-center">
         <v-menu
             v-model="menu"
             :close-on-content-click="false"
             :nudge-right="50"
-            min-width="auto"
-            offset-y
             transition="scale-transition"
+            offset-y
+            min-width="auto"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field

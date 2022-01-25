@@ -27,10 +27,10 @@ func (a *App) ChangePassword(c *gin.Context) {
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("ChangePassword error: ", err.Error())
+		log.Println("Fehler: ChangePassword: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage",
 		})
 		return
 	}
@@ -38,28 +38,28 @@ func (a *App) ChangePassword(c *gin.Context) {
 	claims, err := GetClaims(c)
 	if err != nil {
 		log.Println("GetClaims error: ", err.Error())
-		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
+			ErrCode:    http.StatusUnauthorized,
+			ErrMessage: "Access Token ist ungültig",
 		})
 		return
 	}
 
 	user, err := service.GetUserByEmail(a.DB, claims.Email)
 	if err != nil {
-		log.Println("GetUserByEmail error: ", err.Error())
+		log.Println("Fehler: GetUserByEmail: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	if ok := functions.CheckPasswordHash(input.OldPassword, user.Password); !ok {
-		log.Println("CheckPasswordHash error")
+		log.Println("Fehler: CheckPasswordHash")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "wrong password",
+			ErrMessage: "Ungültiges Passwort",
 		})
 		return
 	}
@@ -68,31 +68,31 @@ func (a *App) ChangePassword(c *gin.Context) {
 		log.Println("NewPassword length: less than 6 symbols ")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "new password should be longer than 6 symbols",
+			ErrMessage: "Neues Passwort muss mindestens 6 Symbolen lang sein",
 		})
 		return
 	}
 
 	hashedPassword, err := functions.HashPassword(input.NewPassword)
 	if err != nil {
-		log.Println("HashPassword error: ", err.Error())
+		log.Println("Fehler: HashPassword: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	if err := service.UpdatePassword(a.DB, claims.Email, hashedPassword); err != nil {
-		log.Println("UpdatePassword error: ", err.Error())
+		log.Println("Fehler: UpdatePassword: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, "The password has been changed successfully")
+	c.JSON(http.StatusOK, "Ihr Passwort wurde erfolgreich geändert")
 	return
 
 }

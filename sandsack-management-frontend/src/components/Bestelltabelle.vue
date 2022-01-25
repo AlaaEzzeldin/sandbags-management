@@ -1,5 +1,5 @@
 <template>
-  <v-card class="elevation-0 rounded-lg" outlined>
+  <v-card class="elevation-0 rounded-lg" outlined v-if="orders">
     <v-data-table
         :headers="headers"
         :items="orders"
@@ -27,15 +27,25 @@
         </v-toolbar>
       </template>
 
+      <!---------------------------------------- TIME ----------------------------------->
+      <template v-slot:item.priority_id="{ item }">
+        {{getPriorityByID(item.priority_id).name}}
+      </template>
+
+      <!---------------------------------------- TIME ----------------------------------->
+      <template v-slot:item.create_date="{ item }">
+        {{format_time(item.create_date)}}
+      </template>
+
       <!----------------------------------------STATUS CHIP----------------------------------->
-      <template v-slot:item.status="{ item }">
+      <template v-slot:item.status_name="{ item }">
         <v-chip
             small
-            :color="getColor(item.status)"
+            :color="getColor(item.status_name)"
             dark
             outlined
         >
-          {{ item.status }}
+          {{ item.status_name }}
         </v-chip>
       </template>
 
@@ -51,11 +61,11 @@
                     style="text-transform: capitalize; font-weight: bolder;"
                     @click="editItem(item)"
                     small
-                    :disabled="(item.status!=='ANSTEHEND' &&    getCurrentUserRole=== 'Unterabschnitt')
-                    || (item.status!=='WEITERGELEITET BEI EINSATZABSCHNITT' && getCurrentUserRole=== 'Hauptabschnitt')
-                    || (item.status!=='WEITERGELEITET BEI HAUPTABSCHNITT' && getCurrentUserRole=== 'Einsatzleiter') "
+                    :disabled="(item.status_name!=='ANSTEHEND' && ['Einsatzabschnitt', 'Unterabschnitt'].includes(getCurrentUserRole))
+                    || (item.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT' && getCurrentUserRole=== 'Hauptabschnitt')
+                    || (item.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT' && getCurrentUserRole=== 'Einsatzleiter') "
 
-                class="elevation-0"
+                    class="elevation-0"
                     color="primary"
                     rounded
                     icon
@@ -105,10 +115,10 @@ export default {
         align: 'start',
         value: 'id',
       },
-      {text: 'Zeit', value: 'created_at'},
-      {text: 'Von', value: 'from'},
-      {text: 'Priorität', value: 'priority', sortable: false},
-      {text: 'Status', value: 'status', align: 'center'},
+      {text: 'Zeit', value: 'create_date'},
+      {text: 'Von', value: 'name'},
+      {text: 'Priorität', value: 'priority_id', sortable: false},
+      {text: 'Status', value: 'status_name', align: 'center'},
       {text: 'Aktionen', value: 'actions', sortable: false, align: 'center'},
     ],
     options: {
@@ -118,6 +128,9 @@ export default {
   computed: {
     getCurrentUserRole(){
       return this.$store.getters.getCurrentUserRole
+    },
+    getPriorityByID(){
+      return this.$store.getters.getPriorityByID
     }
   },
   methods: {

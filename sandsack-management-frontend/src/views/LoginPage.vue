@@ -22,7 +22,6 @@
                     filled
                     outlined
                     prepend-icon="mdi-email"
-
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -31,6 +30,7 @@
               <v-col>
                 <v-text-field
                     v-model="user.password"
+                    type="password"
                     :rules="passwordRules"
                     label="Password"
                     required
@@ -86,14 +86,21 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <AuthFailureDialog v-if="authFailureDialog"
+                       :dialog="authFailureDialog"
+                       @close="authFailureDialog = false"
+                       :message=" messageToDisplay"></AuthFailureDialog>
   </v-container>
 </template>
 
+
 <script>
+import AuthFailureDialog from "../components/AuthFailureDialog";
 
 export default {
   name: 'LoginPage',
-
+  components: {AuthFailureDialog},
   data: () => ({
     user: {
       email: '',
@@ -111,7 +118,9 @@ export default {
     links: {
       recoverPasswordPage: "RecoverPasswordPage",
       signupPage: "SignupPage",
-    }
+    },
+    authFailureDialog: false,
+    messageToDisplay: ''
   }),
 
   methods: {
@@ -124,10 +133,11 @@ export default {
             this.$router.push({name: 'BestellungslistePage'})
           },
           error => {
-            this.message =
-                (error.response && error.response) ||
-                error.message ||
-                error.toString();
+            this.message = (error.response && error.response) || error.message || error.toString();
+            if (this.message.data.err_code === 404)
+              this.messageToDisplay = 'Der von Ihnen angegebene Benutzername und das Passwort sind nicht korrekt, bitte versuchen Sie es erneut!'
+            else this.messageToDisplay = 'Etwas ist schief gelaufen. Bitte versuchen Sie es erneut!'
+            this.authFailureDialog=true
           }
       );
     }

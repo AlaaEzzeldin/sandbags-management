@@ -22,10 +22,10 @@ import (
 func (a *App) GetPriority(c *gin.Context) {
 	priority, err := service.GetPriority(a.DB)
 	if err != nil {
-		log.Println("GetPriority error", err.Error())
+		log.Println("Fehler: GetPriority", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrMessage: "something went wrong",
 			ErrCode:    http.StatusInternalServerError,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

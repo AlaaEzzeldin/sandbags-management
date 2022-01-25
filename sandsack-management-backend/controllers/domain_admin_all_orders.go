@@ -8,22 +8,23 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
-// AddDriver
-// @Description This endpoint adds new driver
-// @Summary This endpoint adds new driver
+// AdminAllOrders
+// @Description AdminAllOrders - list of all orders
+// @Summary AdminAllOrders - list of all orders
 // @Accept json
-// @Produce json
-// @Param Authorization header string true "Bearer "
-// @Param input body models.AddDriverInput true "name, description"
-// @Success 200
+// @Param Authorization header string true " "
+// @Param id path string true "Id of the order"
+// @Success 200 {array} models.Order
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
-// @Tags Core
-// @Router /core/driver/add [post]
-func (a *App) AddDriver(c *gin.Context) {
-	var input models.AddDriverInput
+// @Failure 401 {object} models.ErrorResponse
+// @Tags Order
+// @Router /admin/orders/ [get]
+func (a *App) AdminAllOrders(c *gin.Context) {
+	var input models.GetAllOrders
+	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("Fehler: AddDriver: ", err.Error())
+		log.Println("Fehler: EditOrder: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
@@ -33,11 +34,6 @@ func (a *App) AddDriver(c *gin.Context) {
 
 	claims, err := GetClaims(c)
 	if err != nil {
-		log.Println("Fehler: GetClaims: ", err.Error())
-		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "Da ist etwas schief gelaufen",
-		})
 		return
 	}
 
@@ -45,13 +41,14 @@ func (a *App) AddDriver(c *gin.Context) {
 		log.Println("Role is not Einsatzleiter")
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
 			ErrCode:    http.StatusForbidden,
-			ErrMessage: "Das ist Ihnen nicht erlaubt",
+			ErrMessage: "Sie sind nicht den Einsatzleiter",
 		})
 		return
 	}
 
-	if err := service.AddDriver(a.DB, input.Name, input.Description); err != nil {
-		log.Println("Fehler: AddDriver:", err.Error())
+	orders, err := service.GetAllOrders(a.DB, input.StartDate, input.EndDate)
+	if err != nil {
+		log.Println("GetAllOrders error", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
 			ErrMessage: "Da ist etwas schief gelaufen",
@@ -59,6 +56,6 @@ func (a *App) AddDriver(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusOK, orders)
 	return
 }

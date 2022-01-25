@@ -62,11 +62,12 @@ func (a *App) PatchProfile(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, "The profile data has been changed successfully")
+	user, err := service.GetUserByID(a.DB, claims.Id)
+	user.Password = ""
+
+	c.JSON(http.StatusOK, user)
 	return
 }
-
-
 
 // GetProfile
 // @Description GetProfile - get info of the user
@@ -82,20 +83,20 @@ func (a *App) PatchProfile(c *gin.Context) {
 func (a *App) GetProfile(c *gin.Context) {
 	claims, err := GetClaims(c)
 	if err != nil {
-		log.Println("GetClaims error:", err.Error())
+		log.Println("Fehler: GetClaims:", err.Error())
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
-			ErrCode: http.StatusForbidden,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusForbidden,
+			ErrMessage: "Access Token ist ungültig",
 		})
 		return
 	}
 
 	user, err := service.GetUserByEmail(a.DB, claims.Email)
 	if err != nil {
-		log.Println("GetUserByID error:", err.Error())
+		log.Println("Fehler: GetUserByID:", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusInternalServerError,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
@@ -105,6 +106,5 @@ func (a *App) GetProfile(c *gin.Context) {
 
 	c.JSON(http.StatusOK, user)
 	return
-
 
 }

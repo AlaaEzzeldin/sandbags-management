@@ -22,10 +22,10 @@ import (
 func (a *App) GetUserList(c *gin.Context) {
 	userList, err := service.GetUserList(a.DB)
 	if err != nil {
-		log.Println("GetUserList error", err.Error())
+		log.Println("Fehler: GetUserList", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

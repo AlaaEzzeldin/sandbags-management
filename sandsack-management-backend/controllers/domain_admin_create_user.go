@@ -25,10 +25,10 @@ func (a *App) CreateUser(c *gin.Context) {
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("Registration error: ", err.Error())
+		log.Println("Fehler: Registration: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
 		})
 		return
 	}
@@ -39,7 +39,7 @@ func (a *App) CreateUser(c *gin.Context) {
 
 	email, err := middleware.GetEmail(tokenStr)
 	if err != nil {
-		log.Println("GetEmail error: ", err.Error())
+		log.Println("Fehler: GetEmail: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
 			ErrMessage: err.Error(),
@@ -49,10 +49,10 @@ func (a *App) CreateUser(c *gin.Context) {
 
 	meUser, err := service.GetUserByEmail(a.DB, email)
 	if err != nil {
-		log.Println("GetUserByToken error: ", err.Error())
+		log.Println("Fehler: GetUserByToken: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
 		})
 		return
 	}
@@ -62,7 +62,7 @@ func (a *App) CreateUser(c *gin.Context) {
 		log.Println("Trying to create user error")
 		c.JSON(http.StatusUnauthorized, models.ErrorResponse{
 			ErrCode:    http.StatusUnauthorized,
-			ErrMessage: "you don't have this right",
+			ErrMessage: "Das ist Ihnen nicht erlaubt",
 		})
 		return
 	}
@@ -72,16 +72,16 @@ func (a *App) CreateUser(c *gin.Context) {
 		log.Println("Mollnhof cannot have any branches except Einsatzleiter")
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "Mollnhof cannot have any branched except Einsatzleiter",
+			ErrMessage: "Mollnhof cannot have any branches except Einsatzleiter",
 		})
 		return
 	}
 
 	if err := service.CreateUser(a.DB, &input); err != nil {
-		log.Println("CreateUser error: ", err.Error())
+		log.Println("Fehler: CreateUser: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

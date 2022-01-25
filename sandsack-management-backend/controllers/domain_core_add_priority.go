@@ -8,8 +8,6 @@ import (
 	"team2/sandsack-management-backend/service"
 )
 
-
-
 // AddPriority
 // @Description This endpoint adds new priority
 // @Summary This endpoint adds new priority
@@ -63,20 +61,20 @@ func (a *App) AddPriority(c *gin.Context) {
 func (a *App) AddEquipment(c *gin.Context) {
 	var input models.OrderEquipment
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("AddEquipment error: ", err.Error())
+		log.Println("Fehler: AddEquipment: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
 		})
 		return
 	}
 
 	err := service.AddEquipment(a.DB, input.Name, input.Quantity)
 	if err != nil {
-		log.Println("AddEquipment error: ", err.Error())
+		log.Println("Fehler: AddEquipment: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

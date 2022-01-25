@@ -83,7 +83,7 @@
                   dark
                   @click="closeDialog"
               >
-                Abrechen
+                Abbrechen
               </v-btn>
 
             </v-col>

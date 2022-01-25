@@ -14,20 +14,20 @@ func AuthorizeJWT() gin.HandlerFunc {
 		const bearer = "Bearer "
 		header := c.GetHeader("Authorization")
 		if len(header) == 0 {
-			log.Println("Length of header is 0 error")
+			log.Println("Fehler: Header ist leer ")
 			c.AbortWithStatusJSON(http.StatusBadRequest, models.ErrorResponse{
-				ErrCode: http.StatusBadRequest,
-				ErrMessage: "length of header is 0",
+				ErrCode:    http.StatusBadRequest,
+				ErrMessage: "Header ist leer",
 			})
 			return
 		}
 		tokenStr := header[len(bearer):]
 		token, err := middleware.VerifyToken(tokenStr)
 		if err != nil {
-			log.Println("VerifyToken error", err.Error())
+			log.Println("Fehler: VerifyToken", err.Error())
 			c.AbortWithStatusJSON(http.StatusUnauthorized, models.ErrorResponse{
-				ErrCode: http.StatusUnauthorized,
-				ErrMessage: "no access",
+				ErrCode:    http.StatusUnauthorized,
+				ErrMessage: "Kein Zugang",
 			})
 			return
 		}
@@ -37,7 +37,7 @@ func AuthorizeJWT() gin.HandlerFunc {
 				c.Next()
 			}
 		} else {
-			log.Println("Token is not valid")
+			log.Println("Token ist ungültig")
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 	}
@@ -50,10 +50,10 @@ func (a *App) AuthorizeAdmin() gin.HandlerFunc {
 		tokenStr := header[len(bearer):]
 		token, err := middleware.VerifyToken(tokenStr)
 		if err != nil {
-			log.Println("VerifyToken error", err.Error())
+			log.Println("Fehler VerifyToken", err.Error())
 			c.AbortWithStatusJSON(http.StatusUnauthorized, models.ErrorResponse{
-				ErrCode: http.StatusUnauthorized,
-				ErrMessage: "no access",
+				ErrCode:    http.StatusUnauthorized,
+				ErrMessage: "Kein Zugang",
 			})
 		}
 
@@ -62,27 +62,27 @@ func (a *App) AuthorizeAdmin() gin.HandlerFunc {
 				user, err := service.GetUserByEmail(a.DB, claims.Email)
 				if err != nil {
 					c.AbortWithStatusJSON(http.StatusInternalServerError, models.ErrorResponse{
-						ErrCode: http.StatusInternalServerError,
-						ErrMessage: "something went wrong",
+						ErrCode:    http.StatusInternalServerError,
+						ErrMessage: "Da ist etwas schief gelaufen",
 					})
 				}
-				if !user.IsSuperUser{
+				if !user.IsSuperUser {
 					c.AbortWithStatusJSON(http.StatusUnauthorized, models.ErrorResponse{
-						ErrCode: http.StatusUnauthorized,
-						ErrMessage: "no access",
+						ErrCode:    http.StatusUnauthorized,
+						ErrMessage: "Kein Zugang",
 					})
 				}
 				c.Next()
 			}
 		} else {
-			log.Println("Token is not valid")
+			log.Println("Token ist ungültig")
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 
 	}
 }
 
-func GetClaims(c *gin.Context) (*models.CustomClaims, error){
+func GetClaims(c *gin.Context) (*models.CustomClaims, error) {
 	const bearer = "Bearer "
 	header := c.GetHeader("Authorization")
 	tokenStr := header[len(bearer):]
