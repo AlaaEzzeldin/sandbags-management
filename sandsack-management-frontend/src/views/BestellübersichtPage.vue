@@ -80,7 +80,7 @@
           Bestellungen
         </h2>
       </v-col>
-      <v-col cols="6">
+<!--      <v-col cols="6">
         <v-select
             v-if="this.getCurrentUserRole==='Einsatzleiter'"
             v-model="selectedHaupt"
@@ -117,7 +117,7 @@
             return-object
             single-line
         ></v-select>
-      </v-col>
+      </v-col>-->
     </v-row>
     <div ref="content">
       <GChart
@@ -141,11 +141,24 @@
           type="ColumnChart"/>
     </div>
     <br>
+    <v-spacer></v-spacer>
     <v-row>
-      <v-col cols="12" offset="9" sm="3">
-        <button id="pdf" class='button' v-on:click="download">Export PDF</button>
-      </v-col>
+    <v-col cols="12" sm="6" offset-sm="3" class="mt-10">
+      <v-btn
+          id="pdf"
+          style="text-transform: capitalize; font-weight: bolder;"
+          rounded
+          @click="download"
+          block
+          color="red"
+          outlined
+      >
+        pdf exportieren
+      </v-btn>
+    </v-col>
     </v-row>
+
+
   </div>
 </template>
 
@@ -153,7 +166,6 @@
 import jsPDF from "jspdf";
 import domtoimage from "dom-to-image";
 import {GChart} from "vue-google-charts";
-import router from "@/router";
 
 export default {
 
@@ -307,10 +319,7 @@ export default {
     getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
     }
-  },
 
-  props: {
-    msg: String
   },
   methods: {
     download() {
@@ -348,8 +357,9 @@ export default {
           });
     },
     loadStatsByDates(date_from, date_to) {
-      router.push({name: 'BestellübersichtPage', query: {date1: date_from, date2: date_to}})
-      this.$store.dispatch("loadStatisticschart", {'date_from': date_from, 'date_to': date_to})
+      console.log("dates",date_from, date_to )
+      //router.push({name: 'BestellübersichtPage', query: {date1: date_from, date2: date_to}})
+     // this.$store.dispatch("loadStatisticschart", {'date_from': date_from, 'date_to': date_to})
     },
   }
 };
@@ -357,28 +367,6 @@ export default {
 
 <style>
 
-.button {
-  background-color: #f44336; /* Red */
-  font-size: medium;
-  font-weight: bolder;
-  padding: 6px 15px;
-  display: flex;
-  flex: 1 0 auto;
-  border-radius: 50px;
-  color: rgb(255 255 255);
-  letter-spacing: 0.0892857143em;
-  text-indent: 0.0892857143em;
-  text-transform: capitalize;
-  justify-content: inherit;
-  line-height: normal;
-  position: relative;
-  transition: inherit;
-  transition-property: opacity;
-}
-
-h3 {
-  margin: 50pt 0 0;
-}
 
 ul {
   list-style-type: none;
@@ -391,7 +379,7 @@ li {
 }
 
 a {
+  color: #42b983;
   color: #D7201F;
 }
-
 </style>
