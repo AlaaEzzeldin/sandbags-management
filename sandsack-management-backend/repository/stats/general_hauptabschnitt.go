@@ -46,13 +46,11 @@ func GeneralStatisticsHauptabschnitt(db *gorm.DB, startDate, endDate string) mod
 	totalNumberAccepted := strconv.Itoa(TotalNumberAcceptedHauptabschnitt(db, startDate, endDate))
 	averageProcessingTime := "10 mins"
 	return models.GeneralStatistics{
-		TotalNumberOfOrders: totalNumber,
+		TotalNumberOfOrders:         totalNumber,
 		TotalNumberOfAcceptedOrders: totalNumberAccepted,
-		AverageProcessingTime: averageProcessingTime,
+		AverageProcessingTime:       averageProcessingTime,
 	}
 }
-
-
 
 func TotalNumberOrdersHauptabschnitt(db *gorm.DB, startDate, endDate string) []TotalNumberPerAbschnitt {
 	query := `select u.id as user_id, count(o.id), u.name as name

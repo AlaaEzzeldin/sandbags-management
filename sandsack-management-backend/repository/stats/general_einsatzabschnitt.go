@@ -47,9 +47,9 @@ func GeneralStatisticsEinsatzabschnitt(db *gorm.DB, startDate, endDate string) m
 	totalNumberAccepted := strconv.Itoa(TotalNumberAcceptedEinsatzabschnitt(db, startDate, endDate))
 	averageProcessingTime := "10 mins"
 	return models.GeneralStatistics{
-		TotalNumberOfOrders: totalNumber,
+		TotalNumberOfOrders:         totalNumber,
 		TotalNumberOfAcceptedOrders: totalNumberAccepted,
-		AverageProcessingTime: averageProcessingTime,
+		AverageProcessingTime:       averageProcessingTime,
 	}
 }
 
@@ -70,6 +70,7 @@ func TotalNumberOrdersEinsatzabschnitt(db *gorm.DB, startDate, endDate string) [
 	}
 	return totalNumber
 }
+
 func StatisticsPerEinsatzabschnitt(db *gorm.DB, startDate, endDate string) []models.StatisticsPerAbschnitt {
 	var stats []models.StatisticsPerAbschnitt
 	totalNumberPerAbschnitt := TotalNumberOrdersEinsatzabschnitt(db, startDate, endDate)
@@ -97,7 +98,5 @@ func StatisticsPerEinsatzabschnitt(db *gorm.DB, startDate, endDate string) []mod
 		stat.TotalNumberOfAcceptedOrders = strconv.Itoa(totalNumber.Count)
 		stats = append(stats, stat)
 	}
-
 	return stats
-
 }
