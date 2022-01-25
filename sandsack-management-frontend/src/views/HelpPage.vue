@@ -39,12 +39,8 @@ export default {
         answer: "Durch die Eingabe der genauen Anmeldedaten (Email und Passwort) während der Anmeldung kann für die Anmeldung der Anwendung verwendet werden."
       },
       {
-        question: "Wenn Passwort vergessen?",
-        answer: "Verwenden Sie immer den Link 'Passwort vergessen', um das Passwort mit den angegebenen Anmeldedaten erfolgreich zurückzusetzen."
-      },
-      {
-        question: "Wie kann man das Passwort wiederherstellen?",
-        answer: "Verwenden Sie immer die Seite zur Wiederherstellung des Kennworts. Fügen Sie dort die erforderlichen Anmeldedaten hinzu, bevor Sie sich am System anmelden. Auf diese Weise wird eine E-Mail zum Zurücksetzen des Passworts an die angegebene Adresse gesendet. Setzen Sie von dort aus das Passwort zurück und melden Sie sich erneut erfolgreich an."
+        question: "Wie kann man das Passwort ändern?",
+        answer: "Benutzen Sie die 'Konto' Seite, dann 'Passwort ändern' wählen."
       },
       {
         question: "Wie hoch ist die Mindestbestellmenge?",
