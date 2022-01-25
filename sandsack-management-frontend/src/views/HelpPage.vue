@@ -35,12 +35,8 @@ export default {
   data: () => ({
     questionsAnswers: [
       {
-        question: "Wie funktioniert das login formular?",
-        answer: "Durch die Eingabe der genauen Anmeldedaten wie Benutzername und Passwort während der Registrierung kann für die Anmeldung der Anwendung verwendet werden."
-      },
-      {
-        question: "Wie funktioniert das Anmeldeng formular?",
-        answer: "Durch Hinzufügen der entsprechenden E-Mail-Adresse und des Passworts können sich die Mitarbeiter im System registrieren. Anschließend wird dieser Benutzername als Login für die erfolgreiche Authentifizierung in der System-App verwendet."
+        question: "Wie funktioniert das Login-Formular?",
+        answer: "Durch die Eingabe der genauen Anmeldedaten (Email und Passwort) während der Anmeldung kann für die Anmeldung der Anwendung verwendet werden."
       },
       {
         question: "Wenn Passwort vergessen?",
