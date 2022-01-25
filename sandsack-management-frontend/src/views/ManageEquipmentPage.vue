@@ -19,13 +19,13 @@
       <v-col>
         <h3>Aktueller Betrag:</h3>
       </v-col>
-      <v-col>
-        {{getCurrentEquipment.quantity}}
+      <v-col >
+        <h3 style="font-weight: normal">{{getCurrentEquipment.quantity}} </h3>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <h3>Zurückgeben:</h3>
+        <h3>Bitte geben Sie den Betrag ein, der zurückgegeben wurde:</h3>
       </v-col>
       <v-col>
         <v-text-field
@@ -35,15 +35,22 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-btn
-        rounded
-        color="green"
-        style="min-width: 120px;"
-        @click="updateEquipment"
-        :disabled="getBtnDisabled"
-    >
-      Speichern
-    </v-btn>
+
+    <v-row>
+      <v-col cols="12" sm="6" offset="3" class="mt-10 pt-10">
+        <v-btn
+            style="text-transform: capitalize; font-weight: bolder;"
+            rounded
+            color="green"
+            block
+            outlined
+            @click="updateEquipment"
+            :disabled="getBtnDisabled"
+        >
+          Speichern
+        </v-btn>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
