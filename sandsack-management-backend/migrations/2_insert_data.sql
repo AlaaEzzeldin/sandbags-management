@@ -98,7 +98,7 @@ values
      'ea63_grubweg_sandsack@user.com', '', true, false, true, 5),
     (31, 'EA ZF Werk I (WF ZF)', '1234', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa',
      'ea6zf_werk@user.com', '', true, false, true, 5),
-    (32, 'EA 7 - Innstadt', '1234', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa'
+    (32, 'EA 7 - Innstadt', '1234', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa',
     'ea7_innstadt@user.com', '', true, false, true, 4);
 
 insert into "hierarchy" (user1_id, user2_id)
