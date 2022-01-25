@@ -24,6 +24,7 @@
             color="primary"
             dark
             block
+            :disabled="!IsWaitingForDispatchOrders"
             @click="lieferscheinDruecken"
         >
           Lieferschein drücken
@@ -67,6 +68,9 @@ export default {
     },
     getPriorityByID(){
       return this.$store.getters.getPriorityByID
+    },
+    IsWaitingForDispatchOrders(){
+      return this.getOrders.find(order=> order.status_name==='AKZEPTIERT')
     }
   },
 
