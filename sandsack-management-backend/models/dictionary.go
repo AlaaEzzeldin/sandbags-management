@@ -29,7 +29,7 @@ var DictStatusName = map[string]int{
 var DictPriority = map[int]string{
 	1: "HOCH",
 	2: "MITTEL",
-	3: "NIEDGRIG",
+	3: "NIEDRIG",
 }
 
 var DictPriorityName = map[string]int{
