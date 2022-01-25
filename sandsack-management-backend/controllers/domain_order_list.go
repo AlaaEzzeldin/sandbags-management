@@ -35,7 +35,7 @@ func (a *App) ListOrder(c *gin.Context) {
 
 // GetOrder
 // @Description GetOrder - order by id
-// @Summary ListOrder - order by id
+// @Summary GetOrder - order by id
 // @Accept json
 // @Param Authorization header string true " "
 // @Param id path string true "Id of the order"

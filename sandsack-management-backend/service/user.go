@@ -115,8 +115,8 @@ func GetUserByOTP(db *gorm.DB, otp, reason string)  (user *models.User, err erro
 	return repo_user.GetUserByOTP(db, otp, reason)
 }
 
-func PatchProfile(db *gorm.DB, userId int, name string, phone string) error {
-	return repo_user.PatchProfile(db, userId, name, phone)
+func PatchProfile(db *gorm.DB, userId int, name string, phone string, email string) error {
+	return repo_user.PatchProfile(db, userId, name, phone, email)
 }
 
 func GetUserByID(db *gorm.DB, userId int) (user *models.User, err error) {
