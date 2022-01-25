@@ -207,8 +207,8 @@ export default {
   },
 
   computed: {
-    getStatisticschart() {
-      return this.$store.getters.getStatisticschart
+    getStatistics() {
+      return this.$store.getters.getStatistics
     },
     dateSelected() {
       if (this.dates[1] < this.dates[0]) {
@@ -224,10 +224,10 @@ export default {
 
     getHauptdata() {
       var HauptselectOptions = []
-      for (let i = 0; i < this.getStatisticschart.length; i++) {
-        if (this.getStatisticschart[i].type === "Hauptabschnitten") {
-          for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
-            HauptselectOptions.push(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].name)
+      for (let i = 0; i < this.getStatistics.length; i++) {
+        if (this.getStatistics[i].type === "Hauptabschnitten") {
+          for (let j = 0; j < this.getStatistics[i].statistics_per_hauptabschnitt.length; j++) {
+            HauptselectOptions.push(this.getStatistics[i].statistics_per_hauptabschnitt[j].name)
           }
         }
       }
@@ -238,8 +238,8 @@ export default {
       var EinsatzselectOptions = []
       for (let i = 0; i < this.getHauptdata.length; i++) {
         if (this.$data.selectedHaupt === this.getHauptdata[i]) {
-          for (let j = 0; j < this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt.length; j++) {
-            EinsatzselectOptions.push(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].name)
+          for (let j = 0; j < this.getStatistics[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt.length; j++) {
+            EinsatzselectOptions.push(this.getStatistics[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].name)
           }
         }
       }
@@ -248,12 +248,12 @@ export default {
 
     getEinsatzforHaupt() {
       var EinsatzforHaupt = []
-      for (let i = 0; i < this.getStatisticschart.length; i++) {
-        for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
-          for (let k = 0; k < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
-            EinsatzforHaupt.push(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].name)
+      for (let i = 0; i < this.getStatistics.length; i++) {
+        for (let j = 0; j < this.getStatistics[i].statistics_per_hauptabschnitt.length; j++) {
+          for (let k = 0; k < this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
+            EinsatzforHaupt.push(this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].name)
           }
-          //console.log(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].name)
+          //console.log(this.getStatistics[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].name)
 
         }
       }
@@ -269,9 +269,9 @@ export default {
               this.$data.selectedEinz === this.getEinsatzdata[j]) {
             UnterselectOptions.pop() // Delete this during integrtation
             UnterselectOptions.pop() // Delete this during integrtation
-            for (let k = 0; k < this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt.length; k++) {
-              UnterselectOptions.push([this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].name,
-                parseInt(this.getStatisticschart[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].total_number_of_orders)])
+            for (let k = 0; k < this.getStatistics[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt.length; k++) {
+              UnterselectOptions.push([this.getStatistics[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].name,
+                parseInt(this.getStatistics[0].statistics_per_hauptabschnitt[i].statistics_per_Einsatzabschnitt[j].statistics_per_unterabschnitt[k].total_number_of_orders)])
             }
 
           }
@@ -283,15 +283,15 @@ export default {
     getUnterforhaupt() {
       var UnterforHaupt = []
       UnterforHaupt.push(["Abschnitt", "Bestellungen"], ['unterabschnitt', 10], ['unterabschnitt', 15]) //Delete the hardcoded values while integrating
-      for (let i = 0; i < this.getStatisticschart.length; i++) {
-        for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
-          for (let k = 0; k < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
-            if (this.$data.selectedEinzforHaupt === this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].name) {
+      for (let i = 0; i < this.getStatistics.length; i++) {
+        for (let j = 0; j < this.getStatistics[i].statistics_per_hauptabschnitt.length; j++) {
+          for (let k = 0; k < this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
+            if (this.$data.selectedEinzforHaupt === this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].name) {
               UnterforHaupt.pop() // Delete this during integrtation
               UnterforHaupt.pop() // Delete this during integrtation
-              for (let l = 0; l < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt.length; l++) {
-                UnterforHaupt.push([this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].name,
-                  parseInt(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].total_number_of_orders)])
+              for (let l = 0; l < this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt.length; l++) {
+                UnterforHaupt.push([this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].name,
+                  parseInt(this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].total_number_of_orders)])
               }
             }
           }
@@ -304,12 +304,12 @@ export default {
       var UnterforEinz = []
       UnterforEinz.push(["Abschnitt", "Bestellungen"])
 
-      for (let i = 0; i < this.getStatisticschart.length; i++) {
-        for (let j = 0; j < this.getStatisticschart[i].statistics_per_hauptabschnitt.length; j++) {
-          for (let k = 0; k < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
-            for (let l = 0; l < this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt.length; l++) {
-              UnterforEinz.push([this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].name,
-                parseInt(this.getStatisticschart[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].total_number_of_orders)])
+      for (let i = 0; i < this.getStatistics.length; i++) {
+        for (let j = 0; j < this.getStatistics[i].statistics_per_hauptabschnitt.length; j++) {
+          for (let k = 0; k < this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt.length; k++) {
+            for (let l = 0; l < this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt.length; l++) {
+              UnterforEinz.push([this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].name,
+                parseInt(this.getStatistics[i].statistics_per_hauptabschnitt[j].statistics_per_Einsatzabschnitt[k].statistics_per_unterabschnitt[l].total_number_of_orders)])
             }
           }
         }
@@ -317,8 +317,12 @@ export default {
       return UnterforEinz
     },
 
+
     getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
+    },
+    getStatisticsForCurrentRole(){
+      return this.getStatisticschart
     }
 
   },
@@ -360,7 +364,11 @@ export default {
     loadStatsByDates(date_from, date_to) {
       console.log("dates",date_from, date_to )
       //router.push({name: 'BestellübersichtPage', query: {date1: date_from, date2: date_to}})
-     // this.$store.dispatch("loadStatisticschart", {'date_from': date_from, 'date_to': date_to})
+      let data= {
+        "end_date": date_to,
+        "start_date": date_from
+      }
+      this.$store.dispatch("loadStatistics", data)
     },
   }
 };
