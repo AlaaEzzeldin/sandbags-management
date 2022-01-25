@@ -2,7 +2,6 @@ package repo_stats
 
 import (
 	"gorm.io/gorm"
-	"log"
 	"strconv"
 	"team2/sandsack-management-backend/models"
 )
@@ -56,17 +55,18 @@ func GeneralStatisticsHauptabschnitt(db *gorm.DB, startDate, endDate string) mod
 
 
 func TotalNumberOrdersHauptabschnitt(db *gorm.DB, startDate, endDate string) []TotalNumberPerAbschnitt {
-	query := `select u.name, count(o.id), b.name branch_name, u.id user_id
+	query := `select u.id as user_id, count(o.id), u.name as name
 				from "user" u, "order" o, "log" l, "action_type" at, branch b
 				where u.id = l.updated_by
 				  and l.order_id = o.id
 				  and l.action_type_id = at.id
-				  and (at.name = 'CREATED' or at.name = 'DECLINED')
+				  and (at.name = 'ACCEPTED' or at.name = 'DECLINED')
 				  and b.id = u.branch_id
 				  and b.name = 'Hauptabschnitt'
-				group by u.name, b.name, u.id;`
+				  and o.create_date between ?::timestamp and ?::timestamp
+				group by u.id, u.name;`
 	var totalNumber []TotalNumberPerAbschnitt
-	if err := db.Raw(query).Scan(&totalNumber).Error; err != nil {
+	if err := db.Raw(query, startDate, endDate).Scan(&totalNumber).Error; err != nil {
 		return nil
 	}
 	return totalNumber
@@ -74,12 +74,11 @@ func TotalNumberOrdersHauptabschnitt(db *gorm.DB, startDate, endDate string) []T
 func StatisticsPerHauptabschnitt(db *gorm.DB, startDate, endDate string) []models.StatisticsPerAbschnitt {
 	var stats []models.StatisticsPerAbschnitt
 	totalNumberPerAbschnitt := TotalNumberOrdersHauptabschnitt(db, startDate, endDate)
-	log.Println("TotalNumberPerAbschnitt", totalNumberPerAbschnitt)
 	for _, row := range totalNumberPerAbschnitt {
 		var stat models.StatisticsPerAbschnitt
 		stat.Name = row.Name
 		stat.TotalNumberOfOrders = strconv.Itoa(row.Count)
-		query := `select u.name name, count(o.id), b.name
+		query := `select u.name, count(o.id)
 				from "user" u, "order" o, "log" l, "action_type" at, branch b
 				where u.id = l.updated_by
 				  and l.order_id = o.id
@@ -87,10 +86,11 @@ func StatisticsPerHauptabschnitt(db *gorm.DB, startDate, endDate string) []model
 				  and (at.name = 'ACCEPTED')
 				  and b.id = u.branch_id
 				  and b.name = 'Hauptabschnitt'
-					and u.id = ?
-				group by u.name, b.name;`
+				  and u.id = ?
+					and o.create_date between ?::timestamp and ?::timestamp
+				group by u.name`
 		var totalNumber TotalNumber
-		err := db.Raw(query, row.UserId).Scan(&totalNumber).Error
+		err := db.Raw(query, row.UserId, startDate, endDate).Scan(&totalNumber).Error
 		if err != nil {
 			totalNumber.Count = 0
 		}

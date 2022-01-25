@@ -54,7 +54,7 @@ func GeneralStatisticsEinsatzabschnitt(db *gorm.DB, startDate, endDate string) m
 }
 
 func TotalNumberOrdersEinsatzabschnitt(db *gorm.DB, startDate, endDate string) []TotalNumberPerAbschnitt {
-	query := `select u.name, count(o.id), b.name branch_name, u.id user_id
+	query := `select u.name, count(o.id), u.id as user_id
 				from "user" u, "order" o, "log" l, "action_type" at, branch b
 				where u.id = l.updated_by
 				  and l.order_id = o.id
@@ -62,9 +62,10 @@ func TotalNumberOrdersEinsatzabschnitt(db *gorm.DB, startDate, endDate string) [
 				  and (at.name = 'ACCEPTED' or at.name = 'DECLINED')
 				  and b.id = u.branch_id
 				  and b.name = 'Einsatzabschnitt'
-				group by u.name, b.name, u.id;`
+				and o.create_date between ?::timestamp and ?::timestamp
+				group by u.name, u.id;`
 	var totalNumber []TotalNumberPerAbschnitt
-	if err := db.Raw(query).Scan(&totalNumber).Error; err != nil {
+	if err := db.Raw(query, startDate, endDate).Scan(&totalNumber).Error; err != nil {
 		return nil
 	}
 	return totalNumber
@@ -72,12 +73,12 @@ func TotalNumberOrdersEinsatzabschnitt(db *gorm.DB, startDate, endDate string) [
 func StatisticsPerEinsatzabschnitt(db *gorm.DB, startDate, endDate string) []models.StatisticsPerAbschnitt {
 	var stats []models.StatisticsPerAbschnitt
 	totalNumberPerAbschnitt := TotalNumberOrdersEinsatzabschnitt(db, startDate, endDate)
-	log.Println("TotalNumberPerAbschnitt", totalNumberPerAbschnitt)
+	log.Println("TotalNumberPerAbschnitt Einsatz", totalNumberPerAbschnitt)
 	for _, row := range totalNumberPerAbschnitt {
 		var stat models.StatisticsPerAbschnitt
 		stat.Name = row.Name
 		stat.TotalNumberOfOrders = strconv.Itoa(row.Count)
-		query := `select u.name name, count(o.id), b.name
+		query := `select u.name as name, count(o.id), b.name as branch_name
 				from "user" u, "order" o, "log" l, "action_type" at, branch b
 				where u.id = l.updated_by
 				  and l.order_id = o.id
@@ -85,10 +86,11 @@ func StatisticsPerEinsatzabschnitt(db *gorm.DB, startDate, endDate string) []mod
 				  and (at.name = 'ACCEPTED')
 				  and b.id = u.branch_id
 				  and b.name = 'Einsatzabschnitt'
-					and u.id = ?
+				  and u.id = ?
+					and o.create_date between ?::timestamp and ?::timestamp
 				group by u.name, b.name;`
 		var totalNumber TotalNumber
-		err := db.Raw(query, row.UserId).Scan(&totalNumber).Error
+		err := db.Raw(query, row.UserId, startDate, endDate).Scan(&totalNumber).Error
 		if err != nil {
 			totalNumber.Count = 0
 		}
