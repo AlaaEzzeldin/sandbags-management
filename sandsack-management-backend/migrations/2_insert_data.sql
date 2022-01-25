@@ -135,14 +135,13 @@ insert into action_type(id, name) values
                                       (6, 'ASSIGNED');
 
 insert into priority(id, level, name) values
-                                          (1, 1, 'HIGH'), (2, 2, 'MIDDLE'), (3, 3, 'LOW');
+                                          (1, 1, 'HOCH'), (2, 2, 'MITTEL'), (3, 3, 'NIEDRIG');
 
 
 insert into equipment(id, name, quantity, measure) values
     (1, 'Sandsack', 100000, 'Paletten'),
-    (2, 'Spaten', 1000, 'Stück'),
-    (3, 'Bindfaden', 2000, 'Meter'),
-    (4, 'Wasserschlauch', 2000, 'Meter');
+    (2, 'Stromerzeuger', 3000, 'Stück'),
+    (3, 'Pumpe', 3000, 'Stück');
 
 
 

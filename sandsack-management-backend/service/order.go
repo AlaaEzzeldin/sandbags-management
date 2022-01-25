@@ -28,7 +28,6 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 		}
 	}
 
-
 	userOrderPermissions := []int{
 		models.DictPermissionName["CAN VIEW"],
 		models.DictPermissionName["CAN EDIT"],
@@ -66,7 +65,7 @@ func CreateOrder(a *gorm.DB, userName string, order *models.Order) error {
 			OrderId:      order.Id,
 			ActionTypeId: models.DictActionTypeName["CREATED"],
 			UpdatedBy:    order.UserId,
-			Description:  userName + " hat die Bestellung '" +  newOrder.Name + "' erstellt",
+			Description:  userName + " hat die Bestellung '" + newOrder.Name + "' erstellt",
 		},
 	}
 
@@ -100,8 +99,8 @@ func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 		Comments:    comments,
 		Logs:        logs,
 		Equipments:  equipments,
-		CreateDate: simpleOrder.CreateDate,
-		UpdateDate: simpleOrder.UpdateDate,
+		CreateDate:  simpleOrder.CreateDate,
+		UpdateDate:  simpleOrder.UpdateDate,
 		//Permissions: permissions,
 	}
 	return order, nil
@@ -145,8 +144,8 @@ func GetOrderList(a *gorm.DB, userId int) (orderList []models.Order, err error) 
 			Comments:    comments,
 			Logs:        logs,
 			Equipments:  equipments,
-			CreateDate: row.CreateDate,
-			UpdateDate: row.UpdateDate,
+			CreateDate:  row.CreateDate,
+			UpdateDate:  row.UpdateDate,
 			//Permissions: permissions,
 		}
 
@@ -216,12 +215,12 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 		}
 	} else if user.BranchId == models.DictBranchName["Mollnhof"] {
 		/*if order.StatusId == models.DictStatusName["AKZEPTIERT"] {
-			statusId = models.DictStatusName["AUF DEM WEG"]
-		 */
+		statusId = models.DictStatusName["AUF DEM WEG"]
+		*/
 		return errors.New("mollnhof kann nicht weiterleiten")
 
 	} else {
-		return errors.New("something went wrong")
+		return errors.New("da ist etwas schief gelaufen")
 	}
 
 	query := `update public.order set status_id = ?, update_date = now() where id = ?;`
@@ -270,7 +269,7 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 			OrderId:      orderId,
 			ActionTypeId: models.DictActionTypeName["ACCEPTED"],
 			UpdatedBy:    userId,
-			Description:  user.Name + " accepted order " + order.Name + " #" + strconv.Itoa(orderId),
+			Description:  user.Name + " hat die Bestellung " + order.Name + "akzeptiert #" + strconv.Itoa(orderId),
 		},
 	}
 
@@ -329,7 +328,7 @@ func DeclineOrder(db *gorm.DB, userId, orderId int) error {
 	} else if user.BranchId == models.DictBranchName["Mollnhof"] {
 		return errors.New("mollnhof kann die Bestellung nicht stornieren")
 	} else {
-		return errors.New("something went wrong")
+		return errors.New("da ist etwas schief gelaufen")
 	}
 
 	if err := repo_order.UpdateOrderStatus(db, orderId, statusId); err != nil {
@@ -355,7 +354,7 @@ func DeclineOrder(db *gorm.DB, userId, orderId int) error {
 			OrderId:      orderId,
 			ActionTypeId: models.DictActionTypeName["DECLINED"],
 			UpdatedBy:    userId,
-			Description:  user.Name + " declined order " + order.Name + " #" + strconv.Itoa(orderId),
+			Description:  user.Name + " hat die Bestellung " + order.Name + "abgelehnt #" + strconv.Itoa(orderId),
 		},
 	}
 
@@ -406,9 +405,10 @@ func AddEquipment(db *gorm.DB, name string, quantity int) error {
 }
 
 func ConfirmDelivery(db *gorm.DB, userId int, orderId int) error {
+	user, _ := GetUserByID(db, userId)
 	order, err := GetOrder(db, userId, orderId)
 	if order.StatusId != models.DictStatusName["AUF DEM WEG"] {
-		return errors.New("You cannot confirm delivery")
+		return errors.New("sie können die Zustellung nicht bestätigen")
 	}
 	statusId := models.DictStatusName["GELIEFERT"]
 	err = repo_order.ConfirmDelivery(db, userId, orderId, statusId)
@@ -417,9 +417,10 @@ func ConfirmDelivery(db *gorm.DB, userId int, orderId int) error {
 	}
 
 	logs := []models.Log{{
-		OrderId:   orderId,
-		UpdatedBy: userId,
+		OrderId:      orderId,
+		UpdatedBy:    userId,
 		ActionTypeId: models.DictActionTypeName["CONFIRMED DELIVERY"],
+		Description:  user.Name + " hat die Zustellung " + order.Name + "bestätigt #" + strconv.Itoa(orderId),
 	}}
 	err = repo_order.InsertLogs(db, logs)
 
@@ -453,7 +454,7 @@ func DispatchOrder(db *gorm.DB, userId, orderId, driverId int) error {
 			statusId = models.DictStatusName["AUF DEM WEG"]
 		}
 	} else {
-		return errors.New("something went wrong")
+		return errors.New("da ist etwas schief gelaufen")
 	}
 
 	if err := repo_order.UpdateOrderStatus(db, orderId, statusId); err != nil {
@@ -465,7 +466,6 @@ func DispatchOrder(db *gorm.DB, userId, orderId, driverId int) error {
 		quantity := equipment.Quantity - equip.Quantity
 		_ = repo_order.UpdateEquipment(db, equip.EquipmentId, quantity)
 	}
-
 
 	children, err := GetChildren(db, userId)
 
@@ -485,7 +485,7 @@ func DispatchOrder(db *gorm.DB, userId, orderId, driverId int) error {
 			OrderId:      orderId,
 			ActionTypeId: models.DictActionTypeName["ASSIGNED"],
 			UpdatedBy:    userId,
-			Description:  user.Name + " dispatched order " + order.Name + " and assigned it to the driver",
+			Description:  user.Name + " hat die Bestellung " + order.Name + " dem LKW Fahrer übergeben und versendet",
 		},
 	}
 
@@ -496,7 +496,6 @@ func DispatchOrder(db *gorm.DB, userId, orderId, driverId int) error {
 
 	return nil
 }
-
 
 func GetAllOrders(a *gorm.DB, startDate, endDate string) (orderList []models.Order, err error) {
 	simpleOrderList, err := repo_order.GetAllSimpleOrderList(a, startDate, endDate)
@@ -522,8 +521,8 @@ func GetAllOrders(a *gorm.DB, startDate, endDate string) (orderList []models.Ord
 			Comments:    comments,
 			Logs:        logs,
 			Equipments:  equipments,
-			CreateDate: row.CreateDate,
-			UpdateDate: row.UpdateDate,
+			CreateDate:  row.CreateDate,
+			UpdateDate:  row.UpdateDate,
 			//Permissions: permissions,
 		}
 

@@ -22,7 +22,6 @@
                     filled
                     outlined
                     prepend-icon="mdi-email"
-
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -31,6 +30,7 @@
               <v-col>
                 <v-text-field
                     v-model="user.password"
+                    type="password"
                     :rules="passwordRules"
                     label="Password"
                     required
