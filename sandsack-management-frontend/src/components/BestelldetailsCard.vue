@@ -27,7 +27,7 @@
           <h2 style="font-weight: bolder; color: black">Typ:</h2>
         </v-col>
         <v-col cols="12" sm="7">
-          <h2 style="font-weight: normal; color: black">{{ getOrder.equipments[0].name }}</h2>
+          <h2 style="font-weight: normal; color: black" v-if="getOrder.equipments">{{ getOrder.equipments[0].name }}</h2>
         </v-col>
       </v-row>
       <v-row>
@@ -35,7 +35,7 @@
           <h2 style="font-weight: bolder; color: black">Anzahl:</h2>
         </v-col>
         <v-col cols="12" sm="7">
-          <h2 style="font-weight: normal; color: black">{{ getOrder.equipments[0].quantity }}</h2>
+          <h2 style="font-weight: normal; color: black" v-if="getOrder.equipments">{{ getOrder.equipments[0].quantity }}</h2>
         </v-col>
       </v-row>
       <v-row>
@@ -43,7 +43,7 @@
           <h2 style="font-weight: bolder; color: black">Priorität:</h2>
         </v-col>
         <v-col cols="12" sm="7">
-          <h2 style="font-weight: normal; color: black">{{ getPriorityByID(getOrder.priority_id).name }}</h2>
+          <h2 style="font-weight: normal; color: black" v-if="getOrder.priority_id">{{ getPriorityByID(getOrder.priority_id).name }}</h2>
         </v-col>
       </v-row>
       <v-row>
@@ -51,7 +51,7 @@
           <h2 style="font-weight: bolder; color: black">Lieferadresse:</h2>
         </v-col>
         <v-col cols="12" sm="7">
-          <h2 style="font-weight: normal; color: black">{{ getOrder.address_to }}</h2>
+          <h2 style="font-weight: normal; color: black" v-if="getOrder.address_to">{{ getOrder.address_to }}</h2>
         </v-col>
       </v-row>
 
