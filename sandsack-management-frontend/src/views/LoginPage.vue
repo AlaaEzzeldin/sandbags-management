@@ -9,9 +9,17 @@
           <v-card-subtitle class=" ml-10 pl-3">
             <h1 style="color: red;font-weight: bolder;  font-size: x-large"> Feuerwehr Passau </h1>
           </v-card-subtitle>
-
-          <v-form ref="form" v-model="valid" class=" ma-10 pa-3">
-
+          <v-form ref="form" v-model="valid" class=" pa-3">
+            <v-row>
+              <v-col>
+                <v-alert
+                    outlined
+                    text
+                    type="info"
+                >Wenden Sie sich an den Systemadministrator, um Ihren Benutzernamen und Ihr Passwort zu erfahren
+                </v-alert>
+              </v-col>
+            </v-row>
             <v-row>
               <v-col>
                 <v-text-field
