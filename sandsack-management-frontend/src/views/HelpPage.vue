@@ -1,24 +1,37 @@
 <template>
   <v-container>
-    <v-expansion-panels>
-      <v-expansion-panel
-          v-for="(item,i) in questionsAnswers"
-          :key="i"
-      >
-        <v-expansion-panel-header>
-          {{item.question}}
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          {{item.answer}}
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+    <v-row>
+      <v-btn icon @click="goBack">
+        <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>
+      </v-btn>
+      <h2>Hilfe</h2>
+    </v-row>
+    <v-row class="pt-4">
+      <v-expansion-panels>
+        <v-expansion-panel
+            v-for="(item,i) in questionsAnswers"
+            :key="i"
+        >
+          <v-expansion-panel-header>
+            {{item.question}}
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            {{item.answer}}
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 export default {
   name: "HelpPage",
+  methods: {
+    goBack() {
+      this.$router.go(-1)
+    },
+  },
   data: () => ({
     questionsAnswers: [
       {
