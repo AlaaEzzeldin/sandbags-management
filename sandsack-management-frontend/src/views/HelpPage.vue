@@ -48,7 +48,7 @@ export default {
       },
       {
         question: "Wie hoch ist die Höchstzahl der Bestellungen?",
-        answer: " Wie bereits erwähnt, gibt es keine Maximalaufträge, es kommt immer auf den Bedarf in der Notsituation an."
+        answer: "Sie können nicht mehr als Restmenge bestellen."
       },
       {
         question: " Wie bearbeite ich einen Auftrag basierend auf einer Rolle?",
