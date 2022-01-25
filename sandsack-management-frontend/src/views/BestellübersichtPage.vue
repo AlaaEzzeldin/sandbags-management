@@ -37,40 +37,10 @@
     <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px">
       <v-col>
         <v-list-item
-            v-for="(item, i) in getStatisticschart"
+            v-for="(item, i) in getGeneralStatisticsForCurrentRole"
             :key="i"
         >
-          <h1 style="text-align: center ;color: red">
-            <div v-if="item.type ==='Hauptabschnitten'">
-              {{ item.general_statistics.total_number_of_orders }}
-            </div>
-          </h1>
-        </v-list-item>
-        <h3 style="text-align: left">Bestellungen</h3>
-      </v-col>
-      <v-col>
-        <v-list-item
-            v-for="(item, i) in getStatisticschart"
-            :key="i"
-        >
-          <h1 style="color: red">
-            <div v-if="item.type ==='Hauptabschnitten'">
-              {{ item.general_statistics.total_number_of_accepted_orders }}%
-            </div>
-          </h1>
-        </v-list-item>
-        <h3 style="text-align: left">Bestellungen bestatigt</h3>
-      </v-col>
-      <v-col>
-        <v-list-item
-            v-for="(item, i) in getStatisticschart"
-            :key="i"
-        >
-          <h1 style="color: red">
-            <div v-if="item.type ==='Hauptabschnitten'">
-              {{ item.general_statistics.average_processing_time }}
-            </div>
-          </h1>
+          <h1 style="color: red">{{ item.general_statistics.average_processing_time }}</h1>
         </v-list-item>
         <h3 style="text-align: left">Bestellungen/Uhr</h3>
       </v-col>
@@ -81,82 +51,44 @@
           Bestellungen
         </h2>
       </v-col>
-<!--      <v-col cols="6">
-        <v-select
-            v-if="this.getCurrentUserRole==='Einsatzleiter'"
-            v-model="selectedHaupt"
-            :items="getHauptdata"
-            filled
-            item-text="state"
-            label="Hauptabschnitt"
-            outlined
-            persistent-hint
-            return-object
-            single-line
-        ></v-select>
-        <v-select
-            v-if="this.getCurrentUserRole==='Einsatzleiter'"
-            v-model="selectedEinz"
-            :items="getEinsatzdata"
-            filled
-            item-text="state"
-            label="Einsatzabschnitt"
-            outlined
-            persistent-hint
-            return-object
-            single-line
-        ></v-select>
-        <v-select
-            v-if="this.getCurrentUserRole==='Hauptabschnitt'"
-            v-model="selectedEinzforHaupt"
-            :items="getEinsatzforHaupt"
-            filled
-            item-text="state"
-            label="Einsatzabschnitt"
-            outlined
-            persistent-hint
-            return-object
-            single-line
-        ></v-select>
-      </v-col>-->
     </v-row>
-    <div ref="content">
-      <GChart
-          v-if="this.getCurrentUserRole==='Einsatzleiter'"
-          :data="getUnterdata"
-          :options="chartOptions"
-          type="ColumnChart"/>
-    </div>
-    <div ref="content">
-      <GChart
-          v-if="this.getCurrentUserRole==='Hauptabschnitt'"
-          :data="getUnterforhaupt"
-          :options="chartOptions"
-          type="ColumnChart"/>
-    </div>
-    <div ref="content">
-      <GChart
-          v-if="this.getCurrentUserRole==='Einsatzabschnitt'"
-          :data="getUnterforEinz"
-          :options="chartOptions"
-          type="ColumnChart"/>
-    </div>
+    <!--    <div ref="content">
+          <GChart
+              v-if="this.getCurrentUserRole==='Einsatzleiter'"
+              :data="getUnterdata"
+              :options="chartOptions"
+              type="ColumnChart"/>
+        </div>
+        <div ref="content">
+          <GChart
+              v-if="this.getCurrentUserRole==='Hauptabschnitt'"
+              :data="getUnterforhaupt"
+              :options="chartOptions"
+              type="ColumnChart"/>
+        </div>
+        <div ref="content">
+          <GChart
+              v-if="this.getCurrentUserRole==='Einsatzabschnitt'"
+              :data="getUnterforEinz"
+              :options="chartOptions"
+              type="ColumnChart"/>
+        </div>-->
     <br>
     <v-spacer></v-spacer>
     <v-row>
-    <v-col cols="12" sm="6" offset-sm="3" class="mt-10">
-      <v-btn
-          id="pdf"
-          style="text-transform: capitalize; font-weight: bolder;"
-          rounded
-          @click="download"
-          block
-          color="red"
-          outlined
-      >
-        pdf exportieren
-      </v-btn>
-    </v-col>
+      <v-col cols="12" sm="6" offset-sm="3" class="mt-10">
+        <v-btn
+            id="pdf"
+            style="text-transform: capitalize; font-weight: bolder;"
+            rounded
+            @click="download"
+            block
+            color="red"
+            outlined
+        >
+          pdf exportieren
+        </v-btn>
+      </v-col>
     </v-row>
 
 
@@ -166,14 +98,14 @@
 <script>
 import jsPDF from "jspdf";
 import domtoimage from "dom-to-image";
-import {GChart} from "vue-google-charts";
+//import {GChart} from "vue-google-charts";
 
 export default {
 
   name: 'BestellübersichtPage',
 
   components: {
-    GChart,
+    // GChart,
   },
 
   data() {
@@ -321,10 +253,15 @@ export default {
     getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
     },
-    getStatisticsForCurrentRole(){
-      return this.getStatisticschart
-    }
-
+    getGeneralStatisticsForCurrentRole() {
+      if (this.getCurrentUserRole === 'Einsatzabschnitt')
+        return this.getStatistics.find(data => data.type === 'Unterabschnitten')
+      else if (this.getCurrentUserRole === 'Hauptabschnitt')
+        return this.getStatistics.find(data => data.type === 'Einsatzabschnitten')
+      else if (this.getCurrentUserRole === 'Einsatzleiter')
+        return this.getStatistics.find(data => data.type === 'Hauptabschnitten')
+      else return null
+    },
   },
   methods: {
     download() {
@@ -362,15 +299,16 @@ export default {
           });
     },
     loadStatsByDates(date_from, date_to) {
-      console.log("dates",date_from, date_to )
+      console.log("dates", date_from, date_to)
       //router.push({name: 'BestellübersichtPage', query: {date1: date_from, date2: date_to}})
-      let data= {
+      let data = {
         "end_date": date_to,
         "start_date": date_from
       }
       this.$store.dispatch("loadStatistics", data)
     },
   }
+
 };
 </script>
 
