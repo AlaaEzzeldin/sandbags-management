@@ -97,7 +97,7 @@ export default {
       },
       {
         question: "Im Falle eines Systemausfalls oder wenn Sie Hilfe benötigen, rufen Sie den Systemadministrator an?",
-        answer: ["ktieren? 2) Welche Nummern müssen verwendet werden? 3) Wie ist die Situation zu behandeln?"]
+        answer: ["Sie können 0851 43318 anrufen."]
       },
     ]
   })
