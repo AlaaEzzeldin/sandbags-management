@@ -49,21 +49,6 @@
               </v-col>
             </v-row>
 
-            <v-row align-content="center" justify="center">
-              <v-col class="text-left" cols="6">
-                <v-checkbox
-                    v-model="checkbox"
-                    :label="`Angemeldet bleiben`"
-                    class="justify-center align-center mt-0"
-                ></v-checkbox>
-              </v-col>
-              <v-col class="text-right" cols="6">
-                <v-btn text link :to="{name: links.recoverPasswordPage}" small>
-                  <u>Passwort vergessen?</u>
-                </v-btn>
-              </v-col>
-            </v-row>
-
             <v-row no-gutters>
               <v-col>
                 <v-btn
@@ -75,17 +60,6 @@
                     @click="submit"
                 >
                   Einloggen
-                </v-btn>
-              </v-col>
-            </v-row>
-
-            <v-row class="text-right">
-              <v-col>
-                Sie haben noch kein Konto?
-                <v-btn text link :to="{name: links.signupPage}"
-                       small
-                >
-                  <u>Registrieren</u>
                 </v-btn>
               </v-col>
             </v-row>

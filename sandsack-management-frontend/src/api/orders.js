@@ -5,21 +5,21 @@ import {BASE_URL} from "../api/config";
 export default {
 
     index(params) {
-        return axios.get(BASE_URL + 'order/', {
+        return axios.get(BASE_URL + 'order/list', {
             headers: authHeader(),
             params: params
         })
     },
 
     show(id) {
-        return axios.get(BASE_URL + 'order/?id=' + id, {
+        return axios.get(BASE_URL + 'order?id=' + id, {
             headers: authHeader(),
         })
     },
 
 
     create(data) {
-        return axios.post(BASE_URL + 'order/', data, {
+        return axios.post(BASE_URL + 'order', data, {
             headers: authHeader(),
         });
     },

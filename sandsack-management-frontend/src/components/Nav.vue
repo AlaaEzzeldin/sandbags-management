@@ -1,6 +1,6 @@
 <template style="background-color: white">
   <v-navigation-drawer
-      :permanent="$vuetify.breakpoint.smAndUp"
+      :permanent="$vuetify.breakpoint.mdAndUp"
       width="350"
       app
       class="logo pa-0 ma-0"
