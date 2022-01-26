@@ -78,7 +78,9 @@
         type="error"
         icon="mdi-cloud-alert"
     >
-      Ups, ein Fehler! Für das von Ihnen gewählte Zeitintervall sind keine Bestellungen vorhanden! Bitte ändern Sie die Daten.    </v-alert>
+      Ups, ein Fehler! Für das von Ihnen gewählte Zeitintervall sind keine Bestellungen vorhanden! Bitte ändern Sie die
+      Daten.
+    </v-alert>
 
     <v-spacer></v-spacer>
     <v-row>
@@ -131,7 +133,6 @@ export default {
           title: "Bestellungen",
         },
       }
-
     };
   },
 
@@ -167,15 +168,14 @@ export default {
         else if (this.getCurrentUserRole === 'Einsatzleiter')
           return this.getStatistics.find(data => data.type === 'Hauptabschnitten')
         else return null
-      }
-      else return null
+      } else return null
     },
     getStatisticsForCurrentRole() {
       if (this.getStatistics) {
         let statistics = []
         let result = []
-        result.push( ["Abschnitten", "Bestellungen", "Bestellungen bestätigt"])
-        console.log('all statitics', this.getStatistics)
+        result.push(["Abschnitten", "Bestellungen", "Bestellungen bestätigt"])
+        //console.log('all statitics', this.getStatistics)
         if (this.getCurrentUserRole === 'Einsatzabschnitt')
           statistics = this.getStatistics.find(data => data.type === "Unterabschnitten").statistics_per_unterabschnitt
         else if (this.getCurrentUserRole === 'Hauptabschnitt')
@@ -184,12 +184,10 @@ export default {
           statistics = this.getStatistics.find(data => data.type === 'Hauptabschnitten').statistics_per_hauptabschnitt
         if (statistics) {
           statistics.forEach(d => result.push([d.name, parseInt(d.total_number_of_orders), parseInt(d.total_number_of_accepted_orders)]))
-          console.log("visualized data", result)
+          // console.log("visualized data", result)
           return result
-        }
-        else return null
-      }
-      else return null
+        } else return null
+      } else return null
     },
   },
   methods: {
@@ -228,7 +226,7 @@ export default {
           });
     },
     loadStatsByDates(date_from, date_to) {
-      console.log("dates", date_from, date_to)
+      //  console.log("dates", date_from, date_to)
       let data = {
         "end_date": date_to,
         "start_date": date_from
