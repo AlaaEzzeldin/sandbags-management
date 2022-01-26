@@ -74,7 +74,6 @@
     <v-alert
         v-if="!getStatisticsForCurrentRole"
         text
-        prominent
         type="error"
         icon="mdi-cloud-alert"
     >
@@ -84,7 +83,7 @@
 
     <v-spacer></v-spacer>
     <v-row>
-      <v-col cols="12" sm="6" offset-sm="3" class="mt-10">
+      <v-col cols="12" sm="6" offset-sm="3">
         <v-btn
             id="pdf"
             style="text-transform: capitalize; font-weight: bolder;"
