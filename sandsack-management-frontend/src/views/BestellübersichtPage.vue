@@ -45,13 +45,13 @@
       <v-col cols="4">
         <h1 style="text-align: center;color: red">
           {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_accepted_orders }}</h1>
-        <h3 style="text-align: center;">Bestellungen bestätigt</h3>
+        <h3 style="text-align: center;">Bestellungen geliefert</h3>
       </v-col>
 
       <v-col cols="4">
         <h1 style="text-align: center;color: red">
           {{ getGeneralStatisticsForCurrentRole.general_statistics.average_processing_time }}</h1>
-        <h3 style="text-align: center">Durchsch. Bearbeitungszeit</h3>
+        <h3 style="text-align: center">Durchsch. Lieferungszeit</h3>
       </v-col>
 
     </v-row>
@@ -133,6 +133,7 @@ export default {
         height: 400,
         vAxis: {
           title: "Bestellungen",
+          step: 1
         },
       }
     };
@@ -176,7 +177,7 @@ export default {
       if (this.getStatistics) {
         let statistics = []
         let result = []
-        result.push(["Abschnitten", "Bestellungen", "Bestellungen bestätigt"])
+        result.push(["Abschnitten", "Bestellungen", "Bestellungen geliefert"])
         //console.log('all statitics', this.getStatistics)
         if (this.getCurrentUserRole === 'Einsatzabschnitt')
           statistics = this.getStatistics.find(data => data.type === "Unterabschnitten").statistics_per_unterabschnitt
