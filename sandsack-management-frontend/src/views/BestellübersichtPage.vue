@@ -34,19 +34,23 @@
         </v-menu>
       </v-col>
     </v-row>
-    <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px" v-if="getGeneralStatisticsForCurrentRole()">
+    <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px"
+           v-if="getGeneralStatisticsForCurrentRole()">
       <v-col cols="4">
-        <h1 style="text-align: center; color: red">{{ getGeneralStatisticsForCurrentRole().general_statistics.total_number_of_orders }}</h1>
+        <h1 style="text-align: center; color: red">
+          {{ getGeneralStatisticsForCurrentRole().general_statistics.total_number_of_orders }}</h1>
         <h3 style="text-align: center">Bestellungen</h3>
       </v-col>
 
       <v-col cols="4">
-        <h1 style="text-align: center;color: red">{{getGeneralStatisticsForCurrentRole().general_statistics.total_number_of_accepted_orders}}</h1>
+        <h1 style="text-align: center;color: red">
+          {{ getGeneralStatisticsForCurrentRole().general_statistics.total_number_of_accepted_orders }}</h1>
         <h3 style="text-align: center;">Bestellungen bestätigt</h3>
       </v-col>
 
       <v-col cols="4">
-        <h1 style="text-align: center;color: red">{{ getGeneralStatisticsForCurrentRole().general_statistics.average_processing_time }}</h1>
+        <h1 style="text-align: center;color: red">
+          {{ getGeneralStatisticsForCurrentRole().general_statistics.average_processing_time }}</h1>
         <h3 style="text-align: center">Bestellungen/Uhr</h3>
       </v-col>
 
@@ -58,14 +62,16 @@
         </h2>
       </v-col>
     </v-row>
-        <div ref="content">
-          <GChart
-              v-if="this.getCurrentUserRole==='Einsatzleiter'"
-              :data="getStatisticsForCurrentRole"
-              :options="chartOptions"
-              type="ColumnChart"/>
-        </div>
-    <br>
+    <div id="content" class="mt-10 pt-10">
+      <GChart
+          :settings="{ packages: ['bar'] }"
+          :data="getStatisticsForCurrentRole()"
+          :options="chartOptions"
+          :createChart="(el, google) => new google.charts.Bar(el)"
+          @ready="onChartReady"
+      />
+    </div>
+
     <v-spacer></v-spacer>
     <v-row>
       <v-col cols="12" sm="6" offset-sm="3" class="mt-10">
@@ -97,7 +103,7 @@ export default {
   name: 'BestellübersichtPage',
 
   components: {
-     GChart,
+    GChart,
   },
 
   data() {
@@ -108,32 +114,44 @@ export default {
 
       modal: false,
       menu: false,
-      selectedHaupt: '',
-      selectedEinz: '',
-      selectedEinzforHaupt: '',
 
-      chartOptions: {
+      chartsLib: null,
+      // Array will be automatically processed with visualization.arrayToDataTable function
+      chartData: [
+        ["Abschnitten", "Bestellungen", "Bestellungen bestätigt"],
+        ["1", 1000, 400],
+        ["2", 1170, 460],
+        ["3", 660, 1120],
+        ["4", 1030, 540],
+      ],
+
+    };
+  },
+
+  created() {
+    this.loadStatsByDates(this.dates[0], this.dates[1])
+  },
+
+  computed: {
+    chartOptions() {
+      if (!this.chartsLib) return null;
+      return this.chartsLib.charts.Bar({
+        chart: {
+          title: "Performance",
+          subtitle: "total_orders, accepted orders",
+        },
+        bars: "horizontal", // Required for Material Bar Charts.
+        colors: ["#1b9e77", "#d95f02", "#7570b3"],
+        height: 400,
         hAxis: {
           title: "Abschnitt",
         },
         vAxis: {
           title: "Bestellungen",
-          ticks: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+          ticks: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
         },
-        chart: {
-          title: "order status",
-        },
-        colors: ['#D7201F'],
-        lineWidth: 4,
-        smoothLine: true,
-      },
-    };
-  },
-  created(){
-    this.loadStatsByDates(this.dates[0], this.dates[1])
-  },
-
-  computed: {
+      })
+    },
     getStatistics() {
       return this.$store.getters.getStatistics.statistics
     },
@@ -154,31 +172,41 @@ export default {
     },
   },
   methods: {
+    onChartReady(chart, google) {
+      this.getStatisticsForCurrentRole()
+      this.chartsLib = google;
+    },
     getGeneralStatisticsForCurrentRole() {
-      if(this.getStatistics){
-        console.log('statitics',this.getStatistics)
+      if (this.getStatistics) {
+        console.log('statitics', this.getStatistics)
         if (this.getCurrentUserRole === 'Einsatzabschnitt')
           return this.getStatistics.find(data => data.type === "Unterabschnitten")
         else if (this.getCurrentUserRole === 'Hauptabschnitt')
           return this.getStatistics.find(data => data.type === 'Einsatzabschnitten')
         else if (this.getCurrentUserRole === 'Einsatzleiter')
           return this.getStatistics.find(data => data.type === 'Hauptabschnitten')
-        }
-      else return null
+      } else return null
     },
     getStatisticsForCurrentRole() {
-      if(this.getStatistics.length!==0) {
-        console.log('statitics', this.getStatistics)
+      let statistics = []
+      if (this.getStatistics) {
+        console.log('all statitics', this.getStatistics)
         if (this.getCurrentUserRole === 'Einsatzabschnitt')
-          return this.getStatistics.find(data => data.type === "Unterabschnitten").statistics_per_unterabschnitt
+          statistics = this.getStatistics.find(data => data.type === "Unterabschnitten").statistics_per_unterabschnitt
         else if (this.getCurrentUserRole === 'Hauptabschnitt')
-          return this.getStatistics.find(data => data.type === 'Einsatzabschnitten').statistics_per_Einsatzabschnitt
-        else if (this.getCurrentUserRole === 'Einsatzleiter') {
-          console.log("by role", this.getStatistics.find(data => data.type === 'Hauptabschnitten'))
-          return this.getStatistics.find(data => data.type === 'Hauptabschnitten').statistics_per_hauptabschnitt
-        } else return null
-      }
+          statistics = this.getStatistics.find(data => data.type === 'Einsatzabschnitten').statistics_per_Einsatzabschnitt
+        else if (this.getCurrentUserRole === 'Einsatzleiter')
+          statistics = this.getStatistics.find(data => data.type === 'Hauptabschnitten').statistics_per_hauptabschnitt
+        console.log("per department statistics for logged in user", statistics)
+        //let arr = statistics.map(({name, total_number_of_orders,total_number_of_accepted_orders}) => ([name, total_number_of_orders,total_number_of_accepted_orders]))
+        let result = []
+        result.push( ["Abschnitten", "Bestellungen", "Bestellungen bestätigt"])
+        statistics.forEach(d => result.push([d.name,d.total_number_of_orders, d.total_number_of_accepted_orders]))
+        console.log("data", result)
+        return result
+      } else return null
     },
+
     download() {
       /** To Block the Button */
       document.getElementById('pdf').style.display = 'none';
@@ -215,7 +243,6 @@ export default {
     },
     loadStatsByDates(date_from, date_to) {
       console.log("dates", date_from, date_to)
-      //router.push({name: 'BestellübersichtPage', query: {date1: date_from, date2: date_to}})
       let data = {
         "end_date": date_to,
         "start_date": date_from
