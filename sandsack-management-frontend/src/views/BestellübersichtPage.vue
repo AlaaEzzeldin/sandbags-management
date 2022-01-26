@@ -141,7 +141,7 @@ export default {
           subtitle: "total_orders, accepted orders",
         },
         bars: "horizontal", // Required for Material Bar Charts.
-        colors: ["#1b9e77", "#d95f02", "#7570b3"],
+        colors: ["#1b9e77", "#d95f02"],
         height: 400,
         hAxis: {
           title: "Abschnitt",
@@ -201,7 +201,7 @@ export default {
         //let arr = statistics.map(({name, total_number_of_orders,total_number_of_accepted_orders}) => ([name, total_number_of_orders,total_number_of_accepted_orders]))
         let result = []
         result.push( ["Abschnitten", "Bestellungen", "Bestellungen bestätigt"])
-        statistics.forEach(d => result.push([d.name,d.total_number_of_orders, d.total_number_of_accepted_orders]))
+        statistics.forEach(d => result.push([d.name,parseInt(d.total_number_of_orders), parseInt(d.total_number_of_accepted_orders)]))
         console.log("data", result)
         return result
       } else return null
