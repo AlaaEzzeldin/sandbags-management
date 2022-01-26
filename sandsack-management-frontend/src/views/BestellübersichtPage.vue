@@ -64,11 +64,9 @@
     </v-row>
     <div id="content" class="mt-10 pt-10">
       <GChart
-          :settings="{ packages: ['bar'] }"
           :data="getStatisticsForCurrentRole()"
+          type="ColumnChart"
           :options="chartOptions"
-          :createChart="(el, google) => new google.charts.Bar(el)"
-          @ready="onChartReady"
       />
     </div>
 
@@ -112,18 +110,17 @@ export default {
       dates: [new Date(new Date().setDate(new Date().getDate() - 7)).toISOString().slice(0, 10),
         new Date(new Date().setDate(new Date().getDate())).toISOString().slice(0, 10)],
 
-      modal: false,
       menu: false,
-
-      chartsLib: null,
-      // Array will be automatically processed with visualization.arrayToDataTable function
-      chartData: [
-        ["Abschnitten", "Bestellungen", "Bestellungen bestätigt"],
-        ["1", 1000, 400],
-        ["2", 1170, 460],
-        ["3", 660, 1120],
-        ["4", 1030, 540],
-      ],
+      chartOptions: {
+        chart: {
+          title: "Company Performance",
+          subtitle: "Sales, Expenses, and Profit: 2014-2017"
+        },
+        height: 400,
+        vAxis: {
+          title: "Bestellungen",
+        },
+      }
 
     };
   },
@@ -133,25 +130,6 @@ export default {
   },
 
   computed: {
-    chartOptions() {
-      if (!this.chartsLib) return null;
-      return this.chartsLib.charts.Bar({
-        chart: {
-          title: "Performance",
-          subtitle: "total_orders, accepted orders",
-        },
-        bars: "horizontal", // Required for Material Bar Charts.
-        colors: ["#1b9e77", "#d95f02"],
-        height: 400,
-        hAxis: {
-          title: "Abschnitt",
-        },
-        vAxis: {
-          title: "Bestellungen",
-          ticks: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
-        },
-      })
-    },
     getStatistics() {
       return this.$store.getters.getStatistics.statistics
     },
@@ -172,13 +150,8 @@ export default {
     },
   },
   methods: {
-    onChartReady(chart, google) {
-      this.getStatisticsForCurrentRole()
-      this.chartsLib = google;
-    },
     getGeneralStatisticsForCurrentRole() {
       if (this.getStatistics) {
-        console.log('statitics', this.getStatistics)
         if (this.getCurrentUserRole === 'Einsatzabschnitt')
           return this.getStatistics.find(data => data.type === "Unterabschnitten")
         else if (this.getCurrentUserRole === 'Hauptabschnitt')
@@ -189,6 +162,8 @@ export default {
     },
     getStatisticsForCurrentRole() {
       let statistics = []
+      let result = []
+      result.push( ["Abschnitten", "Bestellungen", "Bestellungen bestätigt"])
       if (this.getStatistics) {
         console.log('all statitics', this.getStatistics)
         if (this.getCurrentUserRole === 'Einsatzabschnitt')
@@ -197,12 +172,8 @@ export default {
           statistics = this.getStatistics.find(data => data.type === 'Einsatzabschnitten').statistics_per_Einsatzabschnitt
         else if (this.getCurrentUserRole === 'Einsatzleiter')
           statistics = this.getStatistics.find(data => data.type === 'Hauptabschnitten').statistics_per_hauptabschnitt
-        console.log("per department statistics for logged in user", statistics)
-        //let arr = statistics.map(({name, total_number_of_orders,total_number_of_accepted_orders}) => ([name, total_number_of_orders,total_number_of_accepted_orders]))
-        let result = []
-        result.push( ["Abschnitten", "Bestellungen", "Bestellungen bestätigt"])
         statistics.forEach(d => result.push([d.name,parseInt(d.total_number_of_orders), parseInt(d.total_number_of_accepted_orders)]))
-        console.log("data", result)
+        console.log("visualized data", result)
         return result
       } else return null
     },
