@@ -51,7 +51,7 @@
       <v-col cols="4">
         <h1 style="text-align: center;color: red">
           {{ getGeneralStatisticsForCurrentRole.general_statistics.average_processing_time }}</h1>
-        <h3 style="text-align: center">Bestellungen/Uhr</h3>
+        <h3 style="text-align: center">Durchsch. Bearbeitungszeit</h3>
       </v-col>
 
     </v-row>
@@ -94,7 +94,7 @@
             color="red"
             outlined
         >
-          pdf exportieren
+          PDF exportieren
         </v-btn>
       </v-col>
     </v-row>
