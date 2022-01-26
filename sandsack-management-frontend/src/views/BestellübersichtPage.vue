@@ -62,7 +62,7 @@
         </h2>
       </v-col>
     </v-row>
-    <div id="content" class="mt-10 pt-10">
+    <div id="content">
       <GChart
           v-if="getStatisticsForCurrentRole"
           :data="getStatisticsForCurrentRole"
@@ -93,6 +93,9 @@
             color="red"
             outlined
         >
+          <v-icon left>
+            mdi-file-export
+          </v-icon>
           PDF exportieren
         </v-btn>
       </v-col>
