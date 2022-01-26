@@ -56,9 +56,10 @@ export default {
         })
     },
 
-    showStatistics() {
-        return axios.get('http://18.193.112.34:8001/order/stats?end_date=2022-2-1&start_date=2022-1-1', {
+    showStatistics(data) {
+        return axios.get(BASE_URL + 'order/stats', {
             headers: authHeader(),
+            params: data
         })
     },
 }
