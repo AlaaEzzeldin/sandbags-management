@@ -127,13 +127,11 @@ export default {
       menu: false,
       chartOptions: {
         chart: {
-          title: "Company Performance",
-          subtitle: "Sales, Expenses, and Profit: 2014-2017"
+          title: "Bestellungen",
         },
         height: 400,
         vAxis: {
-          title: "Bestellungen",
-          step: 1
+          title: "Bestellungen"
         },
       }
     };
