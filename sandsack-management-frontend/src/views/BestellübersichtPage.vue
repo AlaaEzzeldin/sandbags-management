@@ -64,11 +64,21 @@
     </v-row>
     <div id="content" class="mt-10 pt-10">
       <GChart
+          v-if="getStatisticsForCurrentRole"
           :data="getStatisticsForCurrentRole"
           type="ColumnChart"
           :options="chartOptions"
       />
     </div>
+
+    <v-alert
+        v-if="!getStatisticsForCurrentRole"
+        text
+        prominent
+        type="error"
+        icon="mdi-cloud-alert"
+    >
+      Ups, ein Fehler! Für das von Ihnen gewählte Zeitintervall sind keine Bestellungen vorhanden! Bitte ändern Sie die Daten.    </v-alert>
 
     <v-spacer></v-spacer>
     <v-row>
@@ -86,8 +96,6 @@
         </v-btn>
       </v-col>
     </v-row>
-
-
 
 
   </div>
