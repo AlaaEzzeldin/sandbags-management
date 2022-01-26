@@ -35,22 +35,22 @@
       </v-col>
     </v-row>
     <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px"
-           v-if="getGeneralStatisticsForCurrentRole()">
+           v-if="getGeneralStatisticsForCurrentRole">
       <v-col cols="4">
         <h1 style="text-align: center; color: red">
-          {{ getGeneralStatisticsForCurrentRole().general_statistics.total_number_of_orders }}</h1>
+          {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_orders }}</h1>
         <h3 style="text-align: center">Bestellungen</h3>
       </v-col>
 
       <v-col cols="4">
         <h1 style="text-align: center;color: red">
-          {{ getGeneralStatisticsForCurrentRole().general_statistics.total_number_of_accepted_orders }}</h1>
+          {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_accepted_orders }}</h1>
         <h3 style="text-align: center;">Bestellungen bestätigt</h3>
       </v-col>
 
       <v-col cols="4">
         <h1 style="text-align: center;color: red">
-          {{ getGeneralStatisticsForCurrentRole().general_statistics.average_processing_time }}</h1>
+          {{ getGeneralStatisticsForCurrentRole.general_statistics.average_processing_time }}</h1>
         <h3 style="text-align: center">Bestellungen/Uhr</h3>
       </v-col>
 
@@ -64,7 +64,7 @@
     </v-row>
     <div id="content" class="mt-10 pt-10">
       <GChart
-          :data="getStatisticsForCurrentRole()"
+          :data="getStatisticsForCurrentRole"
           type="ColumnChart"
           :options="chartOptions"
       />
@@ -86,6 +86,8 @@
         </v-btn>
       </v-col>
     </v-row>
+
+
 
 
   </div>
@@ -148,8 +150,6 @@ export default {
     getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
     },
-  },
-  methods: {
     getGeneralStatisticsForCurrentRole() {
       if (this.getStatistics) {
         if (this.getCurrentUserRole === 'Einsatzabschnitt')
@@ -158,13 +158,15 @@ export default {
           return this.getStatistics.find(data => data.type === 'Einsatzabschnitten')
         else if (this.getCurrentUserRole === 'Einsatzleiter')
           return this.getStatistics.find(data => data.type === 'Hauptabschnitten')
-      } else return null
+        else return null
+      }
+      else return null
     },
     getStatisticsForCurrentRole() {
-      let statistics = []
-      let result = []
-      result.push( ["Abschnitten", "Bestellungen", "Bestellungen bestätigt"])
       if (this.getStatistics) {
+        let statistics = []
+        let result = []
+        result.push( ["Abschnitten", "Bestellungen", "Bestellungen bestätigt"])
         console.log('all statitics', this.getStatistics)
         if (this.getCurrentUserRole === 'Einsatzabschnitt')
           statistics = this.getStatistics.find(data => data.type === "Unterabschnitten").statistics_per_unterabschnitt
@@ -172,12 +174,17 @@ export default {
           statistics = this.getStatistics.find(data => data.type === 'Einsatzabschnitten').statistics_per_Einsatzabschnitt
         else if (this.getCurrentUserRole === 'Einsatzleiter')
           statistics = this.getStatistics.find(data => data.type === 'Hauptabschnitten').statistics_per_hauptabschnitt
-        statistics.forEach(d => result.push([d.name,parseInt(d.total_number_of_orders), parseInt(d.total_number_of_accepted_orders)]))
-        console.log("visualized data", result)
-        return result
-      } else return null
+        if (statistics) {
+          statistics.forEach(d => result.push([d.name, parseInt(d.total_number_of_orders), parseInt(d.total_number_of_accepted_orders)]))
+          console.log("visualized data", result)
+          return result
+        }
+        else return null
+      }
+      else return null
     },
-
+  },
+  methods: {
     download() {
       /** To Block the Button */
       document.getElementById('pdf').style.display = 'none';
