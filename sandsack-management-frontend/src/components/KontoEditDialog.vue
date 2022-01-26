@@ -24,15 +24,6 @@
             v-model="valid"
             lazy-validation
         >
-<!--          <v-text-field
-              v-model="getLoggedInUser.email"
-              :rules="emailRules"
-              label="E-mail"
-              required
-              filled
-              outlined
-              prepend-icon="mdi-email"
-          ></v-text-field>-->
           <v-text-field
               v-model="name"
               :rules="nameRules"
@@ -41,6 +32,15 @@
               filled
               outlined
               prepend-icon="mdi-account"
+          ></v-text-field>
+          <v-text-field
+              v-model="email"
+              :rules="emailRules"
+              label="E-mail"
+              required
+              filled
+              outlined
+              prepend-icon="mdi-email"
           ></v-text-field>
           <v-text-field
               v-model="phone"
@@ -52,24 +52,9 @@
               prepend-icon="mdi-phone"
           ></v-text-field>
 
-<!--          <v-text-field
-              v-model="getLoggedInUser.password"
-              :rules="passwordRules"
-              label="Altes Passwort"
-              prepend-icon="mdi-lock"
-              required
-              filled
-              outlined
-          ></v-text-field>
-          <v-text-field
-              v-model="getLoggedInUser.password"
-              :rules="passwordRules"
-              label="Neues Passwort"
-              prepend-icon="mdi-lock"
-              required
-              filled
-              outlined
-          ></v-text-field>-->
+          <h2 class="mt-3 ml-10" style="font-weight: normal">
+            * Sie werden aufgefordert, sich erneut anzumelden, wenn Sie Ihre Daten ändern.
+          </h2>
         </v-form>
       </v-card-text>
         <v-card-actions>
@@ -118,6 +103,7 @@ export default {
       valid: true,
       name: '',
       phone: '',
+      email: '',
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -137,6 +123,8 @@ export default {
   mounted: function() {
     this.phone = this.$store.getters.getLoggedInUser.phone
     this.name = this.$store.getters.getLoggedInUser.name
+    this.email = this.$store.getters.getLoggedInUser.email
+
   },
   computed: {
     getUser(){
@@ -149,17 +137,13 @@ export default {
       let data={
         "name": this.name,
         "phone": this.phone,
+        "email": this.email,
       }
       this.$store.dispatch("updateUserInfo",  data).then(
           () => {
-            this.$store.dispatch("getUserInfo")
+            this.$store.dispatch("logout").then(
+                this.$router.push({name: 'LoginPage'}))
           },
-          error => {
-            this.message =
-                (error.response && error.response) ||
-                error.message ||
-                error.toString();
-          }
       );
       this.$emit("close")
     },
