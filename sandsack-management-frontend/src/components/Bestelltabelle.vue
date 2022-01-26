@@ -6,7 +6,7 @@
         class="elevation-2 rounded-lg"
         :search="search"
         :options="options"
-        :custom-filter="filterOnlyCapsText"
+        :custom-filter="customFilter"
 
     >
 
@@ -139,7 +139,7 @@ export default {
     }
   },
   methods: {
-    filterOnlyCapsText (value, search, item) {
+    customFilter (value, search, item) {
       console.log(value, search, item)
       if (this.getPriorities.find(p => p.name.toString().toLowerCase().indexOf(search.toString().toLowerCase())!== -1))
        return value != null &&
