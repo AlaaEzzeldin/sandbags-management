@@ -1,13 +1,14 @@
 <template>
   <div ref="content">
     <v-row no-gutters>
-      <v-col sm="3" class="pt-13 justify-center align-center">
+      <v-col sm="3">
         <h1 style="font-weight: bolder;">Bestellungsliste</h1>
       </v-col>
-      <v-spacer></v-spacer>
-      <v-col sm="2" class="pt-15 justify-center align-center">
+      <v-col
+          sm="2"
+          v-if="this.getCurrentUserRole==='Einsatzleiter' || this.getCurrentUserRole==='Hauptabschnitt' ||this.getCurrentUserRole==='Einsatzabschnitt'"
+      >
         <v-btn
-            v-if="this.getCurrentUserRole==='Einsatzleiter' || this.getCurrentUserRole==='Hauptabschnitt' ||this.getCurrentUserRole==='Einsatzabschnitt'"
             style="text-transform: capitalize; font-weight: bolder;"
             rounded
             color="red"
@@ -20,14 +21,17 @@
           </v-icon>
           Exportieren
         </v-btn>
+      </v-col>
+      <v-col
+          sm="2"
+          v-if="this.getCurrentUserRole === 'Mollnhof' && IsWaitingForDispatchOrders"
+      >
         <v-btn
-            v-if="this.getCurrentUserRole === 'Mollnhof'"
             style="text-transform: capitalize; font-weight: bolder;"
             rounded
             color="primary"
             dark
             block
-            :disabled="!IsWaitingForDispatchOrders"
             @click="lieferscheinDruecken"
         >
           <v-icon left>

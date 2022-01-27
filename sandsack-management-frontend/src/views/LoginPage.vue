@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid fill-height>
+  <v-container fluid fill-height style="padding-top: 10%">
     <v-row align="center" justify="center" align-content="center">
       <v-col :cols="$vuetify.breakpoint.mdAndUp ? 4 : 12" align-self="center">
         <v-card elevation="0" class="justify-center align-center">
