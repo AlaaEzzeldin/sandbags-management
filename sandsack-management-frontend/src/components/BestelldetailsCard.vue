@@ -312,7 +312,7 @@
                 v-bind:disabled="getOrder.status_name!=='AKZEPTIERT'"
                 @click="changeStatus('dispatch')"
             >
-              Bestellung abgesendet
+              Bestellung absenden
             </v-btn>
           </v-col>
         </v-row>
