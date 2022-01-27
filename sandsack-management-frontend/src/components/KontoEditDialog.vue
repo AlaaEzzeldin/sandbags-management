@@ -4,7 +4,7 @@
       width="800"
       persistent
   >
-    <v-card outlined >
+    <v-card outlined>
       <v-card-title>
         <v-col cols="2">
           <v-avatar
@@ -14,8 +14,8 @@
           </v-avatar>
         </v-col>
         <v-col cols="10">
-          <h2>{{getUser.name}}</h2>
-          <h3>{{getUser.branch_name}}</h3>
+          <h2>{{ getUser.name }}</h2>
+          <h3>{{ getUser.branch_name }}</h3>
         </v-col>
       </v-card-title>
       <v-card-text>
@@ -57,38 +57,38 @@
           </h2>
         </v-form>
       </v-card-text>
-        <v-card-actions>
-          <v-row>
-            <v-col class="align-center justify-center" cols="3" offset="3">
-              <v-btn
-                  style="text-transform: capitalize; font-weight: bolder;"
-                  block
-                  rounded
-                  color="red"
-                  dark
-                  @click="closeDialog"
-              >
-                Abbrechen
-              </v-btn>
+      <v-card-actions>
+        <v-row>
+          <v-col class="align-center justify-center" cols="3" offset="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                block
+                rounded
+                color="red"
+                dark
+                @click="closeDialog"
+            >
+              Abbrechen
+            </v-btn>
 
-            </v-col>
-            <v-col cols="3">
+          </v-col>
+          <v-col cols="3">
 
-              <v-btn
-                  style="text-transform: capitalize; font-weight: bolder;"
-                  block
-                  rounded
-                  color="red"
-                  dark
-                  @click="submitUpdatedInfo"
-              >
-                Speichern
-              </v-btn>
-            </v-col>
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                block
+                rounded
+                color="red"
+                dark
+                @click="submitUpdatedInfo"
+            >
+              Speichern
+            </v-btn>
+          </v-col>
 
-          </v-row>
+        </v-row>
 
-        </v-card-actions>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -120,34 +120,37 @@ export default {
       ],
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.phone = this.$store.getters.getLoggedInUser.phone
     this.name = this.$store.getters.getLoggedInUser.name
     this.email = this.$store.getters.getLoggedInUser.email
 
   },
   computed: {
-    getUser(){
+    getUser() {
       return this.$store.getters.getLoggedInUser
     },
 
   },
   methods: {
-    submitUpdatedInfo(){
-      let data={
+    submitUpdatedInfo() {
+      let data = {
         "name": this.name,
         "phone": this.phone,
         "email": this.email,
       }
-      this.$store.dispatch("updateUserInfo",  data).then(
+      this.$store.dispatch("updateUserInfo", data).then(
           () => {
-            this.$store.dispatch("logout").then(
-                this.$router.push({name: 'LoginPage'}))
+            console.log("old", this.$store.getters.getLoggedInUser.email)
+            console.log("new", this.email)
+            if (this.email !== this.$store.getters.getLoggedInUser.email)
+              this.$store.dispatch("logout").then(
+                  this.$router.push({name: 'LoginPage'}))
           },
       );
       this.$emit("close")
     },
-    closeDialog(){
+    closeDialog() {
       this.$emit('close')
     }
   }
