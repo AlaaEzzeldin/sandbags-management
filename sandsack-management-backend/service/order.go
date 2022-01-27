@@ -109,7 +109,7 @@ func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 func GetOrderList(a *gorm.DB, userId int) (orderList []models.Order, err error) {
 	var simpleOrderList []models.SimpleOrder
 	user, _ := GetUserByID(a, userId)
-	if user.BranchId == models.DictBranchName["Mollnhof"] {
+	if user.BranchId == models.DictBranchName["Einsatzleiter"]  {
 		simpleOrderList, err = repo_order.GetAllSimpleOrderList(a, "", "")
 		if err != nil {
 			return nil, err
