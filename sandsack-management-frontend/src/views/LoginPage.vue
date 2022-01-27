@@ -5,7 +5,7 @@
         <v-card elevation="0" class="justify-center align-center">
           <v-card-title>
             <h1 style="color: black;font-weight: bolder;  font-size: x-large">Einloggen bei der
-              <br v-if="!$vuetify.breakpoint.mdAndUp"/>
+              <br/>
               <span style="color: red;  font-size: x-large">Feuerwehr Passau</span>
             </h1>
           </v-card-title>
