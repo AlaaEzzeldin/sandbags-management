@@ -1,10 +1,8 @@
 <template>
-  <v-card elevation="0" class="pt-10">
-    <v-card-title class="pt-10">
-      <h1 style="font-weight: bolder; ">Neue Bestellung</h1>
-    </v-card-title>
-
-    <v-card-text class="pt-16 ">
+  <div ref="content" :class="$vuetify.breakpoint.mdAndUp ? 'pt-10 pl-3 pr-3' : ''">
+    <h1 style="font-weight: bolder; ">Neue Bestellung</h1>
+  <v-card elevation="0">
+    <v-card-text>
       <v-row>
         <v-col cols="12">
           <v-text-field
@@ -18,8 +16,8 @@
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col sm="6">
+      <v-row v-if="$vuetify.breakpoint.mdAndUp">
+        <v-col cols="6">
           <v-select
               v-model="chosenEquipmentType"
               :items="getEquipment.map(a => a.name)"
@@ -31,7 +29,36 @@
               :rules="[v => !!v || 'Bitte geben Sie ein, was genau Sie bestellen möchten?']"
           ></v-select>
         </v-col>
-        <v-col sm="6">
+        <v-col cols="6">
+          <v-text-field
+              v-model="orderQuantity"
+              filled
+              outlined
+              :menu-props="{ top: true, offsetY: true }"
+              :rules="[v => (!!v && v <= getCurrentEquipment.quantity && v > 0)|| 'Die Menge ist nicht correct']"
+              prepend-icon="mdi-pound"
+              label="Anzahl"
+              :hint="'Die Restmenge ist '+getCurrentEquipment.quantity.toString() + ' ' + getCurrentEquipment.measure"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+
+      <v-row v-if="!$vuetify.breakpoint.mdAndUp">
+        <v-col>
+          <v-select
+              v-model="chosenEquipmentType"
+              :items="getEquipment.map(a => a.name)"
+              filled
+              outlined
+              :menu-props="{ top: true, offsetY: true }"
+              prepend-icon="mdi-format-list-bulleted"
+              label="Was möchten Sie bestellen?"
+              :rules="[v => !!v || 'Bitte geben Sie ein, was genau Sie bestellen möchten?']"
+          ></v-select>
+        </v-col>
+      </v-row>
+      <v-row v-if="!$vuetify.breakpoint.mdAndUp">
+        <v-col>
           <v-text-field
               v-model="orderQuantity"
               filled
@@ -92,7 +119,7 @@
 
     <v-card-actions>
       <v-row>
-        <v-col cols="12" sm="6" offset="3">
+        <v-col cols="12" sm="6">
           <v-btn
               style="text-transform: capitalize; font-weight: bolder;color: white"
               block
@@ -115,6 +142,7 @@
     </v-card-actions>
 
   </v-card>
+  </div>
 </template>
 
 <script>
