@@ -19,6 +19,12 @@
         </v-col>
       </v-card-title>
       <v-card-text>
+        <v-alert
+            type="info"
+            outlined
+        >
+          Sie werden aufgefordert, sich erneut anzumelden, wenn Sie Ihre Daten ändern.
+        </v-alert>
         <v-form
             ref="form"
             v-model="valid"
@@ -51,10 +57,6 @@
               outlined
               prepend-icon="mdi-phone"
           ></v-text-field>
-
-          <h2 class="mt-3 ml-10" style="font-weight: normal">
-            * Sie werden aufgefordert, sich erneut anzumelden, wenn Sie Ihre Daten ändern.
-          </h2>
         </v-form>
       </v-card-text>
         <v-card-actions>
@@ -65,7 +67,7 @@
                   block
                   rounded
                   color="red"
-                  dark
+                  outlined
                   @click="closeDialog"
               >
                 Abbrechen
