@@ -182,10 +182,9 @@ export default {
             }
           ]
       this.newOrder.priority = this.getPriorities.find(item => item.name === this.selectedPriority).id
+      //console.log("new order", this.newOrder)
+      this.$store.dispatch("createOrder", this.newOrder).then(this.$router.push({name: 'BestellungslistePage'}))
 
-      console.log("new order", this.newOrder)
-      this.$store.dispatch("createOrder", this.newOrder)
-      this.$router.push({name: 'BestellungslistePage'})
     }
   },
 
