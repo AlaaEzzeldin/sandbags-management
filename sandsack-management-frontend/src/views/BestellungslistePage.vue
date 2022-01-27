@@ -1,5 +1,5 @@
 <template>
-  <div ref="content">
+  <div ref="content" :class="$vuetify.breakpoint.mdAndUp ? 'pt-10 pl-3 pr-3' : ''">
     <v-row no-gutters>
       <v-col sm="3">
         <h1 style="font-weight: bolder;">Bestellungsliste</h1>

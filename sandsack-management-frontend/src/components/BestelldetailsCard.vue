@@ -1,19 +1,29 @@
 <template>
-  <v-card elevation="0" class="pt-10" v-if="getOrder && getPriorityByID">
-    <v-card-title class="pt-10">
-      <v-btn icon @click="goBack">
-        <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>
-      </v-btn>
-      <h1 style="font-weight: bolder; ">Bestellung # {{ getOrder.id }}</h1>
-      <v-chip
-          class="ml-5"
-          :color="getColor(getOrder.status_name)" outlined
-          dark>
-        {{ getOrder.status_name }}
-      </v-chip>
+  <v-card elevation="0" v-if="getOrder && getPriorityByID">
+    <v-card-title>
+          <v-btn icon @click="goBack" v-if="$vuetify.breakpoint.mdAndUp">
+            <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>
+          </v-btn>
+          <h1 style="font-weight: bolder; ">Bestellung # {{ getOrder.id }}</h1>
+          <v-chip
+              class="ml-5"
+              :color="getColor(getOrder.status_name)" outlined
+              dark
+              v-if="$vuetify.breakpoint.mdAndUp"
+              >
+            {{ getOrder.status_name }}
+          </v-chip>
     </v-card-title>
 
-    <v-card-text class="pt-16" >
+    <v-card-text class="pt-10" >
+      <v-row v-if="$vuetify.breakpoint.mdAndDown">
+        <v-col cols="12" sm="4">
+          <h2 style="font-weight: bolder; color: black">Status:</h2>
+        </v-col>
+        <v-col cols="12" sm="7">
+          <h2 style="font-weight: normal; color: black">{{ getOrder.status_name }}</h2>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col cols="12" sm="4">
           <h2 style="font-weight: bolder; color: black">Von:</h2>
