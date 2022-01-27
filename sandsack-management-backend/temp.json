@@ -1,0 +1,64 @@
+{
+  "statistics": [
+    {
+      "type": "Unterabschnitten",
+      "general_statistics": {
+        "total_number_of_orders": "15",
+        "total_number_of_accepted_orders": "1",
+        "average_processing_time": "10 mins"
+      },
+      "statistics_per_unterabschnitt": [
+        {
+          "name": "EA 7.1 Innstadt-West (LZ Innstadt)",
+          "total_number_of_orders": "5",
+          "total_number_of_accepted_orders": "0"
+        },
+        {
+          "name": "EA 7.2 Innstadt-Mitte (LZ Innstadt)",
+          "total_number_of_orders": "2",
+          "total_number_of_accepted_orders": "0"
+        },
+        {
+          "name": "EA 1.1 Altstadt-Ost (FF Heining)",
+          "total_number_of_orders": "3",
+          "total_number_of_accepted_orders": "0"
+        },
+        {
+          "name": "EA 2.2 Neumarkt-Süd (FF Schalding l.d.D.)",
+          "total_number_of_orders": "5",
+          "total_number_of_accepted_orders": "1"
+        }
+      ]
+    },
+    {
+      "type": "Einsatzabschnitten",
+      "general_statistics": {
+        "total_number_of_orders": "5",
+        "total_number_of_accepted_orders": "3",
+        "average_processing_time": "10 mins"
+      },
+      "statistics_per_Einsatzabschnitt": [
+        {
+          "name": "EA 2 Neumarkt",
+          "total_number_of_orders": "5",
+          "total_number_of_accepted_orders": "3"
+        }
+      ]
+    },
+    {
+      "type": "Hauptabschnitten",
+      "general_statistics": {
+        "total_number_of_orders": "1",
+        "total_number_of_accepted_orders": "1",
+        "average_processing_time": "10 mins"
+      },
+      "statistics_per_hauptabschnitt": [
+        {
+          "name": "Mitte (LZ Hauptwache)",
+          "total_number_of_orders": "1",
+          "total_number_of_accepted_orders": "1"
+        }
+      ]
+    }
+  ]
+}

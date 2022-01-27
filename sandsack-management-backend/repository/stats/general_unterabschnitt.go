@@ -47,15 +47,23 @@ func TotalNumberAcceptedUnterabschnitt(db *gorm.DB, startDate, endDate string) i
 	return totalNumber.Count
 }
 
-func GetAverageProcessingTimeUnterabschnitt(db *gorm.DB, startDate, endDate string) string {
-
-	return ""
+func GetAverageProcessingTimeUnterabschnitt(db *gorm.DB, startDate, endDate string) int {
+	query := `select avg(date_part('minute', o.update_date - o.create_date)) as count
+			from "order" o
+			where o.status_id = (select id from status where name = 'GELIEFERT')
+			  and o.create_date between ?::timestamp and ?::timestamp;`
+	var totalNumber TotalNumber
+	if err := db.Raw(query, startDate, endDate).Scan(&totalNumber).Error; err != nil {
+		return 0
+	}
+	log.Println("AVG proc time unter", totalNumber.Count)
+	return totalNumber.Count
 }
 
 func GeneralStatisticsUnterabschnitt(db *gorm.DB, startDate, endDate string) models.GeneralStatistics {
 	totalNumber := strconv.Itoa(TotalNumberUnterabschnitt(db, startDate, endDate))
 	totalNumberAccepted := strconv.Itoa(TotalNumberAcceptedUnterabschnitt(db, startDate, endDate))
-	averageProcessingTime := "10 mins"
+	averageProcessingTime := strconv.Itoa(GetAverageProcessingTimeUnterabschnitt(db, startDate, endDate)) + " min"
 	return models.GeneralStatistics{
 		TotalNumberOfOrders:         totalNumber,
 		TotalNumberOfAcceptedOrders: totalNumberAccepted,
