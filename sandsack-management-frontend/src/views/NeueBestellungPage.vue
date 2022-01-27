@@ -1,9 +1,9 @@
 <template>
   <div ref="content" :class="$vuetify.breakpoint.mdAndUp ? 'pt-10 pl-3 pr-3' : ''">
     <h1 style="font-weight: bolder; ">Neue Bestellung</h1>
-  <v-card elevation="0">
+  <v-card elevation="0" class="mt-5">
     <v-card-text>
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12">
           <v-text-field
               :value="getLoggedInUserName"
@@ -16,7 +16,7 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="$vuetify.breakpoint.mdAndUp">
+      <v-row no-gutters v-if="$vuetify.breakpoint.mdAndUp">
         <v-col cols="6">
           <v-select
               v-model="chosenEquipmentType"
@@ -43,7 +43,7 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="!$vuetify.breakpoint.mdAndUp">
+      <v-row no-gutters v-if="!$vuetify.breakpoint.mdAndUp">
         <v-col>
           <v-select
               v-model="chosenEquipmentType"
@@ -52,12 +52,12 @@
               outlined
               :menu-props="{ top: true, offsetY: true }"
               prepend-icon="mdi-format-list-bulleted"
-              label="Was möchten Sie bestellen?"
+              label="Ausrüstungtyp"
               :rules="[v => !!v || 'Bitte geben Sie ein, was genau Sie bestellen möchten?']"
           ></v-select>
         </v-col>
       </v-row>
-      <v-row v-if="!$vuetify.breakpoint.mdAndUp">
+      <v-row no-gutters v-if="!$vuetify.breakpoint.mdAndUp">
         <v-col>
           <v-text-field
               v-model="orderQuantity"
@@ -72,7 +72,7 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12">
           <v-text-field
               v-model="newOrder.address_to"
@@ -81,12 +81,12 @@
               prepend-icon="mdi-map-marker"
               :rules="[v => !!v || 'Die Adresse ist erforderlich']"
               :menu-props="{ top: true, offsetY: true }"
-              label="Wohin liefern wir?"
+              label="Addresse"
           ></v-text-field>
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12">
           <v-select
               v-model="selectedPriority"
@@ -101,7 +101,7 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12">
           <v-textarea
               v-model="newOrder.comment"
@@ -109,8 +109,7 @@
               filled
               prepend-icon="mdi-message-bulleted"
               name="input-7-4"
-              label="Irgendwelche zusätzlichen Anmerkungen?"
-
+              label="Anmerkungen"
           ></v-textarea>
         </v-col>
       </v-row>

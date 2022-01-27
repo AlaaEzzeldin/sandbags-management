@@ -44,7 +44,7 @@
     <v-row no-gutters>
       <v-col cols="12">
         <Bestelltabelle
-            class="mt-10"
+            class="mt-5"
             :orders="getOrders"
         ></Bestelltabelle>
       </v-col>
