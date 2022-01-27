@@ -1,12 +1,48 @@
 <template>
-  <div ref="content">
-    <v-row>
-      <v-col sm="3" class="pt-13 justify-center align-center">
+  <div ref="content" :class="$vuetify.breakpoint.mdAndUp ? 'pt-10 pl-3 pr-3' : ''">
+    <v-row v-if="$vuetify.breakpoint.mdAndUp">
+      <v-col class="justify-center align-center">
         <h1 style="font-weight: bolder;">Bestellübersicht</h1>
       </v-col>
       <v-spacer></v-spacer>
 
-      <v-col sm="4" class="pt-15 justify-center align-center">
+      <v-col sm="4" class="justify-center align-center">
+        <v-menu
+            v-model="menu"
+            :close-on-content-click="false"
+            :nudge-right="50"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+                v-model="dateSelected"
+                filled
+                label="Tage"
+                prepend-icon="mdi-calendar"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+              v-model="dates"
+              range
+              @input="menu = false"
+          ></v-date-picker>
+        </v-menu>
+      </v-col>
+    </v-row>
+
+    <v-row v-if="!$vuetify.breakpoint.mdAndUp">
+      <v-col class="justify-center align-center">
+        <h1 style="font-weight: bolder;">Bestellübersicht</h1>
+      </v-col>
+      <v-spacer></v-spacer>
+    </v-row>
+    <v-row no-gutters v-if="!$vuetify.breakpoint.mdAndUp" class="mt-5">
+      <v-col sm="4" class="justify-center align-center">
         <v-menu
             v-model="menu"
             :close-on-content-click="false"
@@ -35,7 +71,7 @@
       </v-col>
     </v-row>
     <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px"
-           v-if="getGeneralStatisticsForCurrentRole">
+           v-if="getGeneralStatisticsForCurrentRole && $vuetify.breakpoint.mdAndUp">
       <v-col cols="4">
         <h1 style="text-align: center; color: red">
           {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_orders }}</h1>
@@ -55,7 +91,40 @@
       </v-col>
 
     </v-row>
+    <div
+        v-if="getGeneralStatisticsForCurrentRole && !$vuetify.breakpoint.mdAndUp"
+        style="background-color: #F1F2F6; border-radius: 8px"
+    >
     <v-row>
+      <v-col cols="3" style="text-align: center">
+        <h3 style="color: red">
+          {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_orders }}</h3>
+      </v-col>
+      <v-col>
+        <h3>Bestellungen</h3>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="3" style="text-align: center">
+        <h3 style="color: red">
+          {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_accepted_orders }}</h3>
+      </v-col>
+      <v-col>
+        <h3>Bestellungen geliefert</h3>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="3" style="text-align: center">
+        <h3 style="color: red">
+          {{ getGeneralStatisticsForCurrentRole.general_statistics.average_processing_time }}</h3>
+      </v-col>
+      <v-col>
+        <h3>Durchschnittliche Lieferungszeit</h3>
+      </v-col>
+    </v-row>
+    </div>
+
+    <v-row class="mt-5" no-gutters>
       <v-col cols="6">
         <h2>
           Bestellungen
