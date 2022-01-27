@@ -2,7 +2,7 @@
   <v-app>
     <Navigation/>
     <v-main>
-      <v-container fluid>
+      <v-container fluid fill-height>
         <router-view :key="$route.path"></router-view>
       </v-container>
     </v-main>

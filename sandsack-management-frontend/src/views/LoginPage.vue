@@ -1,12 +1,12 @@
 <template>
   <v-container fluid fill-height>
-    <v-row align="center" justify="center">
-      <v-col cols="5">
-        <v-card elevation="0" class="justify-center align-center mt-16 pt-16 ">
-          <v-card-title class=" ml-10 pl-3">
+    <v-row align="center" justify="center" align-content="center">
+      <v-col :cols="$vuetify.breakpoint.mdAndUp ? 4 : 12" align-self="center">
+        <v-card elevation="0" class="justify-center align-center">
+          <v-card-title>
             <h1 style="color: black;font-weight: bolder;  font-size: x-large">Einloggen bei der</h1>
           </v-card-title>
-          <v-card-subtitle class=" ml-10 pl-3">
+          <v-card-subtitle>
             <h1 style="color: red;font-weight: bolder;  font-size: x-large"> Feuerwehr Passau </h1>
           </v-card-subtitle>
           <v-form ref="form" v-model="valid" class=" pa-3">
