@@ -23,7 +23,7 @@
             type="info"
             outlined
         >
-          Sie werden aufgefordert, sich erneut anzumelden, wenn Sie Ihre Daten ändern.
+          Wenn Sie Ihre E-Mail-Adresse ändern, werden Sie aufgefordert, sich erneut anzumelden
         </v-alert>
         <v-form
             ref="form"
