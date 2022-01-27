@@ -21,9 +21,8 @@
                   :rules="emailRules"
                   label="E-mail"
                   required
-                  filled
                   outlined
-                  prepend-icon="mdi-email"
+                  prepend-inner-icon="mdi-email"
               ></v-text-field>
               <v-text-field
                   v-model="user.password"
@@ -31,9 +30,8 @@
                   :rules="passwordRules"
                   label="Password"
                   required
-                  filled
                   outlined
-                  prepend-icon="mdi-lock"
+                  prepend-inner-icon="mdi-lock"
               ></v-text-field>
               <v-btn
                   :disabled="!valid"
