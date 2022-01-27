@@ -2,7 +2,8 @@ import ordersAPI from '../../api/orders';
 
 const state = {
     orders: [],
-    order: ''
+    order: '',
+    statistics:[]
 }
 
 const getters = {
@@ -11,6 +12,9 @@ const getters = {
     },
     getOrder(state) {
         return state.order;
+    },
+    getStatistics(state) {
+        return state.statistics;
     },
 }
 
@@ -99,7 +103,15 @@ const actions = {
                 console.log(error);
             });
     },
-
+    loadStatistics({commit}, data) {
+        ordersAPI.showStatistics(data)
+            .then(function (response) {
+                commit('SET_STATISTICS', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
 }
 
@@ -122,6 +134,9 @@ const mutations = {
         state.orders.splice(index, 1, updatedOrder)
         state.order = updatedOrder
     },
+    SET_STATISTICS(state, statistics) {
+        state.statistics = statistics;
+    }
 }
 
 export default {

@@ -54,5 +54,12 @@ export default {
         return axios.patch(BASE_URL + 'order/edit', data, {
             headers: authHeader()
         })
-    }
+    },
+
+    showStatistics(data) {
+        return axios.get(BASE_URL + 'order/stats', {
+            headers: authHeader(),
+            params: data
+        })
+    },
 }
