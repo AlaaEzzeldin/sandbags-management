@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"strconv"
 	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/service"
 )
@@ -13,7 +14,7 @@ import (
 // @Summary DispatchOrder - Mollnhof can dispatch the order and assign it to the driver
 // @Accept json
 // @Param Authorization header string true " "
-// @Param input body models.DispatchOrderInput true "DispatchOrder"
+// @Param id path string true "id of the order"
 // @Success 200 {object} models.Order
 // @Failure 500 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
@@ -21,42 +22,42 @@ import (
 // @Tags Order
 // @Router /order/dispatch [post]
 func (a *App) DispatchOrder(c *gin.Context) {
-	var input models.DispatchOrderInput
-	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("DispatchOrder error: ", err.Error())
+	id := c.Query("id")
+	orderId, err := strconv.Atoi(id)
+	if err != nil {
+		log.Println("DispatchOrder, Fehler beim Parsen:", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültiges Eingabeformat",
 		})
 		return
 	}
 
-	if input.DriverId == 0 {
-		input.DriverId = 1
-	}
+
+	var driverId = 1
 
 	claims, err := GetClaims(c)
 	if err != nil {
-		log.Println("AcceptOrder error: ", err.Error())
+		log.Println("DispatchOrder error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültiges Eingabeformat",
 		})
 		return
 	}
 
 	if claims.Role != "Mollnhof" {
-		log.Println("ROle is not Mollnhof: ", claims.Role)
+		log.Println("Die Rolle ist nicht Mollnhof: ", claims.Role)
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
 			ErrCode: http.StatusForbidden,
-			ErrMessage: "you do not have a permission to do it",
+			ErrMessage: "Das ist Ihnen nicht erlaubt",
 		})
 		return
 	}
 
-	permissions, err := service.GetUserOrderPermissions(a.DB, claims.Id, input.OrderId)
+	permissions, err := service.GetUserOrderPermissions(a.DB, claims.Id, orderId)
 	if err != nil {
-		log.Println("AcceptOrder error: ", err.Error())
+		log.Println("Fehler: DispatchOrder: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
@@ -76,23 +77,23 @@ func (a *App) DispatchOrder(c *gin.Context) {
 		log.Println("User cannot accept this order")
 		c.JSON(http.StatusNotFound, models.ErrorResponse{
 			ErrCode:    http.StatusNotFound,
-			ErrMessage: "you cannot view this order",
+			ErrMessage: "Sie können diese Bestellung nicht annehmen",
 		})
 		return
 	}
 
-	err = service.DispatchOrder(a.DB, claims.Id, input.OrderId, input.DriverId)
+	err = service.DispatchOrder(a.DB, claims.Id, orderId, driverId)
 	if err != nil {
 		log.Println("DispatchOrder error:", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode: http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 
-	order, err := service.GetOrder(a.DB, claims.Id, input.OrderId)
+	order, err := service.GetOrder(a.DB, claims.Id, orderId)
 	c.JSON(http.StatusOK, order)
 	return
 }

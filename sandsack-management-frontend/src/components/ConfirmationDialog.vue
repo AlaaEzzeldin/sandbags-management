@@ -5,13 +5,13 @@
   >
     <v-card>
       <v-card-title>
-        {{ cardText }}
+        {{ getMessageText() }}
       </v-card-title>
       <v-container>
         <v-textarea
             label="Notizen"
             outlined
-            v-if="hasTextField"
+            v-if="action==='cancel' && getCurrentUserRole!=='Unterabschnitt'"
             :error="textFieldError"
             :error-messages="textFieldErrorMessages"
             v-model="textFieldValue"
@@ -55,15 +55,16 @@ export default {
   }),
   props: [
     "dialog",
-    "cardText",
-    'newStatus',
+    'action',
     'orderID',
-    'hasTextField'
   ],
   computed: {
-    getCurrentUserRole(){
+    getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
-    }
+    },
+    getLoggedInUser() {
+      return this.$store.getters.getLoggedInUser
+    },
   },
   methods: {
     closeDialog() {
@@ -71,40 +72,71 @@ export default {
     },
 
     submitNewStatus() {
-      if (this.newStatus === 'abgelehnt') {
-        if(!this.textFieldValue){
+      if (this.action === 'cancel' && this.getCurrentUserRole !== 'Unterabschnitt') { // in case of cancel send a comment
+        if (this.textFieldValue.length === 0) {
           this.textFieldError = true;
           this.textFieldErrorMessages = ['Notizen sind verpflichtend!']
+        } else {
+          this.commentOrder()
+          this.changeOrderStatus()
+          this.closeDialog()
         }
-        else this.submitUpdatedOrder()
-      } else {
-        let data = {
-          "status": this.newStatus
-        }
-        let id = this.orderID
-        this.$store.dispatch("updateOrder", {id, data})
+      } else // else dispatch directly the new status
+      {
+        this.changeOrderStatus()
         this.closeDialog()
       }
     },
-    submitUpdatedOrder() {
-      let TextBy = this.getCommentWriter()
+    commentOrder() {
       let data = {
-        "status": this.newStatus,
-        [TextBy] : this.textFieldValue
+        "comment": this.textFieldValue,
+        "order_id": this.orderID
       }
-      let id = this.orderID
-      this.$store.dispatch("updateOrder", {id, data})
+      this.$store.dispatch("commentOrder", data)
       this.closeDialog()
     },
-    // hard coding the users roles
-    getCommentWriter() {
-      if (this.getCurrentUserRole=='Hauptabschnitt')
-        return 'notesByHauptabschnitt'
-      else if (this.getCurrentUserRole=='Einsatzabschnitt')
-        return 'notesByEinsatzabschnitt'
-      else if (this.getCurrentUserRole=='Einsatzleiter')
-        return 'notesByEinsatzleiter'
+
+    changeOrderStatus() {
+      let id = this.orderID
+      if (this.action === 'accept')
+        this.$store.dispatch("acceptOrder", id)
+      else if (this.action === 'cancel')
+        this.$store.dispatch("cancelOrder", id)
+      else if (this.action === 'confirm_delivery')
+        this.$store.dispatch("confirmOrderDelivery", id)
+      else if (this.action === 'dispatch')
+        this.$store.dispatch("dispatchOrder", id)
+
+      this.closeDialog()
+    },
+    getMessageText() {
+      if (this.getCurrentUserRole === 'Unterabschnitt') {
+        if (this.action === 'confirm_delivery')
+          return 'Lieferung bestätigen?'
+        else if (this.action === 'cancel')
+          return 'Bestellung stornieren?'
+      } else if (this.getCurrentUserRole === 'Einsatzabschnitt') {
+        if (this.action === 'accept')
+          return 'Bestellung weiterleiten an Hauptabschnitt?'
+        else if (this.action === 'cancel')
+          return 'Bestellung ablehnen?'
+      } else if (this.getCurrentUserRole === 'Hauptabschnitt') {
+        if (this.action === 'accept')
+          return 'Bestellung weiterleiten an Einsatzleiter?'
+        else if (this.action === 'cancel')
+          return 'Bestellung ablehnen?'
+      } else if (this.getCurrentUserRole === 'Einsatzleiter') {
+        if (this.action === 'accept')
+          return 'Bestellung akzeptieren?'
+        else if (this.action === 'cancel')
+          return 'Bestellung ablehnen?'
+      } else if (this.getCurrentUserRole === 'Mollnhof') {
+        if (this.action === 'dispatch')
+          return 'Bestellung senden?'
+      }
+
     }
+
   }
 }
 </script>

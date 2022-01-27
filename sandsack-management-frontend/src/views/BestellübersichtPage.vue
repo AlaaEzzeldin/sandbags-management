@@ -17,9 +17,9 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                v-model="dateRangeText"
-                label="Tage"
+                v-model="dateSelected"
                 filled
+                label="Tage"
                 prepend-icon="mdi-calendar"
                 readonly
                 v-bind="attrs"
@@ -34,127 +34,170 @@
         </v-menu>
       </v-col>
     </v-row>
-    <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px">
-      <v-col>
-        <h1 style="color: red">35</h1>
-        <h3>Bestellungen</h3>
+    <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px"
+           v-if="getGeneralStatisticsForCurrentRole">
+      <v-col cols="4">
+        <h1 style="text-align: center; color: red">
+          {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_orders }}</h1>
+        <h3 style="text-align: center">Bestellungen</h3>
       </v-col>
-      <v-col>
-        <h1 style="color: red">94%</h1>
-        <h3>Bestellungen bestatigt</h3>
-      </v-col>
-      <v-col>
-        <h1 style="color: red">5</h1>
-        <h3>Bestellungen/Uhr</h3>
-      </v-col>
-    </v-row>
 
+      <v-col cols="4">
+        <h1 style="text-align: center;color: red">
+          {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_accepted_orders }}</h1>
+        <h3 style="text-align: center;">Bestellungen geliefert</h3>
+      </v-col>
+
+      <v-col cols="4">
+        <h1 style="text-align: center;color: red">
+          {{ getGeneralStatisticsForCurrentRole.general_statistics.average_processing_time }}</h1>
+        <h3 style="text-align: center">Durchsch. Lieferungszeit</h3>
+      </v-col>
+
+    </v-row>
     <v-row>
       <v-col cols="6">
         <h2>
           Bestellungen
         </h2>
       </v-col>
-      <v-col cols="6">
-        <v-select
-            v-model="select"
-            :items="selectOptions"
-            item-text="state"
-            label="Beim Abschnitt"
-            filled
-            outlined
-            persistent-hint
-            return-object
-            single-line
-        ></v-select>
-      </v-col>
     </v-row>
-
-    <div ref="content">
-      <GChart type="ColumnChart" :data="chartData" :options="chartOptions"/>
+    <div id="content">
+      <GChart
+          v-if="getStatisticsForCurrentRole"
+          :data="getStatisticsForCurrentRole"
+          type="ColumnChart"
+          :options="chartOptions"
+      />
     </div>
-    <br>
 
+    <v-alert
+        v-if="!getStatisticsForCurrentRole"
+        text
+        type="error"
+        icon="mdi-cloud-alert"
+    >
+      Ups, ein Fehler! Für das von Ihnen gewählte Zeitintervall sind keine Bestellungen vorhanden! Bitte ändern Sie die
+      Daten.
+    </v-alert>
+
+    <v-spacer></v-spacer>
     <v-row>
-      <v-col cols="12" sm="3" offset="9">
+      <v-col cols="12" sm="6" offset-sm="3">
         <v-btn
-            align="right"
+            id="pdf"
             style="text-transform: capitalize; font-weight: bolder;"
-            block
             rounded
+            @click="download"
+            block
             color="red"
-            dark
+            outlined
         >
-          <button  @click="download">Export pdf</button>
+          <v-icon left>
+            mdi-file-export
+          </v-icon>
+          PDF exportieren
         </v-btn>
       </v-col>
     </v-row>
+
+
   </div>
 </template>
 
 <script>
 import jsPDF from "jspdf";
 import domtoimage from "dom-to-image";
-import { GChart } from "vue-google-charts";
+import {GChart} from "vue-google-charts";
+
 export default {
-  name: "App",
+
+  name: 'BestellübersichtPage',
+
   components: {
     GChart,
   },
+
   data() {
     return {
 
-      dates:
-          [(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-            (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)],
-      modal: false,
+      dates: [new Date(new Date().setDate(new Date().getDate() - 7)).toISOString().slice(0, 10),
+        new Date(new Date().setDate(new Date().getDate())).toISOString().slice(0, 10)],
+
       menu: false,
-
-      // Array will be automatically processed with visualization.arrayToDataTable function
-      chartData: [
-        ["Abschnitt", "Bestellungen"],
-        ["EA 1.1 Altstadt - Ost", 5],
-        ["EA 1.2 Altstadt - Mitte", 12],
-        ["EA 1.3 Altstadt - West", 9],
-        ["EA 2.1 Neumarkt - Nord", 25],
-      ],
-
-      selectOptions: [
-        { state: 'Beim Abschnitt',},
-        { state: 'Beim Tag',},
-      ],
       chartOptions: {
-        hAxis: {
-          title: "Abschnitt",
-        },
-        vAxis: {
-          title: "Bestellungen",
-          ticks: [0,5,10,15,20,25,30]
-        },
         chart: {
-          title: "order status",
+          title: "Bestellungen",
         },
-        colors: ['#D7201F'],
-        lineWidth: 4,
-        smoothLine: true,
-      },
+        height: 400,
+        vAxis: {
+          title: "Bestellungen"
+        },
+      }
     };
   },
+
+  created() {
+    this.loadStatsByDates(this.dates[0], this.dates[1])
+  },
+
   computed: {
-    dateRangeText () {
+    getStatistics() {
+      return this.$store.getters.getStatistics.statistics
+    },
+    dateSelected() {
+      if (this.dates[1] < this.dates[0]) {
+        window.alert('Bitte wählen Sie einen gültigen Zeitraum aus!')
+        return ('Gültiges Datum auswählen')
+      } else if ((typeof (this.dates[1]) !== "undefined")) {
+        this.loadStatsByDates(this.dates[0], this.dates[1]);
+      } else {
+        this.loadStatsByDates(this.dates[0], this.dates[0]);
+      }
       return this.dates.join(' / ')
     },
-  },
-  props: {
-    msg: String
+
+    getCurrentUserRole() {
+      return this.$store.getters.getCurrentUserRole
+    },
+    getGeneralStatisticsForCurrentRole() {
+      if (this.getStatistics) {
+        if (this.getCurrentUserRole === 'Einsatzabschnitt')
+          return this.getStatistics.find(data => data.type === "Unterabschnitten")
+        else if (this.getCurrentUserRole === 'Hauptabschnitt')
+          return this.getStatistics.find(data => data.type === 'Einsatzabschnitten')
+        else if (this.getCurrentUserRole === 'Einsatzleiter')
+          return this.getStatistics.find(data => data.type === 'Hauptabschnitten')
+        else return null
+      } else return null
+    },
+    getStatisticsForCurrentRole() {
+      if (this.getStatistics) {
+        let statistics = []
+        let result = []
+        result.push(["Abschnitten", "Bestellungen", "Bestellungen geliefert"])
+        //console.log('all statitics', this.getStatistics)
+        if (this.getCurrentUserRole === 'Einsatzabschnitt')
+          statistics = this.getStatistics.find(data => data.type === "Unterabschnitten").statistics_per_unterabschnitt
+        else if (this.getCurrentUserRole === 'Hauptabschnitt')
+          statistics = this.getStatistics.find(data => data.type === 'Einsatzabschnitten').statistics_per_Einsatzabschnitt
+        else if (this.getCurrentUserRole === 'Einsatzleiter')
+          statistics = this.getStatistics.find(data => data.type === 'Hauptabschnitten').statistics_per_hauptabschnitt
+        if (statistics) {
+          statistics.forEach(d => result.push([d.name, parseInt(d.total_number_of_orders), parseInt(d.total_number_of_accepted_orders)]))
+          // console.log("visualized data", result)
+          return result
+        } else return null
+      } else return null
+    },
   },
   methods: {
-
     download() {
-      /** WITH CSS */
+      /** To Block the Button */
+      document.getElementById('pdf').style.display = 'none';
       domtoimage
           .toPng(this.$refs.content)
-          .then(function(dataUrl) {
+          .then(function (dataUrl) {
             var img = new Image();
             img.src = dataUrl;
             const doc = new jsPDF({
@@ -166,7 +209,7 @@ export default {
             const date = new Date();
             const url = window.URL.createObjectURL;
             const filename =
-                "OrderStatusReport_" +
+                "Statistics-Report_" +
                 date.getFullYear() +
                 ("0" + (date.getMonth() + 1)).slice(-2) +
                 ("0" + date.getDate()).slice(-2) +
@@ -174,30 +217,43 @@ export default {
                 ".pdf";
             doc.save(filename)
             window.URL.revokeObjectURL(url);
-            alert("Export File has downloaded!"); // or you know, something with better UX...
+            /** To Un-Block the Button after download */
+            if (!alert('Die Datei wird heruntergeladen!')) {
+              document.getElementById('pdf').style.display = 'block';
+            }
           })
-          .catch(function(error) {
-            console.error("oops, something went wrong!", error);
+          .catch(function (error) {
+            console.error("oops, Fehler!", error);
           });
     },
+    loadStatsByDates(date_from, date_to) {
+      //  console.log("dates", date_from, date_to)
+      let data = {
+        "end_date": date_to,
+        "start_date": date_from
+      }
+      this.$store.dispatch("loadStatistics", data)
+    },
   }
+
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40pt 0 0;
-}
+<style>
+
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 a {
   color: #42b983;
+  color: #D7201F;
 }
 </style>

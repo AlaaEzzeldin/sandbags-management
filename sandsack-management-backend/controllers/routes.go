@@ -7,7 +7,6 @@ import (
 	"github.com/swaggo/gin-swagger"
 	"io"
 	"log"
-	"net/http"
 	"os"
 	"team2/sandsack-management-backend/docs"
 	_ "team2/sandsack-management-backend/docs"
@@ -66,19 +65,15 @@ func (a *App) RunAllRoutes() {
 
 	// order
 	order := auth.Group("order")
-	order.POST("/", a.CreateOrder)
-	order.GET("/", a.ListOrder)
+	order.POST("", a.CreateOrder)
+	order.GET("/list", a.ListOrder)
+	order.GET("", a.GetOrder)
 	order.POST("/cancel", a.DeclineOrder)
 	order.POST("/accept", a.AcceptOrder)
 	order.POST("/dispatch", a.DispatchOrder)
 	order.POST("/comment", a.CommentOrder)
 	order.PATCH("/edit", a.EditOrder)
 	order.GET("/stats", a.GetStatistics)
-	order.PATCH("/upgrade", func(context *gin.Context) {
-		context.JSON(http.StatusNoContent, gin.H{
-			"message": "in development",
-		})
-	})
 	order.POST("/delivery/confirm", a.ConfirmDelivery)
 
 	// core
@@ -90,7 +85,6 @@ func (a *App) RunAllRoutes() {
 	core.POST("/priority/add", a.AddPriority)
 	core.POST("/equipment/add", a.AddEquipment)
 	core.POST("/driver/add", a.AddDriver)
-
 
 	_ = r.Run(port)
 }

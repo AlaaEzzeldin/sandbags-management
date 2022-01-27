@@ -6,6 +6,27 @@ import (
 	repo_stats "team2/sandsack-management-backend/repository/stats"
 )
 
+
+func UnterabschnittStatsForEinsatzabschnitt(db *gorm.DB, userId int, startDate, endDate string)(models.UnterabschnittStatistics, error) {
+	generalStatistics := repo_stats.GeneralStatsForEinsatzabschnitt(db, userId, startDate, endDate)
+	statisticsPerUnterabschnitt := repo_stats.UnterabschnittStatsForEinsatzabschnitt(db, userId, startDate, endDate)
+	return models.UnterabschnittStatistics{
+		Type:                        "Unterabschnitten",
+		GeneralStatistics:           generalStatistics,
+		StatisticsPerUnterabschnitt: statisticsPerUnterabschnitt,
+	}, nil
+}
+
+func EinsatzabschnittStatsForHauptabschnitt(db *gorm.DB, userId int, startDate, endDate string)(models.EinsatzabschnittStatistics, error)  {
+	generalStatistics := repo_stats.GeneralStatsForHauptabschnitt(db, userId, startDate, endDate)
+	statisticsPerUnterabschnitt := repo_stats.EinsatzabschnittStatsForHauptabschnitt(db, userId, startDate, endDate)
+	return models.EinsatzabschnittStatistics{
+		Type:                        "Einsatzabschnitten",
+		GeneralStatistics:           generalStatistics,
+		StatisticsPerEinsatzabschnitt: statisticsPerUnterabschnitt,
+	}, nil
+}
+
 func GetUnterabschnittStatistics(db *gorm.DB, startDate, endDate string) (models.UnterabschnittStatistics, error) {
 	generalStatistics := repo_stats.GeneralStatisticsUnterabschnitt(db, startDate, endDate)
 	statisticsPerUnterabschnitt := repo_stats.StatisticsPerUnterabschnitt(db, startDate, endDate)

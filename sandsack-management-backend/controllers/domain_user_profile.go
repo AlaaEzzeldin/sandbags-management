@@ -26,7 +26,7 @@ func (a *App) PatchProfile(c *gin.Context) {
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("ChangePassword error: ", err.Error())
+		log.Println("PatchProfile error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
@@ -43,7 +43,7 @@ func (a *App) PatchProfile(c *gin.Context) {
 		})
 		return
 	}
-
+	/*
 	if len(input.Name) == 0 || len(input.Phone) == 0 {
 		log.Println("Length of name is ", len(input.Name), ", length of phone is ", len(input.Phone))
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
@@ -52,8 +52,9 @@ func (a *App) PatchProfile(c *gin.Context) {
 		})
 		return
 	}
+	*/
 
-	if err := service.PatchProfile(a.DB, claims.Id, input.Name, input.Phone); err != nil {
+	if err := service.PatchProfile(a.DB, claims.Id, input.Name, input.Phone, input.Email); err != nil {
 		log.Println("Profile error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,
@@ -62,11 +63,12 @@ func (a *App) PatchProfile(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, "The profile data has been changed successfully")
+	user, err := service.GetUserByID(a.DB, claims.Id)
+	user.Password = ""
+
+	c.JSON(http.StatusOK, user)
 	return
 }
-
-
 
 // GetProfile
 // @Description GetProfile - get info of the user
@@ -82,20 +84,20 @@ func (a *App) PatchProfile(c *gin.Context) {
 func (a *App) GetProfile(c *gin.Context) {
 	claims, err := GetClaims(c)
 	if err != nil {
-		log.Println("GetClaims error:", err.Error())
+		log.Println("Fehler: GetClaims:", err.Error())
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
-			ErrCode: http.StatusForbidden,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusForbidden,
+			ErrMessage: "Access Token ist ungültig",
 		})
 		return
 	}
 
 	user, err := service.GetUserByEmail(a.DB, claims.Email)
 	if err != nil {
-		log.Println("GetUserByID error:", err.Error())
+		log.Println("Fehler: GetUserByID:", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusInternalServerError,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
@@ -105,6 +107,5 @@ func (a *App) GetProfile(c *gin.Context) {
 
 	c.JSON(http.StatusOK, user)
 	return
-
 
 }

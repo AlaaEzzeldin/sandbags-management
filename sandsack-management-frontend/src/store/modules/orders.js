@@ -2,7 +2,8 @@ import ordersAPI from '../../api/orders';
 
 const state = {
     orders: [],
-    order: ''
+    order: '',
+    statistics:[]
 }
 
 const getters = {
@@ -11,6 +12,9 @@ const getters = {
     },
     getOrder(state) {
         return state.order;
+    },
+    getStatistics(state) {
+        return state.statistics;
     },
 }
 
@@ -42,8 +46,17 @@ const actions = {
                 console.log(error);
             });
     },
-    updateOrder({commit}, payload) {
-        ordersAPI.update(payload.id, payload.data)
+    editOrder({commit}, payload) {
+        ordersAPI.editOrder(payload)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+    commentOrder({commit}, payload) {
+        ordersAPI.commentOrder(payload)
             .then(function (response) {
                 commit('UPDATE_ORDER', response.data);
             })
@@ -52,17 +65,67 @@ const actions = {
             });
     },
 
+    acceptOrder({commit}, id) {
+        ordersAPI.acceptOrder(id)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+
+    cancelOrder({commit}, id) {
+        ordersAPI.cancelOrder(id)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+
+    confirmOrderDelivery({commit}, id) {
+        ordersAPI.confirmOrderDelivery(id)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+    dispatchOrder({commit}, id) {
+        ordersAPI.dispatchOrder(id)
+            .then(function (response) {
+                commit('UPDATE_ORDER', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+    loadStatistics({commit}, data) {
+        ordersAPI.showStatistics(data)
+            .then(function (response) {
+                commit('SET_STATISTICS', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
 }
 
 const mutations = {
     SET_ORDERS(state, orders) {
-        state.orders = orders;
+        if(orders)
+            state.orders = orders;
+        else state.orders= []
     },
     SET_ORDER(state, order) {
         state.order = order;
     },
     ADD_ORDER(state, order) {
-        state.orders.push(order);
+        state.orders.unshift(order);
     },
     UPDATE_ORDER(state, updatedOrder) {
         const index = state.orders.findIndex(order => {
@@ -71,6 +134,9 @@ const mutations = {
         state.orders.splice(index, 1, updatedOrder)
         state.order = updatedOrder
     },
+    SET_STATISTICS(state, statistics) {
+        state.statistics = statistics;
+    }
 }
 
 export default {

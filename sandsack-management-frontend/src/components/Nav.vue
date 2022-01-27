@@ -71,7 +71,7 @@ export default {
       drawer: null,
       navItemsUnterabschintt: [
         {
-          title: 'Bestellungliste',
+          title: 'Bestellungsliste',
           component: 'BestellungslistePage',
           icon: 'mdi-format-list-bulleted',
         },
@@ -84,6 +84,11 @@ export default {
           title: 'Konto',
           component: 'KontoPage',
           icon: 'mdi-account',
+        },
+        {
+          title: 'Hilfe',
+          component: 'HelpPage',
+          icon: 'mdi-help-circle-outline',
         },
       ],
       navItemsEinsatzabschnittAndHauptabschnitt: [
@@ -103,6 +108,11 @@ export default {
           component: 'KontoPage',
           icon: 'mdi-account',
         },
+        {
+          title: 'Hilfe',
+          component: 'HelpPage',
+          icon: 'mdi-help-circle-outline',
+        },
       ],
       navItemsMollnhof: [
         {
@@ -119,12 +129,19 @@ export default {
           title: 'Konto',
           component: 'KontoPage',
           icon: 'mdi-account',
-        }
+        },
+        {
+          title: 'Hilfe',
+          component: 'HelpPage',
+          icon: 'mdi-help-circle-outline',
+        },
       ],
     }
   },
   created() {
     this.$store.dispatch("getUserInfo")
+    this.$store.dispatch("loadEquipment");
+    this.$store.dispatch("loadPriorities");
   },
   computed:{
     getCurrentUserRole(){

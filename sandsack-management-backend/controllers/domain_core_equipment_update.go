@@ -7,6 +7,7 @@ import (
 	"team2/sandsack-management-backend/models"
 	"team2/sandsack-management-backend/service"
 )
+
 // UpdateEquipment
 // @Description This endpoint change quantity of equipment. It is used only by Einsatzleiter
 // @Summary This endpoint change quantity of equipment. It is used only by Einsatzleiter
@@ -22,39 +23,39 @@ import (
 func (a *App) UpdateEquipment(c *gin.Context) {
 	var input models.UpdateEquipmentInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("UpdateEquipment error: ", err.Error())
+		log.Println("Fehler: UpdateEquipment: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
-			ErrMessage: "incorrect request",
+			ErrMessage: "Ungültige Anfrage oder Eingabeformat",
 		})
 		return
 	}
 
 	claims, err := GetClaims(c)
 	if err != nil {
-		log.Println("GetClaims error:", err.Error())
+		log.Println("Fehler: GetClaims:", err.Error())
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
-			ErrCode: http.StatusForbidden,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusForbidden,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}
 
 	if claims.Role != "Einsatzleiter" {
-		log.Println("Role is not Einsatzleiter")
+		log.Println("Die Rolle ist kein Einsatzleiter")
 		c.JSON(http.StatusForbidden, models.ErrorResponse{
-			ErrCode: http.StatusForbidden,
-			ErrMessage: "you do not have permissions to do this",
+			ErrCode:    http.StatusForbidden,
+			ErrMessage: "Das ist Ihnen nicht erlaubt. Kein Zugang",
 		})
 		return
 	}
 
 	err = service.UpdateEquipment(a.DB, input.Id, input.Quantity)
 	if err != nil {
-		log.Println("UpdateEquipment error", err.Error())
+		log.Println("Fehler: UpdateEquipment", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
-			ErrCode: http.StatusInternalServerError,
-			ErrMessage: "something went wrong",
+			ErrCode:    http.StatusInternalServerError,
+			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
 	}

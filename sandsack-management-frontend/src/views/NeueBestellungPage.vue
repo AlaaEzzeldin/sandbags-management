@@ -5,7 +5,7 @@
     </v-card-title>
 
     <v-card-text class="pt-16 ">
-      <v-row >
+      <v-row>
         <v-col cols="12">
           <v-text-field
               :value="getLoggedInUserName"
@@ -26,14 +26,14 @@
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
-              prepend-icon="mdi-home"
-              label="was möchten Sie bestellen?"
+              prepend-icon="mdi-format-list-bulleted"
+              label="Was möchten Sie bestellen?"
               :rules="[v => !!v || 'Bitte geben Sie ein, was genau Sie bestellen möchten?']"
           ></v-select>
         </v-col>
         <v-col sm="6">
           <v-text-field
-              v-model="newOrder.quantity"
+              v-model="orderQuantity"
               filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
@@ -45,16 +45,16 @@
         </v-col>
       </v-row>
 
-      <v-row >
+      <v-row>
         <v-col cols="12">
           <v-text-field
-              v-model="newOrder.deliveryAddress"
+              v-model="newOrder.address_to"
               filled
               outlined
               prepend-icon="mdi-map-marker"
               :rules="[v => !!v || 'Die Adresse ist erforderlich']"
               :menu-props="{ top: true, offsetY: true }"
-              label="Wohim Liefern wir?"
+              label="Wohin liefern wir?"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -62,7 +62,7 @@
       <v-row>
         <v-col cols="12">
           <v-select
-              v-model="newOrder.priority"
+              v-model="selectedPriority"
               :items="getPriorities.map(x => x.name)"
               :rules="[v => !!v || 'Die Priorität ist erforderlich']"
               label="Priorität"
@@ -74,10 +74,10 @@
         </v-col>
       </v-row>
 
-      <v-row >
+      <v-row>
         <v-col cols="12">
           <v-textarea
-              v-model="newOrder.notesByUnterabschnitt"
+              v-model="newOrder.comment"
               outlined
               filled
               prepend-icon="mdi-message-bulleted"
@@ -101,10 +101,10 @@
               @click="createOrder"
               :disabled="!(
                   chosenEquipmentType &&
-                  newOrder.priority &&
-                  newOrder.deliveryAddress &&
-                  newOrder.quantity > 0 &&
-                  newOrder.quantity <= getCurrentEquipment.quantity
+                  selectedPriority &&
+                  newOrder.address_to &&
+                  orderQuantity > 0 &&
+                  orderQuantity <= getCurrentEquipment.quantity
               )"
           >
             Bestellen
@@ -122,30 +122,32 @@
 export default {
   name: 'BestelldetailsPage',
 
+  data: () => ({
+    selectedPriority: '',
+    chosenEquipmentType: '',
+    orderQuantity: '',
+    newOrder:
+        {
+          "address_to": "",
+          "comment": "",
+          "equipments": [
+            {
+              "id": 0,
+              "measure": "",
+              "name": "",
+              "quantity": 0
+            }
+          ],
+          "priority": 0
+        }
+  }),
   created() {
     this.$store.dispatch("loadEquipment");
     this.$store.dispatch("loadPriorities");
   },
 
-  data: () => ({
-    loggedIn: '',
-    priority: '',
-    abschnitt: '',
-    chosenEquipmentType: '',
-    newOrder: {
-      id:"",
-      status: "anstehend", //this will be deleted when integrating with the backened
-      from: "",
-      equipments: [],
-      quantity: "",
-      priority: "",
-      deliveryAddress: "",
-      notesByUnterabschnitt: ""
-    }
-  }),
-
-  computed:{
-    getCurrentUserRole(){
+  computed: {
+    getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
     },
     getLoggedInUserName() {
@@ -172,8 +174,15 @@ export default {
 
   methods: {
     createOrder() {
-      this.newOrder.from= this.getLoggedInUserName
-      this.newOrder.equipments = [this.getCurrentEquipment]
+      this.newOrder.equipments =
+          [
+            {
+              "id": this.getEquipment.find(a => a.name === this.chosenEquipmentType).id,
+              "quantity": parseInt(this.orderQuantity)
+            }
+          ]
+      this.newOrder.priority = this.getPriorities.find(item => item.name === this.selectedPriority).id
+
       console.log("new order", this.newOrder)
       this.$store.dispatch("createOrder", this.newOrder)
       this.$router.push({name: 'BestellungslistePage'})

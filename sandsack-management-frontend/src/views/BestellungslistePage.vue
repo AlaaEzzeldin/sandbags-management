@@ -15,6 +15,9 @@
             block
             @click="exportAllOrders"
         >
+          <v-icon left>
+            mdi-file-export
+          </v-icon>
           Exportieren
         </v-btn>
         <v-btn
@@ -24,8 +27,12 @@
             color="primary"
             dark
             block
+            :disabled="!IsWaitingForDispatchOrders"
             @click="lieferscheinDruecken"
         >
+          <v-icon left>
+            mdi-file-export
+          </v-icon>
           Lieferschein drücken
         </v-btn>
       </v-col>
@@ -58,14 +65,19 @@ export default {
     this.$store.dispatch("loadOrders")
   },
 
-  computed:{
-    getCurrentUserRole(){
+  computed: {
+    getCurrentUserRole() {
       return this.$store.getters.getCurrentUserRole
     },
     getOrders() {
       return this.$store.getters.getOrders
+    },
+    getPriorityByID(){
+      return this.$store.getters.getPriorityByID
+    },
+    IsWaitingForDispatchOrders(){
+      return this.getOrders.find(order=> order.status_name==='AKZEPTIERT')
     }
-
   },
 
   methods: {
@@ -75,11 +87,11 @@ export default {
         body.push(
             [
               order.id,
-              order.created_at,
-              order.from,
-              order.priority,
-              order.status,
-              order.deliveryAddress
+              order.create_date,
+              order.address_from,
+              this.getPriorityByID(order.priority_id).name,
+              order.status_name,
+              order.address_to
             ]
         );
       }
@@ -89,17 +101,17 @@ export default {
     lieferscheinDruecken: function () {
       let body = [['id', 'Von', 'Priorität', 'Anschrift', 'Menge']];
       for (let order of this.getOrders) {
-        let dateCreated = moment(order.created_at, 'DD.MM.yyyy HH:mm');
-        if (order.status === 'akzeptiert' &&
+        let dateCreated = moment(order.create_date);
+        if (order.status_name === 'AKZEPTIERT' &&
             dateCreated.isSame(moment(), "day")
         ) {
           body.push(
               [
                 order.id,
-                order.from,
-                order.priority,
-                order.deliveryAddress,
-                order.quantity
+                order.address_from,
+                this.getPriorityByID(order.priority_id).name,
+                order.address_to,
+                order.equipments[0].quantity
               ]
           );
         }
