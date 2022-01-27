@@ -25,9 +25,76 @@ func (a *App) GetStatistics(c *gin.Context) {
 	var input models.GetStatisticsInput
 	input.StartDate = c.Query("start_date")
 	input.EndDate = c.Query("end_date")
+	claims, _ := GetClaims(c)
+
+	if claims.Role == "Einsatzabschnitt" {
+		unterabschnittStats, err := service.UnterabschnittStatsForEinsatzabschnitt(a.DB, claims.Id, input.StartDate, input.EndDate)
+		if err != nil {
+			log.Println("Fehler: GetStatistics: ", err.Error())
+			c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				ErrCode:    http.StatusInternalServerError,
+				ErrMessage: "Da ist etwas schief gelaufen",
+			})
+			return
+		}
+		statArray := []interface{}{unterabschnittStats}
+		c.JSON(http.StatusOK, gin.H{
+			"statistics": statArray,
+		})
+		return
+	} else if claims.Role == "Hauptabschnitt" {
+		unterabschnittStats, err := service.EinsatzabschnittStatsForHauptabschnitt(a.DB, claims.Id, input.StartDate, input.EndDate)
+		if err != nil {
+			log.Println("Fehler: GetStatistics: ", err.Error())
+			c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				ErrCode:    http.StatusInternalServerError,
+				ErrMessage: "Da ist etwas schief gelaufen",
+			})
+			return
+		}
+		statArray := []interface{}{unterabschnittStats}
+		c.JSON(http.StatusOK, gin.H{
+			"statistics": statArray,
+		})
+		return
+	} else if claims.Role == "Einsatzleiter" {
+		unterabschnittStats, err := service.GetUnterabschnittStatistics(a.DB, input.StartDate, input.EndDate)
+		if err != nil {
+			log.Println("Fehler: GetStatistics: ", err.Error())
+			c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				ErrCode:    http.StatusInternalServerError,
+				ErrMessage: "Da ist etwas schief gelaufen",
+			})
+			return
+		}
+		einsatzabschnittStats, err := service.GetEinsatzabschnittStatistics(a.DB, input.StartDate, input.EndDate)
+		if err != nil {
+			log.Println("Fehler: GetStatistics: ", err.Error())
+			c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				ErrCode:    http.StatusInternalServerError,
+				ErrMessage: "Da ist etwas schief gelaufen",
+			})
+			return
+		}
+
+		hauptabschnittStats, err := service.GetHauptabschnittStatistics(a.DB, input.StartDate, input.EndDate)
+		if err != nil {
+			log.Println("Fehler: GetStatistics: ", err.Error())
+			c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				ErrCode:    http.StatusInternalServerError,
+				ErrMessage: "Da ist etwas schief gelaufen",
+			})
+			return
+		}
+		statArray := []interface{}{unterabschnittStats, einsatzabschnittStats, hauptabschnittStats}
+		c.JSON(http.StatusOK, gin.H{
+			"statistics": statArray,
+		})
+		return
+	}
 
 
-	unterabschnittStats, err := service.GetUnterabschnittStatistics(a.DB, input.StartDate, input.EndDate)
+	/*unterabschnittStats, err := service.GetUnterabschnittStatistics(a.DB, input.StartDate, input.EndDate)
 	if err != nil {
 		log.Println("Fehler: GetStatistics: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
@@ -54,12 +121,9 @@ func (a *App) GetStatistics(c *gin.Context) {
 			ErrMessage: "Da ist etwas schief gelaufen",
 		})
 		return
-	}
+	}*/
 
-	statArray := []interface{}{unterabschnittStats, einsatzabschnittStats, hauptabschnittStats}
-	c.JSON(http.StatusOK, gin.H{
-		"statistics": statArray,
-	})
-	return
+	//statArray := []interface{}{unterabschnittStats, einsatzabschnittStats, hauptabschnittStats}
+
 
 }

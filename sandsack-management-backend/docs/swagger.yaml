@@ -168,6 +168,8 @@ definitions:
     type: object
   models.PatchProfileInput:
     properties:
+      email:
+        type: string
       name:
         type: string
       phone:
@@ -656,7 +658,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: ListOrder - listing all orders
+      description: GetOrder - order by id
       parameters:
       - description: ' '
         in: header
@@ -687,7 +689,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
-      summary: ListOrder - listing all orders
+      summary: GetOrder - order by id
       tags:
       - Order
     post:
@@ -941,6 +943,39 @@ paths:
           schema:
             $ref: '#/definitions/models.ErrorResponse'
       summary: This endpoint edits priority and/or quantity of equipment of the order
+      tags:
+      - Order
+  /order/list:
+    get:
+      consumes:
+      - application/json
+      description: ListOrder - listing all orders
+      parameters:
+      - description: ' '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: ListOrder - listing all orders
       tags:
       - Order
   /order/stats:
