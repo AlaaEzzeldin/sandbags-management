@@ -12,7 +12,8 @@
         class="hidden-lg-and-up"
         style="padding-left: 0;"
         @click.stop="drawer = !drawer">
-      <h3>Feuerwehr Passau ({{ getLoggedInUser.name }})</h3>
+      <img src="@/assets/images/logo.png" height="40" class="mr-4"/>
+      <h3>Feuerwehr Passau</h3>
     </v-toolbar>
     <v-row class="pt-10 pb-10 hidden-md-and-down">
       <v-col cols="3">
@@ -51,7 +52,7 @@
         style="width: 350px; padding-left: 0;"
         @click.stop="drawer = !drawer">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      <h3>Feuerwehr Passau ({{ getLoggedInUser.name }})</h3>
+      <h3>Feuerwehr Passau</h3>
     </v-toolbar>
   </div>
 </template>
