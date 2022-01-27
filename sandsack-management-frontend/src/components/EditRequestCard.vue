@@ -172,6 +172,7 @@ export default {
         "order_id": this.editedOrder.id,
         "priority": this.getPriorities.find(item => item.name === this.selectedPriority).id
       }
+      console.log("edit order", data)
       this.$store.dispatch("editOrder", data)
       this.gotToOrderDetails()
     },
