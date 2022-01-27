@@ -96,10 +96,10 @@
       </v-col>
     </v-row>
 
-    <konto-edit-dialog :dialog="dialogKonto"
+    <konto-edit-dialog v-if="dialogKonto" :dialog="dialogKonto"
                        @close="dialogKonto=false"
     ></konto-edit-dialog>
-    <password-edit-dialog :dialog="dialogPassword"
+    <password-edit-dialog  v-if="dialogPassword" :dialog="dialogPassword"
                           @close="dialogPassword=false"
     ></password-edit-dialog>
   </div>
@@ -121,6 +121,7 @@ export default {
     dialogKonto: null,
     dialogPassword: null
   }),
+
   computed: {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn
