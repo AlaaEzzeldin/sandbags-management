@@ -37,7 +37,7 @@
     </v-row>
 
     <v-row>
-      <v-col cols="12" sm="6" offset="3">
+      <v-col cols="12" sm="6" offset-sm="3">
         <v-btn
             style="text-transform: capitalize; font-weight: bolder;"
             rounded
