@@ -4,8 +4,9 @@
       <v-col>
         <h1 style="font-weight: bolder;">Bestellungsliste</h1>
       </v-col>
+      <v-spacer/>
       <v-col
-          cols="2"
+          class="mt-2"
           v-if="this.getCurrentUserRole==='Einsatzleiter' || this.getCurrentUserRole==='Hauptabschnitt' ||this.getCurrentUserRole==='Einsatzabschnitt'"
       >
         <v-btn
@@ -22,7 +23,6 @@
           Exportieren
         </v-btn>
       </v-col>
-      <v-spacer/>
       <v-col
           v-if="this.getCurrentUserRole === 'Mollnhof' && IsWaitingForDispatchOrders"
           class="mt-2"
