@@ -1,5 +1,19 @@
 <template style="background-color: white">
   <div>
+    <v-btn
+        style="text-transform: capitalize; font-weight: bolder;z-index:100"
+        text
+        @click="logout"
+        class="hidden-sm-and-down"
+        fixed
+        right
+        v-if="isLoggedIn"
+    >
+      <v-icon left>
+        mdi-logout
+      </v-icon>
+      Ausloggen
+    </v-btn>
     <v-navigation-drawer
         :permanent="$vuetify.breakpoint.mdAndUp"
         left
@@ -183,6 +197,7 @@ export default {
   methods:
       {
         logout() {
+          console.log('logout')
           this.$store.dispatch('logout').then(
               () => {
                 this.$router.push({name: 'LoginPage'})
