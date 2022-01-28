@@ -143,7 +143,7 @@ export default {
     }
   },
   created() {
-    if (this.getCurrentUserRole) {
+    if (this.isLoggedIn) {
       this.$store.dispatch("getUserInfo");
       this.$store.dispatch("loadEquipment");
       this.$store.dispatch("loadPriorities");
