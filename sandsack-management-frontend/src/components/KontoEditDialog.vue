@@ -6,16 +6,16 @@
   >
     <v-card outlined >
       <v-card-title>
-        <v-col cols="2">
+        <v-col cols="2" v-if="$vuetify.breakpoint.mdAndUp">
           <v-avatar
               color="white"
               size="60">
             <v-icon color="black" large>mdi-home</v-icon>
           </v-avatar>
         </v-col>
-        <v-col cols="10">
-          <h2>{{getUser.name}}</h2>
-          <h3>{{getUser.branch_name}}</h3>
+        <v-col :cols="$vuetify.breakpoint.mdAndUp ? 10 : 12">
+          <h3>{{getUser.name}}</h3>
+          <h4>{{getUser.branch_name}}</h4>
         </v-col>
       </v-card-title>
       <v-card-text>
@@ -61,7 +61,7 @@
       </v-card-text>
         <v-card-actions>
           <v-row>
-            <v-col class="align-center justify-center" cols="3" offset="3">
+            <v-col class="align-center justify-center">
               <v-btn
                   style="text-transform: capitalize; font-weight: bolder;"
                   block
@@ -74,7 +74,7 @@
               </v-btn>
 
             </v-col>
-            <v-col cols="3">
+            <v-col>
 
               <v-btn
                   style="text-transform: capitalize; font-weight: bolder;"
