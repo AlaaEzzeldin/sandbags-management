@@ -122,7 +122,7 @@
       <!------------------------------------------------- Unterabschnitt ------------------------------------------->
       <v-card-actions v-if="getCurrentUserRole === 'Unterabschnitt'" class="mt-10">
         <v-row>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -137,7 +137,7 @@
             </v-btn>
           </v-col>
 
-          <v-col cols="12" sm="6" offset="3" v-if="getOrder.status_name==='AUF DEM WEG'">
+          <v-col cols="12" sm="6" offset-sm="3" v-if="getOrder.status_name==='AUF DEM WEG'">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -150,7 +150,7 @@
               Lieferung bestätigen
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -170,7 +170,7 @@
       <!---------------------------------- Einsatzabschnitt  -------------------------------->
       <v-card-actions v-if="this.getCurrentUserRole === 'Einsatzabschnitt'">
         <v-row>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -184,7 +184,7 @@
               Bestellung weiterleiten an Hauptabschnitt
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -198,7 +198,7 @@
               Bestellung bearbeiten
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -217,7 +217,7 @@
       <!----------------------------------  Hauptabschnitt -------------------------------->
       <v-card-actions v-if="getCurrentUserRole === 'Hauptabschnitt'">
         <v-row>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -231,7 +231,7 @@
               Bestellung annehmen
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -245,7 +245,7 @@
               Bestellung bearbeiten
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -264,7 +264,7 @@
       <!----------------------------------  Einsatzleiter -------------------------------->
       <v-card-actions v-if="getCurrentUserRole === 'Einsatzleiter'">
         <v-row>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -278,7 +278,7 @@
               Bestellung annehmen
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -292,7 +292,7 @@
               Bestellung bearbeiten
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -311,7 +311,7 @@
       <!------------------------------------------------- Mollhof ------------------------------------------->
       <v-card-actions v-if="getCurrentUserRole === 'Mollnhof'">
         <v-row>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
