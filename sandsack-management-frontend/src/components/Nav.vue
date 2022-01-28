@@ -49,13 +49,23 @@
     </v-navigation-drawer>
     <v-toolbar
         flat
-        class="hidden-md-and-up"
-        style="width: 350px; padding-left: 0;"
-        @click.stop="drawer = !drawer"
+        class="hidden-md-and-up p-0"
         v-if="isLoggedIn"
     >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+          @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
       <h3>Feuerwehr Passau</h3>
+      <v-spacer/>
+      <v-btn
+          style="text-transform: capitalize; font-weight: bolder;"
+          text
+          @click="logout"
+      >
+        <v-icon left>
+          mdi-logout
+        </v-icon>
+      </v-btn>
     </v-toolbar>
   </div>
 </template>
@@ -170,6 +180,22 @@ export default {
     }
   },
 
+  methods:
+      {
+        logout() {
+          this.$store.dispatch('logout').then(
+              () => {
+                this.$router.push({name: 'LoginPage'})
+              },
+              error => {
+                this.message =
+                    (error.response && error.response) ||
+                    error.message ||
+                    error.toString();
+              }
+          );
+        }
 
+      }
 }
 </script>

@@ -55,22 +55,6 @@
             style="text-transform: capitalize; font-weight: bolder;"
             rounded
             outlined
-            color="red"
-            dark
-            block
-            @click="logout"
-        >
-          <v-icon left>
-            mdi-logout
-          </v-icon>
-          Ausloggen
-        </v-btn>
-      </v-col>
-      <v-col cols="12" sm="6" offset-sm="3">
-        <v-btn
-            style="text-transform: capitalize; font-weight: bolder;"
-            rounded
-            outlined
             color="orange"
             @click="dialogKonto=true"
             dark
@@ -133,22 +117,5 @@ export default {
     },
 
   },
-  methods:
-      {
-        logout() {
-          this.$store.dispatch('logout').then(
-              () => {
-                this.$router.push({name: 'LoginPage'})
-              },
-              error => {
-                this.message =
-                    (error.response && error.response) ||
-                    error.message ||
-                    error.toString();
-              }
-          );
-        }
-
-      }
 }
 </script>
