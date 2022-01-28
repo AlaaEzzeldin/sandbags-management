@@ -8,15 +8,8 @@
         width="350"
         v-if="isLoggedIn"
     >
-    <v-toolbar
-        flat
-        class="hidden-lg-and-up"
-        style="padding-left: 0;"
-        @click.stop="drawer = !drawer">
-      <img src="@/assets/images/logo.png" height="40" class="mr-4"/>
-      <h3>Feuerwehr Passau</h3>
-    </v-toolbar>
-    <v-row class="pt-10 pb-10 hidden-md-and-down">
+
+    <v-row class="pt-lg-8 pt-3">
       <v-col cols="3">
         <img src="@/assets/images/logo.png" height="60"/>
       </v-col>
