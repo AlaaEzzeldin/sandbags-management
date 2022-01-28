@@ -15,6 +15,7 @@ import RecoverPasswordConfirmPage from "../views/RecoverPasswordConfirmPage";
 import HomePage from "../views/HomePage";
 import BestellBearbeitenPage from "../views/BestellBearbeitenPage";
 import ManageEquipmentPage from "../views/ManageEquipmentPage";
+import HelpPage from "../views/HelpPage";
 
 Vue.use(VueRouter)
 
@@ -91,6 +92,12 @@ const routes = [
                 name: 'ManageEquipmentPage',
                 component: ManageEquipmentPage
             },
+            // all
+            {
+                path: '/help',
+                name: 'HelpPage',
+                component: HelpPage,
+            },
         ]
     },
 
@@ -120,7 +127,7 @@ function hasPermissionsNeeded(to) {
     else if (['Unterabschnitt', 'Einsatzabschnitt', 'Hauptabschnitt', 'Einsatzleiter'].includes(userRole) &&
         ['BestellBearbeitenPage'].includes(toPage)) // all except for Mollnhof
         return true
-    else if (['BestellungslistePage', 'KontoPage', 'BestelldetailsPage'].includes(toPage)) // all users
+    else if (['BestellungslistePage', 'KontoPage', 'BestelldetailsPage', 'HelpPage'].includes(toPage)) // all users
         return true
     else return false
 }

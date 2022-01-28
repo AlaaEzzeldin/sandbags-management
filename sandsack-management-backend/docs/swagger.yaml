@@ -81,13 +81,6 @@ definitions:
       err_message:
         type: string
     type: object
-  models.GetStatisticsInput:
-    properties:
-      end_date:
-        type: string
-      start_date:
-        type: string
-    type: object
   models.Log:
     properties:
       action_type_id:
@@ -175,6 +168,8 @@ definitions:
     type: object
   models.PatchProfileInput:
     properties:
+      email:
+        type: string
       name:
         type: string
       phone:
@@ -663,7 +658,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: ListOrder - listing all orders
+      description: GetOrder - order by id
       parameters:
       - description: ' '
         in: header
@@ -694,7 +689,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
-      summary: ListOrder - listing all orders
+      summary: GetOrder - order by id
       tags:
       - Order
     post:
@@ -950,6 +945,39 @@ paths:
       summary: This endpoint edits priority and/or quantity of equipment of the order
       tags:
       - Order
+  /order/list:
+    get:
+      consumes:
+      - application/json
+      description: ListOrder - listing all orders
+      parameters:
+      - description: ' '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: ListOrder - listing all orders
+      tags:
+      - Order
   /order/stats:
     get:
       consumes:
@@ -961,12 +989,16 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: GetStats Input
-        in: body
-        name: input
+      - description: start date
+        in: path
+        name: start_date
         required: true
-        schema:
-          $ref: '#/definitions/models.GetStatisticsInput'
+        type: string
+      - description: end date
+        in: path
+        name: end_date
+        required: true
+        type: string
       produces:
       - application/json
       responses:

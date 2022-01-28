@@ -594,14 +594,14 @@ var doc = `{
         },
         "/order/": {
             "get": {
-                "description": "ListOrder - listing all orders",
+                "description": "GetOrder - order by id",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Order"
                 ],
-                "summary": "ListOrder - listing all orders",
+                "summary": "GetOrder - order by id",
                 "parameters": [
                     {
                         "type": "string",
@@ -1025,6 +1025,56 @@ var doc = `{
                 }
             }
         },
+        "/order/list": {
+            "get": {
+                "description": "ListOrder - listing all orders",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "ListOrder - listing all orders",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " ",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Order"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/order/stats": {
             "get": {
                 "description": "Gets list of stats of orders",
@@ -1046,13 +1096,18 @@ var doc = `{
                         "required": true
                     },
                     {
-                        "description": "GetStats Input",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.GetStatisticsInput"
-                        }
+                        "type": "string",
+                        "description": "start date",
+                        "name": "start_date",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "end date",
+                        "name": "end_date",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1692,17 +1747,6 @@ var doc = `{
                 }
             }
         },
-        "models.GetStatisticsInput": {
-            "type": "object",
-            "properties": {
-                "end_date": {
-                    "type": "string"
-                },
-                "start_date": {
-                    "type": "string"
-                }
-            }
-        },
         "models.Log": {
             "type": "object",
             "properties": {
@@ -1836,6 +1880,9 @@ var doc = `{
         "models.PatchProfileInput": {
             "type": "object",
             "properties": {
+                "email": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -2047,5 +2094,5 @@ func (s *s) ReadDoc() string {
 }
 
 func init() {
-	swag.Register(swag.Name, &s{})
+	swag.Register("swagger", &s{})
 }

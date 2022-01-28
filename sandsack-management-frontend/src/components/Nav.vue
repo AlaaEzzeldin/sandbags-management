@@ -1,44 +1,56 @@
 <template style="background-color: white">
-  <v-navigation-drawer
-      :permanent="$vuetify.breakpoint.smAndUp"
-      width="350"
-      app
-      class="logo pa-0 ma-0"
-      v-if="isLoggedIn"
-  >
-    <div>
-      <v-row class="pt-10 pb-10 pl-5">
-        <v-col cols="3">
-          <img class="mr-10" src="@/assets/images/logo.png" height="60"/>
-        </v-col>
-        <v-col cols="9">
-          <h1 style="color: red;font-weight: bolder;  font-size: x-large" class="justify-center"> Feuerwehr Passau </h1>
-          <h1 style="color: black;font-weight: bolder;  font-size: large;" class="justify-center">
-            {{ getLoggedInUser.name }} </h1>
-        </v-col>
-      </v-row>
-    </div>
+  <div>
+    <v-navigation-drawer
+        :permanent="$vuetify.breakpoint.mdAndUp"
+        left
+        app
+        v-model="drawer"
+        width="350"
+        v-if="isLoggedIn"
+    >
 
-    <v-list rounded class="mb-16">
-      <v-list-item-group>
-        <v-list-item
-            v-for="(item, i) in getNavListForLoggedInUserRoll"
-            :key="i"
-            link
-            :to="{name:item.component}"
-        >
-          <v-icon style="color: red" v-text="item.icon"></v-icon>
-          <v-list-item-title
-              v-if="$vuetify.breakpoint.lgAndUp"
-              class="text-left ml-2"
-              style="font-weight: bolder;  font-size: large;"
-              v-text="item.title"
-          ></v-list-item-title>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-    <EquipmentQuantityTable/>
-  </v-navigation-drawer>
+    <v-row class="pt-lg-8 pt-3">
+      <v-col cols="3">
+        <img src="@/assets/images/logo.png" height="60"/>
+      </v-col>
+      <v-col cols="9">
+        <h1 style="color: red;font-weight: bolder;  font-size: x-large; white-space: nowrap;"> Feuerwehr Passau </h1>
+        <h1 style="color: black;font-weight: bolder;  font-size: large;">{{ getLoggedInUser.name }}</h1>
+      </v-col>
+    </v-row>
+
+      <v-list class="mb-16 mt-16">
+          <v-list-item
+              v-for="(item, i) in getNavListForLoggedInUserRoll"
+              :key="i"
+              link
+              :to="{name:item.component}"
+          >
+            <v-list-item-icon>
+              <v-icon style="color: red" v-text="item.icon"></v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title
+                  class="text-left ml-2"
+                  style="font-weight: bolder;  font-size: large;"
+                  v-text="item.title"
+              ></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+      </v-list>
+      <EquipmentQuantityTable/>
+    </v-navigation-drawer>
+    <v-toolbar
+        flat
+        class="hidden-md-and-up"
+        style="width: 350px; padding-left: 0;"
+        @click.stop="drawer = !drawer"
+        v-if="isLoggedIn"
+    >
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <h3>Feuerwehr Passau</h3>
+    </v-toolbar>
+  </div>
 </template>
 
 <script>
@@ -54,9 +66,10 @@ export default {
 
   data() {
     return {
+      drawer: null,
       navItemsUnterabschintt: [
         {
-          title: 'Bestellungliste',
+          title: 'Bestellungsliste',
           component: 'BestellungslistePage',
           icon: 'mdi-format-list-bulleted',
         },
@@ -69,6 +82,11 @@ export default {
           title: 'Konto',
           component: 'KontoPage',
           icon: 'mdi-account',
+        },
+        {
+          title: 'Hilfe',
+          component: 'HelpPage',
+          icon: 'mdi-help-circle-outline',
         },
       ],
       navItemsEinsatzabschnittAndHauptabschnitt: [
@@ -88,6 +106,11 @@ export default {
           component: 'KontoPage',
           icon: 'mdi-account',
         },
+        {
+          title: 'Hilfe',
+          component: 'HelpPage',
+          icon: 'mdi-help-circle-outline',
+        },
       ],
       navItemsMollnhof: [
         {
@@ -104,7 +127,12 @@ export default {
           title: 'Konto',
           component: 'KontoPage',
           icon: 'mdi-account',
-        }
+        },
+        {
+          title: 'Hilfe',
+          component: 'HelpPage',
+          icon: 'mdi-help-circle-outline',
+        },
       ],
     }
   },
@@ -138,7 +166,7 @@ export default {
       return this.$store.getters.isLoggedIn
     },
     getNavListForLoggedInUserRoll() {
-      if (['Einsatzabschnitt', 'Hauptabschnitt', 'Einsatzleiter'].includes(this.getCurrentUserRole))
+      if (['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter'].includes(this.getCurrentUserRole))
         return this.navItemsEinsatzabschnittAndHauptabschnitt;
       else if (this.getCurrentUserRole === 'Unterabschnitt')
         return this.navItemsUnterabschintt;

@@ -6,6 +6,8 @@
         class="elevation-2 rounded-lg"
         :search="search"
         :options="options"
+        :custom-filter="customFilter"
+
     >
 
       <!----------------------------------------SEARCH----------------------------------->
@@ -131,10 +133,24 @@ export default {
     },
     getPriorityByID(){
       return this.$store.getters.getPriorityByID
+    },
+    getPriorities(){
+      return this.$store.getters.getPriorities
     }
   },
   methods: {
-
+    customFilter (value, search, item) {
+      console.log(value, search, item)
+      if (this.getPriorities.find(p => p.name.toString().toLowerCase().indexOf(search.toString().toLowerCase())!== -1))
+       return value != null &&
+          search != null &&
+          typeof value === 'string' &&
+          this.getPriorityByID(item.priority_id).name.toLowerCase().indexOf(search.toString().toLowerCase())!== -1
+      else return value != null &&
+          search != null &&
+          typeof value === 'string' &&
+          value.toString().toLowerCase().indexOf(search.toString().toLowerCase()) !== -1
+    },
     editItem(Item) {
       const orderId = Item.id;
       this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})

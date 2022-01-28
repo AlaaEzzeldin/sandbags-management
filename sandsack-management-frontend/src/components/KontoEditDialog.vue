@@ -6,33 +6,30 @@
   >
     <v-card outlined >
       <v-card-title>
-        <v-col cols="2">
+        <v-col cols="2" v-if="$vuetify.breakpoint.mdAndUp">
           <v-avatar
               color="white"
               size="60">
             <v-icon color="black" large>mdi-home</v-icon>
           </v-avatar>
         </v-col>
-        <v-col cols="10">
-          <h2>{{getUser.name}}</h2>
-          <h3>{{getUser.branch_name}}</h3>
+        <v-col :cols="$vuetify.breakpoint.mdAndUp ? 10 : 12">
+          <h3>{{getUser.name}}</h3>
+          <h4>{{getUser.branch_name}}</h4>
         </v-col>
       </v-card-title>
       <v-card-text>
+        <v-alert
+            type="info"
+            outlined
+        >
+          Wenn Sie Ihre E-Mail-Adresse ändern, werden Sie aufgefordert, sich erneut anzumelden
+        </v-alert>
         <v-form
             ref="form"
             v-model="valid"
             lazy-validation
         >
-<!--          <v-text-field
-              v-model="getLoggedInUser.email"
-              :rules="emailRules"
-              label="E-mail"
-              required
-              filled
-              outlined
-              prepend-icon="mdi-email"
-          ></v-text-field>-->
           <v-text-field
               v-model="name"
               :rules="nameRules"
@@ -43,6 +40,15 @@
               prepend-icon="mdi-account"
           ></v-text-field>
           <v-text-field
+              v-model="email"
+              :rules="emailRules"
+              label="E-mail"
+              required
+              filled
+              outlined
+              prepend-icon="mdi-email"
+          ></v-text-field>
+          <v-text-field
               v-model="phone"
               :rules="phoneRules"
               label="Phone"
@@ -51,43 +57,24 @@
               outlined
               prepend-icon="mdi-phone"
           ></v-text-field>
-
-<!--          <v-text-field
-              v-model="getLoggedInUser.password"
-              :rules="passwordRules"
-              label="Altes Passwort"
-              prepend-icon="mdi-lock"
-              required
-              filled
-              outlined
-          ></v-text-field>
-          <v-text-field
-              v-model="getLoggedInUser.password"
-              :rules="passwordRules"
-              label="Neues Passwort"
-              prepend-icon="mdi-lock"
-              required
-              filled
-              outlined
-          ></v-text-field>-->
         </v-form>
       </v-card-text>
         <v-card-actions>
           <v-row>
-            <v-col class="align-center justify-center" cols="3" offset="3">
+            <v-col class="align-center justify-center">
               <v-btn
                   style="text-transform: capitalize; font-weight: bolder;"
                   block
                   rounded
                   color="red"
-                  dark
+                  outlined
                   @click="closeDialog"
               >
-                Abrechen
+                Abbrechen
               </v-btn>
 
             </v-col>
-            <v-col cols="3">
+            <v-col>
 
               <v-btn
                   style="text-transform: capitalize; font-weight: bolder;"
@@ -118,6 +105,7 @@ export default {
       valid: true,
       name: '',
       phone: '',
+      email: '',
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -137,6 +125,8 @@ export default {
   mounted: function() {
     this.phone = this.$store.getters.getLoggedInUser.phone
     this.name = this.$store.getters.getLoggedInUser.name
+    this.email = this.$store.getters.getLoggedInUser.email
+
   },
   computed: {
     getUser(){
@@ -149,21 +139,18 @@ export default {
       let data={
         "name": this.name,
         "phone": this.phone,
+        "email": this.email,
       }
       this.$store.dispatch("updateUserInfo",  data).then(
           () => {
-            this.$store.dispatch("getUserInfo")
+            if (this.email !== this.$store.getters.getLoggedInUser.email)
+              this.$store.dispatch("logout").then(
+                  this.$router.push({name: 'LoginPage'}))
           },
-          error => {
-            this.message =
-                (error.response && error.response) ||
-                error.message ||
-                error.toString();
-          }
       );
       this.$emit("close")
     },
-    closeDialog(){
+    closeDialog() {
       this.$emit('close')
     }
   }

@@ -74,7 +74,7 @@ func (a *App) CreateOrder(c *gin.Context) {
 		AddressTo:   input.AddressTo,
 		AddressFrom: "Mollnhof",
 		StatusId:    models.DictStatusName["ANSTEHEND"],
-		PriorityId:  models.DictPriorityName["HIGH"],
+		PriorityId:  input.Priority, //models.DictPriorityName["HOCH"],
 		Comments:    comments,
 		Equipments:  input.Equipments,
 	}

@@ -1,67 +1,76 @@
 <template>
-  <v-card elevation="0" class="pt-10" v-if="getOrder && getPriorityByID">
-    <v-card-title class="pt-10">
-      <v-btn icon @click="goBack">
-        <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>
-      </v-btn>
-      <h1 style="font-weight: bolder; ">Bestellung # {{ getOrder.id }}</h1>
-      <v-chip
-          class="ml-5"
-          :color="getColor(getOrder.status_name)" outlined
-          dark>
-        {{ getOrder.status_name }}
-      </v-chip>
+  <v-card elevation="0" v-if="getOrder && getPriorityByID">
+    <v-card-title>
+          <v-btn icon @click="goBack" v-if="$vuetify.breakpoint.mdAndUp">
+            <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>
+          </v-btn>
+          <h1 style="font-weight: bolder; ">Bestellung # {{ getOrder.id }}</h1>
+          <v-chip
+              class="ml-5"
+              :color="getColor(getOrder.status_name)" outlined
+              dark
+              v-if="$vuetify.breakpoint.mdAndUp"
+              >
+            {{ getOrder.status_name }}
+          </v-chip>
     </v-card-title>
 
-    <v-card-text class="pt-16 " >
-
-      <v-row>
-        <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Von:</h3>
-        </v-col>
+    <v-card-text class="pt-10" >
+      <v-row v-if="$vuetify.breakpoint.mdAndDown">
         <v-col cols="12" sm="4">
-          <h3 style="font-weight: bolder; color: black">{{ getOrder.name }}</h3>
+          <h2 style="font-weight: bolder; color: black">Status:</h2>
+        </v-col>
+        <v-col cols="12" sm="7">
+          <h2 style="font-weight: normal; color: black">{{ getOrder.status_name }}</h2>
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Typ:</h3>
-        </v-col>
         <v-col cols="12" sm="4">
-          <h3 style="font-weight: bolder; color: black">{{ getOrder.equipments[0].name }}</h3>
+          <h2 style="font-weight: bolder; color: black">Von:</h2>
+        </v-col>
+        <v-col cols="12" sm="7">
+          <h2 style="font-weight: normal; color: black">{{ getOrder.name }}</h2>
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Anzahl:</h3>
-        </v-col>
         <v-col cols="12" sm="4">
-          <h3 style="font-weight: bolder; color: black">{{ getOrder.equipments[0].quantity }}</h3>
+          <h2 style="font-weight: bolder; color: black">Typ:</h2>
+        </v-col>
+        <v-col cols="12" sm="7">
+          <h2 style="font-weight: normal; color: black" v-if="getOrder.equipments">{{ getOrder.equipments[0].name }}</h2>
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Priorität:</h3>
-        </v-col>
         <v-col cols="12" sm="4">
-          <h3 style="font-weight: bolder; color: black">{{ getPriorityByID(getOrder.priority_id).name }}</h3>
+          <h2 style="font-weight: bolder; color: black">Anzahl:</h2>
+        </v-col>
+        <v-col cols="12" sm="7">
+          <h2 style="font-weight: normal; color: black" v-if="getOrder.equipments">{{ getOrder.equipments[0].quantity }}</h2>
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="2">
-          <h3 style="font-weight: bolder; color: black">Lieferadresse:</h3>
-        </v-col>
         <v-col cols="12" sm="4">
-          <h3 style="font-weight: bolder; color: black">{{ getOrder.address_to }}</h3>
+          <h2 style="font-weight: bolder; color: black">Priorität:</h2>
+        </v-col>
+        <v-col cols="12" sm="7">
+          <h2 style="font-weight: normal; color: black" v-if="getOrder.priority_id">{{ getPriorityByID(getOrder.priority_id).name }}</h2>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="4">
+          <h2 style="font-weight: bolder; color: black">Lieferadresse:</h2>
+        </v-col>
+        <v-col cols="12" sm="7">
+          <h2 style="font-weight: normal; color: black" v-if="getOrder.address_to">{{ getOrder.address_to }}</h2>
         </v-col>
       </v-row>
 
 
       <!------------------------------------------------ comment -------------------------------->
-      <div v-if="getOrder.comments">
+      <div v-if="getOrder.comments" class="mt-10">
         <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Unterabschnitt')">
           <v-col cols="12" sm="12">
-            <h3 style="font-weight: bolder; color: black">Anmerkungen des Anforderers:</h3>
+            <h2 style="font-weight: bolder; color: black">Anmerkungen des Anforderers:</h2>
           </v-col>
           <v-col cols="12" sm="12">
             <v-textarea
@@ -73,7 +82,7 @@
         </v-row>
         <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Einsatzabschnitt')">
           <v-col cols="12" sm="12">
-            <h3 style="font-weight: bolder; color: black">Notizen aus dem Einsatzabschnitt</h3>
+            <h2 style="font-weight: bolder; color: black">Notizen aus dem Einsatzabschnitt</h2>
           </v-col>
           <v-col cols="12" sm="12">
             <v-textarea
@@ -85,7 +94,7 @@
         </v-row>
         <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Hauptabschnitt')">
           <v-col cols="12" sm="12">
-            <h3 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt</h3>
+            <h2 style="font-weight: bolder; color: black">Notizen aus dem hauptabschnitt</h2>
           </v-col>
           <v-col cols="12" sm="12">
             <v-textarea
@@ -97,7 +106,7 @@
         </v-row>
         <v-row v-if="getOrder.comments.find(comment=> comment.role === 'Einsatzleiter')">
           <v-col cols="12" sm="12">
-            <h3 style="font-weight: bolder; color: black">Notizen aus dem Einsatzleiter</h3>
+            <h2 style="font-weight: bolder; color: black">Notizen aus dem Einsatzleiter</h2>
           </v-col>
           <v-col cols="12" sm="12">
             <v-textarea
@@ -109,237 +118,238 @@
         </v-row>
       </div>
 
+
+      <!------------------------------------------------- Unterabschnitt ------------------------------------------->
+      <v-card-actions v-if="getCurrentUserRole === 'Unterabschnitt'" class="mt-10">
+        <v-row>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="orange"
+                dark
+                block
+                outlined
+                :disabled="getOrder.status_name!=='ANSTEHEND'"
+                @click="editOrder"
+            >
+              Bestellung bearbeiten
+            </v-btn>
+          </v-col>
+
+          <v-col cols="12" sm="6" offset-sm="3" v-if="getOrder.status_name==='AUF DEM WEG'">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="green"
+                dark
+                block
+                outlined
+                @click="changeStatus('confirm_delivery')"
+            >
+              Lieferung bestätigen
+            </v-btn>
+          </v-col>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="red"
+                dark
+                block
+                :disabled="getOrder.status_name!=='ANSTEHEND'"
+                @click="changeStatus('cancel')"
+            >
+              Bestellung stornieren
+            </v-btn>
+          </v-col>
+        </v-row>
+
+      </v-card-actions>
+
+      <!---------------------------------- Einsatzabschnitt  -------------------------------->
+      <v-card-actions v-if="this.getCurrentUserRole === 'Einsatzabschnitt'">
+        <v-row>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="green"
+                dark
+                block
+                outlined
+                :disabled="getOrder.status_name!=='ANSTEHEND'"
+                @click="changeStatus('accept')"
+            >
+              Bestellung weiterleiten an Hauptabschnitt
+            </v-btn>
+          </v-col>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="red"
+                dark
+                block
+                outlined
+                :disabled="getOrder.status_name!=='ANSTEHEND'"
+                @click="editOrder"
+            >
+              Bestellung bearbeiten
+            </v-btn>
+          </v-col>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="red"
+                dark
+                block
+                :disabled="getOrder.status_name!=='ANSTEHEND'"
+                @click="changeStatus('cancel')"
+            >
+              Bestellung ablehnen
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+
+      <!----------------------------------  Hauptabschnitt -------------------------------->
+      <v-card-actions v-if="getCurrentUserRole === 'Hauptabschnitt'">
+        <v-row>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="green"
+                dark
+                block
+                outlined
+                :disabled="getOrder.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
+                @click="changeStatus('accept')"
+            >
+              Bestellung annehmen
+            </v-btn>
+          </v-col>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="red"
+                dark
+                block
+                outlined
+                @click="editOrder"
+                :disabled="getOrder.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
+            >
+              Bestellung bearbeiten
+            </v-btn>
+          </v-col>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="red"
+                dark
+                block
+                :disabled="getOrder.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
+                @click="changeStatus('cancel')"
+            >
+              Bestellung ablehnen
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+
+      <!----------------------------------  Einsatzleiter -------------------------------->
+      <v-card-actions v-if="getCurrentUserRole === 'Einsatzleiter'">
+        <v-row>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="green"
+                dark
+                block
+                outlined
+                :disabled="getOrder.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
+                @click="changeStatus('accept')"
+            >
+              Bestellung annehmen
+            </v-btn>
+          </v-col>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="red"
+                dark
+                block
+                outlined
+                :disabled="getOrder.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
+                @click="editOrder"
+            >
+              Bestellung bearbeiten
+            </v-btn>
+          </v-col>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="red"
+                dark
+                block
+                :disabled="getOrder.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
+                @click="changeStatus('cancel')"
+            >
+              Bestellung ablehnen
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+
+      <!------------------------------------------------- Mollhof ------------------------------------------->
+      <v-card-actions v-if="getCurrentUserRole === 'Mollnhof'">
+        <v-row>
+          <v-col cols="12" sm="6" offset-sm="3">
+            <v-btn
+                style="text-transform: capitalize; font-weight: bolder;"
+                rounded
+                color="green"
+                dark
+                block
+                outlined
+                v-bind:disabled="getOrder.status_name!=='AKZEPTIERT'"
+                @click="changeStatus('dispatch')"
+            >
+              Bestellung absenden
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+
       <!------------------------------------------------ logs -------------------------------->
 
-      <v-row v-if="getOrder.logs">
+      <v-row v-if="getOrder.logs" class="mt-10">
         <v-col cols="12" sm="12">
-          <h3 style="font-weight: bolder; color: black">Bestellverlauf</h3>
+          <h2 style="font-weight: bolder; color: black">Bestellverlauf</h2>
         </v-col>
       </v-row>
       <v-row
           v-for="item in getOrder.logs"
           :key="item.id"
-          style="color: black"
+          style="color: black;"
       >
         <v-col cols="4">
           <b>{{ format_time(item.create_date) }}</b>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <div class="float-right">
-            {{ item.description }}
+            <h3 style="color: black; font-weight: normal;">{{ item.description }}</h3>
           </div>
         </v-col>
       </v-row>
     </v-card-text>
-
-    <!------------------------------------------------- Unterabschnitt ------------------------------------------->
-    <v-card-actions v-if="getCurrentUserRole === 'Unterabschnitt'">
-      <v-row>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="orange"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status_name!=='ANSTEHEND'"
-              @click="editOrder"
-          >
-            Bestellung bearbeiten
-          </v-btn>
-        </v-col>
-
-        <v-col cols="12" sm="6" offset="3" v-if="getOrder.status_name==='AUF DEM WEG'">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
-              dark
-              block
-              outlined
-              @click="changeStatus('confirm_delivery')"
-          >
-            Lieferung bestätigen
-          </v-btn>
-        </v-col>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="red"
-              dark
-              block
-              :disabled="getOrder.status_name!=='ANSTEHEND'"
-              @click="changeStatus('cancel')"
-          >
-            Bestellung stornieren
-          </v-btn>
-        </v-col>
-      </v-row>
-
-    </v-card-actions>
-
-    <!---------------------------------- Einsatzabschnitt  -------------------------------->
-    <v-card-actions v-if="this.getCurrentUserRole === 'Einsatzabschnitt'">
-      <v-row>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status_name!=='ANSTEHEND'"
-              @click="changeStatus('accept')"
-          >
-            Bestellung weiterleiten an Hauptabschnitt
-          </v-btn>
-        </v-col>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="red"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status_name!=='ANSTEHEND'"
-              @click="editOrder"
-          >
-            Bestellung bearbeiten
-          </v-btn>
-        </v-col>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="red"
-              dark
-              block
-              :disabled="getOrder.status_name!=='ANSTEHEND'"
-              @click="changeStatus('cancel')"
-          >
-            Bestellung ablehnen
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card-actions>
-
-    <!----------------------------------  Hauptabschnitt -------------------------------->
-    <v-card-actions v-if="getCurrentUserRole === 'Hauptabschnitt'">
-      <v-row>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
-              @click="changeStatus('accept')"
-          >
-            Bestellung annehmen
-          </v-btn>
-        </v-col>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="red"
-              dark
-              block
-              outlined
-              @click="editOrder"
-              :disabled="getOrder.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
-          >
-            Bestellung bearbeiten
-          </v-btn>
-        </v-col>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="red"
-              dark
-              block
-              :disabled="getOrder.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT'"
-              @click="changeStatus('cancel')"
-          >
-            Bestellung ablehnen
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card-actions>
-
-    <!----------------------------------  Einsatzleiter -------------------------------->
-    <v-card-actions v-if="getCurrentUserRole === 'Einsatzleiter'">
-      <v-row>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
-              @click="changeStatus('accept')"
-          >
-            Bestellung annehmen
-          </v-btn>
-        </v-col>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="red"
-              dark
-              block
-              outlined
-              :disabled="getOrder.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
-              @click="editOrder"
-          >
-            Bestellung bearbeiten
-          </v-btn>
-        </v-col>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="red"
-              dark
-              block
-              :disabled="getOrder.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT'"
-              @click="changeStatus('cancel')"
-          >
-            Bestellung ablehnen
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card-actions>
-
-    <!------------------------------------------------- Mollhof ------------------------------------------->
-    <v-card-actions v-if="getCurrentUserRole === 'Mollnhof'">
-      <v-row>
-        <v-col cols="12" sm="6" offset="3">
-          <v-btn
-              style="text-transform: capitalize; font-weight: bolder;"
-              rounded
-              color="green"
-              dark
-              block
-              outlined
-              v-bind:disabled="getOrder.status_name!=='AKZEPTIERT'"
-              @click="changeStatus('dispatch')"
-          >
-            Bestellung abgesendet
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card-actions>
 
     <ConfirmationDialog
         :action="action"

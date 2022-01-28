@@ -3,18 +3,18 @@ import api from '../services/api';
 export default {
 
     index(params) {
-        return api.get( 'order/', {
+        return api.get( 'order/list', {
             params: params
         })
     },
 
     show(id) {
-        return api.get( 'order/?id=' + id)
+        return api.get( 'order?id=' + id)
     },
 
 
     create(data) {
-        return api.post( 'order/', data);
+        return api.post( 'order', data);
     },
 
     acceptOrder(id) {
@@ -35,5 +35,11 @@ export default {
     },
     editOrder(data) {
         return api.patch( 'order/edit', data)
-    }
+    },
+
+    showStatistics(data) {
+        return api.get('order/stats', {
+            params: data
+        })
+    },
 }

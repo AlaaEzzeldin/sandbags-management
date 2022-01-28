@@ -26,7 +26,7 @@ func (a *App) PatchProfile(c *gin.Context) {
 
 	// check whether the structure of request is correct
 	if err := c.ShouldBindJSON(&input); err != nil {
-		log.Println("ChangePassword error: ", err.Error())
+		log.Println("PatchProfile error: ", err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			ErrCode:    http.StatusBadRequest,
 			ErrMessage: "incorrect request",
@@ -43,7 +43,7 @@ func (a *App) PatchProfile(c *gin.Context) {
 		})
 		return
 	}
-
+	/*
 	if len(input.Name) == 0 || len(input.Phone) == 0 {
 		log.Println("Length of name is ", len(input.Name), ", length of phone is ", len(input.Phone))
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
@@ -52,8 +52,9 @@ func (a *App) PatchProfile(c *gin.Context) {
 		})
 		return
 	}
+	*/
 
-	if err := service.PatchProfile(a.DB, claims.Id, input.Name, input.Phone); err != nil {
+	if err := service.PatchProfile(a.DB, claims.Id, input.Name, input.Phone, input.Email); err != nil {
 		log.Println("Profile error: ", err.Error())
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			ErrCode:    http.StatusInternalServerError,

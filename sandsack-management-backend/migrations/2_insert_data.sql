@@ -97,20 +97,23 @@ values
     (30, 'EA 6.3 Grubweg-Sandsack (FF Grubweg)', '1234', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa',
      'ea63_grubweg_sandsack@user.com', '', true, false, true, 5),
     (31, 'EA ZF Werk I (WF ZF)', '1234', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa',
-     'ea6zf_werk@user.com', '', true, false, true, 5);
+     'ea6zf_werk@user.com', '', true, false, true, 5),
+    (32, 'EA 7 - Innstadt', '1234', '$2a$14$oY1qUZ8/2agftsfoG6GTau2QeVSsqE3rTJVqxYKLuqnSjFqMzL1Oa',
+    'ea7_innstadt@user.com', '', true, false, true, 4);
 
 insert into "hierarchy" (user1_id, user2_id)
 values(2,1),
       (1,3), (1,4), (1,5), (1,6),
       (3,7), (3,8), (3,9), (3,10),
       (4,11), (4,12),
-      (5,13), (5,14), (5,15), (5,16),
+      (32,13), (32,14), (32,15), (32,16),
       (7,17), (7,18), (7,19),
       (8,20), (8,21),
       (9,22), (9,23),
       (10,24), (10,25),
       (11,26), (11,27),
-      (12,28), (12,29), (12,30), (12,31);
+      (12,28), (12,29), (12,30), (12,31),
+      (5, 32);
 
 
 
@@ -133,14 +136,13 @@ insert into action_type(id, name) values
                                       (6, 'ASSIGNED');
 
 insert into priority(id, level, name) values
-                                          (1, 1, 'HIGH'), (2, 2, 'MIDDLE'), (3, 3, 'LOW');
+                                          (1, 1, 'HOCH'), (2, 2, 'MITTEL'), (3, 3, 'NIEDRIG');
 
 
 insert into equipment(id, name, quantity, measure) values
     (1, 'Sandsack', 100000, 'Paletten'),
-    (2, 'Spaten', 1000, 'Stück'),
-    (3, 'Bindfaden', 2000, 'Meter'),
-    (4, 'Wasserschlauch', 2000, 'Meter');
+    (2, 'Stromerzeuger', 3000, 'Stück'),
+    (3, 'Pumpe', 3000, 'Stück');
 
 
 
