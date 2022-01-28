@@ -1,78 +1,85 @@
 <template>
-  <v-card elevation="0" class="pt-10" v-if="editedOrder && getPriorities && getEquipment">
-    <v-card-title class="pt-10">
-      <v-btn icon @click="goBack">
+  <div ref="content" :class="$vuetify.breakpoint.mdAndUp ? 'pt-10 pl-3 pr-3' : ''">
+  <v-card elevation="0" v-if="editedOrder && getPriorities && getEquipment">
+    <v-card-title>
+      <v-btn icon @click="goBack" v-if="$vuetify.breakpoint.mdAndUp">
         <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>
       </v-btn>
-      <h1 style="font-weight: bolder; ">Bestellung bearbeiten # {{ editedOrder.id }} </h1>
+      <h3 style="font-weight: bolder; ">Bestellung # {{ editedOrder.id }} bearbeiten</h3>
       <v-chip
           class="ml-5"
           :color="getColor(editedOrder.status_name)" outlined
-          dark>
+          dark
+          v-if="$vuetify.breakpoint.mdAndUp"
+      >
         {{ editedOrder.status_name }}
       </v-chip>
     </v-card-title>
 
-    <v-card-text class="pt-16 ">
-      <v-row no-gutters>
-        <v-col cols="12" sm="2">
-          <h2 style="font-weight: bolder; color: black">Von:</h2>
-        </v-col>
-        <v-col cols="12" sm="8">
+    <v-card-text class="pt-5">
+      <v-row no-gutters v-if="$vuetify.breakpoint.mdAndDown">
+        <v-col cols="12">
           <v-text-field
               disabled
-              :value="editedOrder.name"
+              filled
+              :value="editedOrder.status_name"
               outlined
+              label="Status"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row no-gutters>
-        <v-col cols="12" sm="2">
-          <h2 style="font-weight: bolder; color: black">Typ:</h2>
+        <v-col cols="12">
+          <v-text-field
+              disabled
+              filled
+              :value="editedOrder.name"
+              outlined
+              label="Von"
+          ></v-text-field>
         </v-col>
-        <v-col cols="12" sm="8">
+      </v-row>
+      <v-row no-gutters>
+        <v-col cols="12">
           <v-select
               disabled
+              filled
               :value="editedOrder.equipments[0].name"
               :items="getEquipment.map(a => a.name)"
               outlined
+              label="Typ"
           ></v-select>
         </v-col>
       </v-row>
       <v-row no-gutters>
-        <v-col cols="12" sm="2">
-          <h2 style="font-weight: bolder; color: black">Anzahl:</h2>
-        </v-col>
-        <v-col cols="12" sm="8">
+        <v-col cols="12">
           <v-text-field
               v-model="editedOrder.equipments[0].quantity"
               outlined
               :rules="[v => (!!v && v <= getCurrentEquipment.quantity && v > 0)|| 'Die Menge ist nicht correct']"
               :hint="'Die Restmenge ist '+getCurrentEquipment.quantity.toString() + ' ' + getCurrentEquipment.measure"
+              label="Anzahl"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row no-gutters>
-        <v-col cols="12" sm="2">
-          <h2 style="font-weight: bolder; color: black">Priorität:</h2>
-        </v-col>
-        <v-col cols="12" sm="8">
+        <v-col cols="12">
           <v-select
               v-model="selectedPriority"
               :items="getPriorities.map(x => x.name)"
               outlined
+              label="Priorität"
           ></v-select>
         </v-col>
       </v-row>
       <v-row no-gutters>
-        <v-col cols="12" sm="2">
-          <h2 style="font-weight: bolder; color: black">Lieferadresse:</h2>
-        </v-col>
-        <v-col cols="12" sm="8">
+        <v-col cols="12">
           <v-text-field
               v-model="editedOrder.address_to"
               outlined
               disabled
+              filled
+              label="Addresse"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -82,7 +89,7 @@
     <v-card-actions
         v-if="['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter', 'Unterabschnitt'].includes(getCurrentUserRole)">
       <v-row>
-        <v-col cols="12" sm="6" offset="3">
+        <v-col cols="12" sm="6" offset-sm="3">
           <v-btn
               style="text-transform: capitalize; font-weight: bolder;"
               rounded
@@ -97,7 +104,7 @@
             Speichern
           </v-btn>
         </v-col>
-        <v-col cols="12" sm="6" offset="3">
+        <v-col cols="12" sm="6" offset-sm="3">
           <v-btn
               style="text-transform: capitalize; font-weight: bolder;"
               rounded
@@ -114,6 +121,7 @@
     </v-card-actions>
 
   </v-card>
+  </div>
 </template>
 
 <script>
