@@ -6,7 +6,10 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col :cols="$vuetify.breakpoint.mdAndUp ? 3 : 8">
+        <h3>Ausrüstungtyp:</h3>
+      </v-col>
+      <v-col :cols="$vuetify.breakpoint.mdAndUp ? 3 : 4">
         <v-select
             :label="getEquipment.find(item=>item.name==='Sandsack').name"
             :items="getEquipment.map(item => item.name)"
@@ -16,18 +19,18 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col :cols="$vuetify.breakpoint.mdAndUp ? 4 : 8">
+      <v-col :cols="$vuetify.breakpoint.mdAndUp ? 3 : 8">
         <h3>Aktueller Betrag:</h3>
       </v-col>
-      <v-col :cols="$vuetify.breakpoint.mdAndUp ? 2 : 4">
+      <v-col :cols="$vuetify.breakpoint.mdAndUp ? 3 : 4">
         <h3 style="font-weight: normal">{{getCurrentEquipment.quantity}} </h3>
       </v-col>
     </v-row>
     <v-row>
-      <v-col :cols="$vuetify.breakpoint.mdAndUp ? 4 : 8">
-        <h3>Bitte geben Sie den Betrag ein, der zurückgegeben wurde:</h3>
+      <v-col :cols="$vuetify.breakpoint.mdAndUp ? 3 : 8">
+        <h3>Zurückgegebener Betrag:</h3>
       </v-col>
-      <v-col :cols="$vuetify.breakpoint.mdAndUp ? 2 : 4">
+      <v-col :cols="$vuetify.breakpoint.mdAndUp ? 3 : 4">
         <v-text-field
             :value="0"
             v-model="newAmount"
@@ -51,16 +54,24 @@
         </v-btn>
       </v-col>
     </v-row>
+    <SavingSuccessDialog
+        :dialog="successDialog"
+        @close="successDialog = false"
+    />
   </div>
 </template>
 
 <script>
+import SavingSuccessDialog from "../components/SavingSuccessDialog";
+
 export default {
   name: "ManageEquipmentPage",
+  components: {SavingSuccessDialog},
 
   data: () => ({
     currentType: "",
     newAmount: "0",
+    successDialog: false,
   }),
 
   created() {
@@ -94,6 +105,8 @@ export default {
         "name": type
       }
       this.$store.dispatch("updateEquipment", {id, data} );
+      this.successDialog = true;
+      this.newAmount = 0;
     },
     setCurrentType(e) {
       this.currentType = e;
