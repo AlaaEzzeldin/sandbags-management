@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div ref="content" :class="$vuetify.breakpoint.mdAndUp ? 'pt-10 pl-3 pr-3' : ''">
     <v-row no-gutters>
-      <v-col sm="3" class="pt-13 justify-center align-center">
+      <v-col class="justify-center align-center">
         <h1 style="font-weight: bolder;">Hilfe</h1>
       </v-col>
     </v-row>
-    <v-row class="pt-4">
+    <v-row class="mt-5">
       <v-expansion-panels>
         <v-expansion-panel
             v-for="(item,i) in questionsAnswers"

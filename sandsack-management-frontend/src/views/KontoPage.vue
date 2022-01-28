@@ -1,24 +1,26 @@
 <!-- TODO: Add link to login page on Ausloggen button after authentication feature has been merged -->
 <template>
-  <div>
+  <div ref="content" :class="$vuetify.breakpoint.mdAndUp ? 'pt-10 pl-3 pr-3' : ''">
     <v-row v-if="isLoggedIn" no-gutters>
-      <v-col sm="3" class="pt-13 justify-center align-center">
+      <v-col sm="3" class="justify-center align-center">
         <h1 style="font-weight: bolder; ">Konto</h1>
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row no-gutters>
       <v-col cols="12">
         <v-card color="#F1F2F6" outlined class="pa-5 mt-5">
           <v-row>
-            <v-col cols="2" md="1" >
+            <v-col cols="2" md="1" v-if="$vuetify.breakpoint.mdAndUp">
               <v-avatar
                   color="white"
                   size="60">
                 <v-icon color="black" large>mdi-home</v-icon>
               </v-avatar>
             </v-col>
-            <v-col cols="9" sm="10" offset="1" offset-sm="0">
+            <v-col
+                :cols="$vuetify.breakpoint.mdAndUp ? 9 : 12"
+            >
               <h2>{{ getLoggedInUser.name }}</h2>
               <h3>{{ getLoggedInUser.branch_name }}</h3>
             </v-col>

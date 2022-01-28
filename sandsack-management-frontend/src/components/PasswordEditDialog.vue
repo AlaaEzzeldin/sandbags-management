@@ -54,7 +54,7 @@
       </v-card-text>
         <v-card-actions>
           <v-row>
-            <v-col class="align-center justify-center" cols="3" offset="3">
+            <v-col class="align-center justify-center">
               <v-btn
                   style="text-transform: capitalize; font-weight: bolder;"
                   block
@@ -67,7 +67,7 @@
                 Abbrechen
               </v-btn>
             </v-col>
-            <v-col cols="3">
+            <v-col>
               <v-btn
                   style="text-transform: capitalize; font-weight: bolder; color: white"
                   block

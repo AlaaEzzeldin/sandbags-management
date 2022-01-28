@@ -1,13 +1,15 @@
 <template>
-  <div ref="content">
+  <div ref="content" :class="$vuetify.breakpoint.mdAndUp ? 'pt-10 pl-3 pr-3' : ''">
     <v-row no-gutters>
-      <v-col sm="3" class="pt-13 justify-center align-center">
+      <v-col>
         <h1 style="font-weight: bolder;">Bestellungsliste</h1>
       </v-col>
-      <v-spacer></v-spacer>
-      <v-col sm="2" class="pt-15 justify-center align-center">
+      <v-spacer/>
+      <v-col
+          class="mt-2"
+          v-if="this.getCurrentUserRole==='Einsatzleiter' || this.getCurrentUserRole==='Hauptabschnitt' ||this.getCurrentUserRole==='Einsatzabschnitt'"
+      >
         <v-btn
-            v-if="this.getCurrentUserRole==='Einsatzleiter' || this.getCurrentUserRole==='Hauptabschnitt' ||this.getCurrentUserRole==='Einsatzabschnitt'"
             style="text-transform: capitalize; font-weight: bolder;"
             rounded
             color="red"
@@ -20,14 +22,17 @@
           </v-icon>
           Exportieren
         </v-btn>
+      </v-col>
+      <v-col
+          v-if="this.getCurrentUserRole === 'Mollnhof' && IsWaitingForDispatchOrders"
+          class="mt-2"
+      >
         <v-btn
-            v-if="this.getCurrentUserRole === 'Mollnhof'"
             style="text-transform: capitalize; font-weight: bolder;"
             rounded
             color="primary"
             dark
             block
-            :disabled="!IsWaitingForDispatchOrders"
             @click="lieferscheinDruecken"
         >
           <v-icon left>
@@ -40,7 +45,7 @@
     <v-row no-gutters>
       <v-col cols="12">
         <Bestelltabelle
-            class="mt-10"
+            class="mt-5"
             :orders="getOrders"
         ></Bestelltabelle>
       </v-col>

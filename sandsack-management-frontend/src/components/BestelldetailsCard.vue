@@ -1,19 +1,29 @@
 <template>
-  <v-card elevation="0" class="pt-10" v-if="getOrder && getPriorityByID">
-    <v-card-title class="pt-10">
-      <v-btn icon @click="goBack">
-        <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>
-      </v-btn>
-      <h1 style="font-weight: bolder; ">Bestellung # {{ getOrder.id }}</h1>
-      <v-chip
-          class="ml-5"
-          :color="getColor(getOrder.status_name)" outlined
-          dark>
-        {{ getOrder.status_name }}
-      </v-chip>
+  <v-card elevation="0" v-if="getOrder && getPriorityByID">
+    <v-card-title>
+          <v-btn icon @click="goBack" v-if="$vuetify.breakpoint.mdAndUp">
+            <v-icon large color="black" class="pr-5">mdi-keyboard-backspace</v-icon>
+          </v-btn>
+          <h1 style="font-weight: bolder; ">Bestellung # {{ getOrder.id }}</h1>
+          <v-chip
+              class="ml-5"
+              :color="getColor(getOrder.status_name)" outlined
+              dark
+              v-if="$vuetify.breakpoint.mdAndUp"
+              >
+            {{ getOrder.status_name }}
+          </v-chip>
     </v-card-title>
 
-    <v-card-text class="pt-16" >
+    <v-card-text class="pt-10" >
+      <v-row v-if="$vuetify.breakpoint.mdAndDown">
+        <v-col cols="12" sm="4">
+          <h2 style="font-weight: bolder; color: black">Status:</h2>
+        </v-col>
+        <v-col cols="12" sm="7">
+          <h2 style="font-weight: normal; color: black">{{ getOrder.status_name }}</h2>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col cols="12" sm="4">
           <h2 style="font-weight: bolder; color: black">Von:</h2>
@@ -112,7 +122,7 @@
       <!------------------------------------------------- Unterabschnitt ------------------------------------------->
       <v-card-actions v-if="getCurrentUserRole === 'Unterabschnitt'" class="mt-10">
         <v-row>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -127,7 +137,7 @@
             </v-btn>
           </v-col>
 
-          <v-col cols="12" sm="6" offset="3" v-if="getOrder.status_name==='AUF DEM WEG'">
+          <v-col cols="12" sm="6" offset-sm="3" v-if="getOrder.status_name==='AUF DEM WEG'">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -140,7 +150,7 @@
               Lieferung bestätigen
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -160,7 +170,7 @@
       <!---------------------------------- Einsatzabschnitt  -------------------------------->
       <v-card-actions v-if="this.getCurrentUserRole === 'Einsatzabschnitt'">
         <v-row>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -174,7 +184,7 @@
               Bestellung weiterleiten an Hauptabschnitt
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -188,7 +198,7 @@
               Bestellung bearbeiten
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -207,7 +217,7 @@
       <!----------------------------------  Hauptabschnitt -------------------------------->
       <v-card-actions v-if="getCurrentUserRole === 'Hauptabschnitt'">
         <v-row>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -221,7 +231,7 @@
               Bestellung annehmen
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -235,7 +245,7 @@
               Bestellung bearbeiten
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -254,7 +264,7 @@
       <!----------------------------------  Einsatzleiter -------------------------------->
       <v-card-actions v-if="getCurrentUserRole === 'Einsatzleiter'">
         <v-row>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -268,7 +278,7 @@
               Bestellung annehmen
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -282,7 +292,7 @@
               Bestellung bearbeiten
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -301,7 +311,7 @@
       <!------------------------------------------------- Mollhof ------------------------------------------->
       <v-card-actions v-if="getCurrentUserRole === 'Mollnhof'">
         <v-row>
-          <v-col cols="12" sm="6" offset="3">
+          <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
