@@ -1,11 +1,11 @@
 <template>
   <div ref="content" :class="$vuetify.breakpoint.mdAndUp ? 'pt-10 pl-3 pr-3' : ''">
     <v-row no-gutters>
-      <v-col sm="3">
+      <v-col>
         <h1 style="font-weight: bolder;">Bestellungsliste</h1>
       </v-col>
       <v-col
-          sm="2"
+          cols="2"
           v-if="this.getCurrentUserRole==='Einsatzleiter' || this.getCurrentUserRole==='Hauptabschnitt' ||this.getCurrentUserRole==='Einsatzabschnitt'"
       >
         <v-btn
@@ -22,9 +22,10 @@
           Exportieren
         </v-btn>
       </v-col>
+      <v-spacer/>
       <v-col
-          sm="2"
           v-if="this.getCurrentUserRole === 'Mollnhof' && IsWaitingForDispatchOrders"
+          class="mt-2"
       >
         <v-btn
             style="text-transform: capitalize; font-weight: bolder;"
