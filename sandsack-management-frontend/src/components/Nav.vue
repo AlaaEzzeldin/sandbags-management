@@ -6,6 +6,7 @@
         app
         v-model="drawer"
         width="350"
+        v-if="isLoggedIn"
     >
     <v-toolbar
         flat
@@ -50,7 +51,9 @@
         flat
         class="hidden-md-and-up"
         style="width: 350px; padding-left: 0;"
-        @click.stop="drawer = !drawer">
+        @click.stop="drawer = !drawer"
+        v-if="isLoggedIn"
+    >
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <h3>Feuerwehr Passau</h3>
     </v-toolbar>
@@ -140,13 +143,15 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("getUserInfo")
-    this.$store.dispatch("loadEquipment");
-    this.$store.dispatch("loadPriorities");
+    if (this.getCurrentUserRole) {
+      this.$store.dispatch("getUserInfo");
+      this.$store.dispatch("loadEquipment");
+      this.$store.dispatch("loadPriorities");
+    }
   },
   computed:{
     getCurrentUserRole(){
-      return this.$store.getters.getCurrentUserRole
+      return this.$store.getters.getCurrentUserRole;
     },
     getLoggedInUser() {
       return this.$store.getters.getLoggedInUser
