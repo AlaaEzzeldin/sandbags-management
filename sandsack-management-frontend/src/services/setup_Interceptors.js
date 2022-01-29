@@ -10,7 +10,8 @@ const setup = (store) => {
             }
             return config;
         },
-        (error) => {return Promise.reject(error);
+        (error) => {
+            return Promise.reject(error);
         }
     );
 
@@ -19,20 +20,18 @@ const setup = (store) => {
             return res;
         },
         async (err) => {
+
             const originalConfig = err.config;
 
             if (originalConfig.url !== "users/login" && err.response) {
                 // Access Token was expired
                 if (err.response.status === 401 && !originalConfig._retry) {
                     originalConfig._retry = true;
-
                     try {
                         const rs = await axiosInstance.post("users/refresh", {
                             refresh_token: TokenService.getLocalRefreshToken(),
                         });
-
-                        const { accessToken } = rs.data;
-
+                        const {accessToken} = rs.data;
                         store.dispatch('REFRESH_TOKEN', accessToken);
                         TokenService.updateLocalAccessToken(accessToken);
 
@@ -42,8 +41,9 @@ const setup = (store) => {
                     }
                 }
             }
-
-            return Promise.reject(err);
+            return Promise.reject(err).catch(err => {
+                if (err.toJSON().message=="Network Error")
+                    alert('Please check your internet connection, for emergency please contact contact:')})
         }
     );
 };
