@@ -1,11 +1,8 @@
-import axios from 'axios'
-import authHeader from "../services/auth-header";
-import {BASE_URL} from "./config";
+import api from '../services/api';
 
 export default {
     index( params ){
-        return axios.get( BASE_URL + 'core/priority', {
-            headers: authHeader(),
+        return api.get('core/priority', {
             params: params
         })
     },

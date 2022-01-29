@@ -1,4 +1,4 @@
-import AuthService from '../../services/auth.service';
+import AuthService from '../../services/auth_service';
 
 
 const state = {
@@ -20,9 +20,9 @@ const getters = {
 const actions = {
     login({commit}, user) {
         return AuthService.login(user).then(
-            user => {
-                commit('LOGIN_SUCCESS', user.data);
-                return Promise.resolve(user);
+            response => {
+                commit('LOGIN_SUCCESS', response.data);
+                return Promise.resolve(response.data);
             },
             error => {
                 commit('LOGIN_FAILURE');
@@ -34,20 +34,10 @@ const actions = {
         AuthService.logout();
         commit('LOGOUT');
     },
-    updatePassword({commit}, payload) {
-        return AuthService.updatePassword(payload).then(
-          data => {
-              console.log(commit);
-              return Promise.resolve(data);
-          },
-          error => {
-              console.log(commit);
-              return Promise.reject(error);
-          }
-        );
+    refreshToken({ commit }, accessToken) {
+        commit('REFRESH_TOKEN', accessToken);
     }
 }
-
 const mutations = {
     LOGIN_SUCCESS(state, user) {
         state.isLoggedIn = true;
@@ -61,6 +51,10 @@ const mutations = {
         state.isLoggedIn = false;
         state.user = null;
     },
+    REFRESH_TOKEN(state, accessToken) {
+        state.isLoggedIn = true;
+        state.user = { ...state.user, accessToken: accessToken };
+    }
 }
 
 export default {
