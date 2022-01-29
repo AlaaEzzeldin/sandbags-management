@@ -16,33 +16,33 @@
           >Wenden Sie sich an den Systemadministrator, um Ihren Benutzernamen und Ihr Passwort zu erfahren
           </v-alert>
           <v-form ref="form" v-model="valid">
-              <v-text-field
-                  v-model="user.email"
-                  :rules="emailRules"
-                  label="E-mail"
-                  required
-                  outlined
-                  prepend-inner-icon="mdi-email"
-              ></v-text-field>
-              <v-text-field
-                  v-model="user.password"
-                  type="password"
-                  :rules="passwordRules"
-                  label="Password"
-                  required
-                  outlined
-                  prepend-inner-icon="mdi-lock"
-              ></v-text-field>
-              <v-btn
-                  :disabled="!valid"
-                  style="text-transform: capitalize; font-weight: bolder; color: white"
-                  color="red"
-                  block
-                  rounded
-                  @click="submit"
-              >
-                Einloggen
-              </v-btn>
+            <v-text-field
+                v-model="user.email"
+                :rules="emailRules"
+                label="E-mail"
+                required
+                outlined
+                prepend-inner-icon="mdi-email"
+            ></v-text-field>
+            <v-text-field
+                v-model="user.password"
+                type="password"
+                :rules="passwordRules"
+                label="Password"
+                required
+                outlined
+                prepend-inner-icon="mdi-lock"
+            ></v-text-field>
+            <v-btn
+                :disabled="!valid"
+                style="text-transform: capitalize; font-weight: bolder; color: white"
+                color="red"
+                block
+                rounded
+                @click="submit"
+            >
+              Einloggen
+            </v-btn>
           </v-form>
         </v-card>
       </v-col>
@@ -91,14 +91,15 @@ export default {
     submit() {
       this.$store.dispatch('login', this.user).then(
           () => {
-            this.$router.push({name: 'BestellungslistePage'})
+            this.$store.dispatch("getUserInfo").then(
+                this.$router.push({name: 'BestellungslistePage'}))
           },
           error => {
             this.message = (error.response && error.response) || error.message || error.toString();
             if (this.message.data.err_code === 404)
               this.messageToDisplay = 'Der von Ihnen angegebene Benutzername und das Passwort sind nicht korrekt, bitte versuchen Sie es erneut!'
             else this.messageToDisplay = 'Etwas ist schief gelaufen. Bitte versuchen Sie es erneut!'
-            this.authFailureDialog=true
+            this.authFailureDialog = true
           }
       );
     }
