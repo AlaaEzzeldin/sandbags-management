@@ -28,6 +28,7 @@ const setup = () => {
                 // console.log("Access Token was expired, check if refresh should be done", error.status == 401 && !originalConfig._retry)
                 if (error.status === 401 && !originalConfig._retry) {
                     originalConfig._retry = true;
+
                     try {
                         // console.log("do a refresh token request")
                         const rs = await axiosInstance.post("users/refresh", {
@@ -46,8 +47,9 @@ const setup = () => {
                     }
                 }
             }
-
-            return Promise.reject(error);
+            return Promise.reject(err).catch(err => {
+                if (err.toJSON().message=="Network Error")
+                    alert('Bitte überprüfen Sie Ihre Internetverbindung, im Notfall wenden Sie sich bitte an contact: 0851 / 95960-0')})
         }
     );
 };
