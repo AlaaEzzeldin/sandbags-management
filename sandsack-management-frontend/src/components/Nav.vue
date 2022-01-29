@@ -137,23 +137,26 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("getUserInfo").then(
-        response => {
-          console.log(response)
-        },
-        error => {
-          this.content =
-              (error.response && error.response.data && error.response.data.message) ||
-              error.message ||
-              error.toString();
+    if(this.isLoggedIn)
+    {
+      this.$store.dispatch("getUserInfo").then(
+          response => {
+            console.log(response)
+          },
+          error => {
+            this.content =
+                (error.response && error.response.data && error.response.data.message) ||
+                error.message ||
+                error.toString();
 
-          if (error.response && error.response.status === 403) {
-            EventBus.dispatch("logout");
+            if (error.response && error.response.status === 403) {
+              EventBus.dispatch("logout");
+            }
           }
-        }
-    );
-    this.$store.dispatch("loadEquipment");
-    this.$store.dispatch("loadPriorities");
+      );
+      this.$store.dispatch("loadEquipment");
+      this.$store.dispatch("loadPriorities");
+    }
   },
   computed: {
     getCurrentUserRole() {

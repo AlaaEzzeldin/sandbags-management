@@ -30,7 +30,9 @@
 
       <!---------------------------------------- TIME ----------------------------------->
       <template v-slot:item.priority_id="{ item }">
-        {{getPriorityByID(item.priority_id).name}}
+        <div v-if="getPriorityByID(item.priority_id)">
+          {{getPriorityByID(item.priority_id).name}}
+        </div>
       </template>
 
       <!---------------------------------------- TIME ----------------------------------->
