@@ -49,7 +49,7 @@ const setup = (store) => {
             }
             return Promise.reject(err).catch(err => {
                 if (err.toJSON().message=="Network Error")
-                    alert('Please check your internet connection, for emergency please contact contact:')})
+                    alert('Bitte überprüfen Sie Ihre Internetverbindung, im Notfall wenden Sie sich bitte an contact: 0851 / 95960-0')})
         }
     );
 };
