@@ -1,6 +1,7 @@
 import axiosInstance from "./api";
 import TokenService from "./token_service";
 
+
 const setup = (store) => {
     axiosInstance.interceptors.request.use(
         (config) => {
@@ -19,22 +20,25 @@ const setup = (store) => {
             return res;
         },
         async (err) => {
-            const originalConfig = err.config;
-
-            if (originalConfig.url !== "users/login" && err.response) {
+            const error = err.toJSON()
+            console.log("error", error)
+            const originalConfig = error.config;
+            if (originalConfig.url !== "users/login" && error.message) {
                 // Access Token was expired
-                if (err.response.status === 401 && !originalConfig._retry) {
+                console.log("Access Token was expired, check if refresh should be done", error.status == 401 && !originalConfig._retry)
+                if (error.status === 401 && !originalConfig._retry) {
                     originalConfig._retry = true;
-
                     try {
+                        console.log("do a refresh token request")
                         const rs = await axiosInstance.post("users/refresh", {
                             refresh_token: TokenService.getLocalRefreshToken(),
                         });
-
-                        const { accessToken } = rs.data;
-
-                        store.dispatch('REFRESH_TOKEN', accessToken);
-                        TokenService.updateLocalAccessToken(accessToken);
+                        console.log("response of refresh request", rs)
+                        const  access_token  = rs.data.access_token;
+                        const  refresh_token     = rs.data.refresh_token;
+                        console.log("new accessToken", access_token)
+                        store.dispatch('refreshToken', refresh_token);
+                        TokenService.updateLocalAccessToken(rs);
 
                         return axiosInstance(originalConfig);
                     } catch (_error) {
@@ -43,7 +47,7 @@ const setup = (store) => {
                 }
             }
 
-            return Promise.reject(err);
+            return Promise.reject(error);
         }
     );
 };
