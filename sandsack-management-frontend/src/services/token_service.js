@@ -11,10 +11,10 @@ class Token_service {
 
     updateLocalAccessToken(response) {
         let user = JSON.parse(localStorage.getItem("user"));
-        console.log("old user",user)
+        // console.log("old user",user)
         user.access_token = response.data.access_token;
         user.refresh_token = response.data.refresh_token;
-        console.log("new user",user)
+        // console.log("new user",user)
         localStorage.setItem("user", JSON.stringify(user));
     }
 
