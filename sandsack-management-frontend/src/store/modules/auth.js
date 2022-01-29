@@ -1,8 +1,8 @@
-import AuthService from '../../services/auth.service';
+import AuthService from '../../services/auth_service';
 
 
 const state = {
-    isLoggedIn: !!JSON.parse(localStorage.getItem('access_token')),
+    isLoggedIn: !!JSON.parse(localStorage.getItem('user')),
     user: JSON.parse(localStorage.getItem('user'))
 }
 
@@ -20,9 +20,9 @@ const getters = {
 const actions = {
     login({commit}, user) {
         return AuthService.login(user).then(
-            user => {
-                commit('LOGIN_SUCCESS', user.data);
-                return Promise.resolve(user);
+            response => {
+                commit('LOGIN_SUCCESS', response.data);
+                return Promise.resolve(response.data);
             },
             error => {
                 commit('LOGIN_FAILURE');

@@ -1,7 +1,7 @@
 import api from "./api";
-import TokenService from "./token.service";
+import TokenService from "./token_service";
 
-class AuthService {
+class Auth_service {
     login(user) {
         return api
             .post('users/login', {
@@ -26,4 +26,4 @@ class AuthService {
     }
 }
 
-export default new AuthService();
+export default new Auth_service();
