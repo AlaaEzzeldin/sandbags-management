@@ -10,8 +10,8 @@ import (
 	"time"
 )
 
-const ACCESS_TOKEN_TTL = time.Minute * 60 * 24 * 30
-const REFRESH_TOKEN_TTL = time.Hour * 24 * 120
+const ACCESS_TOKEN_TTL = time.Minute * 3
+const REFRESH_TOKEN_TTL = time.Hour * 2
 const VERIFY_TOKEN_TTL = time.Hour * 24
 const RESET_PASSWORD_TOKEN_TTL = time.Hour * 24
 
