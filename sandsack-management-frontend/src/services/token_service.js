@@ -1,10 +1,10 @@
-class TokenService {
+class Token_service {
     getLocalRefreshToken() {
         const user = JSON.parse(localStorage.getItem("user"));
         return user?.access_token;
     }
 
-    getLocalaccess_token() {
+    getLocalAccessToken() {
         const user = JSON.parse(localStorage.getItem("user"));
         return user?.access_token;
     }
@@ -20,7 +20,6 @@ class TokenService {
     }
 
     setUser(user) {
-        console.log(JSON.stringify(user));
         localStorage.setItem("user", JSON.stringify(user));
     }
 
@@ -29,4 +28,4 @@ class TokenService {
     }
 }
 
-export default new TokenService();
+export default new Token_service();

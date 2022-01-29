@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
-import setupInterceptors from './services/setupInterceptors';
+import setupInterceptors from './services/setup_Interceptors';
 
 Vue.config.productionTip = false
 setupInterceptors(store);
