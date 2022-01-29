@@ -2,7 +2,7 @@ import axiosInstance from "./api";
 import TokenService from "./token_service";
 
 
-const setup = (store) => {
+const setup = () => {
     axiosInstance.interceptors.request.use(
         (config) => {
             const token = TokenService.getLocalAccessToken();
@@ -34,8 +34,8 @@ const setup = (store) => {
                             refresh_token: TokenService.getLocalRefreshToken(),
                         });
                         // console.log("response of refresh request", rs)
-                        const  access_token  = rs.data.access_token;
-                        const  refresh_token     = rs.data.refresh_token;
+                        // const  access_token  = rs.data.access_token;
+                        // const  refresh_token     = rs.data.refresh_token;
                         // console.log("new accessToken", access_token)
                         // store.dispatch('refreshToken', refresh_token);
                         TokenService.updateLocalAccessToken(rs);
