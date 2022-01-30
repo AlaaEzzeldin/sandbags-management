@@ -108,6 +108,8 @@ export default {
       {text: 'Zeit', value: 'create_date'},
       {text: 'Von', value: 'name'},
       {text: 'Priorität', value: 'priority_id', sortable: false},
+      {text: 'Ausrüstung', value: 'equipments[0].name'},
+      {text: 'Menge', value: 'equipments[0].quantity'},
       {text: 'Status', value: 'status_name', align: 'center'},
       {text: 'Aktionen', value: 'actions', sortable: false, align: 'center'},
     ],
