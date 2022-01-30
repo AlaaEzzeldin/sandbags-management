@@ -122,7 +122,7 @@ export default {
       {text: 'Menge', value: 'equipments[0].quantity', align: 'right'},
       {text: 'Ausrüstung', value: 'equipments[0].name'},
       {text: 'Status', value: 'status_name', align: 'center'},
-      {text: 'Aktionen', value: 'actions', sortable: false, align: 'center'},
+      {text: 'Aktionen', value: 'actions', sortable: false},
     ],
     options: {
       itemsPerPage: 10,
@@ -159,6 +159,9 @@ export default {
         const orderId = order.id;
         this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
       }
+      else if (action === 'inspect') {
+        this.inspect(order);
+      }
       else if (['cancel', 'confirm_delivery', 'accept', 'dispatch'].includes(action)) {
         this.action = action;
         this.currentOrder = order;
@@ -171,9 +174,10 @@ export default {
     },
     getActions(Item) {
       const status = Item.status_name;
+      let actions = []
       if (this.getCurrentUserRole === 'Unterabschnitt') {
         if (status === 'ANSTEHEND') {
-          return [
+          actions = [
               {
                 name: 'Bearbeiten',
                 actionType: 'edit',
@@ -189,7 +193,7 @@ export default {
           ]
         }
         else if (status === 'AUF DEM WEG') {
-          return [
+          actions = [
             {
               name: 'Lieferung bestätigen',
               actionType: 'confirm_delivery',
@@ -201,7 +205,7 @@ export default {
       }
       else if (this.getCurrentUserRole === 'Einsatzabschnitt') {
         if (status === 'ANSTEHEND') {
-          return [
+          actions = [
             {
               name: 'Bearbeiten',
               actionType: 'edit',
@@ -225,7 +229,7 @@ export default {
       }
       else if (this.getCurrentUserRole === 'Hauptabschnitt') {
         if (status === 'WEITERGELEITET BEI EINSATZABSCHNITT') {
-          return [
+          actions = [
             {
               name: 'Bearbeiten',
               actionType: 'edit',
@@ -249,7 +253,7 @@ export default {
       }
       else if (this.getCurrentUserRole === 'Einsatzleiter') {
         if (status === 'WEITERGELEITET BEI HAUPTABSCHNITT') {
-          return [
+          actions = [
             {
               name: 'Bearbeiten',
               actionType: 'edit',
@@ -273,7 +277,7 @@ export default {
       }
       else if (this.getCurrentUserRole === 'Mollnhof') {
         if (status === 'AKZEPTIERT') {
-          return [
+          actions = [
             {
               name: 'Absenden',
               actionType: 'dispatch',
@@ -283,6 +287,13 @@ export default {
           ]
         }
       }
+      actions.unshift({
+        name: 'Inspektieren',
+        actionType: 'inspect',
+        icon: 'mdi-eye-outline',
+        color: 'gray'
+      });
+      return actions;
     }
   },
 }
