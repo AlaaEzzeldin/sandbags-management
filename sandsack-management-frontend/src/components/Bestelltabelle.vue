@@ -31,18 +31,12 @@
 
       <!---------------------------------------- PRIORITY ----------------------------------->
       <template v-slot:item.priority_id="{ item }">
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
-            <v-icon
-                :color="getIcon(item.priority_id).color"
-                v-bind="attrs"
-                v-on="on"
-            >
-              {{getIcon(item.priority_id).icon}}
-            </v-icon>
-          </template>
-          <span>{{getPriorityByID(item.priority_id).name}}</span>
-        </v-tooltip>
+        <v-icon
+            :color="getIcon(item.priority_id).color"
+        >
+          {{getIcon(item.priority_id).icon}}
+        </v-icon>
+       {{getPriorityByID(item.priority_id).name}}
       </template>
 
       <!---------------------------------------- TIME ----------------------------------->
@@ -118,7 +112,7 @@ export default {
       },
       {text: 'Zeit', value: 'create_date'},
       {text: 'Von', value: 'name'},
-      {text: 'Priorität', value: 'priority_id', sortable: false, align: 'center'},
+      {text: 'Priorität', value: 'priority_id', sortable: false},
       {text: 'Menge', value: 'equipments[0].quantity', align: 'right'},
       {text: 'Ausrüstung', value: 'equipments[0].name'},
       {text: 'Status', value: 'status_name', align: 'center'},
