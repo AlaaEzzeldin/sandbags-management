@@ -4,8 +4,6 @@
       <v-col class="justify-center align-center">
         <h1 style="font-weight: bolder;">Bestellübersicht</h1>
       </v-col>
-      <v-spacer></v-spacer>
-
       <v-col sm="4" class="justify-center align-center">
         <v-menu
             v-model="menu"
