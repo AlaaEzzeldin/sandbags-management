@@ -11,7 +11,7 @@
         <v-textarea
             label="Notizen"
             outlined
-            v-if="action==='cancel' && getCurrentUserRole!=='Unterabschnitt'"
+            v-if="(action==='cancel' && getCurrentUserRole!=='Unterabschnitt')  || this.action=== 'accept'"
             :error="textFieldError"
             :error-messages="textFieldErrorMessages"
             v-model="textFieldValue"
@@ -105,7 +105,8 @@ export default {
     },
 
     submitNewStatus() {
-      if (this.action === 'cancel' && this.getCurrentUserRole !== 'Unterabschnitt') { // in case of cancel send a comment
+      if (this.action === 'cancel' && this.getCurrentUserRole !== 'Unterabschnitt'
+       || this.action=== 'accept') {
         if (this.textFieldValue.length === 0) {
           this.textFieldError = true;
           this.textFieldErrorMessages = ['Notizen sind verpflichtend!']
