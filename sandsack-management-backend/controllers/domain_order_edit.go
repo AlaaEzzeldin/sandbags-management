@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"strconv"
 	"team2/sandsack-management-backend/models"
 	repo_order "team2/sandsack-management-backend/repository/order"
 	"team2/sandsack-management-backend/service"
@@ -56,7 +55,7 @@ func (a *App) EditOrder(c *gin.Context) {
 		log := models.Log{
 			OrderId:      input.OrderId,
 			ActionTypeId: models.DictActionTypeName["EDITED"],
-			Description:  user.Name + " hat die Bestellausrüstungsanzahl " + order.Name + "geändert  #" + strconv.Itoa(order.Id),
+			Description:  user.Name + " hat die Ausrüstungsanzahl der Bestellung '" + order.Name + "' geändert",
 			UpdatedBy:    user.Id,
 		}
 
@@ -77,7 +76,28 @@ func (a *App) EditOrder(c *gin.Context) {
 		log := models.Log{
 			OrderId:      input.OrderId,
 			ActionTypeId: models.DictActionTypeName["EDITED"],
-			Description:  user.Name + " hat die Priorität der Bestellung " + order.Name + "geändert #" + strconv.Itoa(order.Id),
+			Description:  user.Name + " hat die Priorität der Bestellung '" + order.Name + "' geändert",
+			UpdatedBy:    user.Id,
+		}
+
+		logs = append(logs, log)
+	}
+
+	if len(input.AddressTo) != 0 {
+		err := service.EditOrderAddress(a.DB, input.OrderId, input.AddressTo)
+		if err != nil {
+			log.Println("Fehler: EditOrderAddress", err.Error())
+			c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				ErrCode:    http.StatusInternalServerError,
+				ErrMessage: "Da ist etwas schief gelaufen",
+			})
+			return
+		}
+
+		log := models.Log{
+			OrderId:      input.OrderId,
+			ActionTypeId: models.DictActionTypeName["EDITED"],
+			Description:  user.Name + " hat die Bestelladdresse geändert",
 			UpdatedBy:    user.Id,
 		}
 

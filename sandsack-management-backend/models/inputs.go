@@ -75,6 +75,7 @@ type EditOrderInput struct {
 	OrderId    int              `json:"order_id"`
 	Equipments []OrderEquipment `json:"equipments,omitempty"`
 	Priority   int              `json:"priority,omitempty"`
+	AddressTo  string           `json:"address_to,omitempty"`
 }
 
 type AddDriverInput struct {
