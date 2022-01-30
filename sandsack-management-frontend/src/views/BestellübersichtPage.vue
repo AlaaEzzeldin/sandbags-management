@@ -380,7 +380,7 @@ export default {
       return "Statistics-Report_" +
           ("0" + date.getDate()).slice(-2) + "." +
           ("0" + (date.getMonth() + 1)).slice(-2) + "." +
-          date.getFullYear() + ".pdf"
+          date.getFullYear()
     },
     loadStatsByDates(date_from, date_to) {
       //  console.log("dates", date_from, date_to)
