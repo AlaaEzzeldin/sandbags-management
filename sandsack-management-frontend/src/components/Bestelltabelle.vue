@@ -229,6 +229,30 @@ export default {
           ]
         }
       }
+      else if (this.getCurrentUserRole === 'Einsatzleiter') {
+        if (status === 'WEITERGELEITET BEI HAUPTABSCHNITT') {
+          return [
+            {
+              name: 'Bearbeiten',
+              actionType: 'edit',
+              icon: 'mdi-pencil',
+              color: 'primary'
+            },
+            {
+              name: 'Weiterleiten',
+              actionType: 'accept',
+              icon: 'mdi-check',
+              color: 'green'
+            },
+            {
+              name: 'Ablehnen',
+              actionType: 'cancel',
+              icon: 'mdi-cancel',
+              color: 'red'
+            }
+          ]
+        }
+      }
     }
   },
 }
