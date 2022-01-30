@@ -285,7 +285,7 @@ export default {
                 ("0" + date.getHours()).slice(-2) +
                 ".pdf";
             doc.save(filename)
-            window.URL.arevokeObjectURL(url);
+            window.URL.revokeObjectURL(url);
             /** To Un-Block the Button after download */
             if (!alert('Die Datei wird heruntergeladen!')) {
               document.getElementById('pdf').style.display = 'block';

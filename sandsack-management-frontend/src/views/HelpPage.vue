@@ -63,7 +63,7 @@ export default {
         image: require('@/assets/images/Flow.png')
       },
       {
-        question: "Gibt es Mindestbestellmenge?",
+        question: "Gibt es eine Mindestbestellmenge?",
         answer: ["Es gibt keine Mindestbestellmenge, jede Bestellung kann je nach Anfrage aufgegeben werden, die dann priorisiert und bearbeitet wird."]
       },
       {
