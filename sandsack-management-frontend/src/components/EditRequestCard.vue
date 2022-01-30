@@ -167,7 +167,7 @@ export default {
       this.selectedPriority= this.getPriorities.find(item => item.level === this.editedOrder.priority_id).name
     },
     goBack() {
-      this.$router.go(-1)
+      this.$router.push('/orders-list')
     },
     submitUpdatedOrder() {
       let data = {
