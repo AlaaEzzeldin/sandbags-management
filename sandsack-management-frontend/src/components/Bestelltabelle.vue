@@ -152,6 +152,7 @@ export default {
     },
     getActions(Item) {
       const status = Item.status_name;
+      console.log(this.getCurrentUserRole, status)
       if (this.getCurrentUserRole === 'Unterabschnitt') {
         if (status === 'ANSTEHEND') {
           return [
@@ -182,6 +183,30 @@ export default {
       }
       else if (this.getCurrentUserRole === 'Einsatzabschnitt') {
         if (status === 'ANSTEHEND') {
+          return [
+            {
+              name: 'Bearbeiten',
+              actionType: 'edit',
+              icon: 'mdi-pencil',
+              color: 'primary'
+            },
+            {
+              name: 'Weiterleiten',
+              actionType: 'accept',
+              icon: 'mdi-check',
+              color: 'green'
+            },
+            {
+              name: 'Ablehnen',
+              actionType: 'cancel',
+              icon: 'mdi-cancel',
+              color: 'red'
+            }
+          ]
+        }
+      }
+      else if (this.getCurrentUserRole === 'Hauptabschnitt') {
+        if (status === 'WEITERGELEITET BEI EINSATZABSCHNITT') {
           return [
             {
               name: 'Bearbeiten',
