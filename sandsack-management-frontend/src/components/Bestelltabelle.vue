@@ -187,7 +187,7 @@ export default {
               {
                 name: 'Ablehnen',
                 actionType: 'cancel', // todo: change
-                icon: 'mdi-cancel',
+                icon: 'mdi-close',
                 color: 'red'
               }
           ]
@@ -221,7 +221,7 @@ export default {
             {
               name: 'Ablehnen',
               actionType: 'cancel',
-              icon: 'mdi-cancel',
+              icon: 'mdi-close',
               color: 'red'
             }
           ]
@@ -245,7 +245,7 @@ export default {
             {
               name: 'Ablehnen',
               actionType: 'cancel',
-              icon: 'mdi-cancel',
+              icon: 'mdi-close',
               color: 'red'
             }
           ]
@@ -269,7 +269,7 @@ export default {
             {
               name: 'Ablehnen',
               actionType: 'cancel',
-              icon: 'mdi-cancel',
+              icon: 'mdi-close',
               color: 'red'
             }
           ]
