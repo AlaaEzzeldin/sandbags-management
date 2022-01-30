@@ -34,6 +34,7 @@
         <v-text-field
             :value="0"
             v-model="newAmount"
+            :rules="v => v > 0"
             outlined
         ></v-text-field>
       </v-col>
@@ -90,7 +91,7 @@ export default {
       return this.$store.getters.getEquipmentByType('Sandsack');
     },
     getBtnDisabled() {
-      return (parseInt(this.newAmount) === 0) || this.newAmount.length===0
+      return (parseInt(this.newAmount) <= 0) || this.newAmount.length===0
     }
   },
 
