@@ -11,7 +11,8 @@ const setup = () => {
             }
             return config;
         },
-        (error) => {return Promise.reject(error);
+        (error) => {
+            return Promise.reject(error);
         }
     );
 
@@ -24,11 +25,11 @@ const setup = () => {
             // console.log("error", error)
             const originalConfig = error.config;
             if (originalConfig.url !== "users/login" && error.message) {
+                // Can't login
                 // Access Token was expired
                 // console.log("Access Token was expired, check if refresh should be done", error.status == 401 && !originalConfig._retry)
                 if (error.status === 401 && !originalConfig._retry) {
                     originalConfig._retry = true;
-
                     try {
                         // console.log("do a refresh token request")
                         const rs = await axiosInstance.post("users/refresh", {
@@ -40,16 +41,16 @@ const setup = () => {
                         // console.log("new accessToken", access_token)
                         // store.dispatch('refreshToken', refresh_token);
                         TokenService.updateLocalAccessToken(rs);
-
                         return axiosInstance(originalConfig);
                     } catch (_error) {
                         return Promise.reject(_error);
                     }
                 }
             }
-            return Promise.reject(err).catch(err => {
-                if (err.toJSON().message=="Network Error")
-                    alert('Bitte überprüfen Sie Ihre Internetverbindung, im Notfall wenden Sie sich bitte an contact: 0851 / 95960-0')})
+
+            if (error.message == "Network Error")
+                alert('Bitte überprüfen Sie Ihre Internetverbindung, im Notfall wenden Sie sich bitte an contact: 0851 / 95960-0')
+            return Promise.reject(error)
         }
     );
 };
