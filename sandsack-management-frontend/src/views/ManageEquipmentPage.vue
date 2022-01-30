@@ -8,7 +8,7 @@
     <v-row>
       <v-col>
         <v-select
-            :label="getEquipment.find(item=>item.name==='Sandsack').name"
+            :value="getEquipment.find(item=>item.name==='Sandsack').name"
             :items="getEquipment.map(item => item.name)"
             @change="setCurrentType"
             outlined

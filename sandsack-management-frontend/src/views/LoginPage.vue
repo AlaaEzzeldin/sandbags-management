@@ -32,6 +32,7 @@
                 required
                 outlined
                 prepend-inner-icon="mdi-lock"
+                @keyup.enter.native="submit"
             ></v-text-field>
             <v-btn
                 :disabled="!valid"
@@ -95,8 +96,8 @@ export default {
                 this.$router.push({name: 'BestellungslistePage'}))
           },
           error => {
-            this.message = (error.response && error.response) || error.message || error.toString();
-            if (this.message.data.err_code === 404)
+           // this.message = (error.response && error.response) || error.message || error.toString();
+            if (error && error.status === 404)
               this.messageToDisplay = 'Der von Ihnen angegebene Benutzername und das Passwort sind nicht korrekt, bitte versuchen Sie es erneut!'
             else this.messageToDisplay = 'Etwas ist schief gelaufen. Bitte versuchen Sie es erneut!'
             this.authFailureDialog = true
