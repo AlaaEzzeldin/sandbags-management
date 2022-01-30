@@ -266,7 +266,7 @@
       </v-card-actions>
 
       <!----------------------------------  Einsatzleiter -------------------------------->
-      <v-card-actions v-if="getCurrentUserRole === 'Einsatzleiter' && getOrder.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT'">
+      <v-card-actions v-if="getCurrentUserRole === 'Einsatzleiter' && getOrder.status_name==='WEITERGELEITET BEI HAUPTABSCHNITT'">
         <v-row>
           <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
