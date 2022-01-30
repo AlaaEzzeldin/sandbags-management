@@ -29,8 +29,11 @@
         </v-toolbar>
       </template>
 
-      <!---------------------------------------- TIME ----------------------------------->
+      <!---------------------------------------- PRIORITY ----------------------------------->
       <template v-slot:item.priority_id="{ item }">
+        <v-icon :color="getIcon(item.priority_id).color">
+          {{getIcon(item.priority_id).icon}}
+        </v-icon>
         {{getPriorityByID(item.priority_id).name}}
       </template>
 
