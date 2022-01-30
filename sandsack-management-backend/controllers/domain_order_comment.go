@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"strconv"
 	"team2/sandsack-management-backend/models"
 	repo_order "team2/sandsack-management-backend/repository/order"
 	"team2/sandsack-management-backend/service"
@@ -88,7 +87,7 @@ func (a *App) CommentOrder(c *gin.Context) {
 			OrderId:      input.OrderId,
 			ActionTypeId: models.DictActionTypeName["COMMENTED"],
 			UpdatedBy:    claims.Id,
-			Description:  user.Name + " hat die Bestellung " + order.Name + "kommentiert #" + strconv.Itoa(order.Id),
+			Description:  user.Name + " hat die Bestellung '" + order.Name + "' kommentiert",
 		},
 	}
 
