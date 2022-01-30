@@ -178,6 +178,7 @@
 import jsPDF from "jspdf";
 import domtoimage from "dom-to-image";
 import {GChart} from "vue-google-charts";
+import moment from 'moment';
 
 export default {
 
@@ -220,10 +221,12 @@ export default {
         return ('Gültiges Datum auswählen')
       } else if ((typeof (this.dates[1]) !== "undefined")) {
         this.loadStatsByDates(this.dates[0], this.dates[1]);
+        return moment(this.dates[0]).format('DD-MM-YYYY') + '/' + moment(this.dates[1]).format('DD-MM-YYYY')
       } else {
         this.loadStatsByDates(this.dates[0], this.dates[0]);
+        return moment(this.dates[0]).format('DD-MM-YYYY') + '/' + moment(this.dates[0]).format('DD-MM-YYYY')
       }
-      return this.dates.join(' / ')
+
     },
 
     getCurrentUserRole() {
@@ -270,9 +273,9 @@ export default {
             var img = new Image();
             img.src = dataUrl;
             const doc = new jsPDF({
-              orientation: "portrait",
+              orientation: "landscape",
               unit: "pt",
-              format: [900, 1500]
+              format: [1500, 900]
             });
             doc.addImage(img, "JPEG", 100, 100);
             const date = new Date();
@@ -303,6 +306,9 @@ export default {
       }
       this.$store.dispatch("loadStatistics", data)
     },
+    formatDate(date) {
+      console.log(date);
+    }
   }
 
 };
