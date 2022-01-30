@@ -44,21 +44,21 @@ export default {
         answer: ["Benutzen Sie die 'Konto' Seite, dann 'Passwort ändern' wählen."]
       },
       {
-        question: "Welche Rollen gibt es in der System?",
+        question: "Welche Rollen gibt es im System?",
         answer: ["Unterabschnitt, Einsatzabschnitt, Hauptabschnitt, Einsatzleiter, Mollnhof."],
         image: require('@/assets/images/Rollen.png')
       },
       {
-        question: "Was its der Ablauf einer Bestellung? Welchen Status kann eine Bestellung haben?",
+        question: "Wie sieht der Bestellablauf aus? Welchen Status kann eine Bestellung haben?",
         answer: ["Der Ablauf einer Bestellung ist: ",
-            "1. Unterabschnitt macht eine neue Bestellung -> Bestellung hat Status 'ANSTEHEND'.",
-            "2. Unterabschnitt kann die Bestellung bearbeiten -> Bestellung hat Status 'ANSTEHEND'.",
-            "3. Unterabschnitt kann die Bestellung stornieren -> Bestellung hat Status 'STORNIERT'.",
-            "4. Einsatzabschnitt kann die anstehende Bestellung an Hauptabschnitt weiterleiten oder ablehnen ->  Bestellung hat Status 'WEITERGELEITET BEI EINSATZABSCHNITT' oder 'ABGELEHNT'.",
-            "5. Hauptabschnitt kann die weitergeleitete Bestellung an Einsatzleiter  weiterleiten oder ablehnen ->  Bestellung hat Status 'WEITERGELEITET BEI HAUPTABSCHNITT' oder 'ABGELEHNT'.",
-            "6. Ensatzleiter kann die weitergeleitete Bestellung akzeptieren oder ablehnen ->  Bestellung hat Status 'AKZEPTIERT' oder 'ABGELEHNT'.",
-            "7. Mollnhof kann die akzeptierte Bestellung senden  ->  Bestellung hat Status 'AUF DEM WEG'.",
-            "8. Unterabschnitt bestätigt die Lieferung -> Bestellung hat Status 'GELIEFERT'."
+          "1. Unterabschnitt macht eine neue Bestellung -> Bestellung hat Status 'ANSTEHEND'.",
+          "2. Unterabschnitt kann die Bestellung bearbeiten -> Bestellung hat Status 'ANSTEHEND'.",
+          "3. Unterabschnitt kann die Bestellung stornieren -> Bestellung hat Status 'STORNIERT'.",
+          "4. Einsatzabschnitt kann die anstehende Bestellung an Hauptabschnitt weiterleiten oder ablehnen ->  Bestellung hat Status 'WEITERGELEITET BEI EINSATZABSCHNITT' oder 'ABGELEHNT'.",
+          "5. Hauptabschnitt kann die weitergeleitete Bestellung an Einsatzleiter  weiterleiten oder ablehnen ->  Bestellung hat Status 'WEITERGELEITET BEI HAUPTABSCHNITT' oder 'ABGELEHNT'.",
+          "6. Ensatzleiter kann die weitergeleitete Bestellung akzeptieren oder ablehnen ->  Bestellung hat Status 'AKZEPTIERT' oder 'ABGELEHNT'.",
+          "7. Mollnhof kann die akzeptierte Bestellung senden  ->  Bestellung hat Status 'AUF DEM WEG'.",
+          "8. Unterabschnitt bestätigt die Lieferung -> Bestellung hat Status 'GELIEFERT'."
         ],
         image: require('@/assets/images/Flow.png')
       },
@@ -87,7 +87,7 @@ export default {
         answer: ["Die Ausrüstung wird beim Mollnhof zurückgegeben. Mollnhof kann 'Ausrüstungverwaltung' dafür benutzen."]
       },
       {
-        question: "Wie funktionieren die PDF-Exportiern auf Basis von Rollen?",
+        question: "Wie funktionieren das PDF-Exportieren auf Basis von Rollen?",
         answer: ["Hauptabschnitt, Einsatzabschnitt und Einsatzleite können die komplette Bestellliste in Bestellungsliste mit 'Exportieren' Taste herunterladen."]
       },
       {
