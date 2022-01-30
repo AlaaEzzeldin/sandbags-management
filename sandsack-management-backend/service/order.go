@@ -354,7 +354,7 @@ func DeclineOrder(db *gorm.DB, userId, orderId int) error {
 			OrderId:      orderId,
 			ActionTypeId: models.DictActionTypeName["DECLINED"],
 			UpdatedBy:    userId,
-			Description:  user.Name + " hat die Bestellung " + order.Name + "abgelehnt #" + strconv.Itoa(orderId),
+			Description:  user.Name + " hat die Bestellung '" + order.Name + "' abgelehnt ",
 		},
 	}
 
