@@ -38,7 +38,7 @@
           <v-icon left>
             mdi-file-export
           </v-icon>
-          Lieferschein drücken
+          Lieferschein drucken
         </v-btn>
       </v-col>
     </v-row>
