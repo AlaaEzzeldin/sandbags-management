@@ -32,6 +32,7 @@
                 required
                 outlined
                 prepend-inner-icon="mdi-lock"
+                @keyup.enter.native="submit"
             ></v-text-field>
             <v-btn
                 :disabled="!valid"
