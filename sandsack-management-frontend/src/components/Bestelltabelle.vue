@@ -116,7 +116,7 @@ export default {
       {text: 'Menge', value: 'equipments[0].quantity', align: 'right'},
       {text: 'Ausrüstung', value: 'equipments[0].name'},
       {text: 'Status', value: 'status_name', align: 'center'},
-      {text: 'Aktionen', value: 'actions', sortable: false},
+      {text: 'Aktionen', value: 'actions', sortable: false, align: 'right'},
     ],
     options: {
       itemsPerPage: 10,
@@ -281,10 +281,10 @@ export default {
           ]
         }
       }
-      actions.unshift({
+      actions.push({
         name: 'Inspektieren',
         actionType: 'inspect',
-        icon: 'mdi-eye-outline',
+        icon: 'mdi-chevron-right',
         color: 'gray'
       });
       return actions;
