@@ -55,19 +55,26 @@
       <template v-slot:item.actions="{ item }">
         <v-row>
           <v-col cols="12">
-            <v-btn
-                v-for="action in getActions(item)"
-                :key="action.name"
-                style="text-transform: capitalize; font-weight: bolder;"
-                @click.stop="doAction(action.actionType, item)"
-                small
-                class="elevation-0"
-                :color="action.color"
-                rounded
-                icon
-            >
-              <v-icon>{{action.icon}}</v-icon>
-            </v-btn>
+            <v-tooltip top
+                   v-for="action in getActions(item)"
+                   :key="action.name">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    style="text-transform: capitalize; font-weight: bolder;"
+                    @click.stop="doAction(action.actionType, item)"
+                    small
+                    class="elevation-0"
+                    :color="action.color"
+                    rounded
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                  <v-icon>{{action.icon}}</v-icon>
+                </v-btn>
+              </template>
+              <span>{{action.name}}</span>
+            </v-tooltip>
           </v-col>
         </v-row>
       </template>
