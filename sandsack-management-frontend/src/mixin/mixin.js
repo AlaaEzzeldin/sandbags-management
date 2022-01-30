@@ -17,7 +17,6 @@ export const Mixin = {
 
             },
             getIcon (priority) {
-                console.log(priority)
                 if (priority === 1) return {icon: 'mdi-chevron-up', color: 'red'}
                 else if (priority === 2) return {icon: 'mdi-equal', color: 'orange'}
                 else if (priority === 3) return {icon: 'mdi-chevron-down', color: 'blue'}

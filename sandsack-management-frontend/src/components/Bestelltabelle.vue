@@ -31,10 +31,18 @@
 
       <!---------------------------------------- PRIORITY ----------------------------------->
       <template v-slot:item.priority_id="{ item }">
-        <v-icon :color="getIcon(item.priority_id).color">
-          {{getIcon(item.priority_id).icon}}
-        </v-icon>
-<!--        {{getPriorityByID(item.priority_id).name}}-->
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon
+                :color="getIcon(item.priority_id).color"
+                v-bind="attrs"
+                v-on="on"
+            >
+              {{getIcon(item.priority_id).icon}}
+            </v-icon>
+          </template>
+          <span>{{getPriorityByID(item.priority_id).name}}</span>
+        </v-tooltip>
       </template>
 
       <!---------------------------------------- TIME ----------------------------------->
