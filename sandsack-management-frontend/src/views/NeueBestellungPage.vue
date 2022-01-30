@@ -21,7 +21,6 @@
           <v-select
               v-model="chosenEquipmentType"
               :items="getEquipment.map(a => a.name)"
-              filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
               prepend-icon="mdi-format-list-bulleted"
@@ -32,7 +31,6 @@
         <v-col cols="6">
           <v-text-field
               v-model="orderQuantity"
-              filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
               :rules="[v => (!!v && v <= getCurrentEquipment.quantity && v > 0)|| 'Die Menge ist nicht correct']"
@@ -48,7 +46,6 @@
           <v-select
               v-model="chosenEquipmentType"
               :items="getEquipment.map(a => a.name)"
-              filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
               prepend-icon="mdi-format-list-bulleted"
@@ -61,7 +58,6 @@
         <v-col>
           <v-text-field
               v-model="orderQuantity"
-              filled
               outlined
               :menu-props="{ top: true, offsetY: true }"
               :rules="[v => (!!v && v <= getCurrentEquipment.quantity && v > 0)|| 'Die Menge ist nicht correct']"
@@ -76,7 +72,6 @@
         <v-col cols="12">
           <v-text-field
               v-model="newOrder.address_to"
-              filled
               outlined
               prepend-icon="mdi-map-marker"
               :rules="[v => !!v || 'Die Adresse ist erforderlich']"
@@ -95,7 +90,6 @@
               label="Priorität"
               prepend-icon="mdi-alert"
               required
-              filled
               outlined
           ></v-select>
         </v-col>
@@ -106,7 +100,6 @@
           <v-textarea
               v-model="newOrder.comment"
               outlined
-              filled
               prepend-icon="mdi-message-bulleted"
               name="input-7-4"
               label="Anmerkungen"

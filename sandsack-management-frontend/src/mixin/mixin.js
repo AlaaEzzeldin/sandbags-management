@@ -16,7 +16,11 @@ export const Mixin = {
                 else if (status === 'GELIEFERT') return 'green'
 
             },
-
+            getIcon (priority) {
+                if (priority === 1) return {icon: 'mdi-chevron-up', color: 'red'}
+                else if (priority === 2) return {icon: 'mdi-equal', color: 'orange'}
+                else if (priority === 3) return {icon: 'mdi-chevron-down', color: 'blue'}
+            },
             format_time(s) {
                 return new Date(s).toLocaleString('en-GB', { timeZone: 'UTC' })
             }
