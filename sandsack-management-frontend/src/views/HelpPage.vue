@@ -49,7 +49,7 @@ export default {
         image: require('@/assets/images/Rollen.png')
       },
       {
-        question: "Wie sieht der Bestellablauf aus? Welchen Status kann eine Bestellung haben?",
+        question: "Wie sieht der Bestellablauf aus? Welcher Status kann eine Bestellung haben?",
         answer: ["Der Ablauf einer Bestellung ist: ",
           "1. Unterabschnitt macht eine neue Bestellung -> Bestellung hat Status 'ANSTEHEND'.",
           "2. Unterabschnitt kann die Bestellung bearbeiten -> Bestellung hat Status 'ANSTEHEND'.",
@@ -63,7 +63,7 @@ export default {
         image: require('@/assets/images/Flow.png')
       },
       {
-        question: "Wie hoch ist die Mindestbestellmenge?",
+        question: "Gibt es Mindestbestellmenge?",
         answer: ["Es gibt keine Mindestbestellmenge, jede Bestellung kann je nach Anfrage aufgegeben werden, die dann priorisiert und bearbeitet wird."]
       },
       {
@@ -95,7 +95,7 @@ export default {
         answer: ["Mollnhof kann den Lieferschein in Bestellungsliste mit 'Lieferschein drücken' Taste herunterladen. Dann kann der Lieferschein am Fahrer gegeben werden."]
       },
       {
-        question: "Im Falle eines Systemausfalls oder wenn Sie Hilfe benötigen, rufen Sie den Systemadministrator an?",
+        question: "Im Fall eines Systemausfalls oder falls Sie Hilfe benötigen, rufen Sie den Systemadministrator an",
         answer: ["Sie können 0851 43318 anrufen."]
       },
     ]
