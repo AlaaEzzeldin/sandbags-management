@@ -140,7 +140,7 @@ export default {
         const orderId = order.id;
         this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
       }
-      else if (action === 'cancel' || action === 'confirm_delivery') {
+      else if (['cancel', 'confirm_delivery', 'accept'].includes(action)) {
         this.action = action;
         this.currentOrder = order;
         this.confirmationDialog = true;
@@ -177,6 +177,30 @@ export default {
               icon: 'mdi-check',
               color: 'green'
             },
+          ]
+        }
+      }
+      else if (this.getCurrentUserRole === 'Einsatzabschnitt') {
+        if (status === 'ANSTEHEND') {
+          return [
+            {
+              name: 'Bearbeiten',
+              actionType: 'edit',
+              icon: 'mdi-pencil',
+              color: 'primary'
+            },
+            {
+              name: 'Weiterleiten',
+              actionType: 'accept',
+              icon: 'mdi-check',
+              color: 'green'
+            },
+            {
+              name: 'Ablehnen',
+              actionType: 'cancel',
+              icon: 'mdi-cancel',
+              color: 'red'
+            }
           ]
         }
       }
