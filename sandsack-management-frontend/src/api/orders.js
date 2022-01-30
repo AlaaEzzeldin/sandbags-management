@@ -1,64 +1,44 @@
-import axios from 'axios'
-import authHeader from "../services/auth-header";
-import {BASE_URL} from "../api/config";
+import api from '../services/api';
 
 export default {
 
     index(params) {
-        return axios.get(BASE_URL + 'order/list', {
-            headers: authHeader(),
+        return api.get( 'order/list', {
             params: params
         })
     },
 
     show(id) {
-        return axios.get(BASE_URL + 'order?id=' + id, {
-            headers: authHeader(),
-        })
+        return api.get( 'order?id=' + id)
     },
 
 
     create(data) {
-        return axios.post(BASE_URL + 'order', data, {
-            headers: authHeader(),
-        });
+        return api.post( 'order', data);
     },
 
     acceptOrder(id) {
-        return axios.post(BASE_URL + 'order/accept?id=' + id, {}, {
-            headers: authHeader(),
-        });
+        return api.post( 'order/accept?id=' + id, {});
     },
 
     cancelOrder(id) {
-        return axios.post(BASE_URL + 'order/cancel?id=' + id, {}, {
-            headers: authHeader(),
-        })
+        return api.post( 'order/cancel?id=' + id, {})
     },
     confirmOrderDelivery(id) {
-        return axios.post(BASE_URL + 'order/delivery/confirm?id=' + id, {}, {
-            headers: authHeader(),
-        });
+        return api.post( 'order/delivery/confirm?id=' + id, {});
     },
     dispatchOrder(id) {
-        return axios.post(BASE_URL + 'order/dispatch?id=' + id, {}, {
-            headers: authHeader(),
-        });
+        return api.post( 'order/dispatch?id=' + id, {});
     },
     commentOrder(data) {
-        return axios.post(BASE_URL + 'order/comment', data, {
-            headers: authHeader(),
-        });
+        return api.post( 'order/comment', data);
     },
     editOrder(data) {
-        return axios.patch(BASE_URL + 'order/edit', data, {
-            headers: authHeader()
-        })
+        return api.patch( 'order/edit', data)
     },
 
     showStatistics(data) {
-        return axios.get(BASE_URL + 'order/stats', {
-            headers: authHeader(),
+        return api.get('order/stats', {
             params: data
         })
     },

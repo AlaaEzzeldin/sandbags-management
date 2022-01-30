@@ -11,6 +11,7 @@
 
 <script>
 import Navigation from '@/components/Nav.vue'
+import EventBus from "./common/EventBus";
 
 export default {
   name: 'App',
@@ -21,5 +22,20 @@ export default {
   data: () => ({
     //
   }),
+
+  methods: {
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push({name: 'LoginPage'});
+    }
+  },
+  mounted() {
+    EventBus.on("logout", () => {
+      this.logOut();
+    });
+  },
+  beforeDestroy() {
+    EventBus.remove("logout");
+  }
 };
 </script>

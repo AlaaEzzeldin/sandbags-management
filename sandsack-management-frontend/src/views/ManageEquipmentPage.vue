@@ -11,7 +11,7 @@
       </v-col>
       <v-col :cols="$vuetify.breakpoint.mdAndUp ? 3 : 4">
         <v-select
-            :label="getEquipment.find(item=>item.name==='Sandsack').name"
+            :value="getEquipment.find(item=>item.name==='Sandsack').name"
             :items="getEquipment.map(item => item.name)"
             @change="setCurrentType"
             outlined

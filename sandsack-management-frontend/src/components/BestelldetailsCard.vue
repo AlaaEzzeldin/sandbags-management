@@ -52,7 +52,7 @@
         <v-col cols="12" sm="4">
           <h2 style="font-weight: bolder; color: black">Priorität:</h2>
         </v-col>
-        <v-col cols="12" sm="7">
+        <v-col cols="12" sm="7" v-if="getPriorityByID(getOrder.priority_id)">
           <h2 style="font-weight: normal; color: black" v-if="getOrder.priority_id">{{ getPriorityByID(getOrder.priority_id).name }}</h2>
         </v-col>
       </v-row>

@@ -1,5 +1,5 @@
 <template>
-  <v-card class="elevation-0 rounded-lg" outlined v-if="orders">
+  <v-card class="elevation-0 rounded-lg" outlined v-if="orders && getPriorities">
     <v-data-table
         :headers="headers"
         :items="orders"
@@ -144,7 +144,6 @@ export default {
   },
   methods: {
     customFilter (value, search, item) {
-      console.log(value, search, item)
       if (this.getPriorities.find(p => p.name.toString().toLowerCase().indexOf(search.toString().toLowerCase())!== -1))
        return value != null &&
           search != null &&

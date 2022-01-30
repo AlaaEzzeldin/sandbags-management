@@ -4,14 +4,14 @@
       width="800"
   >
     <v-card>
-      <v-card-title>
-        {{ getMessageText() }}
+      <v-card-title v-if="getMessageText">
+        {{ getMessageText }}
       </v-card-title>
       <v-container>
         <v-textarea
             label="Notizen"
             outlined
-            v-if="action==='cancel' && getCurrentUserRole!=='Unterabschnitt'"
+            v-if="(action==='cancel' && getCurrentUserRole!=='Unterabschnitt')  || this.action=== 'accept'"
             :error="textFieldError"
             :error-messages="textFieldErrorMessages"
             v-model="textFieldValue"
@@ -65,6 +65,39 @@ export default {
     getLoggedInUser() {
       return this.$store.getters.getLoggedInUser
     },
+    getMessageText() {
+      if (this.getCurrentUserRole === 'Unterabschnitt') {
+        if (this.action === 'confirm_delivery')
+          return 'Lieferung bestätigen?'
+        else if (this.action === 'cancel')
+          return 'Bestellung stornieren?'
+        else return null
+      } else if (this.getCurrentUserRole === 'Einsatzabschnitt') {
+        if (this.action === 'accept')
+          return 'Bestellung weiterleiten an Hauptabschnitt?'
+        else if (this.action === 'cancel')
+          return 'Bestellung ablehnen?'
+        else return null
+      } else if (this.getCurrentUserRole === 'Hauptabschnitt') {
+        if (this.action === 'accept')
+          return 'Bestellung weiterleiten an Einsatzleiter?'
+        else if (this.action === 'cancel')
+          return 'Bestellung ablehnen?'
+        else return null
+      } else if (this.getCurrentUserRole === 'Einsatzleiter') {
+        if (this.action === 'accept')
+          return 'Bestellung akzeptieren?'
+        else if (this.action === 'cancel')
+          return 'Bestellung ablehnen?'
+        else return null
+      } else if (this.getCurrentUserRole === 'Mollnhof') {
+        if (this.action === 'dispatch')
+          return 'Bestellung senden?'
+        else return null
+      }
+      else return null
+
+    }
   },
   methods: {
     closeDialog() {
@@ -72,7 +105,8 @@ export default {
     },
 
     submitNewStatus() {
-      if (this.action === 'cancel' && this.getCurrentUserRole !== 'Unterabschnitt') { // in case of cancel send a comment
+      if (this.action === 'cancel' && this.getCurrentUserRole !== 'Unterabschnitt'
+       || this.action=== 'accept') {
         if (this.textFieldValue.length === 0) {
           this.textFieldError = true;
           this.textFieldErrorMessages = ['Notizen sind verpflichtend!']
@@ -109,33 +143,7 @@ export default {
 
       this.closeDialog()
     },
-    getMessageText() {
-      if (this.getCurrentUserRole === 'Unterabschnitt') {
-        if (this.action === 'confirm_delivery')
-          return 'Lieferung bestätigen?'
-        else if (this.action === 'cancel')
-          return 'Bestellung stornieren?'
-      } else if (this.getCurrentUserRole === 'Einsatzabschnitt') {
-        if (this.action === 'accept')
-          return 'Bestellung weiterleiten an Hauptabschnitt?'
-        else if (this.action === 'cancel')
-          return 'Bestellung ablehnen?'
-      } else if (this.getCurrentUserRole === 'Hauptabschnitt') {
-        if (this.action === 'accept')
-          return 'Bestellung weiterleiten an Einsatzleiter?'
-        else if (this.action === 'cancel')
-          return 'Bestellung ablehnen?'
-      } else if (this.getCurrentUserRole === 'Einsatzleiter') {
-        if (this.action === 'accept')
-          return 'Bestellung akzeptieren?'
-        else if (this.action === 'cancel')
-          return 'Bestellung ablehnen?'
-      } else if (this.getCurrentUserRole === 'Mollnhof') {
-        if (this.action === 'dispatch')
-          return 'Bestellung senden?'
-      }
 
-    }
 
   }
 }
