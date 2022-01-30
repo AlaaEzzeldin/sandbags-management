@@ -29,7 +29,10 @@
           <v-date-picker
               v-model="dates"
               range
+              scrollable
               @input="menu = false"
+              locale="de"
+              no-title
           ></v-date-picker>
         </v-menu>
       </v-col>
