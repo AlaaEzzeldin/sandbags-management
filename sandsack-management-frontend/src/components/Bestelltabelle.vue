@@ -7,7 +7,7 @@
         :search="search"
         :options="options"
         :custom-filter="customFilter"
-
+        @click:row="inspect"
     >
 
       <!----------------------------------------SEARCH----------------------------------->
@@ -55,60 +55,41 @@
       <template v-slot:item.actions="{ item }">
         <v-row>
           <v-col cols="12">
-            <v-tooltip top v-if="['Einsatzabschnitt','Hauptabschnitt','Einsatzleiter', 'Unterabschnitt'].includes(getCurrentUserRole)">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                    v-bind="attrs"
-                    v-on="on"
-                    style="text-transform: capitalize; font-weight: bolder;"
-                    @click="editItem(item)"
-                    small
-                    :disabled="(item.status_name!=='ANSTEHEND' && ['Einsatzabschnitt', 'Unterabschnitt'].includes(getCurrentUserRole))
-                    || (item.status_name!=='WEITERGELEITET BEI EINSATZABSCHNITT' && getCurrentUserRole=== 'Hauptabschnitt')
-                    || (item.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT' && getCurrentUserRole=== 'Einsatzleiter') "
-
-                    class="elevation-0"
-                    color="primary"
-                    rounded
-                    icon
-                >
-                  <v-icon> mdi-pencil</v-icon>
-                </v-btn>
-              </template>
-              <h4 class="font-weight-light"> Edit</h4>
-            </v-tooltip>
-            <v-tooltip top>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                    @click="inspect(item)"
-                    v-bind="attrs"
-                    v-on="on"
-                    small
-                    class="elevation-0"
-                    color="primary"
-                    icon
-                >
-                  <v-icon> mdi-information-outline</v-icon>
-                </v-btn>
-              </template>
-              <h4 class="font-weight-light">Inspect</h4>
-            </v-tooltip>
+            <v-btn
+                v-for="action in getActions(item)"
+                :key="action.name"
+                style="text-transform: capitalize; font-weight: bolder;"
+                @click.stop="doAction(action.actionType, item)"
+                small
+                class="elevation-0"
+                :color="action.color"
+                rounded
+                icon
+            >
+              <v-icon>{{action.icon}}</v-icon>
+            </v-btn>
           </v-col>
         </v-row>
       </template>
     </v-data-table>
+    <ConfirmationDialog
+        :action="action"
+        :orderID="currentOrder ? currentOrder.id : null"
+        :dialog="confirmationDialog"
+        @close="confirmationDialog = false"
+    />
   </v-card>
 </template>
 
 <script>
-
+import ConfirmationDialog from "../components/ConfirmationDialog";
 import {Mixin} from '../mixin/mixin.js'
 
 export default {
   name: 'Bestelltabelle',
   props: ['orders'],
   mixins: [Mixin],
-  components: {},
+  components: {ConfirmationDialog},
   data: () => ({
     search: '',
     headers: [
@@ -126,6 +107,9 @@ export default {
     options: {
       itemsPerPage: 10,
     },
+    action: null,
+    confirmationDialog: false,
+    currentOrder: null,
   }),
   computed: {
     getCurrentUserRole(){
@@ -151,14 +135,52 @@ export default {
           typeof value === 'string' &&
           value.toString().toLowerCase().indexOf(search.toString().toLowerCase()) !== -1
     },
-    editItem(Item) {
-      const orderId = Item.id;
-      this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
+    doAction(action, order) {
+      if (action === 'edit') {
+        const orderId = order.id;
+        this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
+      }
+      else if (action === 'cancel' || action === 'confirm_delivery') {
+        this.action = action;
+        this.currentOrder = order;
+        this.confirmationDialog = true;
+      }
     },
     inspect(Item) {
       const orderId = Item.id;
       this.$router.push({name: 'BestelldetailsPage', params: {orderId}})
     },
+    getActions(Item) {
+      const status = Item.status_name;
+      if (this.getCurrentUserRole === 'Unterabschnitt') {
+        if (status === 'ANSTEHEND') {
+          return [
+              {
+                name: 'Bearbeiten',
+                actionType: 'edit',
+                icon: 'mdi-pencil',
+                color: 'primary'
+              },
+              {
+                name: 'Ablehnen',
+                actionType: 'cancel', // todo: change
+                icon: 'mdi-cancel',
+                color: 'red'
+              }
+          ]
+        }
+        else if (status === 'AUF DEM WEG') {
+          return [
+            {
+              name: 'Lieferung bestätigen',
+              actionType: 'confirm_delivery',
+              icon: 'mdi-check',
+              color: 'green'
+            },
+          ]
+        }
+      }
+    }
   },
 }
 </script>
