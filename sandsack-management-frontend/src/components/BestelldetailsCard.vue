@@ -120,9 +120,13 @@
 
 
       <!------------------------------------------------- Unterabschnitt ------------------------------------------->
-      <v-card-actions v-if="getCurrentUserRole === 'Unterabschnitt'" class="mt-10">
+      <v-card-actions
+          v-if="getCurrentUserRole === 'Unterabschnitt' &&
+                ['ANSTEHEND', 'AUF DEM WEG'].includes(getOrder.status_name)"
+          class="mt-10"
+      >
         <v-row>
-          <v-col cols="12" sm="6" offset-sm="3">
+          <v-col cols="12" sm="6" offset-sm="3" v-if="getOrder.status_name==='ANSTEHEND'">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -150,7 +154,7 @@
               Lieferung bestätigen
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" offset-sm="3">
+          <v-col cols="12" sm="6" offset-sm="3" v-if="getOrder.status_name==='ANSTEHEND'">
             <v-btn
                 style="text-transform: capitalize; font-weight: bolder;"
                 rounded
@@ -168,7 +172,7 @@
       </v-card-actions>
 
       <!---------------------------------- Einsatzabschnitt  -------------------------------->
-      <v-card-actions v-if="this.getCurrentUserRole === 'Einsatzabschnitt'">
+      <v-card-actions v-if="this.getCurrentUserRole === 'Einsatzabschnitt' && getOrder.status_name ==='ANSTEHEND'">
         <v-row>
           <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
@@ -215,7 +219,7 @@
       </v-card-actions>
 
       <!----------------------------------  Hauptabschnitt -------------------------------->
-      <v-card-actions v-if="getCurrentUserRole === 'Hauptabschnitt'">
+      <v-card-actions v-if="getCurrentUserRole === 'Hauptabschnitt' && getOrder.status_name ==='WEITERGELEITET BEI EINSATZABSCHNITT'">
         <v-row>
           <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
@@ -262,7 +266,7 @@
       </v-card-actions>
 
       <!----------------------------------  Einsatzleiter -------------------------------->
-      <v-card-actions v-if="getCurrentUserRole === 'Einsatzleiter'">
+      <v-card-actions v-if="getCurrentUserRole === 'Einsatzleiter' && getOrder.status_name!=='WEITERGELEITET BEI HAUPTABSCHNITT'">
         <v-row>
           <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
@@ -309,7 +313,7 @@
       </v-card-actions>
 
       <!------------------------------------------------- Mollhof ------------------------------------------->
-      <v-card-actions v-if="getCurrentUserRole === 'Mollnhof'">
+      <v-card-actions v-if="getCurrentUserRole === 'Mollnhof' && getOrder.status_name ==='AKZEPTIERT'">
         <v-row>
           <v-col cols="12" sm="6" offset-sm="3">
             <v-btn
