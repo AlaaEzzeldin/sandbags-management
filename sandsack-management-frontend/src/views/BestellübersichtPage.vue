@@ -87,7 +87,7 @@
       <v-col cols="4">
         <h1 style="text-align: center;color: red">
           {{ getGeneralStatisticsForCurrentRole.general_statistics.average_processing_time }}</h1>
-        <h3 style="text-align: center">Durchsch. Lieferungszeit</h3>
+        <h3 style="text-align: center">Durchsch. Lieferzeit</h3>
       </v-col>
 
     </v-row>
@@ -95,33 +95,33 @@
         v-if="getGeneralStatisticsForCurrentRole && !$vuetify.breakpoint.mdAndUp"
         style="background-color: #F1F2F6; border-radius: 8px"
     >
-    <v-row>
-      <v-col cols="3" style="text-align: center">
-        <h3 style="color: red">
-          {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_orders }}</h3>
-      </v-col>
-      <v-col>
-        <h3>Bestellungen</h3>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="3" style="text-align: center">
-        <h3 style="color: red">
-          {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_accepted_orders }}</h3>
-      </v-col>
-      <v-col>
-        <h3>Bestellungen geliefert</h3>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="3" style="text-align: center">
-        <h3 style="color: red">
-          {{ getGeneralStatisticsForCurrentRole.general_statistics.average_processing_time }}</h3>
-      </v-col>
-      <v-col>
-        <h3>Durchschnittliche Lieferungszeit</h3>
-      </v-col>
-    </v-row>
+      <v-row>
+        <v-col cols="3" style="text-align: center">
+          <h3 style="color: red">
+            {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_orders }}</h3>
+        </v-col>
+        <v-col>
+          <h3>Bestellungen</h3>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="3" style="text-align: center">
+          <h3 style="color: red">
+            {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_accepted_orders }}</h3>
+        </v-col>
+        <v-col>
+          <h3>Bestellungen geliefert</h3>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="3" style="text-align: center">
+          <h3 style="color: red">
+            {{ getGeneralStatisticsForCurrentRole.general_statistics.average_processing_time }}</h3>
+        </v-col>
+        <v-col>
+          <h3>Durchschnittliche Lieferungszeit</h3>
+        </v-col>
+      </v-row>
     </div>
 
     <v-row class="mt-5" no-gutters>
@@ -285,7 +285,7 @@ export default {
                 ("0" + date.getHours()).slice(-2) +
                 ".pdf";
             doc.save(filename)
-            window.URL.revokeObjectURL(url);
+            window.URL.arevokeObjectURL(url);
             /** To Un-Block the Button after download */
             if (!alert('Die Datei wird heruntergeladen!')) {
               document.getElementById('pdf').style.display = 'block';
