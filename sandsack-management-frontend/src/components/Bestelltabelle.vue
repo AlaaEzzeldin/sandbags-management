@@ -140,7 +140,7 @@ export default {
         const orderId = order.id;
         this.$router.push({name: 'BestellBearbeitenPage', params: {orderId}})
       }
-      else if (['cancel', 'confirm_delivery', 'accept'].includes(action)) {
+      else if (['cancel', 'confirm_delivery', 'accept', 'dispatch'].includes(action)) {
         this.action = action;
         this.currentOrder = order;
         this.confirmationDialog = true;
@@ -152,7 +152,6 @@ export default {
     },
     getActions(Item) {
       const status = Item.status_name;
-      console.log(this.getCurrentUserRole, status)
       if (this.getCurrentUserRole === 'Unterabschnitt') {
         if (status === 'ANSTEHEND') {
           return [
@@ -249,6 +248,18 @@ export default {
               actionType: 'cancel',
               icon: 'mdi-cancel',
               color: 'red'
+            }
+          ]
+        }
+      }
+      else if (this.getCurrentUserRole === 'Mollnhof') {
+        if (status === 'AKZEPTIERT') {
+          return [
+            {
+              name: 'Absenden',
+              actionType: 'dispatch',
+              icon: 'mdi-cube-send',
+              color: 'green'
             }
           ]
         }
