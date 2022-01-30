@@ -109,7 +109,7 @@ func GetOrder(a *gorm.DB, userId, orderId int) (models.Order, error) {
 func GetOrderList(a *gorm.DB, userId int) (orderList []models.Order, err error) {
 	var simpleOrderList []models.SimpleOrder
 	user, _ := GetUserByID(a, userId)
-	if user.BranchId == models.DictBranchName["Einsatzleiter"]  {
+	if user.BranchId == models.DictBranchName["Einsatzleiter"] {
 		simpleOrderList, err = repo_order.GetAllSimpleOrderList(a, "", "")
 		if err != nil {
 			return nil, err
@@ -269,7 +269,7 @@ func AcceptOrder(db *gorm.DB, userId, orderId int) error {
 			OrderId:      orderId,
 			ActionTypeId: models.DictActionTypeName["ACCEPTED"],
 			UpdatedBy:    userId,
-			Description:  user.Name + " hat die Bestellung " + order.Name + "akzeptiert #" + strconv.Itoa(orderId),
+			Description:  user.Name + " hat die Bestellung '" + order.Name + "' akzeptiert",
 		},
 	}
 
@@ -420,7 +420,7 @@ func ConfirmDelivery(db *gorm.DB, userId int, orderId int) error {
 		OrderId:      orderId,
 		UpdatedBy:    userId,
 		ActionTypeId: models.DictActionTypeName["CONFIRMED DELIVERY"],
-		Description:  user.Name + " hat die Zustellung " + order.Name + "bestätigt #" + strconv.Itoa(orderId),
+		Description:  user.Name + " hat die Bestellzustellung '" + order.Name + "' bestätigt",
 	}}
 	err = repo_order.InsertLogs(db, logs)
 
@@ -433,6 +433,10 @@ func EditOrderEquipment(db *gorm.DB, orderId, equipmentId, quantity int) error {
 
 func EditOrderPriority(db *gorm.DB, orderId, priority int) error {
 	return repo_order.EditOrderPriority(db, orderId, priority)
+}
+
+func EditOrderAddress(db *gorm.DB, orderId int, addressTo string) error {
+	return repo_order.EditOrderAddress(db, orderId, addressTo)
 }
 
 func AddDriver(db *gorm.DB, name, description string) error {
@@ -485,7 +489,7 @@ func DispatchOrder(db *gorm.DB, userId, orderId, driverId int) error {
 			OrderId:      orderId,
 			ActionTypeId: models.DictActionTypeName["ASSIGNED"],
 			UpdatedBy:    userId,
-			Description:  user.Name + " hat die Bestellung " + order.Name + " dem LKW Fahrer übergeben und versendet",
+			Description:  user.Name + " hat die Bestellung '" + order.Name + "' dem LKW Fahrer übergeben und versendet",
 		},
 	}
 
