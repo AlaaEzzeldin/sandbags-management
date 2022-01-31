@@ -1,169 +1,154 @@
 <template>
   <div :class="$vuetify.breakpoint.mdAndUp ? 'pt-10 pl-3 pr-3' : ''">
-
-
-    <!---------------------------------------- Calender for mdAndUp screens ------------------------------------------->
-
-    <v-row v-if="$vuetify.breakpoint.mdAndUp">
-      <v-col class="justify-center align-center">
-        <h1 style="font-weight: bolder;">Bestellübersicht</h1>
-      </v-col>
-      <v-col sm="4" class="justify-center align-center">
-        <v-menu
-            v-model="menu"
-            :close-on-content-click="false"
-            :nudge-right="50"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-                v-model="dateSelected"
-                filled
-                label="Tage"
-                prepend-icon="mdi-calendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-              v-model="dates"
-              range
-              scrollable
-              @input="menu = false"
-              locale="de"
-              no-title
-          ></v-date-picker>
-        </v-menu>
-      </v-col>
-    </v-row>
-
-    <!---------------------------------------- Calender for smAndDown screens ------------------------------------------->
-
-    <v-row v-if="$vuetify.breakpoint.smAndDown">
-      <v-col class="justify-center align-center">
-        <h1 style="font-weight: bolder;">Bestellübersicht</h1>
-      </v-col>
-      <v-spacer></v-spacer>
-    </v-row>
-    <v-row no-gutters v-if="$vuetify.breakpoint.smAndDown" class="mt-5">
-      <v-col sm="4" class="justify-center align-center">
-        <v-menu
-            v-model="menu"
-            :close-on-content-click="false"
-            :nudge-right="50"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-                v-model="dateSelected"
-                filled
-                label="Tage"
-                prepend-icon="mdi-calendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-              v-model="dates"
-              range
-              @input="menu = false"
-          ></v-date-picker>
-        </v-menu>
-      </v-col>
-    </v-row>
-
-    <!---------------------------------------- Statistics for mdAndUp screens ------------------------------------------->
-
-    <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px"
-           v-if="getGeneralStatisticsForCurrentRole && $vuetify.breakpoint.mdAndUp">
-      <v-col cols="4">
-        <h1 style="text-align: center; color: red">
-          {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_orders }}</h1>
-        <h3 style="text-align: center">Bestellungen</h3>
-      </v-col>
-
-      <v-col cols="4">
-        <h1 style="text-align: center;color: red">
-          {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_accepted_orders }}</h1>
-        <h3 style="text-align: center;">Bestellungen geliefert</h3>
-      </v-col>
-
-      <v-col cols="4">
-        <h1 style="text-align: center;color: red">
-          {{ getGeneralStatisticsForCurrentRole.general_statistics.average_processing_time }}</h1>
-        <h3 style="text-align: center">Durchsch. Lieferzeit</h3>
-      </v-col>
-
-    </v-row>
-
-    <!---------------------------------------- Statistics for smAndDown screens ------------------------------------------->
-
-    <div
-        v-if="getGeneralStatisticsForCurrentRole && $vuetify.breakpoint.smAndDown"
-        style="background-color: #F1F2F6; border-radius: 8px"
-    >
-      <v-row>
-        <v-col cols="3" style="text-align: center">
-          <h3 style="color: red">
-            {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_orders }}</h3>
+      <v-row v-if="$vuetify.breakpoint.mdAndUp">
+        <v-col class="justify-center align-center">
+          <h1 style="font-weight: bolder;">Bestellübersicht</h1>
         </v-col>
-        <v-col>
-          <h3>Bestellungen</h3>
+        <v-col sm="4" class="justify-center align-center">
+          <v-menu
+              v-model="menu"
+              :close-on-content-click="false"
+              :nudge-right="50"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                  v-model="dateSelected"
+                  filled
+                  label="Tage"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+                v-model="dates"
+                range
+                scrollable
+                @input="menu = false"
+                locale="de"
+                no-title
+            ></v-date-picker>
+          </v-menu>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="3" style="text-align: center">
-          <h3 style="color: red">
-            {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_accepted_orders }}</h3>
+
+      <v-row v-if="!$vuetify.breakpoint.mdAndUp">
+        <v-col class="justify-center align-center">
+          <h1 style="font-weight: bolder;">Bestellübersicht</h1>
         </v-col>
-        <v-col>
-          <h3>Bestellungen geliefert</h3>
+        <v-spacer></v-spacer>
+      </v-row>
+      <v-row no-gutters v-if="!$vuetify.breakpoint.mdAndUp" class="mt-5">
+        <v-col sm="4" class="justify-center align-center">
+          <v-menu
+              v-model="menu"
+              :close-on-content-click="false"
+              :nudge-right="50"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                  v-model="dateSelected"
+                  filled
+                  label="Tage"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+                v-model="dates"
+                range
+                @input="menu = false"
+            ></v-date-picker>
+          </v-menu>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="3" style="text-align: center">
-          <h3 style="color: red">
-            {{ getGeneralStatisticsForCurrentRole.general_statistics.average_processing_time }}</h3>
+      <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px"
+             v-if="getGeneralStatisticsForCurrentRole && $vuetify.breakpoint.mdAndUp">
+        <v-col cols="4">
+          <h1 style="text-align: center; color: red">
+            {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_orders }}</h1>
+          <h3 style="text-align: center">Bestellungen</h3>
         </v-col>
-        <v-col>
-          <h3>Durchschnittliche Lieferungszeit</h3>
+
+        <v-col cols="4">
+          <h1 style="text-align: center;color: red">
+            {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_accepted_orders }}</h1>
+          <h3 style="text-align: center;">Bestellungen geliefert</h3>
+        </v-col>
+
+        <v-col cols="4">
+          <h1 style="text-align: center;color: red">
+            {{ getGeneralStatisticsForCurrentRole.general_statistics.average_processing_time }}</h1>
+          <h3 style="text-align: center">Durchsch. Lieferzeit</h3>
+        </v-col>
+
+      </v-row>
+      <div
+          v-if="getGeneralStatisticsForCurrentRole && !$vuetify.breakpoint.mdAndUp"
+          style="background-color: #F1F2F6; border-radius: 8px"
+      >
+        <v-row>
+          <v-col cols="3" style="text-align: center">
+            <h3 style="color: red">
+              {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_orders }}</h3>
+          </v-col>
+          <v-col>
+            <h3>Bestellungen</h3>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="3" style="text-align: center">
+            <h3 style="color: red">
+              {{ getGeneralStatisticsForCurrentRole.general_statistics.total_number_of_accepted_orders }}</h3>
+          </v-col>
+          <v-col>
+            <h3>Bestellungen geliefert</h3>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="3" style="text-align: center">
+            <h3 style="color: red">
+              {{ getGeneralStatisticsForCurrentRole.general_statistics.average_processing_time }}</h3>
+          </v-col>
+          <v-col>
+            <h3>Durchschnittliche Lieferungszeit</h3>
+          </v-col>
+        </v-row>
+      </div>
+
+      <v-row class="mt-5" no-gutters>
+        <v-col cols="6">
+          <h2>
+            Bestellungen
+          </h2>
         </v-col>
       </v-row>
-    </div>
-
-
-    <!---------------------------------------- Chart ------------------------------------------->
-
-    <v-row class="mt-5" no-gutters>
-      <v-col cols="6">
-        <h2>
-          Bestellungen
-        </h2>
-      </v-col>
-    </v-row>
-    <div id="content">
-      <GChart
-          v-if="getStatisticsForCurrentRole"
-          :data="getStatisticsForCurrentRole"
-          type="ColumnChart"
-          :options="chartOptions"
-      />
-    </div>
-    <v-alert
-        v-if="!getStatisticsForCurrentRole"
-        text
-        type="error"
-        icon="mdi-cloud-alert"
-    >
-      Ups, ein Fehler! Für das von Ihnen gewählte Zeitintervall sind keine Bestellungen vorhanden! Bitte ändern Sie die
-      Daten.
-    </v-alert>
+      <div id="content">
+        <GChart
+            v-if="getStatisticsForCurrentRole"
+            :data="getStatisticsForCurrentRole"
+            type="ColumnChart"
+            :options="chartOptions"
+        />
+      </div>
+      <v-alert
+          v-if="!getStatisticsForCurrentRole"
+          text
+          type="error"
+          icon="mdi-cloud-alert"
+      >
+        Ups, ein Fehler! Für das von Ihnen gewählte Zeitintervall sind keine Bestellungen vorhanden! Bitte ändern Sie die
+        Daten.
+      </v-alert>
     <VueHtml2pdf
         :show-layout="false"
         :float-layout="true"
@@ -178,7 +163,7 @@
         :pdf-content-width="$vuetify.breakpoint.xs ? '600px' : '1110px'"
         ref="html2Pdf"
     >
-      <section slot="pdf-content">
+      <section slot="pdf-content" >
         <!-- PDF Content Here -->
         <div :class="$vuetify.breakpoint.mdAndUp ? 'pt-10 pl-3 pr-3' : ''">
 
@@ -187,7 +172,34 @@
               <h1 style="font-weight: bolder;">Bestellübersicht</h1>
             </v-col>
             <v-col sm="4" class="justify-center align-center">
-              <h2> For {{dateSelected}}</h2>
+              <v-menu
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  :nudge-right="50"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                      v-model="dateSelected"
+                      filled
+                      label="Tage"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                    v-model="dates"
+                    range
+                    scrollable
+                    @input="menu = false"
+                    locale="de"
+                    no-title
+                ></v-date-picker>
+              </v-menu>
             </v-col>
           </v-row>
           <v-row no-gutters style="text-align: center; background-color: #F1F2F6; border-radius: 8px; padding: 10px"
@@ -219,13 +231,13 @@
             </v-col>
 
             <v-col cols="12">
-              <GChart
-                  id="chart"
-                  v-if="getStatisticsForCurrentRole"
-                  :data="getStatisticsForCurrentRole"
-                  type="ColumnChart"
-                  :options="chartOptions"
-              />
+                <GChart
+                    id="chart"
+                    v-if="getStatisticsForCurrentRole"
+                    :data="getStatisticsForCurrentRole"
+                    type="ColumnChart"
+                    :options="chartOptions"
+                />
             </v-col>
             <v-col cols="12">
               <v-alert
@@ -234,8 +246,7 @@
                   type="error"
                   icon="mdi-cloud-alert"
               >
-                Ups, ein Fehler! Für das von Ihnen gewählte Zeitintervall sind keine Bestellungen vorhanden! Bitte
-                ändern Sie die
+                Ups, ein Fehler! Für das von Ihnen gewählte Zeitintervall sind keine Bestellungen vorhanden! Bitte ändern Sie die
                 Daten.
               </v-alert>
             </v-col>
@@ -361,10 +372,10 @@ export default {
   },
   methods: {
 
-    generateReport() {
+    generateReport () {
       this.$refs.html2Pdf.generatePdf()
     },
-    getFileName() {
+    getFileName(){
       const date = new Date();
       return "Statistics-Report_" +
           ("0" + date.getDate()).slice(-2) + "." +
